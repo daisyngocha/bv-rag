@@ -1,0 +1,9 @@
+name: B3
+benchmark: benchmark/benchmark_v1.jsonl
+data_version: v2
+chunking: structure        # fixed | structure
+chunk: {max_tokens: 512, overlap: 64}   # fixed: kích thước chunk; structure: ngưỡng tách Điều theo Khoản
+retrieval: {mode: hybrid, top_k: 30, use_filter: true}   # none | dense | sparse | hybrid
+rerank: {enabled: false, model: BAAI/bge-reranker-v2-m3, top_n: 5, min_score: 0.3}
+llm: {provider: ollama, model: qwen2.5:7b-instruct-q4_K_M, temperature: 0.1, max_tokens: 600}
+seed: 42

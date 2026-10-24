@@ -1,0 +1,5 @@
+# Cài torch TRƯỚC (bản CPU hoặc CUDA, xem README), rồi mới cài file này.
+FlagEmbedding
+qdrant-client
+pyyaml
+requests

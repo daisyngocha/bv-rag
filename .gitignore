@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+
+# Dữ liệu lớn, tái tạo được từ sources.csv và code
+data/raw/products/*
+data/raw/legal/*
+data/processed/*
+!**/.gitkeep
+qdrant_storage/
+
+# Log chạy hằng ngày; kết quả tổng hợp ở results/ thì commit
+logs/*
