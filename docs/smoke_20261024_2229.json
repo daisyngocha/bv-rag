@@ -1,0 +1,72 @@
+{
+  "ts": "2026-10-24T22:29:38",
+  "env": {
+    "python": "3.11.17",
+    "platform": "Linux-5.10.16.3-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "cpu_count": 8,
+    "MemTotal": 12.3,
+    "MemAvailable": 9.8,
+    "torch": "2.14.1+cpu",
+    "cuda": false,
+    "huggingface": "OK (200)",
+    "ollama_server": "OK (200)",
+    "qdrant_server": "OK (200)",
+    "https_proxy": false,
+    "step_s": 2.1
+  },
+  "embed": {
+    "model_load_s": 8.1,
+    "n_chunks": 100,
+    "encode_s": 138.7,
+    "s_per_chunk": 1.387,
+    "est_4000_chunks_min": 92.4,
+    "dense_dim": 1024,
+    "dense_top1_correct": "3/3",
+    "peak_rss_gb": 2.24,
+    "step_s": 156.0
+  },
+  "rerank": {
+    "model_load_s": 89.9,
+    "s_per_query_30_pairs": 87.9,
+    "top1_correct": "3/3",
+    "gold_scores": [
+      0.994,
+      0.831,
+      0.997
+    ],
+    "peak_rss_gb": 2.58,
+    "step_s": 356.9
+  },
+  "qdrant": {
+    "vectors": "bge-m3",
+    "server_version": "1.20.0",
+    "upsert_s": 0.09,
+    "hybrid_query_ms": 23.7,
+    "gold_rank_in_top5": [
+      1,
+      1,
+      1
+    ],
+    "collection_deleted": true,
+    "step_s": 2.5
+  },
+  "ollama": {
+    "model": "qwen2.5:7b-instruct-q4_K_M",
+    "first_load_s": 108.4,
+    "prompt_tokens": 1580,
+    "output_tokens": 27,
+    "prefill_tok_s": 19.0,
+    "decode_tok_s": 4.7,
+    "answer_s": 89.1,
+    "est_test_run_h": 14.8,
+    "cites_gold": true,
+    "mentions_365": true,
+    "answer": "Thời gian chờ đối với bệnh đặc biệt là 365 ngày. [SPMAU_QT_D7]",
+    "step_s": 199.8
+  },
+  "hints": [
+    "Không có CUDA: embedding, rerank và LLM đều chạy CPU.",
+    "Chạy test 600 lượt sinh mất ~14.8 giờ (> 1 đêm): cân nhắc API cho bước sinh (dữ liệu công khai), giữ cùng LLM cho mọi cấu hình.",
+    "Embed 4.000 chunk mất > 1 giờ: cân nhắc embed trên Colab/Kaggle rồi chép vector về."
+  ]
+}
