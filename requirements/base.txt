@@ -6,3 +6,8 @@ qdrant-client==1.20.0
 transformers==5.20.2
 pyyaml
 requests
+docling==2.142.1
+docling-core==2.104.0
+docling-ibm-models==4.0.4
+docling-parse==7.23.0
+docling-slim==2.142.1
