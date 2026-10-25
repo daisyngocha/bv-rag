@@ -84,3 +84,8 @@ Trên Colab chạy qua `scripts/colab_smoke.ipynb` (mục Chạy trên Colab L4)
 | B2 | Chunk theo Chương/Mục/Điều/Khoản, bảng Markdown |
 | B3 | Hybrid dense + sparse, lọc metadata, query processor |
 | B4 | Reranker, ngưỡng từ chối, prompt trích dẫn |
+
+## Cài đặt Docling
+Trên WSL chạy pip install -r requirements/base.txt -r requirements/ingest.txt, trên Colab chỉ cài base.txt.
+Cần xác nhận base.txt không chứa dòng torch nào bị cài đè khi chạy trên WSL.
+Nếu có (ví dụ torch==2.11.0+cu130), tách dòng đó sang một file chỉ dùng cho Colab, hoặc thêm điều kiện môi trường.
