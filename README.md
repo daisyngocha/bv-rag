@@ -12,7 +12,7 @@ Quy ước repo, schema và config theo skill `hust-da1-bh-genai-conventions`.
 
 Số liệu đưa vào báo cáo chỉ lấy từ lần chạy trên Colab L4, cùng một loại GPU cho cả B0–B4 (decision-log 2026-10-25).
 Kết quả chạy trên WSL hoặc T4 chỉ để debug và tham khảo.
-Thư viện chính pin trong `requirements/base.txt` theo bản đã đo ở smoke v3 (`docs/smoke_colab_L4_20261025_v3.json`);
+Thư viện chính pin trong `requirements/base.txt` theo bản đã đo ở smoke v3, kiểm chứng lại ở v4 (`docs/smoke_colab_L4_20261025_v4.json`);
 torch dùng bản có sẵn của Colab, version thực tế mỗi lần chạy ghi trong `meta.json` (smoke test: khối `env`, `colab`).
 
 ## Chạy trên Colab L4

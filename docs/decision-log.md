@@ -20,3 +20,4 @@
 | 2026-10-25 | Chọn GPU L4 trên Colab Pay As You Go cho mọi lần chạy chính thức B0–B4; T4 chỉ dự phòng và phải đo lại trước khi dùng | L4 v3: prefill 3.470 / decode 52,2 tok/s, 100% GPU, ~0,62 giờ/lần test (~1 unit) |
 | 2026-10-25 | Hoãn 2 ghi chú cho ĐA2/ĐATN (so sánh RAG và Agentic RAG dùng cùng LLM; hợp đồng thật chỉ xử lý trên WSL), làm rõ khi bắt đầu ĐA2 | Chưa cần cho ĐA1; quyết định khi chọn LLM điều phối và hạ tầng cho dữ liệu thật |
 | 2026-10-25 | Pin FlagEmbedding==1.4.2, qdrant-client==1.20.0, transformers==5.20.2 trong requirements/base.txt; torch dùng bản có sẵn của Colab, version thực tế ghi trong meta.json | Đúng bản đã đo ở smoke L4 v3; Colab đổi image không làm lệch thư viện chính |
+| 2026-10-25 | Số liệu smoke L4 chính thức chuyển sang v4 (cài từ requirements/base.txt đã pin) | v4 khớp v3: prefill 3.498 / decode 51,9 tok/s, 100% GPU, embed 0,026 s/chunk, rerank 0,56 s/30 cặp; bản pin không làm đổi kết quả |
