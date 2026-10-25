@@ -1,9 +1,13 @@
 """Smoke test hạ tầng ĐA1: môi trường, bge-m3, reranker, Qdrant hybrid, Ollama.
 
 Chạy từ thư mục gốc repo, đã kích hoạt .venv:
-    python scripts/smoke_test.py                      # chạy đủ 5 bước
+    python scripts/smoke_test.py                      # chạy đủ các bước
     python scripts/smoke_test.py --skip ollama        # bỏ bước nào đó
+    python scripts/smoke_test.py --no-preload         # nạp Ollama SAU PyTorch (cách cũ, để so sánh)
 Kết quả: in bảng tóm tắt và ghi logs/smoke_YYYYMMDD_HHMM.json.
+
+Thứ tự mặc định: nạp model Ollama lên GPU (ollama_load) TRƯỚC khi bge-m3/reranker chiếm VRAM,
+cùng load options với pipeline (configs/*.yaml → llm). Tỷ lệ model nằm trên GPU ghi ở gpu_pct.
 
 Dữ liệu thử là các đoạn GIẢ tự soạn cho "Sản phẩm mẫu" (SP-MAU), không phải tài liệu thật.
 Mỗi bước chạy độc lập: một bước lỗi không chặn các bước sau.
@@ -11,6 +15,7 @@ Mỗi bước chạy độc lập: một bước lỗi không chặn các bướ
 from __future__ import annotations
 
 import argparse
+import gc
 import json
 import os
 import platform
@@ -26,6 +31,12 @@ import requests
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from src.generate.llm_client import OllamaClient  # noqa: E402
+
+# Giả định cho ước tính một lần chạy test: 120 câu × 5 cấu hình, câu trả lời có trích dẫn
+ASSUME = {"n_gen": 600, "n_rerank": 120, "prompt_tokens": 2500, "output_tokens": 150}
 
 # ---------------------------------------------------------------- dữ liệu giả
 SAMPLE = [
@@ -99,6 +110,29 @@ def meminfo_gb() -> dict:
     return out
 
 
+def free_gpu() -> dict:
+    """Trả lại VRAM PyTorch đang giữ để không lấn phần của Ollama."""
+    gc.collect()
+    try:
+        import torch
+        if torch.cuda.is_available():
+            peak = torch.cuda.max_memory_reserved() / 1024**3
+            torch.cuda.empty_cache()
+            return {"torch_peak_vram_gb": round(peak, 2),
+                    "torch_vram_after_free_gb": round(torch.cuda.memory_reserved() / 1024**3, 2)}
+    except ImportError:
+        pass
+    return {}
+
+
+def make_client(args) -> OllamaClient:
+    cfg = yaml.safe_load((ROOT / args.config).read_text(encoding="utf-8"))
+    llm = dict(cfg["llm"])
+    if args.model:
+        llm["model"] = args.model
+    return OllamaClient(llm, seed=cfg.get("seed"), base_url=args.ollama_url)
+
+
 def check_url(url: str, timeout: int = 10) -> str:
     try:
         r = requests.get(url, timeout=timeout)
@@ -153,11 +187,12 @@ def step_embed(args, ctx) -> dict:
     ctx.update(corpus=corpus, doc_dense=out["dense_vecs"], doc_sparse=out["lexical_weights"],
                q_dense=q["dense_vecs"], q_sparse=q["lexical_weights"])
     per_chunk = enc_s / len(texts)
+    dim = int(out["dense_vecs"].shape[1])
+    del model, out, q
     return {"model_load_s": round(load_s, 1), "n_chunks": len(texts),
             "encode_s": round(enc_s, 1), "s_per_chunk": round(per_chunk, 3),
-            "est_4000_chunks_min": round(per_chunk * 4000 / 60, 1),
-            "dense_dim": int(out["dense_vecs"].shape[1]),
-            "dense_top1_correct": f"{sum(hits)}/{len(hits)}", "peak_rss_gb": peak_rss_gb()}
+            "est_4000_chunks_min": round(per_chunk * 4000 / 60, 1), "dense_dim": dim,
+            "dense_top1_correct": f"{sum(hits)}/{len(hits)}", "peak_rss_gb": peak_rss_gb(), **free_gpu()}
 
 
 def step_rerank(args, ctx) -> dict:
@@ -177,9 +212,11 @@ def step_rerank(args, ctx) -> dict:
         best = cands[max(range(len(scores)), key=lambda i: scores[i])][0]
         hits.append(best == gold)
         gold_scores.append(round(float(scores[[c[0] for c in cands].index(gold)]), 3))
+    del rr
+    ctx["rerank_s"] = sum(times) / len(times)
     return {"model_load_s": round(load_s, 1), "s_per_query_30_pairs": round(sum(times) / len(times), 2),
             "top1_correct": f"{sum(hits)}/{len(hits)}", "gold_scores": gold_scores,
-            "peak_rss_gb": peak_rss_gb()}
+            "peak_rss_gb": peak_rss_gb(), **free_gpu()}
 
 
 def _sparse(lw: dict):
@@ -247,54 +284,67 @@ def step_qdrant(args, ctx) -> dict:
     return res
 
 
-def step_ollama(args, ctx) -> dict:
-    cfg = yaml.safe_load((ROOT / args.config).read_text(encoding="utf-8"))
-    model = args.model or cfg["llm"]["model"]
-    tags = requests.get(f"{args.ollama_url}/api/tags", timeout=10).json()
-    names = [m["name"] for m in tags.get("models", [])]
-    if model not in names:
-        return {"error": f"chưa có model {model}; chạy: ollama pull {model}", "available": names}
+def step_ollama_load(args, ctx) -> dict:
+    """Nạp model Ollama lên GPU trước khi PyTorch chiếm VRAM, cùng load options với pipeline."""
+    client = make_client(args)
+    names = [m["name"] for m in requests.get(f"{args.ollama_url}/api/tags", timeout=10).json().get("models", [])]
+    if client.model not in names:
+        raise RuntimeError(f"chưa có model {client.model}; chạy: ollama pull {client.model}")
+    load_s = client.warmup()
+    ctx["llm"] = client
+    return {"model": client.model, "load_options": client.load_options, "keep_alive": client.keep_alive,
+            "load_s": load_s, **{f"before_torch_{k}": v for k, v in client.gpu_status().items()}}
 
-    corpus = ctx.get("corpus") or build_corpus(args.n_chunks)
+
+def build_prompt(corpus) -> str:
     by_id = dict(corpus)
-    # ngữ cảnh 5 đoạn như B4: 1 đoạn đúng + 4 đoạn nhiễu dài, để prompt cỡ ~2.000–3.000 token
+    # ngữ cảnh 5 đoạn như B4: 1 đoạn đúng + 4 đoạn nhiễu dài, để prompt cỡ ~1.500–2.500 token
     ctx_ids = ["SPMAU_QT_D7"] + [cid for cid, _ in corpus[len(SAMPLE):len(SAMPLE) + 4]]
     context = "\n\n".join(f"<doc id=\"{cid}\">\n{by_id[cid]}\n</doc>" for cid in ctx_ids)
-    prompt = (
+    return (
         "Bạn là trợ lý hỏi đáp sản phẩm bảo hiểm. Chỉ trả lời dựa trên các đoạn tài liệu dưới đây. "
         "Sau mỗi ý, ghi mã đoạn nguồn trong ngoặc vuông, ví dụ [SPMAU_QT_D7]. "
         "Nếu tài liệu không có căn cứ, trả lời: \"Tài liệu không có thông tin để trả lời câu hỏi này.\"\n\n"
         f"{context}\n\nCâu hỏi: {QUESTIONS[0][0]}\nTrả lời bằng tiếng Việt:"
     )
-    opts = {"temperature": cfg["llm"].get("temperature", 0.1), "seed": cfg.get("seed", 42),
-            "num_ctx": 4096, "num_predict": args.num_predict}
-
-    url = f"{args.ollama_url}/api/generate"
-    t0 = time.perf_counter()
-    warm = requests.post(url, json={"model": model, "prompt": "Xin chào", "stream": False,
-                                    "options": {"num_predict": 1}}, timeout=900).json()
-    warm_s = time.perf_counter() - t0
-
-    t0 = time.perf_counter()
-    r = requests.post(url, json={"model": model, "prompt": prompt, "stream": False, "options": opts},
-                      timeout=1800).json()
-    total_s = time.perf_counter() - t0
-    ns = 1e9
-    answer = r.get("response", "")
-    return {
-        "model": model, "first_load_s": round(warm.get("load_duration", 0) / ns or warm_s, 1),
-        "prompt_tokens": r.get("prompt_eval_count"), "output_tokens": r.get("eval_count"),
-        "prefill_tok_s": round(r["prompt_eval_count"] / (r["prompt_eval_duration"] / ns), 1)
-        if r.get("prompt_eval_duration") else None,
-        "decode_tok_s": round(r["eval_count"] / (r["eval_duration"] / ns), 1) if r.get("eval_duration") else None,
-        "answer_s": round(total_s, 1),
-        "est_test_run_h": round(total_s * 120 * 5 / 3600, 1),  # 120 câu test × 5 cấu hình
-        "cites_gold": "SPMAU_QT_D7" in answer, "mentions_365": "365" in answer,
-        "answer": answer.strip(),
-    }
 
 
-STEPS = {"env": step_env, "embed": step_embed, "rerank": step_rerank,
+def step_ollama(args, ctx) -> dict:
+    res = {}
+    client = ctx.get("llm")
+    if client is None:  # --no-preload: nạp SAU PyTorch như phiên bản cũ
+        client = make_client(args)
+        res["load_s"] = client.warmup()
+        ctx["llm"] = client
+    corpus = ctx.get("corpus") or build_corpus(args.n_chunks)
+
+    # 1) câu hỏi có ngữ cảnh: đo prefill và kiểm tra trích dẫn
+    a = client.generate(build_prompt(corpus), num_predict=args.num_predict)
+    # 2) câu trả lời dài: đo decode ổn định hơn (câu trả lời 1 chỉ vài chục token)
+    b = client.generate("Viết khoảng 200 từ bằng tiếng Việt giải thích thời gian chờ trong bảo hiểm sức khỏe.",
+                        num_predict=args.num_predict)
+
+    prefill, decode = a.prefill_tok_s, b.decode_tok_s or a.decode_tok_s
+    rerank_s = (ctx.get("rerank_s") or 0)
+    est_h = None
+    if prefill and decode:
+        per_gen = ASSUME["prompt_tokens"] / prefill + ASSUME["output_tokens"] / decode
+        est_h = round((ASSUME["n_gen"] * per_gen + ASSUME["n_rerank"] * rerank_s) / 3600, 2)
+    res.update({
+        "model": client.model, "ollama_version": client.version(), "model_digest": client.digest(),
+        **{f"after_torch_{k}": v for k, v in client.gpu_status().items()},
+        "prompt_tokens": a.tokens_in, "output_tokens": a.tokens_out, "prefill_tok_s": prefill,
+        "answer_s": round(a.latency_ms / 1000, 1),
+        "decode_probe_tokens": b.tokens_out, "decode_tok_s": decode,
+        "est_test_run_h": est_h, "assume": ASSUME,
+        "cites_gold": "SPMAU_QT_D7" in a.text, "mentions_365": "365" in a.text, "answer": a.text,
+    })
+    if not args.keep_loaded:
+        client.unload()
+    return res
+
+
+STEPS = {"env": step_env, "ollama_load": step_ollama_load, "embed": step_embed, "rerank": step_rerank,
          "qdrant": step_qdrant, "ollama": step_ollama}
 
 
@@ -310,6 +360,12 @@ def hints(results: dict) -> list[str]:
     if isinstance(oll.get("est_test_run_h"), (int, float)) and oll["est_test_run_h"] > 8:
         out.append(f"Chạy test 600 lượt sinh mất ~{oll['est_test_run_h']} giờ (> 1 đêm): cân nhắc API cho bước "
                    "sinh (dữ liệu công khai), giữ cùng LLM cho mọi cấu hình.")
+    for key in ("before_torch_gpu_pct", "after_torch_gpu_pct"):
+        pct = results.get("ollama_load", {}).get(key, results.get("ollama", {}).get(key))
+        if isinstance(pct, (int, float)) and pct < 100:
+            out.append(f"Ollama chỉ có {pct}% model trên GPU ({key}): decode sẽ chậm. Kiểm tra VRAM trống, "
+                       "num_gpu, và nạp Ollama trước PyTorch.")
+            break
     emb = results.get("embed", {})
     if isinstance(emb.get("est_4000_chunks_min"), (int, float)) and emb["est_4000_chunks_min"] > 60:
         out.append("Embed 4.000 chunk mất > 1 giờ: cân nhắc embed trên Colab/Kaggle rồi chép vector về.")
@@ -322,6 +378,8 @@ def hints(results: dict) -> list[str]:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--skip", nargs="*", default=[], choices=list(STEPS))
+    ap.add_argument("--no-preload", action="store_true", help="nạp Ollama sau PyTorch (cách cũ) để so sánh")
+    ap.add_argument("--keep-loaded", action="store_true", help="không giải phóng model Ollama khi xong")
     ap.add_argument("--qdrant-url", default="http://localhost:6333", help='hoặc ":memory:" để thử không cần Docker')
     ap.add_argument("--ollama-url", default="http://localhost:11434")
     ap.add_argument("--config", default="configs/B4.yaml")
@@ -336,9 +394,13 @@ def main() -> None:
         if "localhost" not in cur:
             os.environ[var] = ",".join(x for x in (cur, "localhost,127.0.0.1") if x)
 
+    skip = set(args.skip)
+    if "ollama" in skip or args.no_preload:
+        skip.add("ollama_load")
+
     ctx, results = {}, {}
     for name, fn in STEPS.items():
-        if name in args.skip:
+        if name in skip:
             continue
         print(f"\n=== {name} ===", flush=True)
         t0 = time.perf_counter()
@@ -348,7 +410,7 @@ def main() -> None:
             results[name] = {"error": f"{type(e).__name__}: {e}", "trace": traceback.format_exc(limit=3)}
         results[name]["step_s"] = round(time.perf_counter() - t0, 1)
         for k, v in results[name].items():
-            if k not in ("trace", "answer"):
+            if k not in ("trace", "answer", "assume"):
                 print(f"  {k:24} {v}")
         if "answer" in results[name]:
             print("  answer:\n    " + results[name]["answer"].replace("\n", "\n    "))
