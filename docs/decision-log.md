@@ -18,3 +18,4 @@
 | 2026-10-25 | Chuyển repo bv-rag sang public | Colab clone không cần token; repo chỉ chứa code, config, benchmark và kết quả, không chứa tài liệu gốc hay dữ liệu thật |
 | 2026-10-25 | LLMClient: nạp Ollama trước PyTorch, num_ctx=4096, num_gpu=99, keep_alive=-1, warm-up một lượt sinh ngắn; mọi request dùng cùng load options | v1: decode 7,8 tok/s do chia layer sang CPU; v2: prefill 49 tok/s do lượt đầu gánh chi phí khởi tạo kernel |
 | 2026-10-25 | Chọn GPU L4 trên Colab Pay As You Go cho mọi lần chạy chính thức B0–B4; T4 chỉ dự phòng và phải đo lại trước khi dùng | L4 v3: prefill 3.470 / decode 52,2 tok/s, 100% GPU, ~0,62 giờ/lần test (~1 unit) |
+| 2026-10-25 | Hoãn 2 ghi chú cho ĐA2/ĐATN (so sánh RAG và Agentic RAG dùng cùng LLM; hợp đồng thật chỉ xử lý trên WSL), làm rõ khi bắt đầu ĐA2 | Chưa cần cho ĐA1; quyết định khi chọn LLM điều phối và hạ tầng cho dữ liệu thật |
