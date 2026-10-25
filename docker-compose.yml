@@ -1,6 +1,5 @@
 services:
   qdrant:
-    # Sau smoke test: thay latest bằng đúng version mà smoke test in ra, để kết quả tái lập được.
     image: qdrant/qdrant:v1.20.0
     container_name: bv-qdrant
     ports:
