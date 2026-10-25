@@ -2,9 +2,9 @@
 
 | Tuần | Việc chính | Trạng thái | Ghi chú |
 | --- | --- | --- | --- |
-| 0 | Gửi thầy đề cương + lộ trình; smoke test hạ tầng; dựng repo | Đang làm | Repo, smoke test, chọn GPU L4: xong. Còn: đồng bộ tài liệu, gửi thầy |
+| 0 | Gửi thầy đề cương + lộ trình; smoke test hạ tầng; dựng repo | Đang làm | Repo, smoke test, chọn GPU L4, đồng bộ tài liệu (README mục Colab L4, pin version theo smoke v3): xong. Còn: gửi thầy |
 | 1 | Lý thuyết, chốt sản phẩm, làm thử 1 sản phẩm | | |
-| 2 | Thu thập, parse tài liệu | | |
+| 2 | Thu thập, parse tài liệu | | Viết `scripts/colab_batch.ipynb` (cell đầu dừng nếu GPU không phải L4) và `scripts/sync.sh` (rclone Drive), xong trước job embed tuần 3 |
 | 3 | Chunking, catalog, từ điển; benchmark nháp | | |
 | 4 | Baseline B0–B2; chốt mục tiêu số | | |
 | 5 | B3; chốt benchmark v1 | | |

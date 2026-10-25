@@ -1,5 +1,8 @@
 # Cài torch TRƯỚC (bản CPU hoặc CUDA, xem README), rồi mới cài file này.
-FlagEmbedding
-qdrant-client
+# Trên Colab dùng torch có sẵn của image; meta.json/smoke JSON ghi version thực tế mỗi lần chạy.
+# Pin theo bản đã đo trong docs/smoke_colab_L4_20261025_v3.json để số liệu L4 tái lập được.
+FlagEmbedding==1.4.2
+qdrant-client==1.20.0
+transformers==5.20.2
 pyyaml
 requests
