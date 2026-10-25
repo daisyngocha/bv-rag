@@ -1,0 +1,119 @@
+{
+  "ts": "2026-10-25T05:34:36",
+  "env": {
+    "python": "3.13.16",
+    "platform": "Linux-6.6.122+-x86_64-with-glibc2.39",
+    "cpu_count": 12,
+    "MemTotal": 53.0,
+    "MemAvailable": 51.1,
+    "torch": "2.11.0+cu130",
+    "cuda": true,
+    "gpu": "NVIDIA L4",
+    "vram_gb": 22.0,
+    "huggingface": "OK (200)",
+    "ollama_server": "OK (200)",
+    "qdrant_server": "in-memory",
+    "https_proxy": false,
+    "step_s": 4.3
+  },
+  "ollama_load": {
+    "model": "qwen2.5:7b-instruct-q4_K_M",
+    "load_options": {
+      "num_ctx": 4096,
+      "num_gpu": 99
+    },
+    "keep_alive": -1,
+    "load_s": 40.6,
+    "warmup_s": 36.7,
+    "warmup_tokens_in": 610,
+    "warmup_prefill_tok_s": 18.2,
+    "before_torch_loaded": true,
+    "before_torch_size_gb": 4.43,
+    "before_torch_vram_gb": 4.43,
+    "before_torch_gpu_pct": 100.0,
+    "step_s": 77.2
+  },
+  "embed": {
+    "model_load_s": 24.3,
+    "n_chunks": 100,
+    "encode_s": 2.6,
+    "s_per_chunk": 0.026,
+    "est_4000_chunks_min": 1.7,
+    "dense_dim": 1024,
+    "dense_top1_correct": "3/3",
+    "peak_rss_gb": 4.48,
+    "torch_peak_vram_gb": 1.36,
+    "torch_vram_after_free_gb": 0.02,
+    "step_s": 44.7
+  },
+  "rerank": {
+    "model_load_s": 15.2,
+    "s_per_query_30_pairs": 0.56,
+    "top1_correct": "3/3",
+    "gold_scores": [
+      0.994,
+      0.831,
+      0.997
+    ],
+    "peak_rss_gb": 5.46,
+    "torch_peak_vram_gb": 1.56,
+    "torch_vram_after_free_gb": 0.02,
+    "step_s": 18.4
+  },
+  "qdrant": {
+    "vectors": "bge-m3",
+    "upsert_s": 0.04,
+    "hybrid_query_ms": 7.7,
+    "gold_rank_in_top5": [
+      1,
+      1,
+      1
+    ],
+    "collection_deleted": true,
+    "step_s": 1.0
+  },
+  "ollama": {
+    "model": "qwen2.5:7b-instruct-q4_K_M",
+    "ollama_version": "0.40.11",
+    "model_digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+    "after_torch_loaded": true,
+    "after_torch_size_gb": 4.43,
+    "after_torch_vram_gb": 4.43,
+    "after_torch_gpu_pct": 100.0,
+    "prompt_tokens": 1580,
+    "output_tokens": 48,
+    "first_prefill_tok_s": 3193.8,
+    "second_prompt_tokens": 1619,
+    "prefill_tok_s": 3497.8,
+    "answer_s": 1.5,
+    "answer2_s": 1.0,
+    "decode_probe_tokens": 300,
+    "decode_tok_s": 51.9,
+    "est_test_run_h": 0.62,
+    "assume": {
+      "n_gen": 600,
+      "n_rerank": 120,
+      "prompt_tokens": 2500,
+      "output_tokens": 150
+    },
+    "cites_gold": true,
+    "mentions_365": true,
+    "cites_gold_q2": true,
+    "mentions_2_trieu": true,
+    "answer": "Thời gian chờ đối với bệnh đặc biệt là 365 ngày, theo quy định trong Sản phẩm mẫu | Quy tắc | Điều 7. Thời gian chờ [SPMAU_QT_D7].\n---\nTiền giường/ngày của chương trình Bạc là 2 triệu [SPMAU_BQL_TB1].",
+    "step_s": 8.4
+  },
+  "hints": [],
+  "colab": {
+    "gpu": "L4",
+    "ollama_version": "0.40.11",
+    "model_digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+    "packages": [
+      "FlagEmbedding                         1.4.2",
+      "qdrant-client                         1.20.0",
+      "torch                                 2.11.0+cu130",
+      "transformers                          5.20.2"
+    ],
+    "repo_commit": "c8f4682"
+  }
+}
