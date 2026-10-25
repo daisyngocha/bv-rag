@@ -16,6 +16,9 @@ from dataclasses import dataclass
 import requests
 
 NS = 1e9
+# Đoạn văn chung chung ~400 token, chỉ để khởi tạo kernel; không liên quan dữ liệu dự án.
+WARMUP_PROMPT = ("Bảo hiểm là cơ chế chia sẻ rủi ro giữa nhiều người tham gia. " * 30
+                 + "Hãy tóm tắt đoạn trên trong một câu.")
 
 
 @dataclass
@@ -40,13 +43,22 @@ class OllamaClient:
             self.gen_options["seed"] = seed
 
     # ------------------------------------------------------------ vòng đời model
-    def warmup(self, timeout: int = 900) -> float:
-        """Nạp model lên GPU (prompt rỗng = chỉ nạp). Trả về số giây nạp."""
+    def warmup(self, compute: bool = True, timeout: int = 900) -> dict:
+        """Nạp model lên GPU rồi chạy một lượt sinh ngắn.
+
+        Prompt rỗng chỉ nạp trọng số; lượt sinh đầu tiên còn phải khởi tạo kernel CUDA (có thể vài chục
+        giây), nên chạy một lượt ~400 token ngay tại đây để câu hỏi thật đầu tiên không gánh chi phí đó.
+        """
         t0 = time.perf_counter()
         r = requests.post(f"{self.base_url}/api/generate", timeout=timeout, json={
             "model": self.model, "prompt": "", "keep_alive": self.keep_alive, "options": self.load_options})
         r.raise_for_status()
-        return round(time.perf_counter() - t0, 1)
+        out = {"load_s": round(time.perf_counter() - t0, 1)}
+        if compute:
+            w = self.generate(WARMUP_PROMPT, timeout=timeout, num_predict=8)
+            out.update(warmup_s=round(w.latency_ms / 1000, 1), warmup_tokens_in=w.tokens_in,
+                       warmup_prefill_tok_s=w.prefill_tok_s)
+        return out
 
     def unload(self) -> None:
         requests.post(f"{self.base_url}/api/generate", timeout=60,
