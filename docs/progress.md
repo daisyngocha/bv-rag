@@ -2,7 +2,7 @@
 
 | Tuần | Việc chính | Trạng thái | Ghi chú |
 | --- | --- | --- | --- |
-| 0 | Gửi thầy đề cương + lộ trình; smoke test hạ tầng; dựng repo | Đang làm | |
+| 0 | Gửi thầy đề cương + lộ trình; smoke test hạ tầng; dựng repo | Đang làm | Repo, smoke test, chọn GPU L4: xong. Còn: đồng bộ tài liệu, gửi thầy |
 | 1 | Lý thuyết, chốt sản phẩm, làm thử 1 sản phẩm | | |
 | 2 | Thu thập, parse tài liệu | | |
 | 3 | Chunking, catalog, từ điển; benchmark nháp | | |
@@ -15,11 +15,18 @@
 
 ## Kết quả smoke test hạ tầng
 
-Dán phần tóm tắt của `scripts/smoke_test.py` vào đây (máy, GPU/CPU, tok/s, thời gian embed, ước tính thời gian chạy test).
-| Thành phần	| Kết quả	| Đánh giá |
+| Chỉ số | Laptop WSL (CPU) | Colab L4 (v3, chọn) |
 | --- | --- | --- |
-| Máy |	8 nhân CPU, 12,3 GB RAM, không có GPU	|Tự quyết định mọi thứ bên dưới |
-| bge-m3 |	1,39 giây/chunk, top-1 đúng 3/3	| Dùng được: 4.000 chunk mất khoảng 1,5 giờ, chỉ chạy 1 lần cho mỗi phiên bản dữ liệu |
-| Qdrant | 1.20.0 hybrid	24 ms/truy vấn, đáp án đúng nằm hạng 1 cả 3 câu	| Tốt |
-| Reranker | 88 giây cho 30 cặp, top-1 đúng 3/3	| Chất lượng ổn nhưng quá chậm |
-| Qwen 7B |	prefill 19 tok/s, decode 4,7 tok/s, 89 giây cho một câu trả lời ngắn	| Trả lời đúng và có trích dẫn, nhưng chậm |
+| Embed bge-m3 | 1,39 s/chunk (4.000 chunk ~92 phút) | 0,026 s/chunk (~1,7 phút) |
+| Rerank 30 cặp | 88 s | 0,56 s |
+| Qdrant hybrid | 24 ms | 7,5 ms |
+| Qwen2.5 7B prefill / decode | 19 / 4,7 tok/s | 3.470 / 52,2 tok/s, 100% GPU |
+| Một lần chạy test (600 lượt sinh) | ~20–28 giờ | ~0,62 giờ (~1 unit) |
+| Chất lượng (câu thử) | đúng, có trích dẫn | đúng, có trích dẫn |
+
+Quyết định: GPU chạy trên Colab Pay As You Go, loại L4, dùng cho mọi lần chạy chính thức B0–B4 (xem decision-log 2026-10-25).
+
+Số liệu gốc:
+- `docs/smoke_20261024_2229.json`: laptop CPU.
+- `docs/smoke_colab_L4_20261025_v3.json`: L4, số liệu chính thức.
+- `docs/smoke_colab_L4_20261024.json`, `docs/smoke_colab_L4_20261025_v2.json`, `docs/smoke_colab_T4_20261025.json`: tham khảo quá trình sửa (v1: Ollama chia layer sang CPU; v2: lượt đầu gánh chi phí khởi tạo kernel). Số liệu T4 chưa đo lại sau khi sửa.
