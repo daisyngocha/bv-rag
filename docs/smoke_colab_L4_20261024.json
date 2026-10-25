@@ -1,0 +1,81 @@
+{
+  "ts": "2026-10-24T23:36:52",
+  "env": {
+    "python": "3.13.16",
+    "platform": "Linux-6.6.122+-x86_64-with-glibc2.39",
+    "cpu_count": 12,
+    "MemTotal": 53.0,
+    "MemAvailable": 51.1,
+    "torch": "2.11.0+cu130",
+    "cuda": true,
+    "gpu": "NVIDIA L4",
+    "vram_gb": 22.0,
+    "huggingface": "OK (200)",
+    "ollama_server": "OK (200)",
+    "qdrant_server": "in-memory",
+    "https_proxy": false,
+    "step_s": 4.2
+  },
+  "embed": {
+    "model_load_s": 24.1,
+    "n_chunks": 100,
+    "encode_s": 2.6,
+    "s_per_chunk": 0.026,
+    "est_4000_chunks_min": 1.7,
+    "dense_dim": 1024,
+    "dense_top1_correct": "3/3",
+    "peak_rss_gb": 4.45,
+    "step_s": 43.7
+  },
+  "rerank": {
+    "model_load_s": 14.8,
+    "s_per_query_30_pairs": 0.54,
+    "top1_correct": "3/3",
+    "gold_scores": [
+      0.994,
+      0.831,
+      0.997
+    ],
+    "peak_rss_gb": 5.53,
+    "step_s": 17.7
+  },
+  "qdrant": {
+    "vectors": "bge-m3",
+    "upsert_s": 0.03,
+    "hybrid_query_ms": 9.5,
+    "gold_rank_in_top5": [
+      1,
+      1,
+      1
+    ],
+    "collection_deleted": true,
+    "step_s": 1.0
+  },
+  "ollama": {
+    "model": "qwen2.5:7b-instruct-q4_K_M",
+    "first_load_s": 39.8,
+    "prompt_tokens": 1580,
+    "output_tokens": 27,
+    "prefill_tok_s": 3159.1,
+    "decode_tok_s": 7.8,
+    "answer_s": 4.0,
+    "est_test_run_h": 0.7,
+    "cites_gold": true,
+    "mentions_365": true,
+    "answer": "Thời gian chờ đối với bệnh đặc biệt là 365 ngày. [SPMAU_QT_D7]",
+    "step_s": 76.0
+  },
+  "hints": [],
+  "colab": {
+    "gpu": "L4",
+    "ollama_version": "0.40.11",
+    "model_digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+    "packages": [
+      "FlagEmbedding                         1.4.2",
+      "qdrant-client                         1.20.0",
+      "torch                                 2.11.0+cu130",
+      "transformers                          5.20.2"
+    ],
+    "repo_commit": "c5b7998"
+  }
+}
