@@ -1,0 +1,637 @@
+{
+  "_meta": {
+    "purpose": "Đáp án chuẩn lập tay để kiểm tra parse/chunk của pilot BVP (bước 2). Số trang theo file đã tách (logs/pilot_bvp/bvp_quytac_split.pdf) trừ khi ghi *_original.",
+    "created": "2026-10-25",
+    "method": "Mục lục + đối chiếu thân văn bản + xem ảnh trang; không dùng regex của chunker làm nguồn"
+  },
+  "bvp_quytac.pdf": {
+    "file": {
+      "sha256": "a6662f00e59c9631021b7a3468746361e908b7e56ca2b3725f462960419915e4",
+      "pdf_title": "260108 - Quy tac A5 - BVAG New",
+      "pdf_created": "2026-01-08",
+      "producer": "Adobe Illustrator 28.7 / PDF/X-4"
+    },
+    "issuance": {
+      "decision": "6029/QĐ-BHBV",
+      "decision_date": "2025-06-27",
+      "issuer": "Tổng Giám đốc Tổng Công ty Bảo hiểm Bảo Việt",
+      "effective_date_stated": null,
+      "note": "Tài liệu không ghi ngày hiệu lực riêng; dùng ngày QĐ 2025-06-27 cho sources.csv và ghi chú. KHÔNG phải bản 2020."
+    },
+    "layout": {
+      "pages_original": 27,
+      "pages_split": 52,
+      "type": "2-up",
+      "detail": "Trang gốc 1 và 27: A5 dọc (bìa trước/sau), giữ nguyên. Trang gốc 2–26: A4 ngang, mỗi trang chứa 2 trang A5 → tách trái/phải.",
+      "page_mapping": "Trang file tách = số trang in ở chân trang ('- n -'). Trang gốc của trang tách p (2..51) = p//2 + 1.",
+      "evidence": "Mục IV: trang in 21 → gốc 11; V, VI, VII: 22–23 → gốc 12; VIII: 24 → gốc 13",
+      "fix": "split_2up() trước khi parse"
+    },
+    "text_layer": {
+      "has_text_layer": true,
+      "chars_original": 89256,
+      "chars_split": 89242,
+      "nfd_chars": 0,
+      "ocr_needed": false,
+      "font_issue": {
+        "chars": "Ð (U+00D0) thay cho Đ, 2 lần",
+        "where": [
+          {
+            "page": 33,
+            "text": "Ðiều trị viêm nướu, viêm nha chu."
+          },
+          {
+            "page": 33,
+            "text": "Ðối với các Tỉnh thành khác: ..."
+          }
+        ],
+        "fix": "clean_text(): NFC + FIX_CHARS"
+      }
+    },
+    "pages_role": {
+      "skip": {
+        "1": "bìa trước",
+        "2": "trang trắng",
+        "4": "trang trắng",
+        "5": "mục lục",
+        "51": "quảng cáo thương hiệu",
+        "52": "bìa sau, địa chỉ"
+      },
+      "metadata_only": {
+        "3": "tên quy tắc + QĐ ban hành + lời dẫn; không chunk, dùng cho effective_date"
+      },
+      "content": "6–50"
+    },
+    "noise": {
+      "page_footer": {
+        "pattern": "^- \\d+ -$",
+        "count": 46
+      },
+      "photo_captions": [
+        {
+          "page": 14,
+          "text": "Chi trả khám chữa bệnh",
+          "note": "chú thích ảnh minh họa, đi kèm ký tự ” đứng riêng một dòng"
+        },
+        {
+          "page": 17,
+          "text": "Quyền lợi ngoại trú",
+          "note": "như trên"
+        }
+      ]
+    },
+    "structure": {
+      "levels": [
+        "CHƯƠNG I–IV",
+        "Mục La Mã I., II., … (đánh lại từ I mỗi Chương; Chương III không có mục)",
+        "Chương II, mục II: QUYỀN LỢI BỔ SUNG 1–5; mỗi quyền lợi (và QL chính) chia A. Quyền lợi bảo hiểm / B. Hiệu lực bảo hiểm",
+        "Mục số 1., 2., …",
+        "Điểm a./b. (mục IV, VIII), i./ii./iii. (mục X), gạch đầu dòng -, •"
+      ],
+      "has_dieu": false,
+      "heading_forms": {
+        "chuong_body": "'CHƯƠNG I - Quy Định Chung' (TOC dùng 'CHƯƠNG I: ...'); 'CHƯƠNG IV' đứng riêng 1 dòng, tiêu đề ở dòng sau (p40)",
+        "muc_body": "Phần lớn IN HOA; mục IV viết thường ('IV. Ký kết, ...')",
+        "no_space_after_dot": [
+          "p23: 'VII.Kết thúc quyền lợi bảo hiểm'",
+          "p44: 'III.THỜI HẠN KHIẾU NẠI HỢP ĐỒNG BẢO HIỂM'"
+        ],
+        "wrapped_titles": [
+          "p23: VI. (2 dòng)",
+          "p28: Chương II mục I (2 dòng)",
+          "p30: QUYỀN LỢI BỔ SUNG 1 (2 dòng)"
+        ],
+        "bo_sung_body": "IN HOA 'QUYỀN LỢI BỔ SUNG n: ...' (TOC viết thường)",
+        "chuong_iv_banner": "p40: CHƯƠNG IV nằm trong khung màu → Docling bỏ mất; khôi phục từ mục lục"
+      }
+    },
+    "sections": [
+      {
+        "chuong": "I",
+        "muc": "I",
+        "title": "Định nghĩa",
+        "page": 6,
+        "items": "1–53"
+      },
+      {
+        "chuong": "I",
+        "muc": "II",
+        "title": "Phạm vi địa lý",
+        "page": 20
+      },
+      {
+        "chuong": "I",
+        "muc": "III",
+        "title": "Đối tượng tham gia bảo hiểm",
+        "page": 20,
+        "items": "1–4 (p20–21)"
+      },
+      {
+        "chuong": "I",
+        "muc": "IV",
+        "title": "Ký kết, chấm dứt hợp đồng bảo hiểm và tái tục hợp đồng bảo hiểm",
+        "page": 21,
+        "items": "1–5 (p21–22), khoản 4 có a./b."
+      },
+      {
+        "chuong": "I",
+        "muc": "V",
+        "title": "Các hợp đồng/loại hình bảo hiểm tương tự khác",
+        "page": 22
+      },
+      {
+        "chuong": "I",
+        "muc": "VI",
+        "title": "Phí bảo hiểm, thời hạn thanh toán phí bảo hiểm, thay đổi quyền lợi bảo hiểm",
+        "page": 23
+      },
+      {
+        "chuong": "I",
+        "muc": "VII",
+        "title": "Kết thúc quyền lợi bảo hiểm",
+        "page": 23
+      },
+      {
+        "chuong": "I",
+        "muc": "VIII",
+        "title": "Quyền và nghĩa vụ của các bên",
+        "page": 24,
+        "items": "1–2, mỗi khoản a./b. (p24–25)"
+      },
+      {
+        "chuong": "I",
+        "muc": "IX",
+        "title": "Kiểm tra",
+        "page": 25
+      },
+      {
+        "chuong": "I",
+        "muc": "X",
+        "title": "Bảo vệ và xử lý dữ liệu cá nhân",
+        "page": 26,
+        "items": "i./ii./iii."
+      },
+      {
+        "chuong": "I",
+        "muc": "XI",
+        "title": "Luật chi phối và giải quyết tranh chấp",
+        "page": 27
+      },
+      {
+        "chuong": "II",
+        "muc": "I",
+        "title": "Quyền lợi bảo hiểm chính: Điều trị nội trú do bệnh, tai nạn, biến chứng thai sản",
+        "page": 28,
+        "parts": [
+          {
+            "part": "A",
+            "title": "Quyền lợi bảo hiểm",
+            "page": 28
+          },
+          {
+            "part": "B",
+            "title": "Hiệu lực bảo hiểm",
+            "page": 30
+          }
+        ]
+      },
+      {
+        "chuong": "II",
+        "muc": "II",
+        "title": "Quyền lợi bảo hiểm bổ sung",
+        "page": 30,
+        "bo_sung": [
+          {
+            "so": 1,
+            "title": "Điều trị ngoại trú do bệnh, tai nạn, biến chứng thai sản",
+            "page": 30,
+            "A": 31,
+            "B": 31
+          },
+          {
+            "so": 2,
+            "title": "Bảo hiểm tai nạn cá nhân",
+            "page": 31,
+            "A": 31,
+            "B": 32
+          },
+          {
+            "so": 3,
+            "title": "Bảo hiểm sinh mạng cá nhân",
+            "page": 32,
+            "A": 32,
+            "B": 32
+          },
+          {
+            "so": 4,
+            "title": "Bảo hiểm nha khoa",
+            "page": 32,
+            "A": 32,
+            "B": 33
+          },
+          {
+            "so": 5,
+            "title": "Bảo hiểm thai sản",
+            "page": 33,
+            "A": 34,
+            "B": 34
+          }
+        ]
+      },
+      {
+        "chuong": "III",
+        "muc": null,
+        "title": "Các điểm loại trừ chung",
+        "page": 34,
+        "items": "1–47 (p34–39)"
+      },
+      {
+        "chuong": "IV",
+        "muc": "I",
+        "title": "Hồ sơ yêu cầu bồi thường",
+        "page": 40,
+        "items": "1–8 (p40–42)"
+      },
+      {
+        "chuong": "IV",
+        "muc": "II",
+        "title": "Thủ tục trả tiền bảo hiểm và bảo lãnh viện phí",
+        "page": 42,
+        "items": "1–2 (p42–43)"
+      },
+      {
+        "chuong": "IV",
+        "muc": "III",
+        "title": "Thời hạn khiếu nại hợp đồng bảo hiểm",
+        "page": 44
+      },
+      {
+        "phu_luc": 1,
+        "title": "Bảng tỉ lệ trả tiền tử vong/thương tật vĩnh viễn",
+        "page": 45,
+        "pages": "45–50"
+      }
+    ],
+    "definitions": {
+      "count": 53,
+      "pages": "6–20",
+      "by_page": {
+        "6": "1–3",
+        "7": "4–7",
+        "8": "8–9",
+        "9": "10–13",
+        "10": "14–16",
+        "11": "17–22",
+        "12": "23–27",
+        "13": "28–30",
+        "14": "31",
+        "15": "32–36",
+        "16": "37–40",
+        "17": "41–43",
+        "18": "44–47",
+        "19": "48–49",
+        "20": "50–53"
+      },
+      "nested_list": {
+        "in_definition": 8,
+        "title": "Bệnh đặc biệt",
+        "page": 8,
+        "items": "1–9 (nhóm bệnh)",
+        "risk": "ngay sau mục lồng '9. Bệnh của da...' là định nghĩa '9. Bệnh nghề nghiệp' → không phân biệt được cấp chỉ bằng số",
+        "layout": "2 cột (nhóm bệnh | mô tả) → Docling nhận bảng 9x2 (p8); gắn vào chunk định nghĩa 8"
+      },
+      "glossary_candidates": "53 định nghĩa → mục glossary scope=BVP"
+    },
+    "tables": [
+      {
+        "id": "PL1",
+        "title": "Bảng tỉ lệ trả tiền tử vong/thương tật vĩnh viễn",
+        "pages": "45–50",
+        "spans_pages": 6,
+        "cols": 3,
+        "header": [
+          "STT",
+          "Quyền lợi",
+          "Tỷ lệ trả tiền"
+        ],
+        "header_repeated_each_page": false,
+        "numbered_rows": 121,
+        "rows_by_page": {
+          "45": "1–18",
+          "46": "19–45",
+          "47": "46–70",
+          "48": "71–95",
+          "49": "96–111",
+          "50": "112–121"
+        },
+        "group_rows": {
+          "level1": [
+            "I – TỬ VONG (100%)",
+            "II – THƯƠNG TẬT TOÀN BỘ VĨNH VIỄN",
+            "III – THƯƠNG TẬT BỘ PHẬN VĨNH VIỄN"
+          ],
+          "level2": [
+            "CHI TRÊN (p45)",
+            "CHI DƯỚI (p46-47)",
+            "CỘT SỐNG (p47)",
+            "SỌ NÃO (p48)",
+            "LỒNG NGỰC (p48)",
+            "BỤNG (p48)",
+            "MẮT (p48-49)",
+            "TAI - MŨI - HỌNG (p49-50)",
+            "MẶT (p50)"
+          ]
+        },
+        "merged_cells": "các dòng nhóm gộp toàn bộ chiều ngang (I – TỬ VONG gộp 2 cột đầu, có 100%)",
+        "multiline_cells": "dòng 2, 4 (p45), 71 (p48), 115 (p50) xuống nhiều dòng",
+        "after_table": "p50: 'NGUYÊN TẮC XÉT TRẢ TIỀN BẢO HIỂM' a)–c) là văn bản, không thuộc bảng",
+        "risk": "Docling có thể tách thành 6 bảng theo trang; bảng >512 token → quyết định tách theo nhóm level2 ở tuần 3"
+      },
+      {
+        "id": "QLBS5",
+        "title": "Giới hạn trách nhiệm tối đa – QL bổ sung 5 Thai sản",
+        "page": 33,
+        "unit": "VNĐ",
+        "cols": 5,
+        "header": [
+          "Thai sản",
+          "BẠC",
+          "VÀNG",
+          "BẠCH KIM",
+          "KIM CƯƠNG"
+        ],
+        "data_rows": 1,
+        "cell_checks": [
+          {
+            "row": "Giới hạn trách nhiệm tối đa cho một thời hạn bảo hiểm",
+            "col": "BẠC",
+            "value": "21.000.000"
+          },
+          {
+            "row": "Giới hạn trách nhiệm tối đa cho một thời hạn bảo hiểm",
+            "col": "KIM CƯƠNG",
+            "value": "31.500.000"
+          }
+        ],
+        "note": "bổ sung sau pilot parse 26/10: truth ban đầu bỏ sót"
+      }
+    ],
+    "not_in_file": "Biểu phí và Bảng quyền lợi được quy tắc dẫn chiếu ('đính kèm') nhưng không nằm trong file này",
+    "reading_order_issues": [
+      {
+        "page_original": 12,
+        "note": "pdftotext trên file gốc đọc nửa phải (trang in 23) trước nửa trái (22); hết lỗi sau split_2up"
+      }
+    ],
+    "chunker_notes": [
+      "Regex mục La Mã: '\\.\\s*' thay cho '\\.\\s+' (VII.Kết thúc, III.THỜI HẠN)",
+      "Regex QUYỀN LỢI BỔ SUNG phải khớp chữ IN HOA ở thân văn bản",
+      "Chương có thể ở dòng riêng, tiêu đề ở dòng sau; tiêu đề mục có thể xuống 2 dòng",
+      "Mục số: kiểm tra tăng liên tục (n → n+1) trong cùng mục cha; số bắt đầu lại từ 1 trong định nghĩa 8 là danh sách lồng",
+      "Bỏ footer '- n -', chú thích ảnh p14/p17, các trang skip",
+      "Thêm cấp A./B. dưới QL chính và từng QL bổ sung"
+    ]
+  },
+  "bvp_bangquyenloi.pdf": {
+    "file": {
+      "sha256": "9816050010ea12f563589f8e6cb548ae1c21a6355aa5143f83a9b33f307fb854",
+      "pdf_title": "250711 - Bảng QLBH BVAG New",
+      "pdf_created": "2025-07-15",
+      "producer": "Adobe Illustrator 28.7 / PDF/X"
+    },
+    "issuance": {
+      "decision": null,
+      "note": "File không ghi QĐ/ngày hiệu lực. Cùng bộ 'BVAG New' với quy tắc QĐ 6029 (27/06/2025); ghi chú dẫn 'đơn vị hành chính cấp tỉnh trước 01/07/2025' nên là bản sau sáp nhập tỉnh. effective_date đề xuất 2025-06-27 (suy ra từ bộ tài liệu, ghi rõ trong sources.csv)."
+    },
+    "layout": {
+      "pages": 1,
+      "orientation": "A4 ngang",
+      "type": "1-up",
+      "split_2up": false,
+      "note": "KHÔNG tách đôi: trang ngang là bảng rộng thật"
+    },
+    "text_layer": {
+      "has_text_layer": true,
+      "chars": 3973,
+      "nfd_chars": 0,
+      "ocr_needed": false,
+      "font_issue": "chưa thấy"
+    },
+    "tables": [
+      {
+        "id": "BQL1",
+        "title": "Bảng quyền lợi bảo hiểm - Bảo Việt An Gia",
+        "page": 1,
+        "unit": "Việt Nam đồng",
+        "cols": 6,
+        "header": [
+          "CHƯƠNG TRÌNH BẢO HIỂM",
+          "ĐỒNG",
+          "BẠC",
+          "VÀNG",
+          "BẠCH KIM",
+          "KIM CƯƠNG"
+        ],
+        "header_rows": 1,
+        "group_rows": [
+          "I. QUYỀN LỢI BẢO HIỂM CHÍNH – ĐIỀU TRỊ NỘI TRÚ DO BỆNH, TAI NẠN, BIẾN CHỨNG THAI SẢN (gộp 6 cột)",
+          "II. QUYỀN LỢI BẢO HIỂM BỔ SUNG (gộp 6 cột)"
+        ],
+        "data_rows": 20,
+        "rows_by_group": {
+          "I": [
+            "Tổng hạn mức quyền lợi bảo hiểm chính/ng/năm",
+            "Phạm vi lãnh thổ",
+            "1. Chi phí nằm viện (không quá 60 ngày/năm)",
+            "• Chi phí phòng và giường, suất ăn theo tiêu chuẩn phòng tại bệnh viện",
+            "• Chi phí phòng chăm sóc đặc biệt, điều trị cấp cứu",
+            "• Các chi phí bệnh viện tổng hợp",
+            "2. Chi phí khám trước khi nhập viện (trong vòng 30 ngày trước khi nhập viện)",
+            "3. Chi phí tái khám sau khi xuất viện (trong vòng 30 ngày sau khi xuất viện)",
+            "4. Dịch vụ xe cứu thương, xe cấp cứu đường bộ",
+            "5. Chi phí phẫu thuật",
+            "6. Phục hồi chức năng",
+            "7. Trợ cấp bệnh viện công (không quá 60 ngày/năm)",
+            "8. Trợ cấp mai táng phí trong trường hợp tử vong tại bệnh viện"
+          ],
+          "II": [
+            "1. Điều trị ngoại trú do bệnh, tai nạn, biến chứng thai sản",
+            "Giới hạn/lần khám (không quá 10 lần khám/năm)",
+            "Điều trị vật lý trị liệu (không quá 60 ngày/năm)",
+            "2. Bảo hiểm Tai nạn cá nhân",
+            "3. Bảo hiểm Sinh mạng cá nhân",
+            "4. Bảo hiểm Nha khoa",
+            "5. Bảo hiểm Thai sản"
+          ]
+        },
+        "merged_cells": [
+          "3 dòng '•' dưới mục I.1: mỗi cột chương trình có 1 ô gộp dọc 3 dòng ('Lên đến 40.000.000/năm' … 'Lên đến 200.000.000/năm')"
+        ],
+        "multiline_cells": [
+          "nhãn I.2, I.3 xuống 2 dòng",
+          "II.2, II.3: 'Lựa chọn tham gia từ … đến …' 2 dòng",
+          "II.4: 2 giá trị trong 1 ô (…/năm + …/lần khám)"
+        ],
+        "cell_checks": [
+          {
+            "row": "Tổng hạn mức quyền lợi bảo hiểm chính/ng/năm",
+            "col": "ĐỒNG",
+            "value": "94.000.000/người/năm"
+          },
+          {
+            "row": "Tổng hạn mức quyền lợi bảo hiểm chính/ng/năm",
+            "col": "KIM CƯƠNG",
+            "value": "454.000.000/người/năm"
+          },
+          {
+            "row": "1. Chi phí nằm viện (không quá 60 ngày/năm)",
+            "col": "VÀNG",
+            "value": "5.000.000/ngày"
+          },
+          {
+            "row": "• Chi phí phòng chăm sóc đặc biệt, điều trị cấp cứu (ô gộp)",
+            "col": "BẠCH KIM",
+            "value": "Lên đến 150.000.000/năm"
+          },
+          {
+            "row": "4. Dịch vụ xe cứu thương, xe cấp cứu đường bộ",
+            "col": "BẠC",
+            "value": "5.000.000/năm"
+          },
+          {
+            "row": "7. Trợ cấp bệnh viện công (không quá 60 ngày/năm)",
+            "col": "KIM CƯƠNG",
+            "value": "400.000/ngày"
+          },
+          {
+            "row": "Giới hạn/lần khám (không quá 10 lần khám/năm)",
+            "col": "VÀNG",
+            "value": "1.600.000/lần"
+          },
+          {
+            "row": "3. Bảo hiểm Sinh mạng cá nhân",
+            "col": "BẠCH KIM",
+            "value": "Lựa chọn tham gia từ 20triệu đến 700triệu đồng"
+          },
+          {
+            "row": "4. Bảo hiểm Nha khoa",
+            "col": "VÀNG",
+            "value": "5.000.000/năm; 2.500.000/lần khám"
+          },
+          {
+            "row": "5. Bảo hiểm Thai sản",
+            "col": "ĐỒNG",
+            "value": "Không"
+          },
+          {
+            "row": "5. Bảo hiểm Thai sản",
+            "col": "KIM CƯƠNG",
+            "value": "31.500.000/năm"
+          }
+        ],
+        "notes_outside_table": [
+          {
+            "title": "ĐIỀU CHỈNH BỔ SUNG",
+            "items": 3,
+            "content": [
+              "ICU/HDU/CCU tại BV công lập: giới hạn I.1/ngày = 1,5 lần mức thường",
+              "Phòng từ 2 giường trở lên: chỉ chi trả 01 giường",
+              "Nha khoa: Bình Dương, Bà Rịa – Vũng Tàu (đơn vị cấp tỉnh trước 01/07/2025) áp dụng như tỉnh khác ngoài HN, TP.HCM"
+            ]
+          },
+          {
+            "title": "QUY ĐỊNH ĐỒNG CHI TRẢ ĐỐI VỚI TRẺ EM TỪ 15 NGÀY TUỔI ĐẾN 3 TUỔI",
+            "items": 2,
+            "content": [
+              "Đồng chi trả 70/30 (Bảo Việt 70%, NĐBH 30%)",
+              "Không áp dụng khi khám/điều trị tại cơ sở công lập (trừ khoa tự nguyện/theo yêu cầu)"
+            ]
+          }
+        ],
+        "risks": [
+          "Ô gộp dọc của 3 dòng '•' có thể chỉ gắn vào dòng đầu hoặc bị lặp",
+          "2 khối ghi chú dưới bảng xếp 2 cột; pdftotext -layout trộn dòng giữa 2 khối",
+          "Ghi chú dưới bảng là căn cứ cho câu hỏi tình huống (ICU, trẻ em) → phải thành chunk riêng, không mất khi chỉ lấy bảng"
+        ]
+      }
+    ]
+  },
+  "bvp_brochure.pdf": {
+    "file": {
+      "sha256": "3bd7c611ab2f7f86a43040c9a9d067ff6677d4bdcab6bb940a42814ea74dee83",
+      "pdf_title": "251003 - To roi-BVAG New",
+      "pdf_created": "2025-10-03",
+      "size_mb": 33.3
+    },
+    "issuance": {
+      "decision": null,
+      "note": "Tờ rơi, không ghi QĐ; cùng bộ 'BVAG New'. effective_date đề xuất 2025-06-27 như BQL."
+    },
+    "layout": {
+      "pages": 2,
+      "orientation": "ngang 300×200 mm",
+      "type": "tờ gấp 3 (tri-fold), 3 panel/trang",
+      "split_2up": false,
+      "panels": {
+        "p1_left": "Thông tin sản phẩm: đối tượng, phạm vi, QL chính, QL bổ sung; QR tải quy tắc",
+        "p1_middle": "Giới thiệu công ty (1965, 79 công ty thành viên, 300+ điểm giao dịch, 3500+ cán bộ, 70000+ đại lý); phần lớn chữ mô tả KHÔNG trích được (pdftotext chỉ ra '300', '70000')",
+        "p1_right": "Bìa: Bảo hiểm sức khỏe Bảo Việt An Gia, hotline 1800 1118, baovietonline.com.vn",
+        "p2_left": "4 điểm nổi bật + đoạn giới thiệu sản phẩm + ghi chú tham khảo quy tắc",
+        "p2_middle_right": "Bảng quyền lợi (bản sao của BQL1)"
+      }
+    },
+    "text_layer": {
+      "has_text_layer": true,
+      "chars": 4604,
+      "nfd_chars": 0,
+      "ocr_needed": "chỉ nếu cần panel giới thiệu công ty (không cần cho hỏi đáp)"
+    },
+    "reading_order_issues": [
+      {
+        "page": 2,
+        "note": "pdftotext đọc tiêu đề + header bảng, rồi chen toàn bộ text panel trái vào giữa trước khi đọc tiếp các dòng bảng"
+      }
+    ],
+    "content_checks": [
+      {
+        "claim": "Đối tượng: 15 ngày tuổi đến 60 tuổi, tái tục đến 65 tuổi",
+        "vs_quytac": "Chương I mục III khoản 1 (p20)",
+        "consistent": true
+      },
+      {
+        "claim": "Bồi thường trong vòng 15 ngày làm việc",
+        "vs_quytac": "Chương IV mục II (thời hạn tối đa 15 ngày làm việc từ khi đủ hồ sơ)",
+        "consistent": true
+      },
+      {
+        "claim": "Quyền lợi cơ bản lên đến 454 triệu đồng/người/năm",
+        "vs_bql": "BQL1 Tổng hạn mức – KIM CƯƠNG",
+        "consistent": true
+      },
+      {
+        "claim": "Bảo lãnh viện phí 24/7 tại trên 200 cơ sở y tế; hồ sơ mềm qua BaoViet Direct",
+        "vs_quytac": "không có trong quy tắc/BQL → thông tin chỉ có ở brochure",
+        "consistent": null
+      }
+    ],
+    "tables": [
+      {
+        "id": "BR_TB1",
+        "page": 2,
+        "duplicate_of": "bvp_bangquyenloi.pdf#BQL1",
+        "values_identical": true,
+        "check_method": "so multiset mọi số tiền dạng x.xxx.xxx giữa 2 file: không lệch",
+        "structure_diff": [
+          "I.1 và 3 dòng '•' gộp thành 1 dòng: ô giá trị chứa cả '…/ngày' và 'Lên đến …/năm'",
+          "Không có 2 khối ghi chú (điều chỉnh bổ sung, đồng chi trả trẻ em)"
+        ],
+        "recommendation": "Không đưa bảng brochure vào kho truy xuất (trùng BQL1, làm nhiễu evidence_ids và Recall@k); chỉ giữ text panel p1_left, p2_left"
+      }
+    ]
+  },
+  "cross_file": {
+    "version_set": "BVAG New: quy tắc QĐ 6029 (27/06/2025, in 01/2026), BQL (07/2025), tờ rơi (10/2025)",
+    "consistency": "Số liệu BQL = bảng tờ rơi; điều kiện tuổi, thời hạn bồi thường khớp quy tắc",
+    "not_found": "Biểu phí (quy tắc mục VI dẫn 'Biểu phí đính kèm') chưa có trong bộ tài liệu"
+  }
+}
