@@ -1,0 +1,8 @@
+docling==2.142.1
+docling-core==2.104.0
+docling-ibm-models==4.0.4
+docling-parse==7.23.0
+pypdf==6.21.2
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.14.1+cpu
+torchvision==0.29.1+cpu
