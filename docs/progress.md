@@ -3,7 +3,7 @@
 | Tuần | Việc chính | Trạng thái | Ghi chú |
 | --- | --- | --- | --- |
 | 0 | Gửi thầy đề cương + lộ trình; smoke test hạ tầng; dựng repo | Đang làm | Repo, smoke test, chọn GPU L4, đồng bộ tài liệu (README mục Colab L4, pin version theo smoke v3): xong. Còn: gửi thầy |
-| 1 | Lý thuyết, chốt sản phẩm, làm thử 1 sản phẩm | | |
+| 1 | Lý thuyết, chốt sản phẩm, làm thử 1 sản phẩm | Đang làm | Pilot BVP xong (PR #5); tạm chốt 6 sản phẩm; `scripts/build_kb.py` + config/truth theo sản phẩm; chunk cố định cho B1 và bảng căn chỉnh `align_fixed.json`. Còn: chép truth BVP vào `data/truth/BVP.json`, chạy lại BVP bằng `build_kb.py` trên WSL, chương tổng quan |
 | 2 | Thu thập, parse tài liệu | | Viết `scripts/colab_batch.ipynb` (cell đầu dừng nếu GPU không phải L4) và `scripts/sync.sh` (rclone Drive), xong trước job embed tuần 3 |
 | 3 | Chunking, catalog, từ điển; benchmark nháp | | |
 | 4 | Baseline B0–B2; chốt mục tiêu số | | |

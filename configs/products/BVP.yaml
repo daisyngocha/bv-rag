@@ -1,0 +1,40 @@
+# Cấu hình xây kho tri thức cho 1 sản phẩm: scripts/build_kb.py --product BVP
+# Khóa trong files = tên file (không đuôi) trong data/raw/products/BVP/; khóa riêng của file ghi đè meta sản phẩm.
+product_code: BVP
+product_name: Bảo Việt An Gia
+company: BHBV
+line: phi_nhan_tho
+effective_date: "2025-06-27"           # QĐ 6029/QĐ-BHBV ngày 27/06/2025 (decision-log 2026-10-25)
+truth: data/truth/BVP.json
+parse: {backend: pdfium, ocr: false, num_threads: 8}
+
+files:
+  bvp_quytac:
+    doc_type: quy_tac
+    doc_label: Quy tắc
+    structure: legal
+    split_2up: true                    # trang đôi; chỉ file được đánh dấu mới cắt (decision-log 2026-10-26)
+    skip_pages: [1, 2, 3, 4, 5, 51, 52] # trang của file đã cắt: bìa, mục lục, bìa sau
+    toc_pages: [5]
+  bvp_bangquyenloi:
+    doc_type: bang_quyen_loi
+    doc_label: Bảng quyền lợi
+    structure: flat
+  bvp_brochure:
+    doc_type: brochure
+    doc_label: Tờ rơi
+    structure: flat
+    drop_tables: true                  # bảng tờ rơi trùng BQL (decision-log 2026-10-25)
+    min_chars: 8                       # giữ dòng ngắn "Việt Nam."
+
+# Kiểm tra riêng của sản phẩm; số liệu chép từ truth lập tay
+checks:
+  definitions: {prefix: BVP_QT_C1_M1_K, count: 53}
+  page_range: {quy_tac: [1, 27]}
+  table_pages:
+    - {prefix: BVP_QT_PL1, first: 23, last: 26}
+  forbidden:                           # caption ảnh lọt vào thân quy tắc
+    quy_tac: ["Chi trả khám chữa bệnh", "Quyền lợi ngoại trú"]
+  required:                            # 2 khối ghi chú dưới BQL (ICU, đồng chi trả trẻ em)
+    bang_quyen_loi: ["70/30", "1,5 lần"]
+  no_table_chunks: [brochure]

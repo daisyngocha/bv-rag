@@ -89,3 +89,23 @@ Trên Colab chạy qua `scripts/colab_smoke.ipynb` (mục Chạy trên Colab L4)
 Trên WSL chạy pip install -r requirements/base.txt -r requirements/ingest.txt, trên Colab chỉ cài base.txt.
 Cần xác nhận base.txt không chứa dòng torch nào bị cài đè khi chạy trên WSL.
 Nếu có (ví dụ torch==2.11.0+cu130), tách dòng đó sang một file chỉ dùng cho Colab, hoặc thêm điều kiện môi trường.
+
+## Xây kho tri thức (WSL)
+
+Mỗi sản phẩm cần 3 thứ: PDF trong `data/raw/products/{P}/` (ghi `data/raw/sources.csv` bằng `scripts/make_sources.py`),
+config `configs/products/{P}.yaml` (meta sản phẩm, cấu hình từng file, kiểm tra riêng) và truth lập tay `data/truth/{P}.json`
+(xem `data/truth/README.md`).
+
+```bash
+PYTHONPATH=. python scripts/build_kb.py --product BVP              # parse (có cache) → chunk → kiểm tra → gộp
+PYTHONPATH=. python scripts/build_kb.py --all                      # mọi configs/products/*.yaml
+PYTHONPATH=. python scripts/build_kb.py --product BVP --force-parse
+PYTHONPATH=. python scripts/build_kb.py --steps merge              # chỉ gộp lại
+```
+
+Mỗi sản phẩm sinh 2 bộ chunk từ cùng một bản parse: theo cấu trúc (B2+, `chunks.jsonl`) và cố định 512 token,
+chồng lấn 64 (B1, `chunks_fixed.jsonl`); tham số lấy từ `configs/B2.yaml`, `configs/B1.yaml`.
+Chỉ sản phẩm đạt mọi kiểm tra và dùng tokenizer bge-m3 mới được gộp vào `data/processed/{ver}/`.
+`align_fixed.json` ghi chunk cố định nào phủ chunk cấu trúc nào, dùng để chấm Recall@k/MRR của B1
+vì `evidence_ids` của benchmark theo chunk cấu trúc.
+

@@ -7,6 +7,7 @@ __pycache__/
 data/raw/products/*
 data/raw/legal/*
 data/processed/*
+data/parsed/
 !**/.gitkeep
 qdrant_storage/
 

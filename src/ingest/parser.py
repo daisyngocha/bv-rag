@@ -35,10 +35,6 @@ def build_converter(ocr: bool = False, num_threads: int = 4, backend=None) -> Do
     fmt = PdfFormatOption(pipeline_options=opts, backend=backend) if backend else PdfFormatOption(pipeline_options=opts)
     return DocumentConverter(format_options={InputFormat.PDF: fmt})
 
-def parse_pdf(path: str, converter: DocumentConverter):
-    doc = converter.convert(path).document
-    return doc, [t.export_to_markdown(doc=doc) for t in doc.tables]
-
 LABELS_TO_CHECK = {"text", "list_item", "section_header", "caption", "page_header", "page_footer"}
 
 def drop_offpage_items(doc, min_inside: float = 0.5) -> int:

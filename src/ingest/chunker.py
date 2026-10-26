@@ -18,10 +18,12 @@ from typing import Callable, Iterable
 # ---------------------------------------------------------------- làm sạch
 FIX_CHARS = str.maketrans({"Ð": "Đ", "ð": "đ"})            # BVP: font WinAnsi map sai Đ/đ
 SPACE_FIXES = [(re.compile(r"\b(đến|từ)(\d)"), r"\1 \2")]   # BVP BQL: "đến1tỷ", "đến500triệu"
+INVISIBLE = re.compile(r"[\u00ad\u200b\u200c\u200d\u2060\ufeff\ufffe\x01-\x08\x0b\x0c\x0e-\x1f\x7f]")   # pdfium chèn ở chỗ xuống dòng
 
 
 def clean_text(s: str) -> str:
     s = unicodedata.normalize("NFC", s or "").translate(FIX_CHARS)
+    s = INVISIBLE.sub("", s)
     for pat, rep in SPACE_FIXES:
         s = pat.sub(rep, s)
     return re.sub(r"\s+", " ", s).strip()
@@ -540,13 +542,3 @@ def chunk_document(doc, cfg: dict, count: Callable[[str], int], page_map: list[i
             chunks.append(ch)
     report.update(units=len(units), chunks=len(chunks))
     return chunks, report
-
-# Xóa ký tự vô hình
-INVISIBLE = re.compile(r"[\u00ad\u200b\u200c\u200d\u2060\ufeff\ufffe\x01-\x08\x0b\x0c\x0e-\x1f\x7f]")
-
-def clean_text(s: str) -> str:
-    s = unicodedata.normalize("NFC", s or "").translate(FIX_CHARS)
-    s = INVISIBLE.sub("", s)                       # pdfium chèn ký tự vô hình ở chỗ xuống dòng
-    for pat, rep in SPACE_FIXES:
-        s = pat.sub(rep, s)
-    return re.sub(r"\s+", " ", s).strip()
