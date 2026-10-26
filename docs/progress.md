@@ -4,7 +4,7 @@
 | --- | --- | --- | --- |
 | 0 | Gửi thầy đề cương + lộ trình; smoke test hạ tầng; dựng repo | Đang làm | Repo, smoke test, chọn GPU L4, đồng bộ tài liệu (README mục Colab L4, pin version theo smoke v3): xong. Còn: gửi thầy |
 | 1 | Lý thuyết, chốt sản phẩm, làm thử 1 sản phẩm | Đang làm | Pilot BVP xong (PR #5); tạm chốt 6 sản phẩm; `scripts/build_kb.py` + config/truth theo sản phẩm; chunk cố định cho B1 và bảng căn chỉnh `align_fixed.json`. Chạy lại BVP bằng `build_kb.py` trên WSL: 127 chunk cấu trúc (trùng id với pilot), 56 chunk cố định, 12/12 kiểm tra, căn chỉnh 127/127 phủ ≥ 0,5. Còn: chương tổng quan |
-| 2 | Thu thập, parse tài liệu | | Viết `scripts/colab_batch.ipynb` (cell đầu dừng nếu GPU không phải L4) và `scripts/sync.sh` (rclone Drive), xong trước job embed tuần 3 |
+| 2 | Thu thập, parse tài liệu | Đang làm | `scripts/colab_batch.ipynb` (cell đầu dừng nếu GPU không phải L4), `scripts/sync.sh` (rclone Drive), embed + index + Retriever: code xong, chờ chạy thử BVP trên L4. Còn: thu thập, parse 5 sản phẩm còn lại |
 | 3 | Chunking, catalog, từ điển; benchmark nháp | | |
 | 4 | Baseline B0–B2; chốt mục tiêu số | | |
 | 5 | B3; chốt benchmark v1 | | |
