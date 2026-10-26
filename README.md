@@ -36,8 +36,8 @@ Google Drive (`MyDrive/bv-rag`) là kho artifact giữa WSL và Colab, đồng b
 
 Phiên Colab là tạm: đầu ra luôn ghi về Drive, model tải lại mỗi phiên.
 Chỉ tài liệu công khai và dữ liệu giả được đưa lên Drive/Colab.
-Notebook chạy theo lô `scripts/colab_batch.ipynb` và script đồng bộ `scripts/sync.sh` sẽ viết ở tuần 2–3;
-notebook đó dừng ngay nếu GPU không phải L4, trước mọi lần chạy chính thức.
+Chạy lô dùng `scripts/colab_batch.ipynb` (dừng ngay nếu GPU không phải L4); đồng bộ WSL ↔ Drive bằng `scripts/sync.sh`
+(xem mục Embed và index).
 
 ## Cài đặt trên WSL2 Ubuntu
 
@@ -89,3 +89,42 @@ Trên Colab chạy qua `scripts/colab_smoke.ipynb` (mục Chạy trên Colab L4)
 Trên WSL chạy pip install -r requirements/base.txt -r requirements/ingest.txt, trên Colab chỉ cài base.txt.
 Cần xác nhận base.txt không chứa dòng torch nào bị cài đè khi chạy trên WSL.
 Nếu có (ví dụ torch==2.11.0+cu130), tách dòng đó sang một file chỉ dùng cho Colab, hoặc thêm điều kiện môi trường.
+
+## Xây kho tri thức (WSL)
+
+Mỗi sản phẩm cần 3 thứ: PDF trong `data/raw/products/{P}/` (ghi `data/raw/sources.csv` bằng `scripts/make_sources.py`),
+config `configs/products/{P}.yaml` (meta sản phẩm, cấu hình từng file, kiểm tra riêng) và truth lập tay `data/truth/{P}.json`
+(xem `data/truth/README.md`).
+
+```bash
+PYTHONPATH=. python scripts/build_kb.py --product BVP              # parse (có cache) → chunk → kiểm tra → gộp
+PYTHONPATH=. python scripts/build_kb.py --all                      # mọi configs/products/*.yaml
+PYTHONPATH=. python scripts/build_kb.py --product BVP --force-parse
+PYTHONPATH=. python scripts/build_kb.py --steps merge              # chỉ gộp lại
+```
+
+Mỗi sản phẩm sinh 2 bộ chunk từ cùng một bản parse: theo cấu trúc (B2+, `chunks.jsonl`) và cố định 512 token,
+chồng lấn 64 (B1, `chunks_fixed.jsonl`); tham số lấy từ `configs/B2.yaml`, `configs/B1.yaml`.
+Chỉ sản phẩm đạt mọi kiểm tra và dùng tokenizer bge-m3 mới được gộp vào `data/processed/{ver}/`.
+`align_fixed.json` ghi chunk cố định nào phủ chunk cấu trúc nào, dùng để chấm Recall@k/MRR của B1
+vì `evidence_ids` của benchmark theo chunk cấu trúc.
+
+## Embed và index
+
+Một lần, trên WSL: cài rclone và tạo remote Google Drive tên `gdrive` (`rclone config`, loại `drive`);
+tên khác thì đặt `RCLONE_REMOTE=<tên>:bv-rag`.
+
+```bash
+# WSL: đẩy kho chunk lên Drive
+scripts/sync.sh push processed v1
+# Colab L4: mở scripts/colab_batch.ipynb, Run all → vectors/v1/{structure,fixed}/ trên Drive
+# WSL: kéo vector về, nạp Qdrant Docker để debug truy xuất
+scripts/sync.sh pull vectors v1
+QDRANT_URL=http://localhost:6333 PYTHONPATH=. python -m src.ingest.indexer index \
+    --processed data/processed/v1 --vectors data/vectors/v1 --version v1
+```
+
+Collection đặt tên `bv_{ver}_{chunking}`. Truy xuất qua `src.retrieve.hybrid.Retriever` (dense | sparse | hybrid RRF,
+lọc metadata bằng dict, ví dụ `{"product_code": ["BVP"], "doc_type": "quy_tac"}`); câu hỏi encode bằng
+`src.retrieve.encoder.M3Encoder`, trên WSL chạy CPU được vì câu hỏi ngắn.
+

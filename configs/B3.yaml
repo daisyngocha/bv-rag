@@ -1,6 +1,6 @@
 name: B3
 benchmark: benchmark/benchmark_v1.jsonl
-data_version: v2
+data_version: v1
 chunking: structure        # fixed | structure
 chunk: {max_tokens: 512, overlap: 64}   # fixed: kích thước chunk; structure: ngưỡng tách Điều theo Khoản
 retrieval: {mode: hybrid, top_k: 30, use_filter: true}   # none | dense | sparse | hybrid
