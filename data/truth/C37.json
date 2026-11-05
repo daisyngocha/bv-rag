@@ -1,0 +1,102 @@
+{
+  "_meta": {
+    "purpose": "Đáp án chuẩn lập tay để kiểm tra parse/chunk C37 (scripts/build_kb.py, bước check). Số trang quy tắc theo file đã tách (split_2up) = số trang in, trừ khi ghi *_original.",
+    "created": "2026-11-05",
+    "method": "pdfinfo (mediabox từng trang) + pdftotext cắt nửa trang + ảnh trang gốc 5, 12 và biểu phí; không dùng regex của chunker làm nguồn",
+    "status": "Đã duyệt 2026-11-05: đối chiếu ảnh trang g9–g22 và g23–g24"
+  },
+  "c37_quytac.pdf": {
+    "file": {"sha256": "1795538e5bda4a10e91cfd635b4f1780a5dd8ca637d0925cba408d25dd35999a", "pdf_title": "4. Quy tac BH 37 benh hiem ngheo", "pdf_created": "2026-03-20", "producer": "Adobe PDF library 17.00"},
+    "issuance": {"decision": "6061/QĐ-BHBV", "decision_date": "2025-06-27", "issuer": "Tổng Giám đốc Tổng công ty Bảo hiểm Bảo Việt", "effective_date_stated": null, "where": "trang tách 3", "note": "Không ghi ngày hiệu lực riêng; dùng ngày QĐ 2025-06-27."},
+    "layout": {"pages_original": 17, "pages_split": 32, "type": "2-up",
+               "detail": "Gốc 1 và 17: A5 dọc (419,5 x 595,3 pt), giữ nguyên. Gốc 2–16: A4 ngang (841,9 x 595,3 pt), tách trái/phải.",
+               "page_mapping": "Trang tách = số trang in ('- n -'). Gốc của trang tách g (2..31) = g//2 + 1; g32 = gốc 17.",
+               "evidence": "CHƯƠNG II: in 09 → gốc 5 phải; CHƯƠNG III: in 23 → gốc 12 phải; CHƯƠNG V: in 29 → gốc 15 phải"},
+    "text_layer": {"has_text_layer": true, "chars_layout": 104592, "ocr_needed": false},
+    "pages_role": {"skip": {"1": "bìa trước (BẢO HIỂM CI37)", "2": "trang trắng", "3": "tên quy tắc + QĐ + mục lục", "30": "quảng cáo thương hiệu", "31": "trang trắng", "32": "bìa sau, địa chỉ"},
+                   "metadata_only": {"3": "QĐ 6061/QĐ-BHBV ngày 27/06/2025"}, "toc": 3, "content": "4–29"},
+    "noise": {"page_footer": {"pattern": "^- \\d+ -$", "pages": "4–29"}, "slogan": "'An tâm sống khỏe' + ảnh minh họa ở g22 (dưới ghi chú)"},
+    "toc": [
+      {"chuong": "I", "title": "Định nghĩa", "page": 4},
+      {"chuong": "II", "title": "Quyền lợi bảo hiểm", "page": 9},
+      {"chuong": "III", "title": "Điều khoản loại trừ chung", "page": 23, "body_title": "CÁC ĐIỂM LOẠI TRỪ CHUNG"},
+      {"chuong": "IV", "title": "Điều kiện chung", "page": 25},
+      {"chuong": "V", "title": "Thủ tục bồi thường", "page": 29}
+    ],
+    "structure": {
+      "levels": ["CHƯƠNG I–V (La Mã), không có mục La Mã, không có Phụ lục", "Mục 'N.' có tiêu đề (I, II, IV, V)", "Khoản 2 cấp 7.1, 7.2, 8.1, 8.2 (IV)", "Gạch đầu dòng, •, ◦, a./b., i./ii."],
+      "heading_format": "'CHƯƠNG I - ĐỊNH NGHĨA' một dòng, trong khung màu"
+    },
+    "sections": [
+      {"chuong": "I", "title": "CHƯƠNG I - ĐỊNH NGHĨA", "page": 4, "so_count": 22},
+      {"chuong": "II", "title": "CHƯƠNG II - QUYỀN LỢI BẢO HIỂM", "page": 9, "so_count": 37,
+       "preface": "g9: chờ 90 ngày, còn sống 30 ngày sau chẩn đoán, trả 100% STBH; trước bảng",
+       "layout": "Bảng kẻ 2 cột 'TÊN BỆNH/TÌNH TRẠNG' | 'ĐỊNH NGHĨA', header chỉ ở g9; số + tên bệnh ở cột trái, định nghĩa cột phải; dòng của một bệnh có thể sang trang (bệnh 1: g9–g10; 34: g20–g21; 37: g21–g22)",
+       "items_start_page": {"9": "1", "10": "2", "11": "3", "12": "4–7", "13": "8–13", "14": "14–16", "15": "17", "16": "18–21", "17": "22–23", "18": "24–25", "19": "26–29", "20": "30–34", "21": "35–37"},
+       "footnote": {"page": 22, "text_start": "(*) Tình trạng tổn thương thần kinh vĩnh viễn", "referenced_by": "bệnh 3, 9, 21, 24, 26", "chunking": "chunk riêng, không gộp vào bệnh 37"}},
+      {"chuong": "III", "title": "CHƯƠNG III - CÁC ĐIỂM LOẠI TRỪ CHUNG", "page": 23, "items": "1–17 không tiêu đề", "layout": "2 cột trong mỗi nửa trang: g23 trái 1–4, phải 5–8; g24 trái 9–15, phải 16–17", "by_page": {"23": "1–8", "24": "9–17"}},
+      {"chuong": "IV", "title": "CHƯƠNG IV - ĐIỀU KIỆN CHUNG", "page": 25, "so_count": 11,
+       "by_page": {"25": "1–4", "26": "5–7 (7.1)", "27": "7.2, 8 (8.1, 8.2)", "28": "9–11"},
+       "items": ["Điều kiện tham gia", "Phí bảo hiểm", "Thanh toán phí bảo hiểm", "Nhầm lẫn về độ tuổi và giới tính", "Nghĩa vụ khai báo trung thực", "Miễn truy xét", "Quyền và nghĩa vụ của CTBH", "Quyền và nghĩa vụ của BMBH/NĐBH", "Thời hạn bảo hiểm", "Chấm dứt HĐBH", "Giải quyết tranh chấp"],
+       "khoan": {"7": "7.1–7.2", "8": "8.1–8.2"}},
+      {"chuong": "V", "title": "CHƯƠNG V - THỦ TỤC BỒI THƯỜNG", "page": 29, "so_count": 2, "items": ["Hồ sơ yêu cầu bồi thường", "Thời gian giải quyết bồi thường"]}
+    ],
+    "definitions": {"count": 22, "pages": "4–8", "by_page": {"4": "1–3", "5": "4–8", "6": "9–11", "7": "12–17", "8": "18–22"}, "first": "1. Bác sĩ", "last": "22. Thời gian chờ", "nested": "định nghĩa 4 có a./b.; định nghĩa 9 (TNM) có •/◦"},
+    "diseases": [
+      "Ung thư nghiêm trọng", "Nhồi máu cơ tim cấp tính", "Đột quỵ nghiêm trọng", "Phẫu thuật bắc cầu động mạch vành", "Suy thận",
+      "Thiếu máu bất sản (suy tủy xương)", "Bệnh phổi giai đoạn cuối", "Suy gan giai đoạn cuối", "Hôn mê", "Điếc (mất thích lực)",
+      "Phẫu thuật van tim", "Mất khả năng phát âm", "Bỏng nặng", "Cấy ghép cơ quan nội tạng chính/tủy xương", "Bệnh đa xơ cứng",
+      "Loạn dưỡng cơ", "Bệnh Parkinson", "Phẫu thuật động mạch chủ", "Bệnh Alzheimer/Chứng mất trí nhớ nghiêm trọng", "Viêm gan tối cấp",
+      "Bệnh rối loạn thần kinh vận động", "Tăng áp lực động mạch phổi nguyên phát", "Nhiễm HIV do truyền máu và nhiễm HIV do nghề nghiệp", "Khối u não lành tính", "Viêm não do vi-rút",
+      "Viêm màng não do vi khuẩn", "Tạo hình mạch và điều trị xâm lấn khác trên động mạch vành", "Mù (mất thị lực)", "Chấn thương đầu nghiêm trọng", "Tê liệt (mất khả năng sử dụng tay chân)",
+      "Bệnh giai đoạn cuối", "Xơ cứng bì tiến triển", "Hội chứng Apallic", "Lupus ban đỏ hệ thống có biến chứng viêm thận do lupus", "Bệnh động mạch vành nghiêm trọng khác",
+      "Bại liệt", "Mất khả năng sống độc lập"
+    ],
+    "source_notes": [
+      "Giữ nguyên văn lỗi của bản gốc, không sửa trong chunk: 'Điếc (mất thích lực)' (BQL: 'thính lực'); 'bệnh bệnh bạch cầu' (bệnh 1); 'xấm lấn' (bệnh 1); 'RPS/ISN' và 'RPS/IPN' (bệnh 34); bệnh 37 đánh lại i.–iii. sau ngắt trang (lẽ ra iv.–vi.)",
+      "IV.1: tham gia 18–60 tuổi, tái tục đến tròn 65 tuổi; IV.9: gia hạn tối đa 4 lần, mỗi lần 1 năm — hai quy định cần đọc cùng nhau, chưa dùng làm đáp án benchmark khi chưa xác minh",
+      "IV.10 dẫn chiếu 'mục 4' cho chấm dứt trước hạn, nhưng IV.4 là Nhầm lẫn độ tuổi — lỗi dẫn chiếu của bản gốc",
+      "Số tiền bảo hiểm 200 triệu–1 tỷ và giới hạn 1 HĐ/NĐBH chỉ có trong BQL, không có trong quy tắc"
+    ]
+  },
+  "c37_bangquyenloi.pdf": {
+    "file": {"sha256": "2a77809bf00d1a0603d7b2105fffcd0b6c6d00806eb4cd710a4817a28b763ff4", "pdf_title": "1. CI37 - Bang quyen loi", "pdf_created": "2025-12-04", "producer": "Adobe PDF library 17.00"},
+    "issuance": {"decision": "6061/QĐ-BHBV", "decision_date": "2025-06-27", "note": "Ghi QĐ dưới tiêu đề"},
+    "layout": {"pages": 1, "orientation": "A4 dọc", "split_2up": false},
+    "text_layer": {"has_text_layer": true, "chars_layout": 4168, "ocr_needed": false},
+    "noise": {"header": "BẢO HIỂM 37 BỆNH HIỂM NGHÈO - CI37", "footer": "Trụ sở chính … | Hotline … | Website …"},
+    "content": {"scope_paragraph": "chờ 90 ngày, còn sống 30 ngày, trả 100% STBH",
+                "note": "(*) Mỗi NĐBH mua tối đa một HĐ, STBH không vượt quá 1.000.000.000 đồng"},
+    "tables": [{"id": "BQL_DM", "title": "Danh mục bệnh/tình trạng hiểm nghèo + Số tiền bảo hiểm",
+                "layout": "37 tên bệnh xếp 2 cột (1–19 | 20–37) + 1 ô gộp STBH 'Từ 200.000.000 đến 1.000.000.000' (VNĐ)",
+                "risk": "Docling có thể đọc xen kẽ 1, 20, 2, 21 …; chấp nhận nếu đủ 37 tên, không mất ô STBH",
+                "cell_checks": [
+                  {"row": "STBH", "col": "Số tiền bảo hiểm", "value": "200.000.000"},
+                  {"row": "STBH", "col": "Số tiền bảo hiểm", "value": "1.000.000.000"},
+                  {"row": "27", "col": "Danh mục", "value": "xâm lần"},
+                  {"row": "37", "col": "Danh mục", "value": "Mất khả năng sống độc lập"}]}],
+    "source_notes": ["Bệnh 27 ghi 'xâm lần' (quy tắc: 'xâm lấn'); bệnh 10 ghi 'thính lực' (quy tắc: 'thích lực'); bệnh 25 'vi rút' (quy tắc: 'vi-rút')"]
+  },
+  "c37_bieuphi.pdf": {
+    "file": {"sha256": "5c02af46215a4ec7944fa1d36e67df811cb8ed3effc17f804ec230b09749154f", "pdf_title": "3. Bieu phi-CI37- 240221", "pdf_created": "2021-02-25", "producer": "Adobe PDF library 15.00"},
+    "issuance": {"decision": "1132/QĐ-BHBV", "decision_date": "2021-03-15", "note": "Ghi 'Quyết định số: 1132/QĐ-BHBV' (có dấu ':'); ngày tạo PDF trước ngày QĐ — không ảnh hưởng effective_date"},
+    "layout": {"pages": 1, "orientation": "A4 dọc", "split_2up": false},
+    "text_layer": {"has_text_layer": true, "chars_layout": 4288, "ocr_needed": false},
+    "noise": {"header": "BẢO HIỂM 37 BỆNH/TÌNH TRẠNG HIỂM NGHÈO", "footer": "Trụ sở chính: 04 Trần Hưng Đạo … (địa chỉ cũ) | www.baovietonline.com.vn | Hotline: 1900 55 88 99"},
+    "tables": [{"id": "BP", "title": "Tỷ lệ phí theo độ tuổi và giới tính", "unit": "phần trăm (%) / năm trên STBH",
+                "cols": 6, "header": ["ĐỘ TUỔI", "NAM", "NỮ", "ĐỘ TUỔI", "NAM", "NỮ"],
+                "layout": "2 khối song song: tuổi 18–41 (trái) | 42–65 (phải), 24 dòng; logic là 48 dòng × 3 cột",
+                "cell_checks": [
+                  {"row": "18", "col": "NAM", "value": "0.102667"},
+                  {"row": "41", "col": "NỮ", "value": "0.716500"},
+                  {"row": "42", "col": "NAM", "value": "0.939333"},
+                  {"row": "45", "col": "NAM", "value": "1.238000"},
+                  {"row": "65", "col": "NỮ", "value": "2.941616"}]}],
+    "source_notes": ["Tuổi 61–65 chỉ dùng khi tái tục (quy tắc IV.1: tham gia 18–60)", "Tính phí cho một hồ sơ cụ thể ngoài phạm vi ĐA1: benchmark hỏi tỷ lệ phí, không hỏi số tiền phí"]
+  },
+  "cross_file": {
+    "version_set": "Quy tắc + BQL: QĐ 6061/QĐ-BHBV ngày 27/06/2025; biểu phí: QĐ 1132/QĐ-BHBV ngày 15/03/2021",
+    "consistency": "37 tên bệnh khớp thứ tự giữa BQL và quy tắc Chương II, khác chính tả ở bệnh 10, 25, 27; độ tuổi biểu phí 18–65 khớp IV.1 (tham gia 18–60, tái tục đến 65); thời gian chờ 90 ngày, sống 30 ngày, 100% STBH khớp giữa BQL và quy tắc",
+    "kb_files": ["c37_quytac.pdf", "c37_bangquyenloi.pdf", "c37_bieuphi.pdf"]
+  }
+}
