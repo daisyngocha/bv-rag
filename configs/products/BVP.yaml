@@ -19,7 +19,7 @@ files:
   bvp_bangquyenloi:
     doc_type: bang_quyen_loi
     doc_label: "Bảng quyền lợi"
-    structure: tabular
+    structure: flat
   bvp_bieuphi:
     doc_type: bang_phi
     doc_label: "Biểu phí"
