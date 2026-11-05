@@ -1,0 +1,57 @@
+# Cấu hình xây kho tri thức cho 1 sản phẩm: scripts/build_kb.py --product C37
+# Khóa trong files = tên file (không đuôi) trong data/raw/products/C37/; khóa riêng của file ghi đè meta sản phẩm.
+product_code: C37
+product_name: Bảo hiểm 37 bệnh hiểm nghèo (CI37)
+company: BHBV
+line: phi_nhan_tho
+effective_date: "2025-06-27"           # QĐ 6061/QĐ-BHBV ngày 27/06/2025 (quy tắc trang tách 3, BQL)
+truth: data/truth/C37.json
+parse: {backend: pdfium, ocr: false, num_threads: 8}
+
+files:
+  c37_quytac:
+    doc_type: quy_tac
+    doc_label: Quy tắc
+    structure: legal
+    split_2up: true                    # gốc 1, 17 dọc giữ nguyên; gốc 2–16 ngang → 32 trang tách = số trang in
+    skip_pages: [1, 2, 3, 30, 31, 32]  # bìa, trang trắng, tên + QĐ + mục lục, quảng cáo, trang trắng, bìa sau
+    toc_pages: [3]
+    numbered_units: [I, II, IV, V]     # mục "N." có tiêu đề là đơn vị M{n}; Chương III (17 điểm loại trừ) đóng gói theo khoản
+    layout_rows:                       # Chương II: bảng 2 cột TÊN BỆNH | ĐỊNH NGHĨA, 37 dòng; TableFormer đặt sai ranh giới dòng
+      pages: [9, 22]                   # trang tách; mốc "N." ở cột trái x≈34, định nghĩa x≥113
+      split_x: 80
+      stop: "^Ghi chú"
+    note_units: "^Ghi chú"             # ghi chú (*) tổn thương thần kinh vĩnh viễn → C37_QT_C2_GC1
+  c37_bangquyenloi:
+    doc_type: bang_quyen_loi
+    doc_label: "Bảng quyền lợi"
+    structure: flat
+  c37_bieuphi:
+    doc_type: bang_phi
+    doc_label: "Biểu phí"
+    structure: flat
+    effective_date: "2021-03-15"       # QĐ 1132/QĐ-BHBV, khác bộ quy tắc 2025 (decision-log 2026-11-05)
+
+# Kiểm tra riêng của sản phẩm; số liệu chép từ truth lập tay
+checks:
+  definitions: {prefix: C37_QT_C1_M, count: 22}
+  page_range: {quy_tac: [3, 15]}       # trang gốc; nội dung = trang tách 4–29
+  forbidden:                           # header/footer, khẩu hiệu
+    quy_tac: ["An tâm sống khỏe"]
+    bang_quyen_loi: ["Trụ sở chính", "Hotline"]
+    bang_phi: ["Trụ sở chính", "Hotline"]
+  required:
+    quy_tac:
+      - "Ung thư nghiêm trọng"         # bệnh 1, g9
+      - "Mất khả năng sống độc lập"    # bệnh 37, g21
+      - "Tổn thương thần kinh vĩnh viễn có nghĩa là"   # ghi chú (*) cuối Chương II, g22
+      - "nồng độ cồn vượt quá 50"      # III.2, bố cục 2 cột trong nửa trang
+      - "bảy trăm ba mươi (730)"       # IV.6 Miễn truy xét
+      - "mười lăm (15) ngày làm việc"  # V.2
+    bang_quyen_loi:
+      - "6061/QĐ-BHBV"
+      - "200.000.000"
+      - "Mất khả năng sống độc lập"
+    bang_phi:
+      - "1132/QĐ-BHBV"
+      - "5.055989"                     # nam 65, ô cuối bảng

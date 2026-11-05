@@ -145,6 +145,8 @@ class Ctx:
     last_so: int = 0
     nested_max: int = 0            # số lớn nhất của danh sách lồng đang mở trong mục hiện tại
     numbered: frozenset = frozenset()   # số chương có mục đánh số là đơn vị (config numbered_units)
+    note: tuple | None = None      # khối ghi chú sau danh sách mục (config note_units) → GC{n}
+    note_re: re.Pattern | None = None
 
     @property
     def in_definitions(self) -> bool:
@@ -154,7 +156,7 @@ class Ctx:
         lv, n, title = key
         if lv == "chuong":
             self.chuong, self.muc, self.bosung, self.part, self.dn, self.phuluc = (n, title), None, None, None, None, None
-            self.so, self.last_so, self.nested_max = None, 0, 0
+            self.so, self.last_so, self.nested_max, self.note = None, 0, 0, None
         elif lv == "phuluc":
             self.chuong = self.muc = self.bosung = self.part = self.dn = self.so = None
             self.phuluc = (n, title)
@@ -169,6 +171,8 @@ class Ctx:
             self.so, self.last_so, self.nested_max = (n, title), n, 0
         elif lv == "nested":
             self.nested_max = n
+        elif lv == "note":
+            self.so, self.nested_max, self.note = None, 0, (n, title)
         elif lv == "dn":
             self.dn, self.last_def = (n, title), n
 
@@ -195,12 +199,14 @@ class Ctx:
             parts.append(f"M{self.so[0]}")
         if self.dn:
             parts.append(f"K{self.dn[0]}")
+        if self.note:
+            parts.append(f"GC{self.note[0]}")
         return parts
 
     def path(self) -> list[str]:
         if self.phuluc:
             return [self.phuluc[1][:100]]
-        return [x[1][:100] for x in (self.chuong, self.muc, self.bosung, self.part, self.so, self.dn) if x]
+        return [x[1][:100] for x in (self.chuong, self.muc, self.bosung, self.part, self.so, self.dn, self.note) if x]
 
 
 def struct_key(rec: Rec, ctx: Ctx) -> tuple | None:
@@ -212,6 +218,8 @@ def struct_key(rec: Rec, ctx: Ctx) -> tuple | None:
         return ("chuong", roman_to_int(m[1]), t)
     if m := PAT["phuluc"].match(t):
         return ("phuluc", pl_num(m[1]), t)
+    if ctx.note_re and ctx.chuong and ctx.note_re.match(t):    # C37: "Ghi chú:" cuối Chương II
+        return ("note", (ctx.note[0] + 1) if ctx.note else 1, t)
     if ctx.chuong and ctx.chuong[0] in ctx.numbered and not ctx.muc:
         if (m := PAT["part"].match(t)) and (rec.kind == "header" or len(t) <= 100):
             return ("part", m[1], t)
@@ -256,15 +264,22 @@ def classify_title(title: str, chuong: int | None) -> tuple | None:
 
 def toc_from_pdf(pdf_path: str, pages: Iterable[int]) -> list[dict]:
     """Đọc mục lục bằng pdftotext (ổn định hơn bảng document_index của Docling)."""
+    entries = _toc_entries(pdf_path, pages, [])
+    # C37: nhãn "CHƯƠNG I" nằm trong khung màu, chế độ thường tách nó khỏi dòng "| Định nghĩa ..... 04"
+    # → thử lại với -layout. Chỉ chạy khi chế độ thường không ra mục nào, nên BVP/ITC không đổi.
+    return entries or _toc_entries(pdf_path, pages, ["-layout"])
+
+
+def _toc_entries(pdf_path: str, pages: Iterable[int], opts: list[str]) -> list[dict]:
     entries, chuong = [], None
     for p in pages:
-        out = subprocess.run(["pdftotext", "-f", str(p), "-l", str(p), pdf_path, "-"],
+        out = subprocess.run(["pdftotext", *opts, "-f", str(p), "-l", str(p), pdf_path, "-"],
                              capture_output=True, text=True, check=True).stdout
         for line in out.splitlines():
             m = TOC_LINE.match(clean_text(line))
             if not m:
                 continue
-            title = m["title"].strip()
+            title = re.sub(r"\s*\|\s*", " - ", m["title"].strip())   # C37: "CHƯƠNG II | Quyền lợi…"
             key = classify_title(title, chuong)
             if key is None:
                 continue
@@ -309,8 +324,9 @@ class Unit:
     recs: list[Rec] = field(default_factory=list)
 
 
-def build_units(recs: list[Rec], structure: str = "legal", numbered: frozenset = frozenset()) -> list[Unit]:
-    units, ctx, sec = [], Ctx(numbered=numbered), 0
+def build_units(recs: list[Rec], structure: str = "legal", numbered: frozenset = frozenset(),
+                note: str | None = None) -> list[Unit]:
+    units, ctx, sec = [], Ctx(numbered=numbered, note_re=re.compile(note) if note else None), 0
     cur = Unit(ids=[], path=[])
     for r in recs:
         if structure == "legal":
@@ -547,6 +563,33 @@ def unit_to_chunks(u: Unit, cfg: dict, count, max_tokens: int, page_map: list[in
     return out
 
 
+def apply_layout_rows(recs: list[Rec], pdf: str, lr: dict, vocab: set[str]) -> tuple[list[Rec], dict]:
+    """Thay bảng Docling trên trang lr["pages"] bằng mục dựng từ toạ độ dòng (src/ingest/layout_rows.py).
+
+    Bỏ: bảng trong khoảng trang; mọi item ở trang giữa (toàn bảng). Giữ item không phải bảng ở trang đầu
+    (lời dẫn trước bảng) và trang cuối (ghi chú sau bảng). Mỗi mục → Rec "N. Tên" + một Rec mỗi đoạn.
+    """
+    from src.ingest.layout_rows import layout_rows
+    a, b = lr["pages"]
+    rows = layout_rows(pdf, (a, b), lr["split_x"], lr.get("stop"), lr.get("tol", 3.0))
+    new = []
+    for r in rows:
+        new.append(Rec("text", repair_glued(clean_text(f'{r["n"]}. {r["name"]}'), vocab), r["page"]))
+        new += [Rec("list" if para[:1] in BULLETS | {"◦"} else "text", repair_glued(clean_text(para), vocab), page)
+                for page, para in r["body"] if para.strip()]
+    out, at, dropped = [], None, 0
+    for r in recs:
+        if a <= r.page <= b and (r.kind == "table" or a < r.page < b):
+            at = len(out) if at is None else at
+            dropped += 1
+            continue
+        out.append(r)
+    at = next((i for i, r in enumerate(out) if r.page > a), len(out)) if at is None else at
+    out[at:at] = new
+    return out, {"pages": [a, b], "rows": len(rows), "names": [f'{r["n"]}. {r["name"]}' for r in rows],
+                 "docling_items_dropped": dropped}
+
+
 # ---------------------------------------------------------------- API chính
 def make_token_counter(model_name: str = "BAAI/bge-m3") -> Callable[[str], int]:
     from transformers import AutoTokenizer
@@ -562,12 +605,15 @@ def chunk_document(doc, cfg: dict, count: Callable[[str], int], page_map: list[i
     if cfg.get("drop_tables"):
         recs = [r for r in recs if r.kind != "table"]
     report: dict = {}
+    if (lr := cfg.get("layout_rows")) and vocab_pdf:
+        recs, report["layout_rows"] = apply_layout_rows(recs, vocab_pdf, lr, vocab)
     structure = cfg.get("structure", "legal")
     numbered = frozenset(roman_to_int(x) for x in cfg.get("numbered_units", []))
     if structure == "legal" and cfg.get("toc_pages") and toc_pdf:
-        recs, report = reconcile(recs, toc_from_pdf(toc_pdf, cfg["toc_pages"]), cfg.get("toc_page_offset", 0),
-                                 numbered=numbered)
-    units = build_units(recs, structure, numbered)
+        recs, toc_rep = reconcile(recs, toc_from_pdf(toc_pdf, cfg["toc_pages"]), cfg.get("toc_page_offset", 0),
+                                  numbered=numbered)
+        report.update(toc_rep)                                 # giữ report["layout_rows"]
+    units = build_units(recs, structure, numbered, cfg.get("note_units"))
     chunks, seen = [], set()
     for u in units:
         for ch in unit_to_chunks(u, cfg, count, max_tokens, page_map):
