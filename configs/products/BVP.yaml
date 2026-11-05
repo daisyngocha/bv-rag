@@ -20,12 +20,7 @@ files:
     doc_type: bang_quyen_loi
     doc_label: Bảng quyền lợi
     structure: flat
-  bvp_brochure:
-    doc_type: brochure
-    doc_label: Tờ rơi
-    structure: flat
-    drop_tables: true                  # bảng tờ rơi trùng BQL (decision-log 2026-10-25)
-    min_chars: 8                       # giữ dòng ngắn "Việt Nam."
+# bvp_brochure: không đưa vào kho (decision-log 2026-11-05); truth giữ bản ghi file để đối chiếu
 
 # Kiểm tra riêng của sản phẩm; số liệu chép từ truth lập tay
 checks:
@@ -37,4 +32,3 @@ checks:
     quy_tac: ["Chi trả khám chữa bệnh", "Quyền lợi ngoại trú"]
   required:                            # 2 khối ghi chú dưới BQL (ICU, đồng chi trả trẻ em)
     bang_quyen_loi: ["70/30", "1,5 lần"]
-  no_table_chunks: [brochure]
