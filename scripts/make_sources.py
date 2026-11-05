@@ -42,7 +42,7 @@ def main():
 
     new_file = not csv_path.exists()
     with csv_path.open("a", encoding="utf-8", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=COLS)
+        w = csv.DictWriter(f, fieldnames=COLS, lineterminator="\n")   # mặc định \r\n, lẫn với dòng cũ LF
         if new_file: w.writeheader()
         w.writerows(rows)
     for r in rows: print(r["doc_type"], "|", r["downloaded_at"], "|", r["file"])
