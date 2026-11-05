@@ -13,7 +13,7 @@ lấy từ data_version của B2.yaml. Đầu ra:
     data/processed/{ver}/chunks_fixed.jsonl  gộp, cho B1
     data/processed/{ver}/align_fixed.json    chunk cấu trúc → chunk cố định phủ nó (chấm B1)
 """
-import argparse, json, re, statistics, sys, subprocess, time, warnings
+import argparse, json, re, statistics, sys, time, warnings
 from pathlib import Path
 
 import yaml
@@ -21,7 +21,7 @@ import yaml
 warnings.filterwarnings("ignore", message="Provenance bbox")
 from src.ingest.align import align, align_report
 from src.ingest.checks import run_checks
-from src.ingest.chunker import build_vocab, chunk_document, apply_text_fixes, toc_from_cfg, toc_from_pdf
+from src.ingest.chunker import DT_ABBR, build_vocab, chunk_document
 from src.ingest.fixed_chunker import chunk_fixed, make_offset_encoder, regex_offset_encoder
 
 RAW, PARSED, PROCESSED = Path("data/raw/products"), Path("data/parsed"), Path("data/processed")
@@ -38,58 +38,48 @@ def file_cfgs(pc: dict) -> dict:
             for stem, c in pc["files"].items()}
 
 
-def get_tesseract_metadata(tessdata_dir: str | None = None) -> dict:
-    """Lấy thông tin version Tesseract và đường dẫn/loại traineddata phục vụ audit/report."""
-    try:
-        ver_res = subprocess.run(["tesseract", "--version"], capture_output=True, text=True, check=True)
-        version_line = ver_res.stdout.splitlines()[0] if ver_res.stdout else "unknown"
-    except Exception:
-        version_line = "tesseract not found or error"
-
-    traineddata_path = Path(tessdata_dir) / "vie.traineddata" if tessdata_dir else Path("/usr/share/tessdata/vie.traineddata")
-    file_size_mb = round(traineddata_path.stat().st_size / (1024 * 1024), 2) if traineddata_path.exists() else 0.0
-    data_type = "fast" if file_size_mb < 5.0 else "best"
-
-    return {
-        "engine": "tesseract",
-        "version": version_line,
-        "traineddata_lang": "vie",
-        "traineddata_type": data_type,
-        "traineddata_size_mb": file_size_mb,
-        "path": str(traineddata_path)
-    }
-
-
 def parse_product(pc: dict, force: bool) -> None:
     from docling.backend.pypdfium2_backend import PyPdfiumDocumentBackend
-    from src.ingest.parser import build_converter, parse_pdf, split_2up
+    from src.ingest.parser import build_converter, ocr_provenance, parse_pdf, split_2up
 
     P, out = pc["product_code"], PARSED / pc["product_code"]
     out.mkdir(parents=True, exist_ok=True)
     opt = pc.get("parse", {})
-    
-    # Duyệt qua các file để xem có file nào bật OCR riêng hay không
-    has_ocr = any(c.get("ocr") for c in pc["files"].values()) or opt.get("ocr", False)
-    ocr_opts = next((c.get("ocr") for c in pc["files"].values() if c.get("ocr")), opt.get("ocr", None))
+    convs: dict[str, object] = {}                      # một converter cho mỗi cấu hình OCR (file không OCR dùng chung)
 
-    conv = build_converter(ocr=ocr_opts, num_threads=opt.get("num_threads", 8),
-                           backend=PyPdfiumDocumentBackend if opt.get("backend", "pdfium") == "pdfium" else None)
-    
+    def converter(ocr):
+        key = json.dumps(ocr, sort_keys=True)
+        if key not in convs:
+            convs[key] = build_converter(ocr=ocr, num_threads=opt.get("num_threads", 8),
+                                         backend=PyPdfiumDocumentBackend if opt.get("backend", "pdfium") == "pdfium" else None)
+        return convs[key]
+
     for stem, c in pc["files"].items():
-        if (out / f"{stem}.docling.json").exists() and not force:
+        ocr = c.get("ocr") or opt.get("ocr") or None   # khóa ocr của file ghi đè parse.ocr của sản phẩm
+        prov_path = out / f"{stem}.ocr.json"
+        prov = ocr_provenance(ocr) if ocr else None
+        cached = (out / f"{stem}.docling.json").exists()
+        old = json.load(open(prov_path, encoding="utf-8")) if prov_path.exists() else None
+        if cached and not force and old == prov:
             print(f"   parse {stem}: dùng cache {out}")
             continue
+        if cached and not force:
+            print(f"   parse {stem}: cấu hình OCR đổi → parse lại")
         src = RAW / P / f"{stem}.pdf"
         if c.get("split_2up"):
             page_map = split_2up(str(src), str(out / f"{stem}_split.pdf"))
             (out / f"{stem}_page_map.json").write_text(json.dumps(page_map), encoding="utf-8")
             src = out / f"{stem}_split.pdf"
         t0 = time.time()
-        doc, tables, dropped = parse_pdf(str(src), conv)
+        doc, tables, dropped = parse_pdf(str(src), converter(ocr))
         (out / f"{stem}.docling.json").write_text(json.dumps(doc.export_to_dict(), ensure_ascii=False), encoding="utf-8")
         (out / f"{stem}.md").write_text(doc.export_to_markdown(), encoding="utf-8")
         for i, md in enumerate(tables, 1):
             (out / f"{stem}_TB{i}.md").write_text(md, encoding="utf-8")
+        if prov:
+            prov_path.write_text(json.dumps(prov, ensure_ascii=False, indent=2), encoding="utf-8")
+        else:
+            prov_path.unlink(missing_ok=True)
         print(f"   parse {stem}: {len(doc.pages)} trang, {len(tables)} bảng, bỏ {dropped} item ngoài trang, "
               f"{time.time() - t0:.0f} s")
 
@@ -102,6 +92,37 @@ def file_inputs(P: str, stem: str, c: dict):
     return str(pdf), page_map
 
 
+def manual_chunks(pc: dict, structure: list[dict], fixed: list[dict], count, max_tokens: int):
+    """Đơn vị nhập tay (config manual_units): nội dung chỉ có ở trang scan không đưa vào kho, hoặc bảng OCR không đạt.
+    Mỗi đơn vị → 1 chunk cấu trúc ({sp}_{dt}_S{i}) + 1 chunk cố định ({sp}_{dt}_F{nnn}) cùng nội dung, manual: true;
+    số thứ tự đánh tiếp sau chunk đã có cùng tiền tố để không trùng id."""
+    def next_no(chunks, prefix):
+        nums = [int(m[1]) for c in chunks if (m := re.fullmatch(rf"{re.escape(prefix)}(\d+)(?:_.*)?", c["chunk_id"]))]
+        return max(nums, default=0) + 1
+
+    ms, mf = [], []
+    for i, u in enumerate(pc["manual_units"], 1):
+        miss = [k for k in ("doc_type", "doc_label", "source_file", "page", "section_path", "text") if k not in u]
+        if miss:
+            raise ValueError(f"manual_units[{i}] thiếu {miss}")
+        meta = {k: pc[k] for k in META_KEYS} | {k: u[k] for k in META_KEYS if k in u}
+        base = f'{pc["product_code"]}_{DT_ABBR[u["doc_type"]]}_'
+        common = {"company": meta["company"], "product_code": meta["product_code"], "line": meta["line"],
+                  "doc_type": u["doc_type"], "section_path": u["section_path"],
+                  "is_table": u.get("is_table", u["text"].lstrip().startswith("|")),
+                  "effective_date": meta["effective_date"], "source_file": u["source_file"], "page": u["page"],
+                  "ocr": False, "manual": True}
+        tail = " > ".join(u["section_path"].split(" > ")[-2:])
+        s_text = f'[{meta["product_name"]} | {u["doc_label"]} | {tail}]\n{u["text"]}'
+        if count(s_text) > max_tokens:
+            raise ValueError(f"manual_units[{i}] dài {count(s_text)} token > {max_tokens}; tách thành nhiều đơn vị")
+        ms.append({"chunk_id": f"{base}S{next_no(structure + ms, base + 'S')}", "text": s_text, **common})
+        mf.append({"chunk_id": f"{base}F{next_no(fixed + mf, base + 'F'):03d}",
+                   "text": f'[{meta["product_name"]} | {u["doc_label"]}]\n{u["text"]}', **common,
+                   "section_path": u["doc_label"]})
+    return ms, mf
+
+
 def chunk_product(pc: dict, struct_cfg: dict, fixed_cfg: dict, encode, tokenizer: str, ver: str) -> bool:
     from docling_core.types.doc import DoclingDocument
 
@@ -110,72 +131,46 @@ def chunk_product(pc: dict, struct_cfg: dict, fixed_cfg: dict, encode, tokenizer
     files = file_cfgs(pc)
     structure, fixed, report = [], [], {"tokenizer": tokenizer, "files": {}}
     vocab: set[str] = set()
-    
-    # Lấy thông tin cấu hình OCR nếu có dùng cho báo cáo report.json
-    ocr_meta_captured = None
 
     for stem, cfg in files.items():
         doc = DoclingDocument.load_from_json(PARSED / P / f"{stem}.docling.json")
         pdf, page_map = file_inputs(P, stem, cfg)
-        
-        # Nếu file bật OCR, không dùng lớp chữ rác sẵn có để quét vocab/toc tự động
-        txt_pdf = None if cfg.get("ocr") else pdf
+        txt_pdf = None if cfg.get("ocr") else pdf        # file OCR: lớp chữ có sẵn (nếu có) không tin được → không dùng pdftotext
         if txt_pdf:
             vocab |= build_vocab(txt_pdf)
-            
-        if cfg.get("ocr") and not ocr_meta_captured:
-            ocr_cfg_val = cfg.get("ocr")
-            tessdata_path = ocr_cfg_val.get("tessdata") if isinstance(ocr_cfg_val, dict) else None
-            ocr_meta_captured = get_tesseract_metadata(tessdata_path)
-
-        # Xử lý Mục lục: Ưu tiên đọc từ YAML (`toc`), nếu không có mới dùng `toc_pages`
-        toc_items = toc_from_cfg(cfg["toc"]) if cfg.get("toc") else (toc_from_pdf(txt_pdf, cfg["toc_pages"]) if cfg.get("toc_pages") and txt_pdf else None)
-
-        ch, rep = chunk_document(doc, cfg, count, page_map, toc_items=toc_items,
+        ch, rep = chunk_document(doc, cfg, count, page_map, txt_pdf if cfg.get("toc_pages") else None,
                                  max_tokens=struct_cfg["max_tokens"], vocab_pdf=txt_pdf)
         fx, frep = chunk_fixed(doc, cfg, encode, page_map, max_tokens=fixed_cfg["max_tokens"],
                                overlap=fixed_cfg["overlap"], vocab_pdf=txt_pdf)
-
-        # Áp dụng các bản vá văn bản định nghĩa trước (text_fixes)
-        if cfg.get("text_fixes"):
-            ch, _ = apply_text_fixes(ch, cfg["text_fixes"])
-            fx, _ = apply_text_fixes(fx, cfg["text_fixes"])
-
-        # Bổ sung các manual_units nếu có khai báo trong YAML (ví dụ trang 47 biểu phí BTB)
-        if cfg.get("manual_units"):
-            for m in cfg["manual_units"]:
-                manual_chunk = {
-                    "chunk_id": f"{P}_{stem}_manual_{len(ch)+1}",
-                    "product_code": P,
-                    "doc_type": m.get("doc_type", cfg.get("doc_type")),
-                    "doc_label": m.get("doc_label", cfg.get("doc_label")),
-                    "source_file": m.get("source_file", f"{stem}.pdf"),
-                    "page": m.get("page"),
-                    "section_path": m.get("section_path"),
-                    "text": m.get("text"),
-                    "manual": True
-                }
-                ch.append(manual_chunk)
-                fx.append(manual_chunk)
-
+        if (prov := PARSED / P / f"{stem}.ocr.json").exists():
+            rep["ocr"] = json.load(open(prov, encoding="utf-8"))
         toks = [count(c["text"]) for c in ch]
-        rep.update(tokens_max=max(toks) if toks else 0, 
-                   tokens_median=int(statistics.median(toks)) if toks else 0,
-                   over_max=sum(t > struct_cfg["max_tokens"] for t in toks), 
-                   tables=sum(c.get("is_table", False) for c in ch))
+        rep.update(tokens_max=max(toks), tokens_median=int(statistics.median(toks)),
+                   over_max=sum(t > struct_cfg["max_tokens"] for t in toks), tables=sum(c["is_table"] for c in ch))
         report["files"][stem] = {"structure": rep, "fixed": frep}
         structure += ch
         fixed += fx
         print(f"   {stem}: cấu trúc {len(ch)} chunk (token max {rep['tokens_max']}, trung vị {rep['tokens_median']}, "
               f"vượt {rep['over_max']}, bảng {rep['tables']}) | cố định {len(fx)} chunk")
+        if "text_fixes" in rep:
+            print(f"      text_fixes: {rep['text_fixes']} lần thay")
+        if "ocr" in rep:
+            print(f"      OCR: {rep['ocr']['engine']}, {rep['ocr']['tessdata_dir']} {rep['ocr']['traineddata_sha256']}")
         if "toc_entries" in rep:
             print(f"      mục lục: khớp {rep['matched']}/{rep['toc_entries']} | chèn: {rep['inserted']}")
-            for m in rep.get("toc_titles_fixed", []):
-                print("      SỬA TIÊU ĐỀ:", m)
-            for m in rep.get("toc_titles_unmatched", []):
-                print("      TIÊU ĐỀ KHÔNG KHỚP MỤC LỤC:", m)
             for m in rep["missing"]:
                 print("      THIẾU:", m)
+        for m in rep.get("toc_titles_fixed", []):
+            print("      SỬA TIÊU ĐỀ:", m)
+        for m in rep.get("toc_titles_unmatched", []):
+            print("      TIÊU ĐỀ KHÔNG KHỚP MỤC LỤC:", m)
+
+    if pc.get("manual_units"):
+        ms, mf = manual_chunks(pc, structure, fixed, count, struct_cfg["max_tokens"])
+        structure += ms
+        fixed += mf
+        report["manual_units"] = [c["chunk_id"] for c in ms]
+        print(f"   manual_units: {report['manual_units']} (cố định: {[c['chunk_id'] for c in mf]})")
 
     truth_path = Path(pc["truth"])
     if truth_path.exists():
@@ -183,11 +178,8 @@ def chunk_product(pc: dict, struct_cfg: dict, fixed_cfg: dict, encode, tokenizer
         checks = run_checks(structure, truth, {c["source_file"]: c for c in files.values()}, pc.get("checks", {}), vocab)
     else:
         checks = {f"có truth {truth_path}": False}
-        
     report["checks"] = checks
     report["align"] = align_report(align(structure, fixed))
-    if ocr_meta_captured:
-        report["ocr_config"] = ocr_meta_captured
 
     print("   == Kiểm tra")
     for k, v in checks.items():
