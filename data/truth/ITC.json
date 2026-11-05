@@ -1,0 +1,108 @@
+{
+  "_meta": {
+    "purpose": "Đáp án chuẩn lập tay để kiểm tra parse/chunk ITC (scripts/build_kb.py, bước check). Số trang quy tắc theo file đã tách (split_2up) = số trang in, trừ khi ghi *_original.",
+    "created": "2026-11-05",
+    "method": "Mục lục (trang tách 3) + đối chiếu thân văn bản + xem ảnh trang; không dùng regex của chunker làm nguồn",
+    "status": "NHÁP – Claude đọc từ pdftotext/pdfinfo; người duyệt đối chiếu ảnh trang trước khi commit (mục cần xem ghi ở review_todo)"
+  },
+  "itc_quytac.pdf": {
+    "file": {"sha256": "294dd79eb19ffd9b1498a68f1c93468e48b788017f0f12ba6c07d548fb9a421b", "pdf_title": "251117-4. ITC - Quytac", "pdf_created": "2025-11-17", "producer": "Adobe Illustrator 28.7 / 3-Heights PDF Optimization Shell 5.9.1.5"},
+    "issuance": {"decision": "6036/QĐ-BHBV", "decision_date": "2025-06-27", "issuer": "Tổng Giám đốc Tổng công ty Bảo hiểm Bảo Việt", "effective_date_stated": null, "where": "trang tách 2", "note": "Không ghi ngày hiệu lực riêng; dùng ngày QĐ 2025-06-27."},
+    "layout": {"pages_original": 31, "pages_split": 60, "type": "2-up", "detail": "Trang gốc 1 và 31: A5 dọc (419,5 x 595,3 pt; bìa trước/sau), giữ nguyên. Trang gốc 2–30: A4 ngang (841,9 x 595,3 pt), mỗi trang 2 trang A5 → tách trái/phải.", "page_mapping": "Trang file tách = số trang in ở chân trang ('- n -'). Trang gốc của trang tách g (2..59) = g//2 + 1; g60 = gốc 31.", "evidence": "PHẦN II: in 19 → gốc 10 phải; PHẦN III: in 29 → gốc 15 phải; PHẦN V: in 45 → gốc 23 phải", "fix": "split_2up() trước khi parse (đã kiểm tra mediabox từng trang)"},
+    "text_layer": {"has_text_layer": true, "chars_original": 150316, "nfd_chars": 0, "font_issue": "không thấy Ð (U+00D0)", "ocr_needed": false},
+    "pages_role": {"skip": {"1": "bìa trước (khẩu hiệu)", "2": "tên quy tắc + QĐ ban hành", "3": "mục lục (NỘI DUNG)", "60": "bìa sau, địa chỉ trụ sở"}, "metadata_only": {"2": "QĐ 6036/QĐ-BHBV ngày 27/06/2025, dùng cho effective_date"}, "content": "4–59"},
+    "noise": {"page_footer": {"pattern": "^- \\d+ -$", "count": 56}},
+    "structure": {
+      "levels": ["PHẦN I–VI (La Mã) + PHỤ LỤC I", "Phần II: A. Quyền lợi chính / B. Quyền lợi bổ sung", "Mục số có tiêu đề 1., 2., … (Phần I là định nghĩa, II.A, II.B, IV, V, VI)", "Khoản 1.1., 10.2. (B.1, IV, V); 10.2.1. (IV.10)", "Điểm a./b. (IV.7, IV.10), gạch đầu dòng -, •"],
+      "has_dieu": false,
+      "has_toc_title": false,
+      "heading_forms": {"phan_body": "'PHẦN I - ĐỊNH NGHĨA', 'PHẦN IV. QUY ĐỊNH CHUNG' (dấu - hoặc .); TOC dùng 'PHẦN I. …'", "wrapped_titles": ["g45: 'PHẦN V - THỦ TỤC YÊU CẦU BỒI THƯỜNG' / 'VÀ BẢO LÃNH VIỆN PHÍ'"], "phu_luc": "'PHỤ LỤC I' (La Mã), tiêu đề bảng ở dòng sau"},
+      "untitled_numbered": "Phần III: điểm loại trừ 1–40 không có tiêu đề → đóng gói theo khoản"
+    },
+    "sections": [
+      {"chuong": "I", "title": "PHẦN I. ĐỊNH NGHĨA", "page": 4, "so_count": 62},
+      {"chuong": "II", "title": "PHẦN II. PHẠM VI BẢO HIỂM VÀ QUYỀN LỢI BẢO HIỂM", "page": 19},
+      {"chuong": "II", "part": "A", "title": "A. Quyền lợi bảo hiểm chính: Điều trị nội trú do bệnh, tai nạn", "page": 19, "so_count": 19, "items": "1–19 (g20–23)"},
+      {"chuong": "II", "part": "B", "title": "B. Quyền lợi bảo hiểm bổ sung", "page": 24, "so_count": 7, "items": "1 Ngoại trú (1.1–1.3), 2 Thai sản, 3 Nha khoa, 4 Tai nạn cá nhân, 5 Sinh mạng, 6 Hỗ trợ du học sinh, 7 Trợ cấp mất giảm thu nhập (HĐ tổ chức)"},
+      {"chuong": "III", "title": "PHẦN III. CÁC ĐIỂM LOẠI TRỪ CHUNG", "page": 29, "items": "1–40 không tiêu đề; điểm 39 có danh sách bệnh 2 cột (g33)"},
+      {"chuong": "IV", "title": "PHẦN IV. QUY ĐỊNH CHUNG", "page": 34, "so_count": 19, "nested_list": {"in": 7, "items": "1–2 (Phí tính theo tỷ lệ / theo biểu phí ngắn hạn)", "page": 36}},
+      {"chuong": "V", "title": "PHẦN V. THỦ TỤC YÊU CẦU BỒI THƯỜNG VÀ BẢO LÃNH VIỆN PHÍ", "page": 45, "so_count": 4, "khoan": {"1": "1.1–1.9", "2": "2.1–2.2", "3": "3.1–3.3"}},
+      {"chuong": "VI", "title": "PHẦN VI. VẬN CHUYỂN Y TẾ CẤP CỨU VÀ HỒI HƯƠNG", "page": 50, "so_count": 7},
+      {"phu_luc": 1, "title": "PHỤ LỤC I: BẢNG TỶ LỆ TRẢ TIỀN TỬ VONG/THƯƠNG TẬT VĨNH VIỄN", "page": 54}
+    ],
+    "definitions": {"count": 62, "pages": "4–18", "by_page": {"4": "1–4", "5": "5–7", "6": "8–11", "7": "12–14", "8": "15–21", "9": "22–24", "10": "25–28", "11": "29–33", "12": "34–36", "13": "37–41", "14": "42–44", "15": "45–50", "16": "51–55", "17": "56", "18": "57–62"}, "first": "1. Bác sĩ", "last": "62. Vùng bảo hiểm", "nested_numbered_list": false, "glossary_candidates": "62 định nghĩa → mục glossary scope=ITC"},
+    "tables": [
+      {"id": "PL1", "title": "Bảng tỷ lệ trả tiền tử vong/thương tật vĩnh viễn", "pages": "54–59", "pages_original": "28–30", "cols": 3, "header": ["STT", "Quyền lợi", "Tỷ lệ trả tiền"], "header_repeated_each_page": false, "numbered_rows": 121,
+       "rows_by_page": {"54": "1–17", "55": "18–44", "56": "45–70", "57": "71–96", "58": "97–113", "59": "114–121"},
+       "group_rows": {"level1": ["I – TỬ VONG (100%)", "II – THƯƠNG TẬT TOÀN BỘ VĨNH VIỄN", "III – THƯƠNG TẬT BỘ PHẬN VĨNH VIỄN"], "level2": ["CHI TRÊN (g54)", "CHI DƯỚI (g55)", "CỘT SỐNG (g56)", "SỌ NÃO (g57)", "LỒNG NGỰC (g57)", "BỤNG (g57)", "CƠ QUAN TIẾT NIỆU, SINH DỤC (g57)", "MẮT (g58)", "TAI – MŨI – HỌNG (g58)", "MẶT (g59)"]},
+       "multiline_cells": "dòng 2, 4 (g54), 38 (g55), 57, 65, 66 (g56), 71 (g57), 99–103 (g58), 115, 117 (g59)",
+       "after_table": "g59: 'NGUYÊN TẮC XÉT TRẢ TIỀN BẢO HIỂM' a)–c) là văn bản, không thuộc bảng",
+       "same_template_as": "BVP PL1 (121 dòng, cùng nhóm); ITC thêm nhóm CƠ QUAN TIẾT NIỆU, SINH DỤC"},
+      {"id": "QT_III_39", "title": "Danh sách bệnh/tình trạng không bảo hiểm năm đầu (điểm loại trừ 39)", "page": 33, "cols": 2, "kind": "bố cục 2 cột (nhóm bệnh | mô tả), Docling có thể nhận là bảng", "rows": 7, "chunk_rule": "gắn vào chunk chứa điểm 39 của Phần III, không tách bảng riêng"}
+    ],
+    "source_notes": [
+      "g38 IV.10.1.e: thời gian chờ sinh con ghi '635 ngày' — giữ nguyên văn, không sửa; không đặt câu benchmark dựa trên con số này nếu chưa xác minh",
+      "IV.10 dẫn chiếu 'điểm loại trừ chung số 39' (Phần III) → căn cứ câu tình huống nhiều chunk"
+    ],
+    "org_only": ["C2_B_M7", "C4_M9", "C4_M12", "C4_M13", "C4_M14"],
+    "chunker_notes": [
+      "Regex cấp C nhận cả PHẦN; dấu phân cách sau số La Mã có thể là '-' hoặc '.'",
+      "PHỤ LỤC đánh số La Mã",
+      "numbered_units [I, II, IV, V, VI]: mục 'N.' có tiêu đề là đơn vị M{n}, số tăng liên tục; danh sách lồng IV.7 (1., 2.) giữ trong M7",
+      "Phần III không có tiêu đề mục → đóng gói theo khoản K{a}-{b}",
+      "Khoản 2 cấp 1.1., 10.2. dùng làm nhãn khoản khi tách mục",
+      "Tiêu đề PHẦN V xuống 2 dòng"
+    ],
+    "review_todo": ["Xem ảnh g20 (II.A.1) và g24 (II.B) để chắc A./B. là tiêu đề riêng", "Xem ảnh g33: danh sách bệnh 2 cột", "Xem ảnh g54–59: số dòng mỗi trang của PL1"]
+  },
+  "itc_bangquyenloi.pdf": {
+    "file": {"sha256": "671404ac7f5c34bb3df20240cf375c41ff49dac7749739143882f00a518f6e8b", "pdf_title": "1. ITC - Bang quyen loi", "pdf_created": "2026-05-19", "producer": "Adobe Illustrator 28.7 / Adobe PDF library 17.00"},
+    "issuance": {"decision": "6036/QĐ-BHBV", "decision_date": "2025-06-27", "note": "Ghi QĐ ở đầu trang 1"},
+    "layout": {"pages": 3, "orientation": "A4 dọc", "type": "1-up", "split_2up": false},
+    "text_layer": {"has_text_layer": true, "chars": 13602, "nfd_chars": 0, "ocr_needed": false},
+    "noise": {"page_header": "BẢO HIỂM / BẢO VIỆT INTERCARE (góc phải mỗi trang)", "page_footer": "Trụ sở chính: … | Hotline: … | Website: … và số trang '-n-'"},
+    "programs": ["SELECT (Vùng 1)", "ESSENTIAL (Vùng 2)", "CLASSIC (Vùng 3)", "GOLD (Vùng 4)", "DIAMOND (Vùng 5)"],
+    "tables": [
+      {"id": "BQL_CHINH", "title": "Quyền lợi bảo hiểm chính - Điều trị nội trú do bệnh, tai nạn", "pages": "1–2", "cols": 6, "data_rows": "STBH + 19 quyền lợi (dòng 19 sang trang 2)",
+       "cell_checks": [
+         {"row": "Số tiền bảo hiểm (STBH) cho một thời hạn bảo hiểm", "col": "DIAMOND", "value": "10.500.000.000"},
+         {"row": "1. Chi phí phòng và giường/ngày", "col": "GOLD", "value": "16.800.000/ngày"},
+         {"row": "9. Chi phí cấy ghép nội tạng", "col": "CLASSIC", "value": "1.260.000.000"},
+         {"row": "16. Điều trị rối loạn tâm thần cấp tính", "col": "DIAMOND", "value": "78.750.000/năm"},
+         {"row": "18. Trợ cấp ngày nằm viện công", "col": "SELECT", "value": "210.000"}
+       ]},
+      {"id": "BQL_BS1", "title": "1. Điều trị ngoại trú do bệnh, tai nạn", "page": 2, "cols": 6,
+       "cell_checks": [{"row": "Số tiền bảo hiểm (STBH)", "col": "GOLD", "value": "105.000.000"}, {"row": "1.1. Điều trị ngoại trú", "col": "DIAMOND", "value": "11.800.000"}]},
+      {"id": "BQL_BS2", "title": "2. Bảo hiểm thai sản", "page": 2, "cols": 6},
+      {"id": "BQL_BS3", "title": "3. Bảo hiểm nha khoa", "page": 2, "cols": 6, "cell_checks": [{"row": "c. Các chi phí điều trị đặc biệt, làm răng giả", "col": "SELECT", "value": "Đồng chi trả 50%"}]},
+      {"id": "BQL_BS4_5", "title": "4. Tai nạn cá nhân; 5. Sinh mạng", "page": 3, "cols": 6},
+      {"id": "BQL_BS6", "title": "6. Hỗ trợ du học sinh", "page": 3, "cols": 6, "cell_checks": [{"row": "Bảo hiểm Gián đoạn học tập / người Bảo trợ / khủng bố", "col": "DIAMOND", "value": "150.000.000"}]},
+      {"id": "BQL_LUUY_CN", "title": "Lưu ý bổ sung với hợp đồng cá nhân – giới hạn cả đời bệnh đặc biệt", "page": 3, "cols": 6, "cell_checks": [{"row": "Giới hạn cả đời … bệnh đặc biệt", "col": "GOLD", "value": "1.050.000.000/"}]}
+    ],
+    "notes_blocks": ["Ghi chú quốc gia cấm vận (trang 1)", "LƯU Ý CHUNG 1–4 (trang 3): đồng chi trả trẻ em đến 3 tuổi 70/30; CSYT YHCT/VLTL; giới hạn giường; nha khoa Bình Dương, Bà Rịa – Vũng Tàu"],
+    "not_in_file": "QL bổ sung 7 (Trợ cấp mất giảm thu nhập, HĐ tổ chức) không có trong BQL",
+    "source_notes": ["Danh sách cấm vận ghi 'Crime' (nguyên văn) – giữ nguyên"]
+  },
+  "itc_bieuphi.pdf": {
+    "file": {"sha256": "12e6daf7399901f5bd4f955cee294e43cd00a1b6f1f98df911fcd1cd1a382a42", "pdf_title": "1", "pdf_created": "2025-09-05", "producer": "Microsoft® Word 2016"},
+    "issuance": {"decision": "6036/QĐ-BHBV", "decision_date": "2025-06-27", "note": "Ghi QĐ ở đầu trang 1"},
+    "layout": {"pages": 2, "orientation": "A4 dọc", "type": "1-up", "split_2up": false},
+    "text_layer": {"has_text_layer": true, "chars": 4088, "nfd_chars": 0, "ocr_needed": false, "images": "trang 2: 1 dải ảnh 1448x59 (đường kẻ), không chứa chữ"},
+    "noise": ["dòng gạch '-----' và '2025' ở cuối trang 2"],
+    "tables": [
+      {"id": "BP_IP", "title": "Quyền lợi chính: Điều trị nội trú (IP)", "page": 1, "unit": "đồng", "cols": 6, "header": ["Độ tuổi", "Select", "Essential", "Classic", "Gold", "Diamond"], "data_rows": 16, "footnote": "*70-75: chỉ áp dụng với đơn tái tục",
+       "cell_checks": [{"row": "Dưới 1", "col": "Select", "value": "17.760.000"}, {"row": "70-75*", "col": "Diamond", "value": "100.500.000"}, {"row": "36-40", "col": "Gold", "value": "17.700.000"}]},
+      {"id": "BP_OP", "title": "Bổ sung 1: Điều trị ngoại trú", "page": 1, "unit": "đồng", "cols": 6, "data_rows": 16,
+       "cell_checks": [{"row": "65-69", "col": "Gold", "value": "24.000.000"}, {"row": "70-75*", "col": "Diamond", "value": "44.800.000"}]},
+      {"id": "BP_BS2_3", "title": "2. Thai sản (18–45 tuổi); 3. Nha khoa", "page": 2, "cell_checks": [{"row": "Thai sản", "col": "Diamond", "value": "15.944.000"}, {"row": "Nha khoa", "col": "Classic", "value": "8.300.000"}]},
+      {"id": "BP_BS4_5", "title": "4. Tai nạn cá nhân; 5. Sinh mạng (tỷ lệ phí %)", "page": 2, "cell_checks": [{"row": "Sinh mạng", "col": "Diamond", "value": "0,304"}, {"row": "Tai nạn cá nhân", "col": "Classic", "value": "0,115"}]},
+      {"id": "BP_BS6", "title": "6. Hỗ trợ du học sinh", "page": 2},
+      {"id": "BP_BS7", "title": "7. Trợ cấp mất giảm thu nhập (HĐ tổ chức, tỷ lệ phí %)", "page": 2, "cell_checks": [{"row": "Do ốm bệnh", "col": "Diamond", "value": "0,669"}]}
+    ]
+  },
+  "cross_file": {
+    "version_set": "Cả 3 file ghi QĐ 6036/QĐ-BHBV ngày 27/06/2025",
+    "consistency": "5 chương trình SELECT–DIAMOND ứng với Vùng 1–5 khớp giữa BQL, biểu phí và định nghĩa Vùng bảo hiểm (định nghĩa 62); 19 quyền lợi chính BQL khớp II.A.1–19; BQL thiếu QL bổ sung 7, biểu phí có",
+    "kb_files": ["itc_quytac.pdf", "itc_bangquyenloi.pdf", "itc_bieuphi.pdf"]
+  }
+}

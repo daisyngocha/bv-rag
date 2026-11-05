@@ -1,0 +1,47 @@
+# Cấu hình xây kho tri thức cho 1 sản phẩm: scripts/build_kb.py --product ITC
+# Khóa trong files = tên file (không đuôi) trong data/raw/products/ITC/; khóa riêng của file ghi đè meta sản phẩm.
+product_code: ITC
+product_name: Bảo Việt Intercare
+company: BHBV
+line: phi_nhan_tho
+effective_date: "2025-06-27"           # QĐ 6036/QĐ-BHBV ngày 27/06/2025, ghi trên cả 3 file
+truth: data/truth/ITC.json
+parse: {backend: pdfium, ocr: false, num_threads: 8}
+
+files:
+  itc_quytac:
+    doc_type: quy_tac
+    doc_label: Quy tắc
+    structure: legal
+    split_2up: true                    # gốc 1, 31 dọc giữ nguyên; gốc 2–30 ngang → trang tách = số trang in
+    skip_pages: [1, 2, 3, 60]          # trang của file đã cắt: bìa, tên + QĐ, mục lục, bìa sau
+    toc_pages: [3]
+    numbered_units: [I, II, IV, V, VI] # mục "N." có tiêu đề là đơn vị M{n}; Phần III đóng gói theo khoản
+  itc_bangquyenloi:
+    doc_type: bang_quyen_loi
+    doc_label: "Bảng quyền lợi"
+    structure: flat
+  itc_bieuphi:
+    doc_type: bang_phi
+    doc_label: "Biểu phí"
+    structure: flat
+
+# Kiểm tra riêng của sản phẩm; số liệu chép từ truth lập tay
+checks:
+  definitions: {prefix: ITC_QT_C1_M, count: 62}
+  page_range: {quy_tac: [3, 30]}       # trang gốc; nội dung = trang tách 4–59
+  table_pages:
+    - {prefix: ITC_QT_PL1, first: 28, last: 30}
+  forbidden:                           # header/footer lặp mỗi trang của BQL
+    bang_quyen_loi: ["Trụ sở chính", "Hotline"]
+  required:
+    quy_tac:
+      - "635 ngày"                     # IV.10.1.e, giữ nguyên văn
+      - "Mất một phần nhỏ lưỡi"        # dòng 121, cuối PL1
+      - "Bệnh hệ tiêu hóa"             # danh sách 2 cột ở điểm loại trừ 39
+    bang_quyen_loi:
+      - "6036/QĐ-BHBV"
+      - "70/30"
+    bang_phi:
+      - "6036/QĐ-BHBV"
+      - "Chỉ áp dụng với đơn tái tục"

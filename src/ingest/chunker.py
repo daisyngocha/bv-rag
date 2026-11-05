@@ -55,12 +55,13 @@ def repair_glued(text: str, vocab: set[str]) -> str:
 # ---------------------------------------------------------------- nhận diện cấu trúc
 ROMAN = r"(?=[IVX])X{0,3}(?:IX|IV|V?I{0,3})"
 PAT = {
-    "chuong": re.compile(rf"^CHƯƠNG\s+({ROMAN})\b\s*[-:–]?\s*(.*)$"),
-    "phuluc": re.compile(r"^PHỤ LỤC\s+(\d+)\b\s*[-:.–]?\s*(.*)$"),
+    "chuong": re.compile(rf"^(?:CHƯƠNG|PHẦN)\s+({ROMAN})\b\s*[-:.–]?\s*(.*)$"),   # ITC: PHẦN = cấp C
+    "phuluc": re.compile(rf"^PHỤ LỤC\s+(\d+|{ROMAN})\b\s*[-:.–]?\s*(.*)$"),     # ITC: PHỤ LỤC I
     "bosung": re.compile(r"^QUYỀN LỢI BỔ SUNG\s+(\d+)\s*:\s*(.+)$", re.I),
     "muc":    re.compile(rf"^({ROMAN})\.\s*(\S.*)$"),           # \s* vì có 'VII.Kết thúc'
     "part":   re.compile(r"^([A-D])\.\s+(\S.*)$"),
     "khoan":  re.compile(r"^(\d+)\.\s+(\S.*)$"),
+    "khoan2": re.compile(r"^\d+\.(\d+)\.?\s+(\S.*)$"),       # ITC: 1.1., 10.2. trong mục đánh số (không khớp 10.2.1.)
 }
 TOC_LINE = re.compile(r"^(?P<title>.+?)\s*\.{3,}\s*(?P<page>\d+)$")
 LVL1_ROW = re.compile(r"^[IVX]+\s*[–-]")                       # dòng nhóm cấp 1 trong bảng (I – TỬ VONG)
@@ -77,6 +78,10 @@ def roman_to_int(s: str) -> int:
         total += -v if v < prev else v
         prev = max(prev, v)
     return total
+
+
+def pl_num(s: str) -> int:
+    return int(s) if s.isdigit() else roman_to_int(s)
 
 
 # ---------------------------------------------------------------- linearize
@@ -136,6 +141,10 @@ class Ctx:
     dn: tuple | None = None        # định nghĩa
     phuluc: tuple | None = None
     last_def: int = 0
+    so: tuple | None = None        # mục đánh số có tiêu đề (chương trong numbered_units) → M{n}
+    last_so: int = 0
+    nested_max: int = 0            # số lớn nhất của danh sách lồng đang mở trong mục hiện tại
+    numbered: frozenset = frozenset()   # số chương có mục đánh số là đơn vị (config numbered_units)
 
     @property
     def in_definitions(self) -> bool:
@@ -145,8 +154,9 @@ class Ctx:
         lv, n, title = key
         if lv == "chuong":
             self.chuong, self.muc, self.bosung, self.part, self.dn, self.phuluc = (n, title), None, None, None, None, None
+            self.so, self.last_so, self.nested_max = None, 0, 0
         elif lv == "phuluc":
-            self.chuong = self.muc = self.bosung = self.part = self.dn = None
+            self.chuong = self.muc = self.bosung = self.part = self.dn = self.so = None
             self.phuluc = (n, title)
         elif lv == "muc":
             self.muc, self.bosung, self.part, self.dn, self.last_def = (n, title), None, None, None, 0
@@ -154,6 +164,11 @@ class Ctx:
             self.bosung, self.part, self.dn = (n, title), None, None
         elif lv == "part":
             self.part = (n, title)
+            self.so, self.last_so, self.nested_max = None, 0, 0
+        elif lv == "so":
+            self.so, self.last_so, self.nested_max = (n, title), n, 0
+        elif lv == "nested":
+            self.nested_max = n
         elif lv == "dn":
             self.dn, self.last_def = (n, title), n
 
@@ -176,6 +191,8 @@ class Ctx:
             parts.append(f"B{self.bosung[0]}")
         if self.part:
             parts.append(self.part[0])
+        if self.so:
+            parts.append(f"M{self.so[0]}")
         if self.dn:
             parts.append(f"K{self.dn[0]}")
         return parts
@@ -183,7 +200,7 @@ class Ctx:
     def path(self) -> list[str]:
         if self.phuluc:
             return [self.phuluc[1][:100]]
-        return [x[1][:100] for x in (self.chuong, self.muc, self.bosung, self.part, self.dn) if x]
+        return [x[1][:100] for x in (self.chuong, self.muc, self.bosung, self.part, self.so, self.dn) if x]
 
 
 def struct_key(rec: Rec, ctx: Ctx) -> tuple | None:
@@ -194,7 +211,19 @@ def struct_key(rec: Rec, ctx: Ctx) -> tuple | None:
     if m := PAT["chuong"].match(t):
         return ("chuong", roman_to_int(m[1]), t)
     if m := PAT["phuluc"].match(t):
-        return ("phuluc", int(m[1]), t)
+        return ("phuluc", pl_num(m[1]), t)
+    if ctx.chuong and ctx.chuong[0] in ctx.numbered and not ctx.muc:
+        if (m := PAT["part"].match(t)) and (rec.kind == "header" or len(t) <= 100):
+            return ("part", m[1], t)
+        if m := PAT["khoan"].match(t):
+            n = int(m[1])
+            if ctx.nested_max and n == ctx.nested_max + 1:      # tiếp danh sách lồng (ITC IV.7: 1., 2.)
+                return ("nested", n, t)
+            if n == ctx.last_so + 1:                            # số tăng liên tục → mục mới
+                return ("so", n, re.split(r":\s", t, maxsplit=1)[0][:100])
+            if ctx.last_so and n == 1:                          # bắt đầu lại từ 1 → danh sách lồng
+                return ("nested", n, t)
+        return None
     if not (rec.kind == "header" or len(t) <= 150):
         return None
     if m := PAT["bosung"].match(t):
@@ -217,7 +246,7 @@ def classify_title(title: str, chuong: int | None) -> tuple | None:
     if m := PAT["chuong"].match(title):
         return ("chuong", roman_to_int(m[1]))
     if m := PAT["phuluc"].match(title):
-        return ("phuluc", int(m[1]))
+        return ("phuluc", pl_num(m[1]))
     if m := PAT["bosung"].match(title):
         return ("bosung", chuong, int(m[1]))
     if m := PAT["muc"].match(title):
@@ -245,8 +274,8 @@ def toc_from_pdf(pdf_path: str, pages: Iterable[int]) -> list[dict]:
     return entries
 
 
-def detected_keys(recs: list[Rec]) -> set[tuple]:
-    ctx, keys = Ctx(), set()
+def detected_keys(recs: list[Rec], numbered: frozenset = frozenset()) -> set[tuple]:
+    ctx, keys = Ctx(numbered=numbered), set()
     for r in recs:
         if k := struct_key(r, ctx):
             ctx.apply(k)
@@ -255,18 +284,18 @@ def detected_keys(recs: list[Rec]) -> set[tuple]:
 
 
 def reconcile(recs: list[Rec], toc: list[dict], page_offset: int = 0,
-              insert_levels: tuple = ("chuong", "phuluc")) -> tuple[list[Rec], dict]:
+              insert_levels: tuple = ("chuong", "phuluc"), numbered: frozenset = frozenset()) -> tuple[list[Rec], dict]:
     """So mục lục với tiêu đề tìm được. Chỉ chèn cấp luôn bắt đầu trang mới (chương, phụ lục);
     cấp thấp hơn thiếu thì chỉ báo cáo để tránh chèn sai chỗ giữa trang."""
     recs, inserted = list(recs), []
-    found = detected_keys(recs)
+    found = detected_keys(recs, numbered)
     for e in toc:
         if e["key"] not in found and e["key"][0] in insert_levels:
             page = e["page"] + page_offset
             idx = next((i for i, r in enumerate(recs) if r.page >= page), len(recs))
             recs.insert(idx, Rec("header", e["title"], page, synthetic=True))
             inserted.append(e["title"])
-    found = detected_keys(recs)                      # tính lại sau khi chèn (số chương của mục con đổi)
+    found = detected_keys(recs, numbered)                      # tính lại sau khi chèn (số chương của mục con đổi)
     missing = [f'{e["title"]} (tr.{e["page"]})' for e in toc if e["key"] not in found]
     return recs, {"toc_entries": len(toc), "matched": len(toc) - len(missing),
                   "missing": missing, "inserted": inserted}
@@ -280,16 +309,22 @@ class Unit:
     recs: list[Rec] = field(default_factory=list)
 
 
-def build_units(recs: list[Rec], structure: str = "legal") -> list[Unit]:
-    units, ctx, sec = [], Ctx(), 0
+def build_units(recs: list[Rec], structure: str = "legal", numbered: frozenset = frozenset()) -> list[Unit]:
+    units, ctx, sec = [], Ctx(numbered=numbered), 0
     cur = Unit(ids=[], path=[])
     for r in recs:
         if structure == "legal":
             if key := struct_key(r, ctx):
+                if key[0] == "nested":                     # không phải tiêu đề: ghi nhận rồi giữ làm nội dung
+                    ctx.apply(key)
+                    cur.recs.append(r)
+                    continue
                 if cur.recs:
                     units.append(cur)
                 ctx.apply(key)
                 cur = Unit(ids=ctx.id_parts(), path=ctx.path())
+                if key[0] == "so" and len(r.text) > 120:   # tiêu đề dính thân văn bản → giữ làm nội dung
+                    cur.recs.append(r)
                 continue
         elif r.kind == "header":                       # flat: BQL, tờ rơi → mỗi tiêu đề một đơn vị
             if cur.recs:
@@ -428,7 +463,7 @@ def unit_pieces(recs: list[Rec], budget: int, count) -> list[Piece]:
         if nxt is not None and nxt.kind == "table" and len(r.text) <= 150 and not PAT["khoan"].match(r.text):
             caption = r.text                           # dòng ngắn ngay trước bảng = tiêu đề bảng
             continue
-        m = PAT["khoan"].match(r.text)
+        m = PAT["khoan"].match(r.text) or PAT["khoan2"].match(r.text)
         if m and int(m[1]) == expect:
             knum, expect = expect, expect + 1
         if count(r.text) <= budget:
@@ -528,9 +563,11 @@ def chunk_document(doc, cfg: dict, count: Callable[[str], int], page_map: list[i
         recs = [r for r in recs if r.kind != "table"]
     report: dict = {}
     structure = cfg.get("structure", "legal")
+    numbered = frozenset(roman_to_int(x) for x in cfg.get("numbered_units", []))
     if structure == "legal" and cfg.get("toc_pages") and toc_pdf:
-        recs, report = reconcile(recs, toc_from_pdf(toc_pdf, cfg["toc_pages"]), cfg.get("toc_page_offset", 0))
-    units = build_units(recs, structure)
+        recs, report = reconcile(recs, toc_from_pdf(toc_pdf, cfg["toc_pages"]), cfg.get("toc_page_offset", 0),
+                                 numbered=numbered)
+    units = build_units(recs, structure, numbered)
     chunks, seen = [], set()
     for u in units:
         for ch in unit_to_chunks(u, cfg, count, max_tokens, page_map):

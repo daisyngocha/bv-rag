@@ -21,7 +21,14 @@ def section_prefixes(product: str, doc_type: str, sections: list[dict]) -> list[
         if "phu_luc" in s:
             pref = f'{base}_PL{s["phu_luc"]}'
         else:
-            pref = f'{base}_C{roman_to_int(s["chuong"])}' + (f'_M{roman_to_int(s["muc"])}' if s.get("muc") else "")
+            pref = f'{base}_C{roman_to_int(s["chuong"])}'
+            if s.get("part"):                                    # ITC: A./B. ngay dưới Phần
+                pref += f'_{s["part"]}'
+            if s.get("muc"):
+                pref += f'_M{s["muc"] if isinstance(s["muc"], int) else roman_to_int(s["muc"])}'
+        if n := s.get("so_count"):                               # ITC: mục đánh số 1..n đều phải có chunk
+            out += [f"{pref}_M{i}" for i in range(1, n + 1)]
+            continue
         out += [f'{pref}_B{b["so"]}' for b in s.get("bo_sung", [])] or [pref]
     return out
 
