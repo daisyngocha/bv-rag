@@ -1,3 +1,16 @@
 product_code,company,doc_type,url,downloaded_at,effective_date,file
-BVP,BHBV,bang_quyen_loi,https://baovietonline.com.vn/vi/bao-hiem-ca-nhan/1/bao-viet-an-gia.html ,2026-10-25,2025-06-27,products/BVP/bvp_bangquyenloi.pdf
-BVP,BHBV,quy_tac,https://baovietonline.com.vn/vi/bao-hiem-ca-nhan/1/bao-viet-an-gia.html ,2026-10-25,2025-06-27,products/BVP/bvp_quytac.pdf
+BVP,BHBV,bang_quyen_loi,https://baovietonline.com.vn/vi/bao-hiem-ca-nhan/1/bao-viet-an-gia.html,2026-10-25,2025-06-27,products/BVP/bvp_bangquyenloi.pdf
+BVP,BHBV,bang_phi,https://baovietonline.com.vn/vi/bao-hiem-ca-nhan/1/bao-viet-an-gia.html,2026-11-05,2025-06-27,products/BVP/bvp_bieuphi.pdf
+BVP,BHBV,quy_tac,https://baovietonline.com.vn/vi/bao-hiem-ca-nhan/1/bao-viet-an-gia.html,2026-10-25,2025-06-27,products/BVP/bvp_quytac.pdf
+BTB,BHBV,bang_quyen_loi,https://baovietonline.com.vn/vi/bao-hiem-ca-nhan/56/bao-viet-tam-binh.html,2026-11-05,2025-06-27,products/BTB/btb_bangquyenloi.pdf
+BTB,BHBV,bang_phi,https://baovietonline.com.vn/vi/bao-hiem-ca-nhan/56/bao-viet-tam-binh.html,2026-11-05,2025-06-27,products/BTB/btb_bieuphi.pdf
+BTB,BHBV,quy_tac,https://baovietonline.com.vn/vi/bao-hiem-ca-nhan/56/bao-viet-tam-binh.html,2026-11-05,2025-06-27,products/BTB/btb_quytac.pdf
+C37,BHBV,bang_quyen_loi,https://baovietonline.com.vn/vi/bao-hiem-ca-nhan/58/bao-hiem-37-benh-hiem-ngheo.html,2026-11-05,2025-06-27,products/C37/c37_bangquyenloi.pdf
+C37,BHBV,bang_phi,https://baovietonline.com.vn/vi/bao-hiem-ca-nhan/58/bao-hiem-37-benh-hiem-ngheo.html,2026-11-05,2025-06-27,products/C37/c37_bieuphi.pdf
+C37,BHBV,quy_tac,https://baovietonline.com.vn/vi/bao-hiem-ca-nhan/58/bao-hiem-37-benh-hiem-ngheo.html,2026-11-05,2025-06-27,products/C37/c37_quytac.pdf
+FLX,BHBV,bang_quyen_loi,https://baovietonline.com.vn/vi/bao-hiem-ca-nhan/9/bao-hiem-du-lich-quoc-te.html,2026-11-05,2025-06-27,products/FLX/flx_bangquyenloi.pdf
+FLX,BHBV,bang_phi,https://baovietonline.com.vn/vi/bao-hiem-ca-nhan/9/bao-hiem-du-lich-quoc-te.html,2026-11-05,2025-06-27,products/FLX/flx_bieuphi.pdf
+FLX,BHBV,quy_tac,https://baovietonline.com.vn/vi/bao-hiem-ca-nhan/9/bao-hiem-du-lich-quoc-te.html,2026-11-05,2025-06-27,products/FLX/flx_quytac.pdf
+ITC,BHBV,bang_quyen_loi,https://baovietonline.com.vn/vi/bao-hiem-ca-nhan/19/bao-hiem-intercare.html,2026-11-05,2025-06-27,products/ITC/itc_bangquyenloi.pdf
+ITC,BHBV,bang_phi,https://baovietonline.com.vn/vi/bao-hiem-ca-nhan/19/bao-hiem-intercare.html,2026-11-05,2025-06-27,products/ITC/itc_bieuphi.pdf
+ITC,BHBV,quy_tac,https://baovietonline.com.vn/vi/bao-hiem-ca-nhan/19/bao-hiem-intercare.html,2026-11-05,2025-06-27,products/ITC/itc_quytac.pdf

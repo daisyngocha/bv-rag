@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "purpose": "Đáp án chuẩn lập tay để kiểm tra parse/chunk của pilot BVP (bước 2). Số trang theo file đã tách (logs/pilot_bvp/bvp_quytac_split.pdf) trừ khi ghi *_original.",
+    "purpose": "Đáp án chuẩn lập tay để kiểm tra parse/chunk BVP (scripts/build_kb.py, bước check). Số trang quy tắc theo file đã tách (split_2up) trừ khi ghi *_original.",
     "created": "2026-10-25",
     "method": "Mục lục + đối chiếu thân văn bản + xem ảnh trang; không dùng regex của chunker làm nguồn"
   },
@@ -400,7 +400,7 @@
       "producer": "Adobe Illustrator 28.7 / PDF/X"
     },
     "issuance": {
-      "decision": null,
+      "decision": "6029/QĐ-BHBV",
       "note": "File không ghi QĐ/ngày hiệu lực. Cùng bộ 'BVAG New' với quy tắc QĐ 6029 (27/06/2025); ghi chú dẫn 'đơn vị hành chính cấp tỉnh trước 01/07/2025' nên là bản sau sáp nhập tỉnh. effective_date đề xuất 2025-06-27 (suy ra từ bộ tài liệu, ghi rõ trong sources.csv)."
     },
     "layout": {
@@ -556,7 +556,105 @@
       }
     ]
   },
+  "bvp_bieuphi.pdf": {
+    "file": {
+      "sha256": "a2f7e82c453af389353b8e1ede398b80ff2525591daf0098793492d30adc0e26",
+      "pdf_title": null,
+      "pdf_created": "2025-09-28",
+      "producer": "Microsoft® Word 2016"
+    },
+    "issuance": {
+      "decision": "6029/QĐ-BHBV",
+      "decision_date": "2025-06-27",
+      "issuer": "Tổng Giám đốc Tổng Công ty Bảo hiểm Bảo Việt",
+      "effective_date_stated": "2025-06-27",
+      "note": "Ban hành cùng Quyết định số 6029/QĐ-BHBV với quy tắc BVAG New."
+    },
+    "layout": {
+      "pages": 1,
+      "orientation": "A4 dọc",
+      "type": "1-up",
+      "split_2up": false
+    },
+    "text_layer": {
+      "has_text_layer": true,
+      "chars": 1958,
+      "nfd_chars": 0,
+      "ocr_needed": false
+    },
+    "noise": [
+      "Thông tin liên hệ đại lý/kênh bán ở chân trang: NGUYỄN CẢNH NAM – CÔNG TY BẢO VIỆT ĐÀ NẴNG"
+    ],
+    "tables": [
+      {
+        "id": "BP1",
+        "title": "BIỂU PHÍ BẢO HIỂM BẢO VIỆT AN GIA",
+        "page": 1,
+        "unit": "VND/người/năm",
+        "cols": 6,
+        "header": [
+          "CHƯƠNG TRÌNH BẢO HIỂM",
+          "ĐỒNG",
+          "BẠC",
+          "VÀNG",
+          "BẠCH KIM",
+          "KIM CƯƠNG"
+        ],
+        "group_rows": [
+          "A. BẢO HIỂM CHÍNH – Điều trị nội trú do ốm bệnh, tai nạn",
+          "B. BẢO HIỂM BỔ SUNG TÙY CHỌN THEO NHU CẦU",
+          "1. Điều trị ngoại trú do ốm, bệnh, tai nạn",
+          "2. BH Tai nạn cá nhân",
+          "3. BH Sinh mạng cá nhân",
+          "4. BH Nha Khoa",
+          "5. Bảo hiểm Thai sản"
+        ],
+        "cell_checks": [
+          {
+            "row": "Từ 15 ngày tuổi đến dưới 1 tuổi",
+            "col": "ĐỒNG",
+            "value": "Không"
+          },
+          {
+            "row": "Từ 15 ngày tuổi đến dưới 1 tuổi",
+            "col": "KIM CƯƠNG",
+            "value": "16.681.000"
+          },
+          {
+            "row": "Trên 51 đến 65 tuổi",
+            "col": "ĐỒNG",
+            "value": "1.866.000"
+          },
+          {
+            "row": "Trên 51 đến 65 tuổi",
+            "col": "KIM CƯƠNG",
+            "value": "6.972.000"
+          },
+          {
+            "row": "Ngoại trú (Trên 10 đến 30 tuổi)",
+            "col": "VÀNG",
+            "value": "2.381.000"
+          },
+          {
+            "row": "4. BH Nha Khoa",
+            "col": "VÀNG",
+            "value": "1.350.000"
+          },
+          {
+            "row": "5. Bảo hiểm Thai sản",
+            "col": "KIM CƯƠNG",
+            "value": "5.500.000"
+          }
+        ],
+        "risks": [
+          "Nhãn nhóm A và B cùng các đề mục quyền lợi bổ sung chia thành 2 bảng con hoặc 2 khối lồng nhau",
+          "Phần thông tin đại lý bán hàng ở cuối trang không thuộc nội dung quy tắc/biểu phí"
+        ]
+      }
+    ]
+  },
   "bvp_brochure.pdf": {
+    "kb_status": "excluded — không đưa vào kho truy xuất (decision-log 2026-11-05); giữ để đối chiếu",
     "file": {
       "sha256": "3bd7c611ab2f7f86a43040c9a9d067ff6677d4bdcab6bb940a42814ea74dee83",
       "pdf_title": "251003 - To roi-BVAG New",
@@ -630,8 +728,12 @@
     ]
   },
   "cross_file": {
-    "version_set": "BVAG New: quy tắc QĐ 6029 (27/06/2025, in 01/2026), BQL (07/2025), tờ rơi (10/2025)",
-    "consistency": "Số liệu BQL = bảng tờ rơi; điều kiện tuổi, thời hạn bồi thường khớp quy tắc",
-    "not_found": "Biểu phí (quy tắc mục VI dẫn 'Biểu phí đính kèm') chưa có trong bộ tài liệu"
+    "version_set": "BVAG New: quy tắc QĐ 6029 (27/06/2025, in 01/2026), BQL (07/2025), Biểu phí QĐ 6029 (27/06/2025); tờ rơi (10/2025) không đưa vào kho",
+    "consistency": "Điều kiện tuổi (15 ngày tuổi - 65 tuổi), thời hạn bồi thường khớp quy tắc; chương trình ĐỒNG đến KIM CƯƠNG của biểu phí khớp hoàn toàn với BQL1 và QĐ 6029",
+    "kb_files": [
+      "bvp_quytac.pdf",
+      "bvp_bangquyenloi.pdf",
+      "bvp_bieuphi.pdf"
+    ]
   }
 }
