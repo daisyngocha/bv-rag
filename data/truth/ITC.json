@@ -3,7 +3,7 @@
     "purpose": "Đáp án chuẩn lập tay để kiểm tra parse/chunk ITC (scripts/build_kb.py, bước check). Số trang quy tắc theo file đã tách (split_2up) = số trang in, trừ khi ghi *_original.",
     "created": "2026-11-05",
     "method": "Mục lục (trang tách 3) + đối chiếu thân văn bản + xem ảnh trang; không dùng regex của chunker làm nguồn",
-    "status": "NHÁP – Claude đọc từ pdftotext/pdfinfo; người duyệt đối chiếu ảnh trang trước khi commit (mục cần xem ghi ở review_todo)"
+    "status": "Đã duyệt 2026-11-05: đối chiếu ảnh g20, g24, g33, g54–59"
   },
   "itc_quytac.pdf": {
     "file": {"sha256": "294dd79eb19ffd9b1498a68f1c93468e48b788017f0f12ba6c07d548fb9a421b", "pdf_title": "251117-4. ITC - Quytac", "pdf_created": "2025-11-17", "producer": "Adobe Illustrator 28.7 / 3-Heights PDF Optimization Shell 5.9.1.5"},
@@ -52,8 +52,7 @@
       "Phần III không có tiêu đề mục → đóng gói theo khoản K{a}-{b}",
       "Khoản 2 cấp 1.1., 10.2. dùng làm nhãn khoản khi tách mục",
       "Tiêu đề PHẦN V xuống 2 dòng"
-    ],
-    "review_todo": ["Xem ảnh g20 (II.A.1) và g24 (II.B) để chắc A./B. là tiêu đề riêng", "Xem ảnh g33: danh sách bệnh 2 cột", "Xem ảnh g54–59: số dòng mỗi trang của PL1"]
+    ]
   },
   "itc_bangquyenloi.pdf": {
     "file": {"sha256": "671404ac7f5c34bb3df20240cf375c41ff49dac7749739143882f00a518f6e8b", "pdf_title": "1. ITC - Bang quyen loi", "pdf_created": "2026-05-19", "producer": "Adobe Illustrator 28.7 / Adobe PDF library 17.00"},
