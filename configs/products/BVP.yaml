@@ -18,7 +18,11 @@ files:
     toc_pages: [5]
   bvp_bangquyenloi:
     doc_type: bang_quyen_loi
-    doc_label: Bảng quyền lợi
+    doc_label: "Bảng quyền lợi"
+    structure: tabular
+  bvp_bieuphi:
+    doc_type: bang_phi
+    doc_label: "Biểu phí"
     structure: flat
 # bvp_brochure: không đưa vào kho (decision-log 2026-11-05); truth giữ bản ghi file để đối chiếu
 
@@ -30,5 +34,10 @@ checks:
     - {prefix: BVP_QT_PL1, first: 23, last: 26}
   forbidden:                           # caption ảnh lọt vào thân quy tắc
     quy_tac: ["Chi trả khám chữa bệnh", "Quyền lợi ngoại trú"]
-  required:                            # 2 khối ghi chú dưới BQL (ICU, đồng chi trả trẻ em)
-    bang_quyen_loi: ["70/30", "1,5 lần"]
+  required:
+    bang_quyen_loi:
+      - "70/30"
+      - "1,5 lần"
+    bang_phi:
+      - "6029/QĐ-BHBV"
+      - "VND/người/năm"
