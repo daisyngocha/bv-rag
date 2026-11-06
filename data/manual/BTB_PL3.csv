@@ -1,6 +1,6 @@
 # BTB quy tắc, Phụ lục III (trang scan 41–45 = trang in 39–43). Nhập tay từ ảnh trang vì OCR + TableFormer mất ô STT/tỉ lệ.
 # Giữ nguyên bản in: '08%' và '8%' (dòng 60), '6%' (dòng 57); dòng 39 in là 'Tháo khớp không một đùi'.
-# Đối chiếu: <người duyệt>, <ngày> — đánh dấu xong bằng cách sửa dòng này.
+# Đối chiếu: Lê Thị Ngọc Hà, 06/11/2026 — đã duyệt.
 page,STT,QUYỀN LỢI,TỈ LỆ TRẢ TIỀN
 41,I -,TỬ VONG,100%
 41,II -,THƯƠNG TẬT TOÀN BỘ VĨNH VIỄN,

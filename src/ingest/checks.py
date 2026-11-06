@@ -54,7 +54,7 @@ def run_checks(chunks: list[dict], truth: dict, files: dict, spec: dict, vocab: 
     for fname, t in truth.items():
         cells = [c for tb in t.get("tables", []) for c in tb.get("cell_checks", [])]
         if cells and fname in files:
-            txt = norm(" ".join(c["text"] for c in by_file(fname)))
+            txt = norm(" ".join(c["text"] for c in by_file(fname))).replace(";", "")   # bỏ ';' cả hai phía
             bad = [x["value"] for x in cells if norm(x["value"]).replace(";", "") not in txt]
             checks[f"{fname}: giá trị ô trong chunk ({len(cells) - len(bad)}/{len(cells)}, sai: {bad[:5]})"] = not bad
 
