@@ -3,7 +3,7 @@
   "purpose": "Đáp án chuẩn lập tay để kiểm tra parse/chunk FLX (scripts/build_kb.py, bước check). Trang quy tắc trong sections = trang tách = số trang in; page của chunk = trang gốc (gốc g ↔ tách 2g-2, 2g-1).",
   "created": "2026-11-06",
   "method": "Mục lục trang tách 3 + lớp chữ pdftotext theo từng nửa trang (quy tắc) + xem ảnh trang BQL/biểu phí (không có lớp chữ); không dùng regex của chunker hay text OCR làm nguồn",
-  "status": "NHÁP — cần duyệt: (1) so_count/đếm mục trên PDF; (2) cell_checks BQL và biểu phí trên ảnh trang; (3) ghi chú bất nhất BQL ↔ quy tắc (cross_file.inconsistencies). Biểu phí: số liệu đã đối chiếu nguồn 06/11."
+  "status": "Đã duyệt 2026-11-06 (Lê Thị Ngọc Hà): số đếm quy tắc (39 định nghĩa, Chương II 13 mục, III 13 điểm, IV 17 điều khoản); cell_checks BQL (nguồn data/manual/FLX_BQL.csv) và biểu phí (docx đã đối chiếu nguồn); bất nhất BQL ↔ quy tắc ghi ở cross_file.inconsistencies. Build WSL 06/11: 14/14 kiểm tra."
  },
  "flx_quytac.pdf": {
   "file": {
