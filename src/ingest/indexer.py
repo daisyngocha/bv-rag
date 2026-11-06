@@ -54,7 +54,9 @@ def _env_meta() -> dict:
     return meta
 
 
-def embed_corpus(chunks_path, out_dir, encoder, max_length: int = 512) -> dict:
+def embed_corpus(chunks_path, out_dir, encoder, max_length: int | None = None) -> dict:
+    from src.retrieve.encoder import CHUNK_MAX_LENGTH
+    max_length = max_length or CHUNK_MAX_LENGTH
     chunks = read_jsonl(chunks_path)
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
