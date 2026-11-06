@@ -26,8 +26,11 @@ files:
     structure: flat
     # Chữ dạng vector (Illustrator), không có lớp chữ trừ header/footer → OCR toàn trang (decision-log 2026-11-05)
     ocr: {lang: [vie], scale: 3.0}
+    table_overrides:                   # OCR đọc sai ô số tiền (build 1: 5/8, '750.000/ngày' → '70.000/ngài', mất hotline)
+      - {pages: [1, 2], csv: data/manual/FLX_BQL.csv}
     text_fixes:
       - ['(?<=\d),(?=\d{3}\b)', '.']   # bảng in lẫn 1,000,000,000 và 500.000/ngày → thống nhất dấu chấm
+      - ['6056\s*/\s*Q\S{0,3}-BH\S{0,2}V', '6056/QĐ-BHBV']   # OCR dòng QĐ: '6056/QĐÐ-BHEBV' (probe 216 dpi)
   flx_bieuphi:
     doc_type: bang_phi
     doc_label: Biểu phí
@@ -38,7 +41,7 @@ files:
 # Kiểm tra riêng của sản phẩm; số liệu chép từ truth lập tay
 checks:
   definitions: {prefix: FLX_QT_C1_M1_K, count: 39}
-  page_range: {quy_tac: [4, 35]}       # trang tách = trang in
+  page_range: {quy_tac: [3, 18]}       # trang gốc (page của chunk); nội dung = trang tách 4–35
   forbidden:                           # header/footer lặp mỗi trang của BQL
     bang_quyen_loi: ["Trụ sở chính", "Hotline"]
   required:

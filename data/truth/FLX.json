@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "purpose": "Đáp án chuẩn lập tay để kiểm tra parse/chunk FLX (scripts/build_kb.py, bước check). Trang quy tắc = trang file đã cắt split_2up = số trang in.",
+  "purpose": "Đáp án chuẩn lập tay để kiểm tra parse/chunk FLX (scripts/build_kb.py, bước check). Trang quy tắc trong sections = trang tách = số trang in; page của chunk = trang gốc (gốc g ↔ tách 2g-2, 2g-1).",
   "created": "2026-11-06",
   "method": "Mục lục trang tách 3 + lớp chữ pdftotext theo từng nửa trang (quy tắc) + xem ảnh trang BQL/biểu phí (không có lớp chữ); không dùng regex của chunker hay text OCR làm nguồn",
   "status": "NHÁP — cần duyệt: (1) so_count/đếm mục trên PDF; (2) cell_checks BQL và biểu phí trên ảnh trang; (3) ghi chú bất nhất BQL ↔ quy tắc (cross_file.inconsistencies)."
@@ -333,7 +333,8 @@
       "col": "VÀNG",
       "value": "10.000.000"
      }
-    ]
+    ],
+    "source": "data/manual/FLX_BQL.csv (nhập tay từ ảnh trang, table_overrides); OCR build 1: 5/8 (sai 750.000/ngày, 1.000.000/ngày, hotline)"
    }
   ],
   "notes": "(*) trẻ em 20% STBH, từ 70 tuổi 30%; (**) thẻ tín dụng không áp dụng trẻ em; (***) không áp dụng trẻ em; (****) trẻ em 50% STBH"
