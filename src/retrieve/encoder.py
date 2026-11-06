@@ -3,6 +3,10 @@ from __future__ import annotations
 
 import numpy as np
 
+# Giới hạn token khi embed chunk và khi rerank (cặp câu hỏi + chunk). Chunk cấu trúc có thể vượt max_tokens 512
+# (đơn vị không tách được, vd. BTB BQL 562 token); 1024 để không cắt đuôi. build_kb chặn chunk vượt ngưỡng này.
+CHUNK_MAX_LENGTH = 1024
+
 
 class M3Encoder:
     def __init__(self, model_name: str = "BAAI/bge-m3", device: str | None = None):
@@ -13,7 +17,7 @@ class M3Encoder:
         self.model_name = model_name
         self.model = BGEM3FlagModel(model_name, use_fp16=self.cuda)
 
-    def encode(self, texts: list[str], max_length: int = 512, batch_size: int | None = None):
+    def encode(self, texts: list[str], max_length: int = CHUNK_MAX_LENGTH, batch_size: int | None = None):
         """Trả về (dense float32 [n, 1024] đã chuẩn hóa, sparse list[dict[int, float]])."""
         out = self.model.encode(texts, batch_size=batch_size or (32 if self.cuda else 8), max_length=max_length,
                                 return_dense=True, return_sparse=True)

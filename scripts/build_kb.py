@@ -23,6 +23,7 @@ from src.ingest.align import align, align_report
 from src.ingest.checks import run_checks
 from src.ingest.chunker import DT_ABBR, build_vocab, chunk_document
 from src.ingest.fixed_chunker import chunk_fixed, make_offset_encoder, regex_offset_encoder
+from src.retrieve.encoder import CHUNK_MAX_LENGTH
 
 RAW, PARSED, PROCESSED = Path("data/raw/products"), Path("data/parsed"), Path("data/processed")
 META_KEYS = ("product_code", "product_name", "company", "line", "effective_date")
@@ -182,6 +183,8 @@ def chunk_product(pc: dict, struct_cfg: dict, fixed_cfg: dict, encode, tokenizer
         checks = run_checks(structure, truth, {c["source_file"]: c for c in files.values()}, pc.get("checks", {}), vocab)
     else:
         checks = {f"có truth {truth_path}": False}
+    long = [c["chunk_id"] for c in structure + fixed if count(c["text"]) > CHUNK_MAX_LENGTH]
+    checks[f"chunk ≤ {CHUNK_MAX_LENGTH} token, giới hạn embed/rerank (vượt: {long[:5]})"] = not long
     report["checks"] = checks
     report["align"] = align_report(align(structure, fixed))
 
