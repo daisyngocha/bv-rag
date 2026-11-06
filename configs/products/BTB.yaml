@@ -32,6 +32,9 @@ files:
     part_heads:                                 # Chương II: 2 nhóm không đánh số, mỗi nhóm đánh số lại từ 1 → C2_A_M{n}, C2_B_M{n}
       A: '^QUY\S+ LỢI B\S+ HI\S+ CHÍNH'          # chịu lỗi dấu OCR (QUYÈN, HIẾM)
       B: '^QUY\S+ LỢI B\S+ HI\S+ B\S+ SUNG'
+    ocr_structure_repair: true                  # tách 'CHƯƠNG V … I. HỒ SƠ' bị gộp; sửa số mục OCR (5... → 5., § → 8.)
+    table_overrides:                            # OCR + TableFormer mất ô STT/tỉ lệ PL III (build 1: 0/12)
+      - {pages: [41, 45], csv: data/manual/BTB_PL3.csv}
     text_fixes:   # chạy sau linearize, trước nhận cấu trúc. Từ không tồn tại → sửa độc lập; nhầm sang từ có thật → chỉ sửa theo ngữ cảnh
       - ['\b([Cc])h[ỉí]\s+phí\b', '\1hi phí']                # "chỉ phí" không bao giờ đúng
       - ['\bChỉ\s+trả\b', 'Chi trả']                         # đầu câu/ô bảng: "Chi trả theo chi phí thực tế"
@@ -54,6 +57,15 @@ files:
       - ['\b([Tt])ôi\s+(đa|thiểu)\b', '\1ối \2']
       - ['\b([Nn])ghĩ\s+(điều|việc|ốm)\b', '\1ghỉ \2']
       - ['\b([Tt])hai\s+sẵn\b', '\1hai sản']
+      - ['(?<!chỉ )\bchỉ\s+trả\b', 'chi trả']             # đọc tay hầu hết là "chi trả" (06/11)
+      - ['\b([Bb])ácsĩ\b', '\1ác sĩ']
+      - ['\b([Tt])ainạn\b', '\1ai nạn']
+      - ['từ\s+l5\s+ngày', 'từ 15 ngày']        # thay theo đúng dạng grep thấy
+      - ['6Š\s + tuổi', '65 tuổi']
+      - ['\b([Cc])hỉ\s+trả\b', '\1hi trả']                # đọc tay 10/10 là "chi trả" (06/11); "chỉ chỉ trả" → "chỉ chi trả"
+      - ['\b([Bb])ácsĩ\b', '\1ác sĩ']
+      - ['\b([Tt])ainạn\b', '\1ai nạn']
+      - ['(?<=\d)Š', '5']                                  # OCR đọc 5 thành Š sau chữ số (IV.2.1: "6Š tuổi")
   btb_bangquyenloi:
     doc_type: bang_quyen_loi
     doc_label: Bảng quyền lợi
@@ -77,7 +89,7 @@ checks:
   definitions: {prefix: BTB_QT_C1_M, count: 52}
   page_range: {quy_tac: [4, 45]}                # trang scan
   forbidden:
-    quy_tac: ["chỉ phí", "Chỉ phí", "bảo hiêm", "bảo hiếm", "BẢO HIẾM"]
+    quy_tac: ["chỉ phí", "Chỉ phí", "bảo hiêm", "bảo hiếm", "BẢO HIẾM", "chỉ trả"]
   required:
     quy_tac:
       - "Bảo vệ và xử lý dữ liệu cá nhân"       # IV.17, mục lục bỏ sót

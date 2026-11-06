@@ -5,6 +5,7 @@
 """
 from __future__ import annotations
 
+import csv
 import re
 import subprocess
 import unicodedata
@@ -62,6 +63,119 @@ def apply_text_fixes(recs: list[Rec], fixes: list | None) -> tuple[list[Rec], in
             if r.rows:
                 r.rows = [[fx(c) for c in row] for row in r.rows]
     return recs, n
+
+
+def apply_table_overrides(recs: list[Rec], overrides: list | None) -> tuple[list[Rec], list[dict], set[int]]:
+    """Thay mọi bảng Docling trên dải trang bằng 1 bảng nhập tay từ CSV (config table_overrides: [{pages: [a, b], csv: …}]).
+    Dùng khi OCR mất ô (BTB PL III: cột STT/tỉ lệ hẹp, TableFormer + Tesseract bỏ trống). CSV đã đối chiếu ảnh trang:
+    dòng đầu = page + tiêu đề cột; mỗi dòng sau = trang scan + các ô; dòng bắt đầu '#' là ghi chú.
+    Trả về (recs, báo cáo, tập trang được thay) — chunk bảng trên các trang này gắn manual: true."""
+    report, manual_pages = [], set()
+    for ov in overrides or []:
+        lo, hi = ov["pages"]
+        with open(ov["csv"], encoding="utf-8", newline="") as f:
+            lines = [r for r in csv.reader(f) if r and not r[0].lstrip().startswith("#")]
+        head, body = lines[0], lines[1:]
+        rows = [[c.strip() for c in head[1:]]] + [[c.strip() for c in r[1:]] for r in body]
+        pages = [lo] + [int(r[0]) for r in body]
+        if any(not lo <= p <= hi for p in pages):
+            raise ValueError(f"{ov['csv']}: có dòng ngoài trang {lo}–{hi}")
+        if len({len(r) for r in rows}) != 1:
+            raise ValueError(f"{ov['csv']}: số cột không đều")
+        out, replaced = [], 0
+        for r in recs:
+            if r.kind == "table" and lo <= r.page <= hi:
+                if not replaced:
+                    out.append(Rec("table", page=lo, rows=rows, row_pages=pages))
+                replaced += 1
+                continue
+            out.append(r)
+        if not replaced:
+            raise ValueError(f"table_overrides: không có bảng Docling nào trên trang {lo}–{hi} để thay")
+        recs = out
+        manual_pages |= set(range(lo, hi + 1))
+        report.append({"csv": ov["csv"], "pages": f"{lo}–{hi}", "replaced_tables": replaced, "rows": len(rows) - 1})
+    return recs, report, manual_pages
+
+
+
+
+def split_merged_heads(recs: list[Rec]) -> list[str]:
+    """OCR/Docling gộp 'CHƯƠNG V: …' với mục La Mã đầu tiên 'I. HỒ SƠ …' thành 1 tiêu đề → tách làm 2 (BTB tr.36)."""
+    merged = re.compile(rf"^((?:CHƯƠNG|PHẦN)\s+{ROMAN}\b.*?)\s+({ROMAN}\.\s+(\S.*))$")
+    out, log = [], []
+    for r in recs:
+        m = merged.match(r.text) if r.kind == "header" else None
+        if m and m[3][:1].isupper():
+            out += [Rec("header", m[1], r.page), Rec("header", m[2], r.page)]
+            log.append(f"tr.{r.page}: '{m[1][:40]}' | '{m[2][:40]}'")
+        else:
+            out.append(r)
+    recs[:] = out
+    return log
+
+
+NUM_OK = re.compile(r"^(\d{1,2})(\.{1,3})\s*(?=[^\W\d_])")
+NUM_SUB = re.compile(r"^\d+\.\d")
+NUM_BAD = re.compile(r"^(\S{1,3}?)[.,:…]{1,3}\s+(?=[^\W\d_])")
+LOOKALIKE = set("0123456789§$SIlL|Oo!()[]")
+
+
+def repair_numbering(recs: list[Rec], numbered: frozenset, part_heads: tuple = ()) -> dict:
+    """Sửa số mục bị OCR đọc sai trong chương đánh số (config ocr_structure_repair). Chỉ xét tiêu đề Docling (section_header):
+    - '5... Bệnh' → '5. Bệnh' (nhiều dấu chấm);
+    - '§. Bệnh đặc biệt' giữa 7. và 9. → '8. …': số hỏng chỉ được suy khi số ứng viên giữa hai mốc đúng bằng số còn thiếu.
+    Không đoán được thì để nguyên và báo cáo khoảng hở để thêm text_fixes."""
+    fixed, gaps, seg, where = [], [], [], ""
+
+    def flush():
+        n, pending = 0, []
+        for i, k in seg:
+            if k is None:
+                pending.append(i)
+                continue
+            if k <= n:                                   # danh sách lồng / số đọc sai nhỏ hơn → bỏ qua
+                continue
+            if k - n - 1:
+                if len(pending) == k - n - 1:
+                    for j, pi in enumerate(pending, n + 1):
+                        old = recs[pi].text
+                        recs[pi].text = NUM_BAD.sub(f"{j}. ", old, count=1)
+                        fixed.append(f"tr.{recs[pi].page}: '{old[:40]}' → {j}.")
+                else:
+                    gaps.append(f"{where}: {n} → {k}, thiếu {k - n - 1} số, {len(pending)} ứng viên")
+            pending, n = [], k
+        if pending:
+            gaps.append(f"{where}: sau {n} còn {len(pending)} tiêu đề số hỏng, không có mốc sau để suy")
+        seg.clear()
+
+    active = False
+    for i, r in enumerate(recs):
+        if r.kind != "header":
+            continue
+        t = r.text
+        if (m := PAT["chuong"].match(t)) or PAT["phuluc"].match(t):
+            flush()
+            active = bool(m) and roman_to_int(m[1]) in numbered
+            where = t[:30]
+            continue
+        if not active:
+            continue
+        if any(rx.match(t) for _, rx in part_heads):
+            flush()
+            where = t[:30]
+            continue
+        if NUM_SUB.match(t):
+            continue
+        if m := NUM_OK.match(t):
+            if len(m[2]) > 1:
+                r.text = f"{m[1]}. {t[m.end():]}"
+                fixed.append(f"tr.{r.page}: '{t[:40]}' → {m[1]}.")
+            seg.append((i, int(m[1])))
+        elif (m := NUM_BAD.match(t)) and set(m[1]) & LOOKALIKE and not (len(m[1]) == 1 and m[1].islower()):
+            seg.append((i, None))
+    flush()
+    return {"numbering_fixed": fixed, "numbering_gaps": gaps}
 
 
 def compile_part_heads(spec: dict | None) -> tuple:
@@ -602,7 +716,8 @@ def unit_to_chunks(u: Unit, cfg: dict, count, max_tokens: int, page_map: list[in
             "doc_type": cfg["doc_type"], "section_path": " > ".join(u.path) or cfg["doc_label"],
             "is_table": all(p.is_table for p in pk), "effective_date": cfg["effective_date"],
             "source_file": cfg["source_file"], "page": orig(pk[0].page),
-            "ocr": bool(cfg.get("ocr")), "manual": False,
+            "ocr": bool(cfg.get("ocr")),
+            "manual": any(p.is_table and p.page in cfg.get("_manual_pages", ()) for p in pk),
         })
     return out
 
@@ -635,9 +750,15 @@ def chunk_document(doc, cfg: dict, count: Callable[[str], int], page_map: list[i
     vocab = build_vocab(vocab_pdf) if vocab_pdf else set()
     recs = linearize(doc, set(cfg.get("skip_pages", [])), vocab)
     recs, n_fix = apply_text_fixes(recs, cfg.get("text_fixes"))
+    recs, ov_rep, manual_pages = apply_table_overrides(recs, cfg.get("table_overrides"))
+    cfg = {**cfg, "_manual_pages": manual_pages}
     if cfg.get("drop_tables"):
         recs = [r for r in recs if r.kind != "table"]
     report: dict = {"text_fixes": n_fix} if cfg.get("text_fixes") else {}
+    if ov_rep:
+        report["table_overrides"] = ov_rep
+    if cfg.get("ocr_structure_repair"):
+        report["merged_heads_split"] = split_merged_heads(recs)
     if (lr := cfg.get("layout_rows")) and vocab_pdf:
         recs, report["layout_rows"] = apply_layout_rows(recs, vocab_pdf, lr, vocab)
     structure = cfg.get("structure", "legal")
@@ -649,6 +770,8 @@ def chunk_document(doc, cfg: dict, count: Callable[[str], int], page_map: list[i
         report.update(apply_toc_titles(recs, toc))
     elif cfg.get("toc_pages") and toc_pdf:
         toc = toc_from_pdf(toc_pdf, cfg["toc_pages"])
+    if cfg.get("ocr_structure_repair"):                        # sau khi tiêu đề chương đã sửa theo mục lục
+        report.update(repair_numbering(recs, numbered, compile_part_heads(cfg.get("part_heads"))))
     if structure == "legal" and toc:
         recs, toc_rep = reconcile(recs, toc, cfg.get("toc_page_offset", 0), numbered=numbered)
         report.update(toc_rep)

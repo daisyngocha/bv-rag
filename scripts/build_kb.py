@@ -164,6 +164,10 @@ def chunk_product(pc: dict, struct_cfg: dict, fixed_cfg: dict, encode, tokenizer
             print("      SỬA TIÊU ĐỀ:", m)
         for m in rep.get("toc_titles_unmatched", []):
             print("      TIÊU ĐỀ KHÔNG KHỚP MỤC LỤC:", m)
+        for key, lab in (("table_overrides", "BẢNG NHẬP TAY"), ("merged_heads_split", "TÁCH TIÊU ĐỀ GỘP"),
+                         ("numbering_fixed", "SỬA SỐ MỤC"), ("numbering_gaps", "KHOẢNG HỞ SỐ MỤC")):
+            for m in rep.get(key, []):
+                print(f"      {lab}:", m)
 
     if pc.get("manual_units"):
         ms, mf = manual_chunks(pc, structure, fixed, count, struct_cfg["max_tokens"])

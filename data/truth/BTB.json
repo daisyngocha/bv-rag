@@ -217,7 +217,8 @@
      {
       "row": "57. Mất hai ngón 3 và 4; hoặc mất hai ngón 3 và 5; hoặc mất hai ngón 4 và 5",
       "page": 42,
-      "value": "Mất hai ngón 3 và 4; hoặc mất hai ngón 3 và 5; hoặc mất hai ngón 4 và 5 | 6%"
+      "value": "hoặc mất hai ngón 4 và 5 | 6%",
+      "note": "checker bỏ ';' khỏi value → lấy đoạn sau ';' cuối"
      },
      {
       "row": "71. Khuyết xương sọ (chưa có biểu hiện thần kinh, tâm thần) gây ra đau đầu kéo dài",
@@ -255,7 +256,8 @@
       "value": "Mất một phần nhỏ lưỡi (dưới 1/3) ảnh hưởng đến phát âm | 10%"
      }
     ],
-    "cell_checks_note": "value = 'quyền lợi | tỉ lệ' để kiểm cả chữ OCR lẫn việc ghép đúng ô (render bảng '| a | b |', so sánh bỏ khoảng trắng)"
+    "cell_checks_note": "value = 'quyền lợi | tỉ lệ' để kiểm cả chữ OCR lẫn việc ghép đúng ô (render bảng '| a | b |', so sánh bỏ khoảng trắng)",
+    "source": "data/manual/BTB_PL3.csv (nhập tay từ ảnh trang, table_overrides); OCR + TableFormer mất ô STT/tỉ lệ (build 1: 0/12)"
    },
    {
     "id": "QT_III_43",
