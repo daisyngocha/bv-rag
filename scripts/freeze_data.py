@@ -7,6 +7,8 @@ ghi vào processed/{ver}: sửa chunk thì nâng data_version (v2…).
 Chạy ở gốc repo, trên WSL:
     PYTHONPATH=. python scripts/freeze_data.py freeze v1 --vectors data/vectors/v1   # tạo manifest (một lần)
     PYTHONPATH=. python scripts/freeze_data.py verify v1 --vectors data/vectors/v1   # so lại với manifest
+Trên Colab trỏ vào Drive (scripts/colab_batch.ipynb gọi sẵn):
+    python scripts/freeze_data.py verify v1 --processed $DRIVE_DIR/processed/v1 --vectors $DRIVE_DIR/vectors/v1
 """
 import argparse, hashlib, json, subprocess, sys
 from collections import Counter
@@ -35,9 +37,9 @@ def file_hashes(root: Path) -> dict[str, str]:
     return {str(p.relative_to(root)): sha256(p) for p in sorted(root.rglob("*")) if p.is_file()}
 
 
-def collect(ver: str, vectors: Path | None) -> tuple[dict, list[str]]:
+def collect(ver: str, root: Path, vectors: Path | None) -> tuple[dict, list[str]]:
     """Trả về (nội dung manifest, danh sách lỗi). Lỗi = điều kiện không được đóng băng."""
-    root, errors = PROCESSED / ver, []
+    errors = []
     if not root.is_dir():
         sys.exit(f"Không có {root}")
 
@@ -111,11 +113,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["freeze", "verify"])
     ap.add_argument("ver")
+    ap.add_argument("--processed", type=Path, help="mặc định data/processed/{ver}")
     ap.add_argument("--vectors", type=Path, help="data/vectors/{ver} (kéo về bằng scripts/sync.sh pull vectors)")
     a = ap.parse_args()
     path = MANIFESTS / f"{a.ver}.json"
 
-    manifest, errors = collect(a.ver, a.vectors)
+    manifest, errors = collect(a.ver, a.processed or PROCESSED / a.ver, a.vectors)
     if errors:
         sys.exit("Không đạt:\n  " + "\n  ".join(errors))
 

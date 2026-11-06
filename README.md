@@ -124,6 +124,11 @@ QDRANT_URL=http://localhost:6333 PYTHONPATH=. python -m src.ingest.indexer index
     --processed data/processed/v1 --vectors data/vectors/v1 --version v1
 ```
 
+Đóng băng một phiên bản (trước khi soạn benchmark và chạy B0–B4 trên nó) bằng
+`PYTHONPATH=. python scripts/freeze_data.py freeze v1 --vectors data/vectors/v1`, rồi commit `data/manifests/v1.json`.
+Sau đó `build_kb.py` không ghi đè `processed/v1` nữa, còn `colab_batch.ipynb` (cell 3b) kiểm `processed` và `vectors`
+trên Drive theo manifest và bỏ qua bước embed.
+
 Collection đặt tên `bv_{ver}_{chunking}`. Truy xuất qua `src.retrieve.hybrid.Retriever` (dense | sparse | hybrid RRF,
 lọc metadata bằng dict, ví dụ `{"product_code": ["BVP"], "doc_type": "quy_tac"}`); câu hỏi encode bằng
 `src.retrieve.encoder.M3Encoder`, trên WSL chạy CPU được vì câu hỏi ngắn.
