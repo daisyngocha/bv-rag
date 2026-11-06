@@ -35,8 +35,8 @@ files:
     doc_type: bang_phi
     doc_label: Biểu phí
     structure: flat
-    # Word 2016 chứa 2 ảnh chụp bảng phí công khai trên web, không có lớp chữ; không ghi QĐ → gán theo bộ tài liệu
-    ocr: {lang: [vie], scale: 3.0}
+    # Nguồn: flx_bieuphi.docx (người dùng cung cấp 06/11, "biểu phí chuẩn"), xuất PDF khổ ngang lề 0,5" để đủ 4 cột
+    # (khổ dọc Letter làm tràn cột Kim Cương). Có lớp chữ → không OCR. Không ghi QĐ → effective_date theo bộ tài liệu.
 
 # Kiểm tra riêng của sản phẩm; số liệu chép từ truth lập tay
 checks:
@@ -57,5 +57,6 @@ checks:
       - "8.000.000.000"
       - "1.000.000/ngày"
     bang_phi:
-      - "7.938.000"
-      - "149.000"
+      - "15.687.000"                     # cá nhân, Đến 365 ngày, Kim Cương
+      - "31.374.000"                     # gia đình, Đến 365 ngày, Kim Cương
+      - "tối đa 05 thành viên"

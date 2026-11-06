@@ -341,68 +341,91 @@
  },
  "flx_bieuphi.pdf": {
   "file": {
-   "sha256": "f8743afe78af11a55b9468f7d405388ce43a2e72145ac9f8d603feb2cf3f7632",
-   "pdf_created": "2026-11-05",
-   "producer": "Microsoft Word 2016"
+   "sha256": "b44433e33aecaecf6548f6e1ead739a85ac2e22f6090e9ee089bebd03bef39b5",
+   "source": "flx_bieuphi.docx (Le Thi Ngoc Ha, tạo 2026-11-06), xuất PDF bằng LibreOffice 24.2, khổ Letter ngang, lề 0,5\"",
+   "producer": "LibreOffice 24.2",
+   "pages": 8
   },
   "issuance": {
    "decision": null,
-   "note": "file tự dựng 05/11/2026: Word chứa 2 ảnh chụp 'Bảng phí theo thời hạn và 4 chương trình' (nguồn: biểu phí công khai trên web); không ghi QĐ, không phân theo Vùng 1–3 → effective_date gán theo bộ tài liệu (6056)"
+   "note": "không ghi QĐ → effective_date gán theo bộ tài liệu (6056). Thay bản 05/11 (Word chứa ảnh chụp, 26 dòng đến 182 ngày)."
   },
   "layout": {
-   "pages": 1,
-   "rows": 26,
-   "row_labels": "Đến 3 ngày, 4–6, 7–10, 11–14, rồi bước 7 ngày đến 176–182 ngày",
-   "columns": [
-    "BẠC",
-    "VÀNG",
-    "BẠCH KIM",
-    "KIM CƯƠNG"
+   "tables": [
+    {
+     "id": "BP_CN",
+     "title": "Biểu phí bảo hiểm du lịch quốc tế Flexi dành cho cá nhân",
+     "rows": 55,
+     "row_labels": "Đến 3 ngày, Từ 4-6, 7-10, 11-14, rồi bước 7 ngày đến 358-364, Đến 365 ngày"
+    },
+    {
+     "id": "BP_GD",
+     "title": "Biểu phí bảo hiểm dành cho gia đình",
+     "rows": 55,
+     "intro": "3 đoạn văn: tối đa 05 thành viên (vợ, chồng, con ruột/con nuôi hợp pháp dưới 16 tuổi), cùng hành trình, cùng chương trình"
+    }
    ],
-   "unit": "VNĐ/người/chuyến",
-   "images": 2
+   "columns": [
+    "Chương trình Bạc",
+    "Chương trình Vàng",
+    "Chương trình Bạch Kim",
+    "Chương trình Kim Cương"
+   ],
+   "unit": "VNĐ (không ghi trong file)"
   },
   "text_layer": {
-   "has_text_layer": false,
-   "ocr_needed": true
+   "has_text_layer": true,
+   "ocr_needed": false
+  },
+  "data_quality": {
+   "rule": "gia đình = 2 × cá nhân; mỗi cột tăng đều theo bước 7 ngày (CN: Bạc 95.000, Vàng 129.000, Bạch Kim 200.000, Kim Cương 287.000)",
+   "anomalies_pending_review": [
+    "CN 92-98 ngày Bạc '1.437,000' (dấu phẩy)",
+    "GĐ 78-84 ngày Bạch Kim '5,460.000' (dấu phẩy)",
+    "CN 127-133 ngày Vàng 2.539.000: theo bước và GĐ (5.186.000 = 2 × 2.593.000) nhiều khả năng là 2.593.000 (đảo số)",
+    "GĐ 232-238 ngày Kim Cương 20.460.000 ≠ 2 × 10.234.000 = 20.468.000",
+    "GĐ 253-259 ngày Kim Cương 22.180.000 ≠ 2 × 11.095.000 = 22.190.000",
+    "GĐ 309-315 ngày Kim Cương 27.782.000 ≠ 2 × 13.391.000 = 26.782.000",
+    "GĐ Bạch Kim từ 11-14 ngày trở đi = 2 × CN + 60.000 (1.460.000 vs 1.400.000 …); không suy được bên nào đúng"
+   ]
   },
   "tables": [
    {
     "id": "BP",
-    "page": 1,
+    "pages": "1–8",
     "cell_checks": [
      {
-      "row": "Đến 3 ngày",
-      "col": "BẠC",
+      "row": "CN Đến 3 ngày",
+      "col": "Bạc",
       "value": "149.000"
      },
      {
-      "row": "11–14 ngày",
-      "col": "KIM CƯƠNG",
-      "value": "1.050.000"
-     },
-     {
-      "row": "15–21 ngày",
-      "col": "KIM CƯƠNG",
-      "value": "1.337.000"
-     },
-     {
-      "row": "92–98 ngày",
-      "col": "KIM CƯƠNG",
-      "value": "4.494.000",
-      "note": "dòng đầu ảnh thứ 2"
-     },
-     {
-      "row": "99–105 ngày",
-      "col": "VÀNG",
-      "value": "2.077.000"
-     },
-     {
-      "row": "176–182 ngày",
-      "col": "KIM CƯƠNG",
+      "row": "CN Từ 176-182 ngày",
+      "col": "Kim Cương",
       "value": "7.938.000"
+     },
+     {
+      "row": "CN Đến 365 ngày",
+      "col": "Kim Cương",
+      "value": "15.687.000"
+     },
+     {
+      "row": "GĐ Từ 162-168 ngày",
+      "col": "Kim Cương",
+      "value": "14.728.000"
+     },
+     {
+      "row": "GĐ Từ 344-350 ngày",
+      "col": "Vàng",
+      "value": "13.184.000"
+     },
+     {
+      "row": "GĐ Đến 365 ngày",
+      "col": "Kim Cương",
+      "value": "31.374.000"
      }
-    ]
+    ],
+    "note": "chỉ chọn ô không nằm trong anomalies_pending_review"
    }
   ]
  },
@@ -414,7 +437,7 @@
   "inconsistencies": [
    "BQL Mục 1.3 'Chết hoặc thương tật toàn bộ vĩnh viễn do tai nạn trong phương tiện giao thông công cộng' ↔ quy tắc Mục I.B chỉ 'Tử vong'",
    "Quy tắc Mục I.C (TTTBVV), điều kiện 1 ghi 'chỉ chi trả khi thời điểm tử vong nằm trong thời hạn bảo hiểm' (lỗi soạn thảo nguyên văn)",
-   "Biểu phí không phân theo Vùng 1–3 dù quy tắc ghi 'khu vực rộng nhất sẽ được áp dụng để tính phí'"
+   "Biểu phí không phân theo Vùng 1–3 dù quy tắc (Chương I.II) ghi 'khu vực rộng nhất sẽ được áp dụng để tính phí'"
   ],
   "kb_files": [
    "flx_quytac.pdf",
