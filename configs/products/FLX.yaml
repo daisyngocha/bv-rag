@@ -1,0 +1,62 @@
+# Cấu hình xây kho tri thức cho 1 sản phẩm: scripts/build_kb.py --product FLX
+# Khóa trong files = tên file (không đuôi) trong data/raw/products/FLX/; khóa riêng của file ghi đè meta sản phẩm.
+product_code: FLX
+product_name: Bảo hiểm Du lịch Flexi
+company: BHBV
+line: phi_nhan_tho
+effective_date: "2025-06-27"           # QĐ 6056/QĐ-BHBV ngày 27/06/2025 (quy tắc trang tách 2, BQL)
+truth: data/truth/FLX.json
+parse: {backend: pdfium, ocr: false, num_threads: 8}
+
+files:
+  flx_quytac:
+    doc_type: quy_tac
+    doc_label: Quy tắc
+    structure: legal
+    split_2up: true                    # gốc 1, 19 dọc (A5) giữ nguyên; gốc 2–18 ngang → trang tách = số trang in
+    skip_pages: [1, 2, 3, 36]          # bìa, tên + QĐ + lời dẫn, mục lục, bìa sau
+    toc_pages: [3]
+    text_fixes:                        # Chương II đánh mục "Mục I – …" → "I. …" để nhận là mục La Mã (như BVP)
+      - ['^Mục\s+([IVX]+)\s*[–-]\s*', '\1. ']
+      - ['^1\.\s*\.(?=\S)', '1. ']     # I.1 in là "1. .Bác sĩ chuyên khoa"
+      - ['^35\.(?=\S)', '35. ']        # I.35 in là "35.Trẻ em"
+  flx_bangquyenloi:
+    doc_type: bang_quyen_loi
+    doc_label: Bảng quyền lợi
+    structure: flat
+    # Chữ dạng vector (Illustrator), không có lớp chữ trừ header/footer → OCR toàn trang (decision-log 2026-11-05)
+    ocr: {lang: [vie], scale: 3.0}
+    table_overrides:                   # OCR đọc sai ô số tiền (build 1: 5/8, '750.000/ngày' → '70.000/ngài', mất hotline)
+      - {pages: [1, 2], csv: data/manual/FLX_BQL.csv}
+    text_fixes:
+      - ['(?<=\d),(?=\d{3}\b)', '.']   # bảng in lẫn 1,000,000,000 và 500.000/ngày → thống nhất dấu chấm
+      - ['6056\s*/\s*Q\S{0,3}-BH\S{0,2}V', '6056/QĐ-BHBV']   # OCR dòng QĐ: '6056/QĐÐ-BHEBV' (probe 216 dpi)
+  flx_bieuphi:
+    doc_type: bang_phi
+    doc_label: Biểu phí
+    structure: flat
+    # Nguồn: flx_bieuphi.docx (người dùng cung cấp 06/11, "biểu phí chuẩn"), xuất PDF khổ ngang lề 0,5" để đủ 4 cột
+    # (khổ dọc Letter làm tràn cột Kim Cương). Có lớp chữ → không OCR. Không ghi QĐ → effective_date theo bộ tài liệu.
+
+# Kiểm tra riêng của sản phẩm; số liệu chép từ truth lập tay
+checks:
+  definitions: {prefix: FLX_QT_C1_M1_K, count: 39}
+  page_range: {quy_tac: [3, 18]}       # trang gốc (page của chunk); nội dung = trang tách 4–35
+  forbidden:                           # header/footer lặp mỗi trang của BQL
+    bang_quyen_loi: ["Trụ sở chính", "Hotline"]
+  required:
+    quy_tac:
+      - "từ 06 (sáu) tháng tuổi đến hết 85 (tám mươi lăm) tuổi"   # I.15
+      - "Afghanistan"                                            # I.II danh sách cấm vận
+      - "khủng bố NCB"                                           # III.13
+      - "hoàn lại 80% phí bảo hiểm"                              # Chương V
+      - "tối đa là 10 ngày"                                      # Chương VI
+      - "không quá 365 ngày"                                     # Chương VII.c
+    bang_quyen_loi:
+      - "6056/QĐ-BHBV"
+      - "8.000.000.000"
+      - "1.000.000/ngày"
+    bang_phi:
+      - "15.687.000"                     # cá nhân, Đến 365 ngày, Kim Cương
+      - "31.374.000"                     # gia đình, Đến 365 ngày, Kim Cương
+      - "tối đa 05 thành viên"

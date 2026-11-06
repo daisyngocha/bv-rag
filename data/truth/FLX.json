@@ -1,0 +1,453 @@
+{
+ "_meta": {
+  "purpose": "Đáp án chuẩn lập tay để kiểm tra parse/chunk FLX (scripts/build_kb.py, bước check). Trang quy tắc trong sections = trang tách = số trang in; page của chunk = trang gốc (gốc g ↔ tách 2g-2, 2g-1).",
+  "created": "2026-11-06",
+  "method": "Mục lục trang tách 3 + lớp chữ pdftotext theo từng nửa trang (quy tắc) + xem ảnh trang BQL/biểu phí (không có lớp chữ); không dùng regex của chunker hay text OCR làm nguồn",
+  "status": "Đã duyệt 2026-11-06 (Lê Thị Ngọc Hà): số đếm quy tắc (39 định nghĩa, Chương II 13 mục, III 13 điểm, IV 17 điều khoản); cell_checks BQL (nguồn data/manual/FLX_BQL.csv) và biểu phí (docx đã đối chiếu nguồn); bất nhất BQL ↔ quy tắc ghi ở cross_file.inconsistencies. Build WSL 06/11: 14/14 kiểm tra."
+ },
+ "flx_quytac.pdf": {
+  "file": {
+   "sha256": "818dcda7fbe52be7d07c398b7725df4ea2183b1b9fa09abf2db0b342fa8afcb3",
+   "pdf_title": "251023 - 2.Quy-tac-BH-DL-Flexi",
+   "pdf_created": "2025-10-27",
+   "producer": "Adobe Illustrator 28.7"
+  },
+  "issuance": {
+   "decision": "6056/QĐ-BHBV",
+   "decision_date": "2025-06-27",
+   "issuer": "Tổng Giám đốc Tổng Công ty Bảo hiểm Bảo Việt",
+   "where": "trang tách 2",
+   "note": "in là '6056 /QĐ-BHBV ngày 27/6/2025' (khoảng trắng trước /QĐ)"
+  },
+  "layout": {
+   "pages": 19,
+   "split_pages": 36,
+   "type": "gốc 1, 19 dọc A5; gốc 2–18 ngang 2-up",
+   "page_mapping": "trang tách = số trang in (gốc 3 trái = in 04)"
+  },
+  "text_layer": {
+   "has_text_layer": true,
+   "usable": true,
+   "ocr_needed": false
+  },
+  "pages_role": {
+   "skip": {
+    "1": "bìa",
+    "2": "tên quy tắc + QĐ + lời dẫn",
+    "3": "mục lục",
+    "36": "bìa sau"
+   },
+   "content": "4–35"
+  },
+  "toc": {
+   "page": 3,
+   "entries": 22,
+   "levels": "CHƯƠNG I–VII; I.I, I.II; Mục I–XIII của Chương II"
+  },
+  "structure": {
+   "levels": [
+    "CHƯƠNG I–VII (in 'CHƯƠNG I - …', Chương V tiêu đề xuống dòng)",
+    "Chương I: mục La Mã I. ĐỊNH NGHĨA, II. PHẠM VI LÃNH THỔ",
+    "Chương II: 'Mục I – …' đến 'Mục XIII – …' (text_fixes → 'I. …'), trong mục có A./B./C.",
+    "khoản 1., 2.; điểm a./b.; i./ii."
+   ],
+   "has_dieu": false,
+   "untitled_numbered": "Chương III: điểm loại trừ 1–13 không tiêu đề → đóng gói theo khoản",
+   "print_quirks": [
+    "I.1 in '1. .Bác sĩ chuyên khoa…'",
+    "I.35 in '35.Trẻ em' (thiếu khoảng trắng)"
+   ]
+  },
+  "sections": [
+   {
+    "chuong": "I",
+    "muc": "I",
+    "title": "ĐỊNH NGHĨA",
+    "page": 4,
+    "items": "1–39 (tr.4–12)"
+   },
+   {
+    "chuong": "I",
+    "muc": "II",
+    "title": "PHẠM VI LÃNH THỔ",
+    "page": 13,
+    "items": "Vùng 1–3 + danh sách cấm vận"
+   },
+   {
+    "chuong": "II",
+    "muc": "I",
+    "title": "TAI NẠN CÁ NHÂN",
+    "page": 14,
+    "parts": [
+     {
+      "part": "A",
+      "title": "Tử vong do tai nạn không bao gồm trường hợp tham gia phương tiện giao thông công cộng",
+      "page": 14
+     },
+     {
+      "part": "B",
+      "title": "Tử vong do tai nạn khi tham gia phương tiện giao thông công cộng",
+      "page": 15
+     },
+     {
+      "part": "C",
+      "title": "Thương tật toàn bộ vĩnh viễn do tai nạn bất kỳ",
+      "page": 15
+     }
+    ]
+   },
+   {
+    "chuong": "II",
+    "muc": "II",
+    "title": "CHI PHÍ Y TẾ VÀ CÁC CHI PHÍ KHÁC",
+    "page": 16,
+    "parts": [
+     {
+      "part": "A",
+      "title": "Chi phí y tế do tai nạn, điều trị ốm bệnh",
+      "page": 16
+     },
+     {
+      "part": "B",
+      "title": "Trợ cấp nằm viện",
+      "page": 18
+     }
+    ]
+   },
+   {
+    "chuong": "II",
+    "muc": "III",
+    "title": "VẬN CHUYỂN CẤP CỨU",
+    "page": 18,
+    "parts": [
+     {
+      "part": "A",
+      "title": "Chi phí vận chuyển y tế cấp cứu",
+      "page": 18
+     },
+     {
+      "part": "B",
+      "title": "Hồi hương thi hài",
+      "page": 19
+     },
+     {
+      "part": "C",
+      "title": "Chi phí mai táng",
+      "page": 19
+     }
+    ]
+   },
+   {
+    "chuong": "II",
+    "muc": "IV",
+    "title": "HÀNH LÝ TƯ TRANG",
+    "page": 20
+   },
+   {
+    "chuong": "II",
+    "muc": "V",
+    "title": "NHẬN HÀNH LÝ CHẬM",
+    "page": 22
+   },
+   {
+    "chuong": "II",
+    "muc": "VI",
+    "title": "TIỀN MANG THEO VÀ GIẤY TỜ THÔNG HÀNH",
+    "page": 22
+   },
+   {
+    "chuong": "II",
+    "muc": "VII",
+    "title": "TRÁCH NHIỆM CÁ NHÂN",
+    "page": 23
+   },
+   {
+    "chuong": "II",
+    "muc": "VIII",
+    "title": "CHUYẾN ĐI BỊ TRÌ HOÃN",
+    "page": 24
+   },
+   {
+    "chuong": "II",
+    "muc": "IX",
+    "title": "MẤT TIỀN ĐẶT CỌC HAY HỦY BỎ CHUYẾN ĐI",
+    "page": 25
+   },
+   {
+    "chuong": "II",
+    "muc": "X",
+    "title": "RÚT NGẮN CHUYẾN ĐI",
+    "page": 26
+   },
+   {
+    "chuong": "II",
+    "muc": "XI",
+    "title": "CHƠI GOLF “HOLE IN ONE”",
+    "page": 26
+   },
+   {
+    "chuong": "II",
+    "muc": "XII",
+    "title": "BỒI HOÀN KHẤU TRỪ BẢO HIỂM CHO PHƯƠNG TIỆN THUÊ",
+    "page": 27
+   },
+   {
+    "chuong": "II",
+    "muc": "XIII",
+    "title": "BẢO HIỂM THẺ TÍN DỤNG",
+    "page": 27
+   },
+   {
+    "chuong": "III",
+    "title": "CHƯƠNG III - Các điểm loại trừ chung - Áp dụng đối với tất cả các mục",
+    "page": 28,
+    "items": "1–13; điểm 1 có a.–e., e có i.–v.; 13 kèm định nghĩa khủng bố NCB (tr.28–29)"
+   },
+   {
+    "chuong": "IV",
+    "title": "CHƯƠNG IV - Các điều khoản chung của hợp đồng",
+    "page": 30,
+    "items": "1–17; 8 có 8.1–8.4 (tr.30–34)"
+   },
+   {
+    "chuong": "V",
+    "title": "CHƯƠNG V Hủy hợp đồng bảo hiểm/Giấy chứng nhận bảo hiểm",
+    "page": 35
+   },
+   {
+    "chuong": "VI",
+    "title": "CHƯƠNG VI - Tự động gia hạn",
+    "page": 35
+   },
+   {
+    "chuong": "VII",
+    "title": "CHƯƠNG VII - Mở rộng thời hạn bảo hiểm",
+    "page": 35,
+    "items": "a.–e."
+   }
+  ],
+  "definitions": {
+   "count": 39,
+   "pages": "4–12",
+   "first": "1. Bác sĩ chuyên khoa, Bác sĩ điều trị, Bác sĩ đa khoa",
+   "last": "39. Xe ô tô riêng"
+  },
+  "tables": [
+   {
+    "id": "QT_II_I",
+    "title": "Chương II Mục I A/B/C: số tiền theo 4 chương trình",
+    "pages": "14–16",
+    "header": [
+     "QUYỀN LỢI BẢO HIỂM",
+     "BẠC",
+     "VÀNG",
+     "BẠCH KIM",
+     "KIM CƯƠNG"
+    ],
+    "cell_checks": [
+     {
+      "row": "B. Tử vong tai nạn khi tham gia phương tiện giao thông công cộng",
+      "col": "KIM CƯƠNG",
+      "page": 15,
+      "value": "8.000.000.000"
+     },
+     {
+      "row": "B. Tử vong tai nạn khi tham gia phương tiện giao thông công cộng",
+      "col": "BẠCH KIM",
+      "page": 15,
+      "value": "6.000.000.000"
+     }
+    ]
+   }
+  ]
+ },
+ "flx_bangquyenloi.pdf": {
+  "file": {
+   "sha256": "05ca25d5bdfccb980693704dcb0833d72ee3416a089332503cd3dfd729e79fb9",
+   "pdf_title": "260129- 1. Flexi - Bang quyen loi",
+   "pdf_created": "2026-02-05",
+   "producer": "Adobe Illustrator 28.7"
+  },
+  "issuance": {
+   "decision": "6056/QĐ-BHBV",
+   "decision_date": "2025-06-27"
+  },
+  "layout": {
+   "pages": 2,
+   "columns": [
+    "BẠC",
+    "VÀNG",
+    "BẠCH KIM",
+    "KIM CƯƠNG"
+   ],
+   "sections": "MỤC 1–13 + Vùng 1–3 + chú thích (*)–(****) + 2 khung 'Hỗ trợ người đi cùng', 'Chi phí hồi hương trẻ em'"
+  },
+  "text_layer": {
+   "has_text_layer": false,
+   "detail": "chữ dạng vector; pdftotext chỉ ra header/footer (390 ký tự)",
+   "ocr_needed": true
+  },
+  "number_format": "lẫn '1,000,000,000' và '500.000/ngày' trong cùng bảng → text_fixes đổi ',' hàng nghìn thành '.'",
+  "tables": [
+   {
+    "id": "BQL",
+    "pages": "1–2",
+    "cell_checks": [
+     {
+      "row": "MỤC 1. 3. Chết hoặc TTTBVV trong phương tiện giao thông công cộng",
+      "col": "KIM CƯƠNG",
+      "value": "8.000.000.000"
+     },
+     {
+      "row": "MỤC 2 Quyền lợi B Trợ cấp nằm viện",
+      "col": "BẠCH KIM",
+      "value": "750.000/ngày"
+     },
+     {
+      "row": "MỤC 2 Quyền lợi B Trợ cấp nằm viện",
+      "col": "KIM CƯƠNG",
+      "value": "1.000.000/ngày"
+     },
+     {
+      "row": "MỤC 3 iii) Chi phí mai táng",
+      "col": "KIM CƯƠNG",
+      "value": "400.000.000"
+     },
+     {
+      "row": "MỤC 3 iii) Chi phí mai táng",
+      "col": "VÀNG",
+      "value": "250.000.000"
+     },
+     {
+      "row": "Dịch vụ cứu trợ khẩn cấp",
+      "col": "",
+      "value": "+84 (0) 28 3535 9515"
+     },
+     {
+      "row": "MỤC 9 Mất tiền đặt cọc hay hủy bỏ chuyến đi",
+      "col": "BẠCH KIM",
+      "value": "150.000.000"
+     },
+     {
+      "row": "MỤC 12 Bồi hoàn khấu trừ bảo hiểm của phương tiện thuê",
+      "col": "VÀNG",
+      "value": "10.000.000"
+     }
+    ],
+    "source": "data/manual/FLX_BQL.csv (nhập tay từ ảnh trang, table_overrides); OCR build 1: 5/8 (sai 750.000/ngày, 1.000.000/ngày, hotline)"
+   }
+  ],
+  "notes": "(*) trẻ em 20% STBH, từ 70 tuổi 30%; (**) thẻ tín dụng không áp dụng trẻ em; (***) không áp dụng trẻ em; (****) trẻ em 50% STBH"
+ },
+ "flx_bieuphi.pdf": {
+  "file": {
+   "sha256": "04608e23da11b0e31baa0de058315831e9f7cf09829754ea58c3b53e64c433c3",
+   "source": "flx_bieuphi.docx bản đã đối chiếu (Le Thi Ngoc Ha, sửa 2026-11-06 14:50Z), xuất PDF LibreOffice 24.2, Letter ngang lề 0,5\", cột bảng đặt lại đều 2.670 dxa (cột hẹp làm số xuống dòng)",
+   "producer": "LibreOffice 24.2",
+   "pages": 8
+  },
+  "issuance": {
+   "decision": null,
+   "note": "không ghi QĐ → effective_date gán theo bộ tài liệu (6056). Thay bản 05/11 (Word chứa ảnh chụp, 26 dòng đến 182 ngày). Phí không chia theo Vùng (cross_file.clarifications)."
+  },
+  "layout": {
+   "tables": [
+    {
+     "id": "BP_CN",
+     "title": "Biểu phí bảo hiểm du lịch quốc tế Flexi dành cho cá nhân",
+     "rows": 55,
+     "row_labels": "Đến 3 ngày, Từ 4-6, 7-10, 11-14, rồi bước 7 ngày đến 358-364, Đến 365 ngày"
+    },
+    {
+     "id": "BP_GD",
+     "title": "Biểu phí bảo hiểm dành cho gia đình",
+     "rows": 55,
+     "intro": "3 đoạn văn: tối đa 05 thành viên (vợ, chồng, con ruột/con nuôi hợp pháp dưới 16 tuổi), cùng hành trình, cùng chương trình"
+    }
+   ],
+   "columns": [
+    "Chương trình Bạc",
+    "Chương trình Vàng",
+    "Chương trình Bạch Kim",
+    "Chương trình Kim Cương"
+   ],
+   "unit": "VNĐ (không ghi trong file)"
+  },
+  "text_layer": {
+   "has_text_layer": true,
+   "ocr_needed": false
+  },
+  "data_quality": {
+   "rule": "gia đình = 2 × cá nhân; mỗi cột tăng đều theo nấc 7 ngày",
+   "fixed_2026_11_06": [
+    "CN 92-98 ngày Bạc '1.437,000' → 1.437.000",
+    "GĐ 78-84 ngày Bạch Kim '5,460.000' → 5.460.000"
+   ],
+   "verified_as_in_source": [
+    "CN 127-133 ngày Vàng 2.539.000",
+    "GĐ 232-238 ngày Kim Cương 20.460.000",
+    "GĐ 253-259 ngày Kim Cương 22.180.000",
+    "GĐ 309-315 ngày Kim Cương 27.782.000 (lớn hơn dòng sau 27.356.000)",
+    "GĐ Bạch Kim từ 11-14 ngày = 2 × CN + 60.000"
+   ],
+   "note": "Người dùng đối chiếu nguồn 06/11 và xác nhận giữ nguyên các ô verified_as_in_source; giữ nguyên văn trong kho, không dùng làm câu hỏi benchmark có đáp án suy từ quy luật"
+  },
+  "tables": [
+   {
+    "id": "BP",
+    "pages": "1–8",
+    "cell_checks": [
+     {
+      "row": "CN Đến 3 ngày",
+      "col": "Bạc",
+      "value": "149.000"
+     },
+     {
+      "row": "CN Từ 176-182 ngày",
+      "col": "Kim Cương",
+      "value": "7.938.000"
+     },
+     {
+      "row": "CN Đến 365 ngày",
+      "col": "Kim Cương",
+      "value": "15.687.000"
+     },
+     {
+      "row": "GĐ Từ 162-168 ngày",
+      "col": "Kim Cương",
+      "value": "14.728.000"
+     },
+     {
+      "row": "GĐ Từ 344-350 ngày",
+      "col": "Vàng",
+      "value": "13.184.000"
+     },
+     {
+      "row": "GĐ Đến 365 ngày",
+      "col": "Kim Cương",
+      "value": "31.374.000"
+     }
+    ],
+    "note": "6 ô kiểm tra không nằm trong data_quality"
+   }
+  ]
+ },
+ "cross_file": {
+  "version_set": "QĐ 6056/QĐ-BHBV ngày 27/06/2025 trên quy tắc và BQL; biểu phí không ghi QĐ",
+  "consistency": [
+   "STBH Mục I khớp giữa quy tắc (Chương II Mục I) và BQL Mục 1"
+  ],
+  "inconsistencies": [
+   "BQL Mục 1.3 'Chết hoặc thương tật toàn bộ vĩnh viễn do tai nạn trong phương tiện giao thông công cộng' ↔ quy tắc Mục I.B chỉ 'Tử vong'",
+   "Quy tắc Mục I.C (TTTBVV), điều kiện 1 ghi 'chỉ chi trả khi thời điểm tử vong nằm trong thời hạn bảo hiểm' (lỗi soạn thảo nguyên văn)"
+  ],
+  "kb_files": [
+   "flx_quytac.pdf",
+   "flx_bangquyenloi.pdf",
+   "flx_bieuphi.pdf"
+  ],
+  "clarifications": [
+   "Phí không chia theo Vùng 1–3 (người dùng xác nhận 06/11): biểu phí áp dụng chung mọi vùng. Câu 'nhiều hơn một vùng - khu vực rộng nhất sẽ được áp dụng để tính phí bảo hiểm' (quy tắc Chương I.II, tr.13) giữ nguyên văn; vùng xác định phạm vi lãnh thổ được bảo hiểm, không làm đổi mức phí trong biểu phí hiện hành"
+  ]
+ }
+}
