@@ -217,8 +217,7 @@
      {
       "row": "57. Mất hai ngón 3 và 4; hoặc mất hai ngón 3 và 5; hoặc mất hai ngón 4 và 5",
       "page": 42,
-      "value": "hoặc mất hai ngón 4 và 5 | 6%",
-      "note": "checker bỏ ';' khỏi value → lấy đoạn sau ';' cuối"
+      "value": "Mất hai ngón 3 và 4; hoặc mất hai ngón 3 và 5; hoặc mất hai ngón 4 và 5 | 6%"
      },
      {
       "row": "71. Khuyết xương sọ (chưa có biểu hiện thần kinh, tâm thần) gây ra đau đầu kéo dài",

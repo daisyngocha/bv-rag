@@ -61,10 +61,7 @@ files:
       - ['\b([Bb])ácsĩ\b', '\1ác sĩ']
       - ['\b([Tt])ainạn\b', '\1ai nạn']
       - ['từ\s+l5\s+ngày', 'từ 15 ngày']        # thay theo đúng dạng grep thấy
-      - ['6Š\s + tuổi', '65 tuổi']
       - ['\b([Cc])hỉ\s+trả\b', '\1hi trả']                # đọc tay 10/10 là "chi trả" (06/11); "chỉ chỉ trả" → "chỉ chi trả"
-      - ['\b([Bb])ácsĩ\b', '\1ác sĩ']
-      - ['\b([Tt])ainạn\b', '\1ai nạn']
       - ['(?<=\d)Š', '5']                                  # OCR đọc 5 thành Š sau chữ số (IV.2.1: "6Š tuổi")
   btb_bangquyenloi:
     doc_type: bang_quyen_loi
