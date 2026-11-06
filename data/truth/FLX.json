@@ -3,7 +3,7 @@
   "purpose": "Đáp án chuẩn lập tay để kiểm tra parse/chunk FLX (scripts/build_kb.py, bước check). Trang quy tắc trong sections = trang tách = số trang in; page của chunk = trang gốc (gốc g ↔ tách 2g-2, 2g-1).",
   "created": "2026-11-06",
   "method": "Mục lục trang tách 3 + lớp chữ pdftotext theo từng nửa trang (quy tắc) + xem ảnh trang BQL/biểu phí (không có lớp chữ); không dùng regex của chunker hay text OCR làm nguồn",
-  "status": "NHÁP — cần duyệt: (1) so_count/đếm mục trên PDF; (2) cell_checks BQL và biểu phí trên ảnh trang; (3) ghi chú bất nhất BQL ↔ quy tắc (cross_file.inconsistencies)."
+  "status": "NHÁP — cần duyệt: (1) so_count/đếm mục trên PDF; (2) cell_checks BQL và biểu phí trên ảnh trang; (3) ghi chú bất nhất BQL ↔ quy tắc (cross_file.inconsistencies). Biểu phí: số liệu đã đối chiếu nguồn 06/11."
  },
  "flx_quytac.pdf": {
   "file": {
@@ -341,8 +341,8 @@
  },
  "flx_bieuphi.pdf": {
   "file": {
-   "sha256": "b44433e33aecaecf6548f6e1ead739a85ac2e22f6090e9ee089bebd03bef39b5",
-   "source": "flx_bieuphi.docx (Le Thi Ngoc Ha, tạo 2026-11-06), xuất PDF bằng LibreOffice 24.2, khổ Letter ngang, lề 0,5\"",
+   "sha256": "04608e23da11b0e31baa0de058315831e9f7cf09829754ea58c3b53e64c433c3",
+   "source": "flx_bieuphi.docx bản đã đối chiếu (Le Thi Ngoc Ha, sửa 2026-11-06 14:50Z), xuất PDF LibreOffice 24.2, Letter ngang lề 0,5\", cột bảng đặt lại đều 2.670 dxa (cột hẹp làm số xuống dòng)",
    "producer": "LibreOffice 24.2",
    "pages": 8
   },
@@ -378,16 +378,19 @@
    "ocr_needed": false
   },
   "data_quality": {
-   "rule": "gia đình = 2 × cá nhân; mỗi cột tăng đều theo bước 7 ngày (CN: Bạc 95.000, Vàng 129.000, Bạch Kim 200.000, Kim Cương 287.000)",
-   "anomalies_pending_review": [
-    "CN 92-98 ngày Bạc '1.437,000' (dấu phẩy)",
-    "GĐ 78-84 ngày Bạch Kim '5,460.000' (dấu phẩy)",
-    "CN 127-133 ngày Vàng 2.539.000: theo bước và GĐ (5.186.000 = 2 × 2.593.000) nhiều khả năng là 2.593.000 (đảo số)",
-    "GĐ 232-238 ngày Kim Cương 20.460.000 ≠ 2 × 10.234.000 = 20.468.000",
-    "GĐ 253-259 ngày Kim Cương 22.180.000 ≠ 2 × 11.095.000 = 22.190.000",
-    "GĐ 309-315 ngày Kim Cương 27.782.000 ≠ 2 × 13.391.000 = 26.782.000",
-    "GĐ Bạch Kim từ 11-14 ngày trở đi = 2 × CN + 60.000 (1.460.000 vs 1.400.000 …); không suy được bên nào đúng"
-   ]
+   "rule": "gia đình = 2 × cá nhân; mỗi cột tăng đều theo nấc 7 ngày",
+   "fixed_2026_11_06": [
+    "CN 92-98 ngày Bạc '1.437,000' → 1.437.000",
+    "GĐ 78-84 ngày Bạch Kim '5,460.000' → 5.460.000"
+   ],
+   "verified_as_in_source": [
+    "CN 127-133 ngày Vàng 2.539.000",
+    "GĐ 232-238 ngày Kim Cương 20.460.000",
+    "GĐ 253-259 ngày Kim Cương 22.180.000",
+    "GĐ 309-315 ngày Kim Cương 27.782.000 (lớn hơn dòng sau 27.356.000)",
+    "GĐ Bạch Kim từ 11-14 ngày = 2 × CN + 60.000"
+   ],
+   "note": "Người dùng đối chiếu nguồn 06/11 và xác nhận giữ nguyên các ô verified_as_in_source; giữ nguyên văn trong kho, không dùng làm câu hỏi benchmark có đáp án suy từ quy luật"
   },
   "tables": [
    {
@@ -425,7 +428,7 @@
       "value": "31.374.000"
      }
     ],
-    "note": "chỉ chọn ô không nằm trong anomalies_pending_review"
+    "note": "6 ô kiểm tra không nằm trong data_quality"
    }
   ]
  },
