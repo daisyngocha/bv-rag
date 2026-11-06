@@ -241,6 +241,9 @@ def main():
     b1, b2 = load_yaml("configs/B1.yaml"), load_yaml("configs/B2.yaml")
     assert b1["data_version"] == b2["data_version"], "B1 và B2 phải cùng data_version"
     ver, steps = b2["data_version"], set(a.steps.split(","))
+    if steps & {"chunk", "merge"} and Path(f"data/manifests/{ver}.json").exists():
+        sys.exit(f"{ver} đã đóng băng (data/manifests/{ver}.json): không ghi đè processed/{ver}. "
+                 "Sửa chunk thì nâng data_version trong configs/B0–B4.yaml.")
     products = sorted(p.stem for p in Path("configs/products").glob("*.yaml")) if a.all else a.product
     if not products and "merge" not in steps:
         sys.exit("Cần --product hoặc --all")
