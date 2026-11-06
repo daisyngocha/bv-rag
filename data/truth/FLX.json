@@ -348,7 +348,7 @@
   },
   "issuance": {
    "decision": null,
-   "note": "không ghi QĐ → effective_date gán theo bộ tài liệu (6056). Thay bản 05/11 (Word chứa ảnh chụp, 26 dòng đến 182 ngày)."
+   "note": "không ghi QĐ → effective_date gán theo bộ tài liệu (6056). Thay bản 05/11 (Word chứa ảnh chụp, 26 dòng đến 182 ngày). Phí không chia theo Vùng (cross_file.clarifications)."
   },
   "layout": {
    "tables": [
@@ -436,13 +436,15 @@
   ],
   "inconsistencies": [
    "BQL Mục 1.3 'Chết hoặc thương tật toàn bộ vĩnh viễn do tai nạn trong phương tiện giao thông công cộng' ↔ quy tắc Mục I.B chỉ 'Tử vong'",
-   "Quy tắc Mục I.C (TTTBVV), điều kiện 1 ghi 'chỉ chi trả khi thời điểm tử vong nằm trong thời hạn bảo hiểm' (lỗi soạn thảo nguyên văn)",
-   "Biểu phí không phân theo Vùng 1–3 dù quy tắc (Chương I.II) ghi 'khu vực rộng nhất sẽ được áp dụng để tính phí'"
+   "Quy tắc Mục I.C (TTTBVV), điều kiện 1 ghi 'chỉ chi trả khi thời điểm tử vong nằm trong thời hạn bảo hiểm' (lỗi soạn thảo nguyên văn)"
   ],
   "kb_files": [
    "flx_quytac.pdf",
    "flx_bangquyenloi.pdf",
    "flx_bieuphi.pdf"
+  ],
+  "clarifications": [
+   "Phí không chia theo Vùng 1–3 (người dùng xác nhận 06/11): biểu phí áp dụng chung mọi vùng. Câu 'nhiều hơn một vùng - khu vực rộng nhất sẽ được áp dụng để tính phí bảo hiểm' (quy tắc Chương I.II, tr.13) giữ nguyên văn; vùng xác định phạm vi lãnh thổ được bảo hiểm, không làm đổi mức phí trong biểu phí hiện hành"
   ]
  }
 }
