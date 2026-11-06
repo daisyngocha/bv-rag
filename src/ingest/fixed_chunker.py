@@ -14,7 +14,7 @@ import re
 from bisect import bisect_right
 from typing import Callable
 
-from src.ingest.chunker import DT_ABBR, build_vocab, is_group_row, linearize
+from src.ingest.chunker import DT_ABBR, apply_table_overrides, apply_text_fixes, build_vocab, is_group_row, linearize
 
 Offsets = list[tuple[int, int]]
 
@@ -74,6 +74,8 @@ def chunk_fixed(doc, cfg: dict, encode: Callable[[str], Offsets], page_map: list
                 vocab_pdf: str | None = None) -> tuple[list[dict], dict]:
     vocab = build_vocab(vocab_pdf) if vocab_pdf else set()
     recs = linearize(doc, set(cfg.get("skip_pages", [])), vocab)
+    recs, _ = apply_text_fixes(recs, cfg.get("text_fixes"))     # cùng đầu vào với chunk cấu trúc (RQ1)
+    recs, _, manual_pages = apply_table_overrides(recs, cfg.get("table_overrides"))
     if cfg.get("drop_tables"):
         recs = [r for r in recs if r.kind != "table"]
     segs = segments(recs)
@@ -99,5 +101,7 @@ def chunk_fixed(doc, cfg: dict, encode: Callable[[str], Offsets], page_map: list
             "is_table": all(segs[j][2] for j in range(first, last + 1)),
             "effective_date": cfg["effective_date"], "source_file": cfg["source_file"],
             "page": orig(segs[first][1]),
+            "ocr": bool(cfg.get("ocr")),
+            "manual": any(segs[j][2] and segs[j][1] in manual_pages for j in range(first, last + 1)),
         })
     return chunks, {"tokens_total": len(offs), "window": size, "overlap": overlap, "chunks": len(chunks)}

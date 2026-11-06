@@ -1,0 +1,157 @@
+# BTB quy tắc, Phụ lục III (trang scan 41–45 = trang in 39–43). Nhập tay từ ảnh trang vì OCR + TableFormer mất ô STT/tỉ lệ.
+# Giữ nguyên bản in: '08%' và '8%' (dòng 60), '6%' (dòng 57); dòng 39 in là 'Tháo khớp không một đùi'.
+# Đối chiếu: <người duyệt>, <ngày> — đánh dấu xong bằng cách sửa dòng này.
+page,STT,QUYỀN LỢI,TỈ LỆ TRẢ TIỀN
+41,I -,TỬ VONG,100%
+41,II -,THƯƠNG TẬT TOÀN BỘ VĨNH VIỄN,
+41,1,Hỏng toàn bộ chức năng nhai và nói,100%
+41,2,"Mất hoàn toàn, liệt hoàn toàn và không thể phục hồi được chức năng của: cả 2 bàn tay, hoặc cả 2 bàn chân, hoặc mất 1 cánh tay và 1 bàn chân, hoặc mất 1 cánh tay và 1 cẳng chân, hoặc mất 1 bàn tay và 1 cẳng chân, hoặc mất 1 bàn tay và 1 bàn chân",100%
+41,3,Cắt toàn bộ một bên phổi và một phần phổi bên kia,100%
+41,4,Tổn thương cơ thể từ 81% trở lên dẫn đến bị cản trở hoàn toàn khi tham gia vào công việc của người đó hay bị mất hoàn toàn khả năng lao động trong bất kỳ loại lao động nào được đối chiếu theo định nghĩa Thương tật toàn bộ vĩnh viễn,100%
+41,III -,THƯƠNG TẬT BỘ PHẬN VĨNH VIỄN,
+41,,CHI TRÊN,
+41,5,Mất một cánh tay từ vai xuống (Tháo khớp vai),75%
+41,6,Cắt cụt cánh tay từ dưới vai xuống,70%
+41,7,Cắt cụt một cánh tay từ khuỷu xuống (Tháo khớp khuỷu),65%
+41,8,Mất trọn một bàn tay hoặc toàn bộ cả 5 ngón tay,60%
+41,9,Mất đồng thời cả bốn ngón tay của một bàn tay,40%
+41,10,Mất đồng thời cả ngón cái và ngón trỏ,35%
+41,11,"Mất 3 ngón: ngón trỏ, ngón giữa và ngón đeo nhẫn",30%
+41,12,Mất ngón cái và 2 ngón khác,35%
+41,13,Mất ngón cái và một ngón khác,30%
+41,14,Mất ngón trỏ và hai ngón khác,35%
+41,15,Mất ngón trỏ và một ngón khác,25%
+41,16,Mất ngón giữa và ngón đeo nhẫn,19%
+41,17,Mất ngón giữa và ngón út,18%
+41,18,Mất ngón đeo nhẫn và ngón út,18%
+41,19,Mất trọn ngón cái và đốt bàn,25%
+41,20,Mất trọn ngón cái,20%
+41,21,Mất cả đốt ngoài của ngón cái,10%
+41,22,Mất nửa đốt ngoài của ngón cái,07%
+41,23,Mất trọn ngón trỏ và đốt bàn,20%
+41,24,Mất trọn ngón trỏ,18%
+42,25,Mất hai đốt 2 và 3 của ngón trỏ,10%
+42,26,Mất đốt 3 của ngón trỏ,08%
+42,27,Mất trọn ngón giữa hoặc ngón đeo nhẫn (bao gồm cả đốt bàn),18%
+42,28,Mất trọn ngón giữa hoặc ngón đeo nhẫn,15%
+42,29,Mất hai đốt 2 và 3 của ngón giữa hoặc ngón đeo nhẫn,08%
+42,30,Mất đốt 3 của ngón giữa hoặc ngón đeo nhẫn,04%
+42,31,Mất cả ngón út và đốt bàn,15%
+42,32,Mất trọn ngón út,10%
+42,33,Mất hai đốt 2 và 3 của ngón út,08%
+42,34,Mất đốt 3 của ngón út,04%
+42,35,Cứng khớp bả vai,30%
+42,36,Cứng khớp khuỷu tay,25%
+42,37,Cứng khớp cổ tay,20%
+42,38,Gãy tay can lệch hoặc mất xương làm chi ngắn trên 3cm và chức năng quay sấp ngửa hạn chế hoặc tạo thành khớp giả,25%
+42,,CHI DƯỚI,
+42,39,Mất một chân từ háng xuống (Tháo khớp không một đùi),75%
+42,40,Cắt cụt một đùi,
+42,,- Cắt cụt một đùi 1/3 trên,70%
+42,,- Cắt cụt một đùi 1/3 giữa hoặc dưới,55%
+42,41,Cắt cụt một chân từ gối xuống (Tháo khớp gối),60%
+42,42,Tháo khớp cổ chân hoặc mất một bàn chân,55%
+42,43,Mất xương sên,35%
+42,44,Mất xương gót,35%
+42,45,"Mất đoạn xương chày, mác gây khớp giả cẳng chân",35%
+42,46,Mất đoạn xương mác,20%
+42,47,Mất mắt cá chân: Mắt cá ngoài,10%
+42,48,Mất mắt cá chân: Mắt cá trong,15%
+42,49,Mất cả năm ngón chân,45%
+42,50,Mất bốn ngón chân bao gồm cả ngón cái,38%
+42,51,Mất bốn ngón chân không bao gồm ngón cái,35%
+42,52,Mất ba ngón chân không bao gồm ngón cái,25%
+42,53,Mất ba ngón chân bao gồm cả ngón cái,30%
+42,54,Mất một ngón cái và ngón 2,20%
+42,55,Mất một ngón cái và một ngón khác (trừ ngón 2),16%
+42,56,Mất một ngón 2 và ngón khác (trừ ngón cái),11%
+42,57,Mất hai ngón 3 và 4; hoặc mất hai ngón 3 và 5; hoặc mất hai ngón 4 và 5,6%
+42,58,Mất một ngón cái,15%
+42,59,Mất một ngón ngoài ngón cái,10%
+42,60,Mất một đốt ngoài của ngón cái,8%
+43,61,Mất một đốt của ngón khác,1%
+43,62,Mất hai đốt của ngón khác,2%
+43,63,Cứng khớp hông,45%
+43,64,Cứng khớp gối,30%
+43,65,Mất phần lớn xương bánh chè và giới hạn nhiều khả năng duỗi cẳng chân trên đùi,45%
+43,66,Gãy chân can lệch hoặc mất xương làm ngắn chi,
+43,,Gãy chân can lệch hoặc mất xương làm ngắn chi: Ít nhất 5 cm,40%
+43,,Gãy chân can lệch hoặc mất xương làm ngắn chi: Từ 3 cm đến 5 cm,35%
+43,67,Liệt hoàn toàn dây thần kinh hông khoeo ngoài,35%
+43,68,Liệt hoàn toàn dây thần kinh hông khoeo trong,25%
+43,,CỘT SỐNG,
+43,69,Cắt bỏ cung sau của một đốt sống,35%
+43,70,Cắt bỏ cung sau của hai – ba đốt sống trở lên,45%
+43,,SỌ NÃO,
+43,71,"Khuyết xương sọ (chưa có biểu hiện thần kinh, tâm thần) gây ra đau đầu kéo dài",35%
+43,,LỒNG NGỰC,
+43,72,Cắt bỏ một - hai xương sườn,15%
+43,73,Cắt bỏ từ ba xương sườn trở lên,25%
+43,74,Cắt bỏ đoạn mỗi xương sườn,08%
+43,75,Cắt toàn bộ một bên phổi,70%
+43,76,"Cắt nhiều thùy phổi ở 2 bên, dung tích sống giảm trên 50%",65%
+43,77,Cắt nhiều thùy phổi ở 1 bên,50%
+43,78,Cắt một thùy phổi,35%
+43,,BỤNG,
+43,79,Cắt toàn bộ dạ dày,75%
+43,80,Cắt đoạn dạ dày,50%
+43,81,Cắt gần hết ruột non (còn lại dưới 1 m),75%
+43,82,Cắt đoạn ruột non,40%
+43,83,Cắt toàn bộ đại tràng,75%
+43,84,Cắt đoạn đại tràng,50%
+43,85,Cắt bỏ gan phải đơn thuần,70%
+43,86,Cắt bỏ gan trái đơn thuần,60%
+43,87,Cắt phần thùy gan,40%
+43,88,Cắt bỏ túi mật,45%
+43,89,Cắt bỏ lá lách,40%
+44,90,"Cắt bỏ đuôi tụy, lách",60%
+44,,"CƠ QUAN TIẾT NIỆU, SINH DỤC",
+44,91,"Cắt bỏ một thận, thận còn lại bình thường",45%
+44,92,Mất một bên tinh hoàn/ buồng trứng,11%
+44,93,Mất cả hai bên tinh hoàn/ buồng trứng,36%
+44,94,Mất hoàn toàn dương vật,41%
+44,95,Cắt tử cung hoàn toàn,41%
+44,96,"Cắt bỏ một thận, thận còn lại bị thương hoặc bệnh lý",70%
+44,97,Cắt một phần thận trái hoặc phải,30%
+44,98,Cắt một phần bàng quang,27%
+44,99,Mất dương vật và 2 tinh hoàn ở người,
+44,,Mất dương vật và 2 tinh hoàn ở người: Dưới 55 tuổi chưa có con,70%
+44,,Mất dương vật và 2 tinh hoàn ở người: Dưới 55 tuổi đã có con,55%
+44,,Mất dương vật và 2 tinh hoàn ở người: Trên 55 tuổi,35%
+44,100,Cắt bỏ dạ con và buồng trứng ở người,
+44,,Cắt bỏ dạ con và buồng trứng ở người: Dưới 45 tuổi chưa có con,60%
+44,,Cắt bỏ dạ con và buồng trứng ở người: Dưới 45 tuổi đã có con,30%
+44,,Cắt bỏ dạ con và buồng trứng ở người: Trên 45 tuổi,25%
+44,101,Cắt vú ở nữ:,
+44,,Dưới 45 tuổi: một bên,20%
+44,,Dưới 45 tuổi: hai bên,45%
+44,,Trên 45 tuổi: một bên,15%
+44,,Trên 45 tuổi: hai bên,30%
+44,,MẮT,
+44,102,Mất hoặc mù hoàn toàn một mắt và,
+44,,- Không lắp được mắt giả,55%
+44,,- Lắp được mắt giả,50%
+44,103,Mất hoặc mù hoàn toàn một mắt nhưng trước khi xảy ra tai nạn này đã mất hoặc mù một mắt rồi,80%
+44,,TAI – MŨI – HỌNG,
+44,104,"Điếc hai tai, hoàn toàn không phục hồi được",75%
+44,105,Điếc hai tai Nặng (Nói to hoặc thét vào tai còn nghe được),60%
+44,106,Điếc hai tai Vừa (Nói to 1-2m còn nghe),35%
+44,107,Điếc hai tai Nhẹ (Nói to 2-4m còn nghe),15%
+44,108,"Điếc một tai, hoàn toàn không phục hồi được",30%
+44,109,Điếc một tai Nặng (Nói to hoặc thét vào tai còn nghe được),20%
+44,110,Điếc một tai Vừa (Nói to 1-2m còn nghe),15%
+44,111,Điếc một tai Nhẹ (Nói to 2-4m còn nghe),08%
+45,112,Mất vành tai hai bên,20%
+45,113,Mất vành tai một bên,10%
+45,114,Mất hoàn toàn mũi,18%
+45,,MẶT,
+45,115,Mất toàn bộ xương hàm trên và một phần xương hàm dưới từ cành cao trở xuống:,
+45,,- Khác bên,80%
+45,,- Cùng bên,70%
+45,116,Mất toàn bộ xương hàm trên hoặc dưới,70%
+45,117,Mất một phần xương hàm trên hoặc một phần xương hàm dưới từ 1/3 đến 1/2 bị mất từ cành cao trở xuống,35%
+45,118,"Mất 3/4 lưỡi, còn gốc lưỡi (từ đường gai V trở ra)",75%
+45,119,Mất 2/3 lưỡi từ đầu lưỡi,50%
+45,120,Mất 1/3 lưỡi ảnh hưởng đến phát âm,15%
+45,121,Mất một phần nhỏ lưỡi (dưới 1/3) ảnh hưởng đến phát âm,10%
+# Đối chiếu: Lê Thị Ngọc Hà, 2026-11-06 (16 dòng OCR không xác nhận + dòng 39 + dòng nhóm)

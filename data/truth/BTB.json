@@ -1,0 +1,442 @@
+{
+ "_meta": {
+  "purpose": "Đáp án chuẩn lập tay để kiểm tra parse/chunk BTB (scripts/build_kb.py, bước check). Trang quy tắc = trang scan (trang in + 2).",
+  "created": "2026-11-06",
+  "method": "Mục lục trang 3 + xem ảnh trang (quy tắc là bản scan) + lớp chữ pdftotext của BQL/biểu phí; không dùng regex của chunker hay text OCR làm nguồn",
+  "status": "NHÁP — cần duyệt: (1) so_count I=52, II.A=6, II.B=3, IV=18 trên ảnh trang; (2) 12 cell_checks PL III trên ảnh tr.41–45; (3) cell_checks BQL/biểu phí trên PDF. => Đã duyệt 2026-11-06: so_count I/II.A/II.B/IV trên ảnh tr.4–35; 12 cell_checks PL III trên ảnh tr.41–45; 14 cell_checks BQL/biểu phí khớp pdftotext + xem bảng."
+ },
+ "btb_quytac.pdf": {
+  "file": {
+   "sha256": "129869319eb11724e043f5f6a0a39a24cf1ae9224d785319e1be22367fda7c2a",
+   "pdf_created": "2025-06-30",
+   "producer": "Canon (máy scan)"
+  },
+  "issuance": {
+   "decision": "6038/QĐ-BHBV",
+   "decision_date": "2025-06-27",
+   "issuer": "Tổng Giám đốc Tổng công ty Bảo hiểm Bảo Việt",
+   "effective_date_stated": "2025-07-01",
+   "where": "trang scan 1, Điều 2 của QĐ",
+   "note": "effective_date trong config = ngày QĐ 2025-06-27 theo quy ước chung; ngày hiệu lực 01/07/2025 ghi ở đây."
+  },
+  "layout": {
+   "pages": 50,
+   "type": "dọc, 1 trang/tờ (không 2-up)",
+   "detail": "Trang 1–45 A4 dọc; 46–50 là bảng biểu phí (46–47) và bảng quyền lợi (48–50) bản scan, quay ngang",
+   "page_mapping": "Trang scan = trang in + 2 (Chương I: in 2 → scan 4; PL III: in 39 → scan 41)"
+  },
+  "text_layer": {
+   "has_text_layer": true,
+   "usable": false,
+   "detail": "Lớp chữ OCR của máy scan Canon mất dấu ('Ld bAt ki bqnh'); không dùng pdftotext cho vocab/mục lục",
+   "ocr_needed": true,
+   "ocr": "Docling + Tesseract fast, psm 3, 216 dpi (docs/ocr_probe_20261106.md)"
+  },
+  "pages_role": {
+   "skip": {
+    "1": "QĐ 6038/QĐ-BHBV",
+    "2": "bìa (tên quy tắc)",
+    "3": "mục lục",
+    "46-47": "biểu phí bản scan (trùng btb_bieuphi.pdf, trừ QLBS 3 → manual_units)",
+    "48-50": "bảng quyền lợi bản scan (trùng btb_bangquyenloi.pdf; dùng làm trang song sinh đánh giá OCR)"
+   },
+   "metadata_only": {
+    "1": "QĐ 6038/QĐ-BHBV ngày 27/06/2025; Điều 2: hiệu lực từ 01/07/2025"
+   },
+   "content": "4–45"
+  },
+  "toc": {
+   "page": 3,
+   "entries": 8,
+   "missing_from_toc": [
+    "IV.17 Bảo vệ và xử lý dữ liệu cá nhân (có trong thân văn bản, tr.35)"
+   ],
+   "ocr_readable": false,
+   "fix": "chép tay vào configs/products/BTB.yaml (toc:)"
+  },
+  "structure": {
+   "levels": [
+    "CHƯƠNG I–V (La Mã) + PHỤ LỤC I–III",
+    "Chương II: 2 nhóm không đánh số 'QUYỀN LỢI BẢO HIỂM CHÍNH…' / 'QUYỀN LỢI BẢO HIỂM BỔ SUNG', mỗi nhóm đánh số lại từ 1",
+    "Mục số có tiêu đề 1., 2., … (Chương I định nghĩa, II, IV); Chương V: mục La Mã I, II rồi 1., 2.",
+    "Điểm a./b., gạch đầu dòng -, •"
+   ],
+   "has_dieu": false,
+   "untitled_numbered": "Chương III: điểm loại trừ 1–44 không tiêu đề → đóng gói theo khoản"
+  },
+  "sections": [
+   {
+    "chuong": "I",
+    "title": "CHƯƠNG I: ĐỊNH NGHĨA",
+    "page": 4,
+    "so_count": 52
+   },
+   {
+    "chuong": "II",
+    "title": "CHƯƠNG II: PHẠM VI BẢO HIỂM",
+    "page": 15,
+    "note": "đoạn mở đầu 'Công ty bảo hiểm chi trả…' trước nhóm A"
+   },
+   {
+    "chuong": "II",
+    "part": "A",
+    "title": "QUYỀN LỢI BẢO HIỂM CHÍNH – ĐIỀU TRỊ NỘI TRÚ DO BỆNH, TAI NẠN, THAI SẢN",
+    "page": 15,
+    "so_count": 6,
+    "items": "1 Nằm viện, 2 Phẫu thuật, 3 Trợ cấp nằm viện, 4 Chi phí khám trước khi nhập viện và tái khám, 5 Xe cứu thương, 6 Hỗ trợ giáo dục (tr.15–16)"
+   },
+   {
+    "chuong": "II",
+    "part": "B",
+    "title": "QUYỀN LỢI BẢO HIỂM BỔ SUNG",
+    "page": 16,
+    "so_count": 3,
+    "items": "1 Tử vong/thương tật vĩnh viễn do mọi nguyên nhân, 2 Điều trị ngoại trú…điều trị răng, 3 Trợ cấp mất giảm thu nhập/trợ cấp lương (HĐ tổ chức) (tr.16–18)"
+   },
+   {
+    "chuong": "III",
+    "title": "CHƯƠNG III: CÁC ĐIỂM LOẠI TRỪ CHUNG",
+    "page": 20,
+    "items": "1–44 không tiêu đề; điểm 43 có bảng 2 cột nhóm bệnh | bệnh (tr.23–24)"
+   },
+   {
+    "chuong": "IV",
+    "title": "CHƯƠNG IV: QUY ĐỊNH CHUNG",
+    "page": 25,
+    "so_count": 18,
+    "nested_list": {
+     "in": 5,
+     "items": "1–2 (Phí bảo hiểm tính theo tỷ lệ / theo biểu phí ngắn hạn)",
+     "page": 29
+    },
+    "items_note": "13 'Điều khoản đảm bảo thanh toán phí…' (tr.32); 17 'Bảo vệ và xử lý dữ liệu cá nhân' (tr.35, mục lục bỏ sót)"
+   },
+   {
+    "chuong": "V",
+    "muc": "I",
+    "title": "I. HỒ SƠ BỒI THƯỜNG",
+    "page": 36,
+    "items": "1–9"
+   },
+   {
+    "chuong": "V",
+    "muc": "II",
+    "title": "II. THỦ TỤC TRẢ TIỀN BẢO HIỂM VÀ BẢO LÃNH VIỆN PHÍ",
+    "page": 37,
+    "items": "1–2 (tr.37–38)"
+   },
+   {
+    "phu_luc": 1,
+    "title": "PHỤ LỤC I: DANH MỤC BỆNH LÝ/TÌNH TRẠNG NGHIÊM TRỌNG",
+    "page": 39,
+    "items": "1–10 (1 Ghép tủy xương … 10 Suy đa tạng)"
+   },
+   {
+    "phu_luc": 2,
+    "title": "PHỤ LỤC II: DANH MỤC PHẪU THUẬT ĐẶC BIỆT",
+    "page": 40,
+    "items": "1–25; cột số tách khỏi chữ, OCR CLI mất số thứ tự"
+   },
+   {
+    "phu_luc": 3,
+    "title": "PHỤ LỤC III: BẢNG TỈ LỆ TRẢ TIỀN TỬ VONG/THƯƠNG TẬT VĨNH VIỄN",
+    "page": 41
+   }
+  ],
+  "definitions": {
+   "count": 52,
+   "pages": "4–14",
+   "first": "1. Bác sĩ",
+   "last": "52. Vật tư tiêu hao",
+   "glossary_candidates": "52 định nghĩa → mục glossary scope=BTB"
+  },
+  "tables": [
+   {
+    "id": "PL3",
+    "title": "Bảng tỉ lệ trả tiền tử vong/thương tật vĩnh viễn",
+    "pages": "41–45",
+    "cols": 3,
+    "header": [
+     "STT",
+     "QUYỀN LỢI",
+     "TỈ LỆ TRẢ TIỀN"
+    ],
+    "header_repeated_each_page": false,
+    "numbered_rows": 121,
+    "rows_by_page": {
+     "41": "1–24",
+     "42": "25–60",
+     "43": "61–89",
+     "44": "90–111",
+     "45": "112–121"
+    },
+    "group_rows": {
+     "level1": [
+      "I - TỬ VONG (100%)",
+      "II - THƯƠNG TẬT TOÀN BỘ VĨNH VIỄN",
+      "III - THƯƠNG TẬT BỘ PHẬN VĨNH VIỄN"
+     ],
+     "level2": [
+      "CHI TRÊN (41)",
+      "CHI DƯỚI (42)",
+      "CỘT SỐNG (43)",
+      "SỌ NÃO (43)",
+      "LỒNG NGỰC (43)",
+      "BỤNG (43)",
+      "CƠ QUAN TIẾT NIỆU, SINH DỤC (44)",
+      "MẮT (44)",
+      "TAI – MŨI – HỌNG (44)",
+      "MẶT (45)"
+     ]
+    },
+    "sub_rows_unnumbered": "40, 66, 99, 100, 101, 102, 115 (dòng con không STT)",
+    "value_format": "có cả '08%' và '8%' (dòng 60), '6%' (dòng 57): giữ nguyên như bản in",
+    "after_table": "tr.45: 'Nguyên tắc xét trả tiền bảo hiểm' a)–c), chữ nghiêng, là văn bản không thuộc bảng",
+    "same_template_as": "BVP/ITC PL1 (121 dòng)",
+    "cell_checks": [
+     {
+      "row": "1. Hỏng toàn bộ chức năng nhai và nói",
+      "page": 41,
+      "value": "Hỏng toàn bộ chức năng nhai và nói | 100%"
+     },
+     {
+      "row": "22. Mất nửa đốt ngoài của ngón cái",
+      "page": 41,
+      "value": "Mất nửa đốt ngoài của ngón cái | 07%"
+     },
+     {
+      "row": "26. Mất đốt 3 của ngón trỏ",
+      "page": 42,
+      "value": "Mất đốt 3 của ngón trỏ | 08%"
+     },
+     {
+      "row": "50. Mất bốn ngón chân bao gồm cả ngón cái",
+      "page": 42,
+      "value": "Mất bốn ngón chân bao gồm cả ngón cái | 38%"
+     },
+     {
+      "row": "57. Mất hai ngón 3 và 4; hoặc mất hai ngón 3 và 5; hoặc mất hai ngón 4 và 5",
+      "page": 42,
+      "value": "hoặc mất hai ngón 4 và 5 | 6%",
+      "note": "checker bỏ ';' khỏi value → lấy đoạn sau ';' cuối"
+     },
+     {
+      "row": "71. Khuyết xương sọ (chưa có biểu hiện thần kinh, tâm thần) gây ra đau đầu kéo dài",
+      "page": 43,
+      "value": "Khuyết xương sọ (chưa có biểu hiện thần kinh, tâm thần) gây ra đau đầu kéo dài | 35%"
+     },
+     {
+      "row": "74. Cắt bỏ đoạn mỗi xương sườn",
+      "page": 43,
+      "value": "Cắt bỏ đoạn mỗi xương sườn | 08%"
+     },
+     {
+      "row": "79. Cắt toàn bộ dạ dày",
+      "page": 43,
+      "value": "Cắt toàn bộ dạ dày | 75%"
+     },
+     {
+      "row": "92. Mất một bên tinh hoàn/ buồng trứng",
+      "page": 44,
+      "value": "Mất một bên tinh hoàn/ buồng trứng | 11%"
+     },
+     {
+      "row": "111. Điếc một tai Nhẹ (Nói to 2-4m còn nghe)",
+      "page": 44,
+      "value": "Điếc một tai Nhẹ (Nói to 2-4m còn nghe) | 08%"
+     },
+     {
+      "row": "114. Mất hoàn toàn mũi",
+      "page": 45,
+      "value": "Mất hoàn toàn mũi | 18%"
+     },
+     {
+      "row": "121. Mất một phần nhỏ lưỡi (dưới 1/3) ảnh hưởng đến phát âm",
+      "page": 45,
+      "value": "Mất một phần nhỏ lưỡi (dưới 1/3) ảnh hưởng đến phát âm | 10%"
+     }
+    ],
+    "cell_checks_note": "value = 'quyền lợi | tỉ lệ' để kiểm cả chữ OCR lẫn việc ghép đúng ô (render bảng '| a | b |', so sánh bỏ khoảng trắng)",
+    "source": "data/manual/BTB_PL3.csv (nhập tay từ ảnh trang, table_overrides); OCR + TableFormer mất ô STT/tỉ lệ (build 1: 0/12)"
+   },
+   {
+    "id": "QT_III_43",
+    "title": "Bệnh không được bảo hiểm năm đầu (điểm loại trừ 43)",
+    "pages": "23–24",
+    "cols": 2,
+    "rows": 7,
+    "kind": "bảng 2 cột nhóm bệnh | danh sách bệnh",
+    "note": "dòng 'Bệnh rối loạn chuyển hóa các loại' ô phải để trống trên bản in",
+    "chunk_rule": "gắn vào chunk chứa điểm 43 của Chương III"
+   }
+  ]
+ },
+ "btb_bangquyenloi.pdf": {
+  "file": {
+   "sha256": "1c8f02066be49edde14f00ce0fa6f9a51be1fa1e14ef8da70e203eec63df3d3d",
+   "pdf_title": "2. 2025-BQL-Bao Viet Tam Binh",
+   "pdf_created": "2025-08-14",
+   "producer": "Adobe Illustrator 28.7"
+  },
+  "issuance": {
+   "decision": "6038/QĐ-BHBV",
+   "decision_date": "2025-06-27"
+  },
+  "layout": {
+   "pages": 3,
+   "columns": [
+    "CƠ BẢN",
+    "MỞ RỘNG",
+    "NÂNG CAO",
+    "TOÀN DIỆN",
+    "ƯU VIỆT"
+   ]
+  },
+  "text_layer": {
+   "has_text_layer": true,
+   "nfd_chars": 0,
+   "font_issue": "Ð (U+00D0) 1 lần, tr.3 'Ðối với các Tỉnh thành khác' → clean_text"
+  },
+  "tables": [
+   {
+    "id": "BQL_CHINH",
+    "title": "Quyền lợi bảo hiểm chính - Điều trị nội trú do bệnh, tai nạn, thai sản",
+    "page": 1,
+    "cell_checks": [
+     {
+      "row": "Số tiền bảo hiểm/người/năm",
+      "col": "ƯU VIỆT",
+      "value": "330.000.000"
+     },
+     {
+      "row": "1. Nằm viện",
+      "col": "ƯU VIỆT",
+      "value": "2.000.000/ngày"
+     },
+     {
+      "row": "2.1. Phẫu thuật đặc biệt",
+      "col": "ƯU VIỆT",
+      "value": "97.000.000/năm"
+     },
+     {
+      "row": "3. Trợ cấp nằm viện",
+      "col": "TOÀN DIỆN",
+      "value": "250.000/ngày"
+     },
+     {
+      "row": "6. Hỗ trợ giáo dục",
+      "col": "ƯU VIỆT",
+      "value": "2.500.000/con"
+     }
+    ]
+   },
+   {
+    "id": "BQL_BS",
+    "title": "Quyền lợi bảo hiểm bổ sung",
+    "page": 2,
+    "cell_checks": [
+     {
+      "row": "1.2.1. Tử vong/TTTBVV do mọi nguyên nhân",
+      "col": "NÂNG CAO",
+      "value": "50.000.000"
+     },
+     {
+      "row": "2. Điều trị ngoại trú (STBH)",
+      "col": "ƯU VIỆT",
+      "value": "10.000.000"
+     },
+     {
+      "row": "2.1. Điều trị ngoại trú",
+      "col": "TOÀN DIỆN",
+      "value": "1.200.000/lần"
+     },
+     {
+      "row": "3. Trợ cấp mất giảm thu nhập",
+      "col": "tất cả",
+      "value": "1.000.000.000/loại/năm"
+     }
+    ]
+   }
+  ],
+  "notes_page3": "Lưu ý áp dụng chung: Đông y 50%, ung thư 50% sau chờ 2 năm, đồng chi trả 70/30 trẻ 15 ngày–3 tuổi, nha khoa → căn cứ câu tình huống"
+ },
+ "btb_bieuphi.pdf": {
+  "file": {
+   "sha256": "0c0083a9b087a386a95ffe807c52065c45ee4e14554d13122333697451e483bb",
+   "pdf_created": "2025-10-13",
+   "producer": "Microsoft Excel for Microsoft 365"
+  },
+  "issuance": {
+   "decision": "6038/QĐ-BHBV",
+   "decision_date": "2025-06-27"
+  },
+  "layout": {
+   "pages": 1,
+   "blocks": [
+    "QL chính",
+    "QLBS Tai nạn cá nhân",
+    "QLBS Sinh mạng và Tai nạn cá nhân",
+    "QLBS Điều trị ngoại trú…"
+   ],
+   "age_groups": 5,
+   "columns": [
+    "Cơ bản",
+    "Mở rộng",
+    "Nâng cao",
+    "Toàn diện",
+    "Ưu việt"
+   ]
+  },
+  "text_layer": {
+   "has_text_layer": true,
+   "number_format": "Excel: dấu phẩy hàng nghìn (60,000,000) → text_fixes đổi sang dấu chấm",
+   "heading_format": "dấu chấm thay dấu phẩy trong tên nhóm ('do bệnh. tai nạn. thai sản')"
+  },
+  "missing": "QLBS 3 Trợ cấp mất giảm thu nhập (0,58% do tai nạn / 0,50% do ốm bệnh) chỉ có ở quy tắc tr.47 bản scan → manual_units",
+  "tables": [
+   {
+    "id": "BP",
+    "page": 1,
+    "cell_checks": [
+     {
+      "row": "QL chính, Đến 6 tuổi",
+      "col": "Ưu việt",
+      "value": "3.198.000"
+     },
+     {
+      "row": "QL chính, 41–50 tuổi",
+      "col": "Ưu việt",
+      "value": "1.919.000"
+     },
+     {
+      "row": "Sinh mạng và TNCN, Đến 6 tuổi",
+      "col": "Ưu việt",
+      "value": "652.000"
+     },
+     {
+      "row": "Ngoại trú, Đến 6 tuổi",
+      "col": "Toàn diện",
+      "value": "1.084.000"
+     },
+     {
+      "row": "Ngoại trú, 51–65 tuổi",
+      "col": "Ưu việt",
+      "value": "1.284.000"
+     }
+    ]
+   }
+  ]
+ },
+ "cross_file": {
+  "version_set": "QĐ 6038/QĐ-BHBV ngày 27/06/2025 trên cả 3 file",
+  "consistency": [
+   "STBH QL chính 60/100/160/220/330 triệu khớp giữa BQL và biểu phí",
+   "QLBS 3 có trong quy tắc (II.B.3) và BQL, thiếu trong biểu phí Excel → manual_units từ tr.47"
+  ],
+  "kb_files": [
+   "btb_quytac.pdf",
+   "btb_bangquyenloi.pdf",
+   "btb_bieuphi.pdf"
+  ]
+ }
+}

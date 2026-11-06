@@ -2,23 +2,21 @@
 
 Đầu vào : DoclingDocument đã parse (split_2up + pypdfium2 + drop_offpage_items) và cấu hình file.
 Đầu ra  : list[dict] theo schema chunk (skill quy ước, mục 6) + báo cáo đối chiếu mục lục.
-
-Luồng: linearize (item → Rec, bỏ trang skip, làm sạch) → toc_from_pdf + reconcile (chèn tiêu đề
-bị mất, ví dụ CHƯƠNG IV trong khung màu) → build_units (đơn vị = mục/định nghĩa/QL bổ sung/phần A-B)
-→ unit_to_chunks (≤ max_tokens; quá thì tách theo khoản, bảng tách theo nhóm dòng).
 """
 from __future__ import annotations
 
+import csv
 import re
 import subprocess
 import unicodedata
 from dataclasses import dataclass, field
+from difflib import SequenceMatcher
 from typing import Callable, Iterable
 
-# ---------------------------------------------------------------- làm sạch
-FIX_CHARS = str.maketrans({"Ð": "Đ", "ð": "đ"})            # BVP: font WinAnsi map sai Đ/đ
-SPACE_FIXES = [(re.compile(r"\b(đến|từ)(\d)"), r"\1 \2")]   # BVP BQL: "đến1tỷ", "đến500triệu"
-INVISIBLE = re.compile(r"[\u00ad\u200b\u200c\u200d\u2060\ufeff\ufffe\x01-\x08\x0b\x0c\x0e-\x1f\x7f]")   # pdfium chèn ở chỗ xuống dòng
+# ---------------------------------------------------------------- làm sạch & vá văn bản
+FIX_CHARS = str.maketrans({"Ð": "Đ", "ð": "đ"})
+SPACE_FIXES = [(re.compile(r"\b(den|từ)(\d)"), r"\1 \2")]
+INVISIBLE = re.compile(r"[\u00ad\u200b\u200c\u200d\u2060\ufeff\ufffe\x01-\x08\x0b\x0c\x0e-\x1f\x7f]")
 
 
 def clean_text(s: str) -> str:
@@ -33,13 +31,11 @@ WORD = re.compile(r"[^\W\d_]+")
 
 
 def build_vocab(pdf_path: str) -> set[str]:
-    """Từ vựng lấy bằng pdftotext (poppler tách từ đúng) để sửa từ bị dính khi pypdfium2 nối dòng."""
     out = subprocess.run(["pdftotext", pdf_path, "-"], capture_output=True, text=True, check=True).stdout
     return {w.lower() for w in WORD.findall(clean_text(out))}
 
 
 def repair_glued(text: str, vocab: set[str]) -> str:
-    """'điềutrị' → 'điều trị' nếu cả hai nửa đều có trong từ vựng và từ dính thì không có."""
     def fix(m):
         w = m.group(0)
         lw = w.lower()
@@ -52,19 +48,153 @@ def repair_glued(text: str, vocab: set[str]) -> str:
     return WORD.sub(fix, text) if vocab else text
 
 
+def apply_text_fixes(recs: list[Rec], fixes: list | None) -> tuple[list[Rec], int]:
+    """Sửa văn bản tường minh theo file (config text_fixes) sau linearize, trước khi nhận cấu trúc."""
+    pats, n = [(re.compile(p), r) for p, r in fixes or []], 0
+    def fx(t: str) -> str:
+        nonlocal n
+        for p, r in pats:
+            t, k = p.subn(r, t)
+            n += k
+        return t
+    if pats:
+        for r in recs:
+            r.text = fx(r.text)
+            if r.rows:
+                r.rows = [[fx(c) for c in row] for row in r.rows]
+    return recs, n
+
+
+def apply_table_overrides(recs: list[Rec], overrides: list | None) -> tuple[list[Rec], list[dict], set[int]]:
+    """Thay mọi bảng Docling trên dải trang bằng 1 bảng nhập tay từ CSV (config table_overrides: [{pages: [a, b], csv: …}]).
+    Dùng khi OCR mất ô (BTB PL III: cột STT/tỉ lệ hẹp, TableFormer + Tesseract bỏ trống). CSV đã đối chiếu ảnh trang:
+    dòng đầu = page + tiêu đề cột; mỗi dòng sau = trang scan + các ô; dòng bắt đầu '#' là ghi chú.
+    Trả về (recs, báo cáo, tập trang được thay) — chunk bảng trên các trang này gắn manual: true."""
+    report, manual_pages = [], set()
+    for ov in overrides or []:
+        lo, hi = ov["pages"]
+        with open(ov["csv"], encoding="utf-8", newline="") as f:
+            lines = [r for r in csv.reader(f) if r and not r[0].lstrip().startswith("#")]
+        head, body = lines[0], lines[1:]
+        rows = [[c.strip() for c in head[1:]]] + [[c.strip() for c in r[1:]] for r in body]
+        pages = [lo] + [int(r[0]) for r in body]
+        if any(not lo <= p <= hi for p in pages):
+            raise ValueError(f"{ov['csv']}: có dòng ngoài trang {lo}–{hi}")
+        if len({len(r) for r in rows}) != 1:
+            raise ValueError(f"{ov['csv']}: số cột không đều")
+        out, replaced = [], 0
+        for r in recs:
+            if r.kind == "table" and lo <= r.page <= hi:
+                if not replaced:
+                    out.append(Rec("table", page=lo, rows=rows, row_pages=pages))
+                replaced += 1
+                continue
+            out.append(r)
+        if not replaced:
+            raise ValueError(f"table_overrides: không có bảng Docling nào trên trang {lo}–{hi} để thay")
+        recs = out
+        manual_pages |= set(range(lo, hi + 1))
+        report.append({"csv": ov["csv"], "pages": f"{lo}–{hi}", "replaced_tables": replaced, "rows": len(rows) - 1})
+    return recs, report, manual_pages
+
+
+
+
+def split_merged_heads(recs: list[Rec]) -> list[str]:
+    """OCR/Docling gộp 'CHƯƠNG V: …' với mục La Mã đầu tiên 'I. HỒ SƠ …' thành 1 tiêu đề → tách làm 2 (BTB tr.36)."""
+    merged = re.compile(rf"^((?:CHƯƠNG|PHẦN)\s+{ROMAN}\b.*?)\s+({ROMAN}\.\s+(\S.*))$")
+    out, log = [], []
+    for r in recs:
+        m = merged.match(r.text) if r.kind == "header" else None
+        if m and m[3][:1].isupper():
+            out += [Rec("header", m[1], r.page), Rec("header", m[2], r.page)]
+            log.append(f"tr.{r.page}: '{m[1][:40]}' | '{m[2][:40]}'")
+        else:
+            out.append(r)
+    recs[:] = out
+    return log
+
+
+NUM_OK = re.compile(r"^(\d{1,2})(\.{1,3})\s*(?=[^\W\d_])")
+NUM_SUB = re.compile(r"^\d+\.\d")
+NUM_BAD = re.compile(r"^(\S{1,3}?)[.,:…]{1,3}\s+(?=[^\W\d_])")
+LOOKALIKE = set("0123456789§$SIlL|Oo!()[]")
+
+
+def repair_numbering(recs: list[Rec], numbered: frozenset, part_heads: tuple = ()) -> dict:
+    """Sửa số mục bị OCR đọc sai trong chương đánh số (config ocr_structure_repair). Chỉ xét tiêu đề Docling (section_header):
+    - '5... Bệnh' → '5. Bệnh' (nhiều dấu chấm);
+    - '§. Bệnh đặc biệt' giữa 7. và 9. → '8. …': số hỏng chỉ được suy khi số ứng viên giữa hai mốc đúng bằng số còn thiếu.
+    Không đoán được thì để nguyên và báo cáo khoảng hở để thêm text_fixes."""
+    fixed, gaps, seg, where = [], [], [], ""
+
+    def flush():
+        n, pending = 0, []
+        for i, k in seg:
+            if k is None:
+                pending.append(i)
+                continue
+            if k <= n:                                   # danh sách lồng / số đọc sai nhỏ hơn → bỏ qua
+                continue
+            if k - n - 1:
+                if len(pending) == k - n - 1:
+                    for j, pi in enumerate(pending, n + 1):
+                        old = recs[pi].text
+                        recs[pi].text = NUM_BAD.sub(f"{j}. ", old, count=1)
+                        fixed.append(f"tr.{recs[pi].page}: '{old[:40]}' → {j}.")
+                else:
+                    gaps.append(f"{where}: {n} → {k}, thiếu {k - n - 1} số, {len(pending)} ứng viên")
+            pending, n = [], k
+        if pending:
+            gaps.append(f"{where}: sau {n} còn {len(pending)} tiêu đề số hỏng, không có mốc sau để suy")
+        seg.clear()
+
+    active = False
+    for i, r in enumerate(recs):
+        if r.kind != "header":
+            continue
+        t = r.text
+        if (m := PAT["chuong"].match(t)) or PAT["phuluc"].match(t):
+            flush()
+            active = bool(m) and roman_to_int(m[1]) in numbered
+            where = t[:30]
+            continue
+        if not active:
+            continue
+        if any(rx.match(t) for _, rx in part_heads):
+            flush()
+            where = t[:30]
+            continue
+        if NUM_SUB.match(t):
+            continue
+        if m := NUM_OK.match(t):
+            if len(m[2]) > 1:
+                r.text = f"{m[1]}. {t[m.end():]}"
+                fixed.append(f"tr.{r.page}: '{t[:40]}' → {m[1]}.")
+            seg.append((i, int(m[1])))
+        elif (m := NUM_BAD.match(t)) and set(m[1]) & LOOKALIKE and not (len(m[1]) == 1 and m[1].islower()):
+            seg.append((i, None))
+    flush()
+    return {"numbering_fixed": fixed, "numbering_gaps": gaps}
+
+
+def compile_part_heads(spec: dict | None) -> tuple:
+    return tuple((pid, re.compile(rx)) for pid, rx in (spec or {}).items())
+
+
 # ---------------------------------------------------------------- nhận diện cấu trúc
 ROMAN = r"(?=[IVX])X{0,3}(?:IX|IV|V?I{0,3})"
 PAT = {
-    "chuong": re.compile(rf"^(?:CHƯƠNG|PHẦN)\s+({ROMAN})\b\s*[-:.–]?\s*(.*)$"),   # ITC: PHẦN = cấp C
-    "phuluc": re.compile(rf"^PHỤ LỤC\s+(\d+|{ROMAN})\b\s*[-:.–]?\s*(.*)$"),     # ITC: PHỤ LỤC I
+    "chuong": re.compile(rf"^(?:CHƯƠNG|PHẦN)\s+({ROMAN})\b\s*[-:.–]?\s*(.*)$"),
+    "phuluc": re.compile(rf"^PHỤ LỤC\s+(\d+|{ROMAN})\b\s*[-:.–]?\s*(.*)$"),
     "bosung": re.compile(r"^QUYỀN LỢI BỔ SUNG\s+(\d+)\s*:\s*(.+)$", re.I),
-    "muc":    re.compile(rf"^({ROMAN})\.\s*(\S.*)$"),           # \s* vì có 'VII.Kết thúc'
+    "muc":    re.compile(rf"^({ROMAN})\.\s*(\S.*)$"),
     "part":   re.compile(r"^([A-D])\.\s+(\S.*)$"),
     "khoan":  re.compile(r"^(\d+)\.\s+(\S.*)$"),
-    "khoan2": re.compile(r"^\d+\.(\d+)\.?\s+(\S.*)$"),       # ITC: 1.1., 10.2. trong mục đánh số (không khớp 10.2.1.)
+    "khoan2": re.compile(r"^\d+\.(\d+)\.?\s+(\S.*)$"),
 }
 TOC_LINE = re.compile(r"^(?P<title>.+?)\s*\.{3,}\s*(?P<page>\d+)$")
-LVL1_ROW = re.compile(r"^[IVX]+\s*[–-]")                       # dòng nhóm cấp 1 trong bảng (I – TỬ VONG)
+LVL1_ROW = re.compile(r"^[IVX]+\s*[–-]")
 DT_ABBR = {"quy_tac": "QT", "dieu_khoan": "DK", "bang_phi": "BP",
            "bang_quyen_loi": "BQL", "brochure": "BR", "faq": "FAQ"}
 SKIP_LABELS = {"picture", "chart", "page_header", "page_footer", "caption", "document_index", "marker"}
@@ -84,15 +214,14 @@ def pl_num(s: str) -> int:
     return int(s) if s.isdigit() else roman_to_int(s)
 
 
-# ---------------------------------------------------------------- linearize
 @dataclass
 class Rec:
-    kind: str                              # header | text | list | table
+    kind: str
     text: str = ""
-    page: int = 0                          # trang của file đã parse (file tách nếu split_2up)
-    rows: list[list[str]] | None = None    # bảng: danh sách hàng, mỗi hàng là danh sách ô
-    synthetic: bool = False                # tiêu đề chèn từ mục lục
-    row_pages: list[int] | None = None     # trang của từng hàng (bảng ghép nhiều trang)
+    page: int = 0
+    rows: list[list[str]] | None = None
+    synthetic: bool = False
+    row_pages: list[int] | None = None
 
 
 def table_rows(item, vocab: set[str] | None = None) -> list[list[str]]:
@@ -131,22 +260,22 @@ def linearize(doc, skip_pages: set[int] = frozenset(), vocab: set[str] | None = 
     return recs
 
 
-# ---------------------------------------------------------------- ngữ cảnh cấu trúc
 @dataclass
 class Ctx:
-    chuong: tuple | None = None    # (số, tiêu đề)
+    chuong: tuple | None = None
     muc: tuple | None = None
     bosung: tuple | None = None
     part: tuple | None = None
-    dn: tuple | None = None        # định nghĩa
+    dn: tuple | None = None
     phuluc: tuple | None = None
     last_def: int = 0
-    so: tuple | None = None        # mục đánh số có tiêu đề (chương trong numbered_units) → M{n}
+    so: tuple | None = None
     last_so: int = 0
-    nested_max: int = 0            # số lớn nhất của danh sách lồng đang mở trong mục hiện tại
-    numbered: frozenset = frozenset()   # số chương có mục đánh số là đơn vị (config numbered_units)
-    note: tuple | None = None      # khối ghi chú sau danh sách mục (config note_units) → GC{n}
+    nested_max: int = 0
+    numbered: frozenset = frozenset()
+    note: tuple | None = None
     note_re: re.Pattern | None = None
+    part_heads: tuple = ()
 
     @property
     def in_definitions(self) -> bool:
@@ -210,7 +339,6 @@ class Ctx:
 
 
 def struct_key(rec: Rec, ctx: Ctx) -> tuple | None:
-    """Trả về (cấp, số, tiêu đề) nếu rec là tiêu đề cấu trúc. Chỉ tin regex, không tin nhãn Docling."""
     if rec.kind == "table":
         return None
     t = rec.text
@@ -218,18 +346,22 @@ def struct_key(rec: Rec, ctx: Ctx) -> tuple | None:
         return ("chuong", roman_to_int(m[1]), t)
     if m := PAT["phuluc"].match(t):
         return ("phuluc", pl_num(m[1]), t)
-    if ctx.note_re and ctx.chuong and ctx.note_re.match(t):    # C37: "Ghi chú:" cuối Chương II
+    if ctx.note_re and ctx.chuong and ctx.note_re.match(t):
         return ("note", (ctx.note[0] + 1) if ctx.note else 1, t)
     if ctx.chuong and ctx.chuong[0] in ctx.numbered and not ctx.muc:
+        if rec.kind == "header" or len(t) <= 150:
+            for pid, rx in ctx.part_heads:
+                if rx.match(t):
+                    return ("part", pid, t)
         if (m := PAT["part"].match(t)) and (rec.kind == "header" or len(t) <= 100):
             return ("part", m[1], t)
         if m := PAT["khoan"].match(t):
             n = int(m[1])
-            if ctx.nested_max and n == ctx.nested_max + 1:      # tiếp danh sách lồng (ITC IV.7: 1., 2.)
+            if ctx.nested_max and n == ctx.nested_max + 1:
                 return ("nested", n, t)
-            if n == ctx.last_so + 1:                            # số tăng liên tục → mục mới
+            if n == ctx.last_so + 1:
                 return ("so", n, re.split(r":\s", t, maxsplit=1)[0][:100])
-            if ctx.last_so and n == 1:                          # bắt đầu lại từ 1 → danh sách lồng
+            if ctx.last_so and n == 1:
                 return ("nested", n, t)
         return None
     if not (rec.kind == "header" or len(t) <= 150):
@@ -240,7 +372,7 @@ def struct_key(rec: Rec, ctx: Ctx) -> tuple | None:
         return ("muc", roman_to_int(m[1]), t)
     if ctx.in_definitions:
         m = PAT["khoan"].match(t)
-        if rec.kind == "header" and m and int(m[1]) == ctx.last_def + 1:   # số tăng liên tục → không nhầm danh sách lồng
+        if rec.kind == "header" and m and int(m[1]) == ctx.last_def + 1:
             return ("dn", int(m[1]), t)
         return None
     if (ctx.muc or ctx.bosung) and (rec.kind == "header" or len(t) <= 60):
@@ -249,7 +381,6 @@ def struct_key(rec: Rec, ctx: Ctx) -> tuple | None:
     return None
 
 
-# ---------------------------------------------------------------- mục lục
 def classify_title(title: str, chuong: int | None) -> tuple | None:
     if m := PAT["chuong"].match(title):
         return ("chuong", roman_to_int(m[1]))
@@ -262,11 +393,48 @@ def classify_title(title: str, chuong: int | None) -> tuple | None:
     return None
 
 
+def toc_from_cfg(items: list) -> list[dict]:
+    out, chuong, last = [], None, 0
+    for i, item in enumerate(items, 1):
+        if not (isinstance(item, (list, tuple)) and len(item) == 2 and isinstance(item[1], int)):
+            raise ValueError(f"toc[{i}] phải là [tiêu đề, số trang]: {item!r}")
+        title, page = clean_text(item[0]), item[1]
+        key = classify_title(title, chuong)
+        if key is None:
+            raise ValueError(f"toc[{i}] không nhận được cấp: {title!r}")
+        if page < last:
+            raise ValueError(f"toc[{i}] số trang giảm: {title!r}")
+        if key[0] == "chuong":
+            chuong = key[1]
+        out.append({"key": key, "title": title, "page": page})
+        last = page
+    return out
+
+
+LABEL = re.compile(r"^\s*(?:CHƯƠNG|PHẦN|PHỤ LỤC)\s+\S+\s*[-:.–]?\s*")
+
+
+def apply_toc_titles(recs: list[Rec], toc: list[dict], min_ratio: float = 0.8) -> dict:
+    tops = [e for e in toc if e["key"][0] in ("chuong", "phuluc")]
+    tail = lambda t: LABEL.sub("", t).lower()
+    fixed, unmatched = [], []
+    for r in recs:
+        if r.kind == "table" or r.synthetic or not tops:
+            continue
+        k = classify_title(r.text, None)
+        if not k or k[0] not in ("chuong", "phuluc"):
+            continue
+        score, best = max((SequenceMatcher(None, tail(r.text), tail(e["title"])).ratio(), e["title"]) for e in tops)
+        if score < min_ratio:
+            unmatched.append(f"{r.text[:70]} (tr.{r.page}, {score:.2f})")
+        elif r.text != best:
+            fixed.append(f"{r.text[:70]} → {best[:40]} (tr.{r.page})")
+            r.text = best
+    return {"toc_titles_fixed": fixed, "toc_titles_unmatched": unmatched}
+
+
 def toc_from_pdf(pdf_path: str, pages: Iterable[int]) -> list[dict]:
-    """Đọc mục lục bằng pdftotext (ổn định hơn bảng document_index của Docling)."""
     entries = _toc_entries(pdf_path, pages, [])
-    # C37: nhãn "CHƯƠNG I" nằm trong khung màu, chế độ thường tách nó khỏi dòng "| Định nghĩa ..... 04"
-    # → thử lại với -layout. Chỉ chạy khi chế độ thường không ra mục nào, nên BVP/ITC không đổi.
     return entries or _toc_entries(pdf_path, pages, ["-layout"])
 
 
@@ -279,7 +447,7 @@ def _toc_entries(pdf_path: str, pages: Iterable[int], opts: list[str]) -> list[d
             m = TOC_LINE.match(clean_text(line))
             if not m:
                 continue
-            title = re.sub(r"\s*\|\s*", " - ", m["title"].strip())   # C37: "CHƯƠNG II | Quyền lợi…"
+            title = re.sub(r"\s*\|\s*", " - ", m["title"].strip())
             key = classify_title(title, chuong)
             if key is None:
                 continue
@@ -300,8 +468,6 @@ def detected_keys(recs: list[Rec], numbered: frozenset = frozenset()) -> set[tup
 
 def reconcile(recs: list[Rec], toc: list[dict], page_offset: int = 0,
               insert_levels: tuple = ("chuong", "phuluc"), numbered: frozenset = frozenset()) -> tuple[list[Rec], dict]:
-    """So mục lục với tiêu đề tìm được. Chỉ chèn cấp luôn bắt đầu trang mới (chương, phụ lục);
-    cấp thấp hơn thiếu thì chỉ báo cáo để tránh chèn sai chỗ giữa trang."""
     recs, inserted = list(recs), []
     found = detected_keys(recs, numbered)
     for e in toc:
@@ -310,13 +476,12 @@ def reconcile(recs: list[Rec], toc: list[dict], page_offset: int = 0,
             idx = next((i for i, r in enumerate(recs) if r.page >= page), len(recs))
             recs.insert(idx, Rec("header", e["title"], page, synthetic=True))
             inserted.append(e["title"])
-    found = detected_keys(recs, numbered)                      # tính lại sau khi chèn (số chương của mục con đổi)
+    found = detected_keys(recs, numbered)
     missing = [f'{e["title"]} (tr.{e["page"]})' for e in toc if e["key"] not in found]
     return recs, {"toc_entries": len(toc), "matched": len(toc) - len(missing),
                   "missing": missing, "inserted": inserted}
 
 
-# ---------------------------------------------------------------- đơn vị
 @dataclass
 class Unit:
     ids: list[str]
@@ -325,13 +490,13 @@ class Unit:
 
 
 def build_units(recs: list[Rec], structure: str = "legal", numbered: frozenset = frozenset(),
-                note: str | None = None) -> list[Unit]:
-    units, ctx, sec = [], Ctx(numbered=numbered, note_re=re.compile(note) if note else None), 0
+                note: str | None = None, part_heads: tuple = ()) -> list[Unit]:
+    units, ctx, sec = [], Ctx(numbered=numbered, note_re=re.compile(note) if note else None, part_heads=part_heads), 0
     cur = Unit(ids=[], path=[])
     for r in recs:
         if structure == "legal":
             if key := struct_key(r, ctx):
-                if key[0] == "nested":                     # không phải tiêu đề: ghi nhận rồi giữ làm nội dung
+                if key[0] == "nested":
                     ctx.apply(key)
                     cur.recs.append(r)
                     continue
@@ -339,10 +504,10 @@ def build_units(recs: list[Rec], structure: str = "legal", numbered: frozenset =
                     units.append(cur)
                 ctx.apply(key)
                 cur = Unit(ids=ctx.id_parts(), path=ctx.path())
-                if key[0] == "so" and len(r.text) > 120:   # tiêu đề dính thân văn bản → giữ làm nội dung
+                if key[0] == "so" and len(r.text) > 120:
                     cur.recs.append(r)
                 continue
-        elif r.kind == "header":                       # flat: BQL, tờ rơi → mỗi tiêu đề một đơn vị
+        elif r.kind == "header":
             if cur.recs:
                 units.append(cur)
             sec += 1
@@ -354,7 +519,6 @@ def build_units(recs: list[Rec], structure: str = "legal", numbered: frozenset =
     return units
 
 
-# ---------------------------------------------------------------- render + đóng gói
 @dataclass
 class Piece:
     text: str
@@ -373,7 +537,7 @@ def rows_to_md(rows: list[list[str]]) -> str:
     out = []
     for i, r in enumerate(rows):
         r = r + [""] * (ncol - len(r))
-        if i > 0 and is_group_row(r):                  # ô gộp ngang bị Docling lặp ở mọi cột → thu về 1 ô
+        if i > 0 and is_group_row(r):
             r = [next(c for c in r if c)] + [""] * (ncol - 1)
         out.append("| " + " | ".join(c.replace("|", "/") for c in r) + " |")
         if i == 0:
@@ -382,7 +546,6 @@ def rows_to_md(rows: list[list[str]]) -> str:
 
 
 def merge_tables(recs: list[Rec]) -> list[Rec]:
-    """Ghép các mảnh bảng liền nhau cùng số cột (bảng trải nhiều trang, ví dụ Phụ lục 1)."""
     out: list[Rec] = []
     for r in recs:
         prev = out[-1] if out else None
@@ -398,8 +561,6 @@ def merge_tables(recs: list[Rec]) -> list[Rec]:
 
 
 def table_parts(rows, budget, count) -> list[list[list[str]]]:
-    """Tách bảng lớn: theo dòng nhóm (CHI TRÊN, II. QUYỀN LỢI BỔ SUNG…), nhóm quá lớn thì theo số dòng.
-    Mỗi phần lặp lại dòng tiêu đề (+ dòng nhóm cấp 1 nếu có)."""
     header, body = rows[0], rows[1:]
     groups, cur, lvl1 = [], [], None
     for r in body:
@@ -423,15 +584,14 @@ def table_parts(rows, budget, count) -> list[list[list[str]]]:
             continue
         keep = ctx_rows + ([g[0]] if is_group_row(g[0]) else [])
         data = g[1:] if is_group_row(g[0]) else g
-        k = -(-count(rows_to_md(keep + data)) // budget)          # số phần tối thiểu
-        while True:                                            # chia đều để không còn phần lẻ quá nhỏ
+        k = -(-count(rows_to_md(keep + data)) // budget)
+        while True:
             size = -(-len(data) // k)
             slices = [keep + data[j:j + size] for j in range(0, len(data), size)]
             if all(count(rows_to_md(s)) <= budget for s in slices) or size == 1:
                 break
             k += 1
         parts += slices
-    # gộp các phần nhỏ liền nhau nếu còn vừa ngân sách
     merged: list[list[list[str]]] = []
     for p in parts:
         if merged:
@@ -458,7 +618,6 @@ def split_text(text: str, budget: int, count) -> list[str]:
 
 
 def unit_pieces(recs: list[Rec], budget: int, count) -> list[Piece]:
-    """Biến đơn vị thành các mẩu nhỏ nhất có thể đóng gói, gắn số khoản (1., 2., …) nếu tăng liên tục."""
     pieces, expect, knum, caption = [], 1, None, ""
     for i, r in enumerate(recs):
         if r.kind == "table":
@@ -477,7 +636,7 @@ def unit_pieces(recs: list[Rec], budget: int, count) -> list[Piece]:
             continue
         nxt = recs[i + 1] if i + 1 < len(recs) else None
         if nxt is not None and nxt.kind == "table" and len(r.text) <= 150 and not PAT["khoan"].match(r.text):
-            caption = r.text                           # dòng ngắn ngay trước bảng = tiêu đề bảng
+            caption = r.text
             continue
         m = PAT["khoan"].match(r.text) or PAT["khoan2"].match(r.text)
         if m and int(m[1]) == expect:
@@ -490,16 +649,14 @@ def unit_pieces(recs: list[Rec], budget: int, count) -> list[Piece]:
 
 
 def pack(pieces: list[Piece], budget: int, count) -> list[tuple[str, list[Piece]]]:
-    """Đóng gói theo khoản: giữ nguyên khoản nếu vừa; khoản quá dài mới tách bên trong (K{n}_P{j}).
-    Trả về [(nhãn, mẩu)]; nhãn: K{a} | K{a}-{b} | TB{i} (chỉ bảng) | P{i}."""
     segs: list[list[Piece]] = []
-    for p in pieces:                                   # nhóm các mẩu liền nhau cùng số khoản
+    for p in pieces:
         if segs and segs[-1][-1].knum == p.knum:
             segs[-1].append(p)
         else:
             segs.append([p])
     tok = lambda ps: sum(count(x.text) + 1 for x in ps)
-    raw: list[tuple[bool, list[Piece]]] = []           # (là phần tách bên trong 1 khoản, mẩu)
+    raw: list[tuple[bool, list[Piece]]] = []
     cur: list[Piece] = []
     for seg in segs:
         if tok(seg) > budget:
@@ -559,16 +716,13 @@ def unit_to_chunks(u: Unit, cfg: dict, count, max_tokens: int, page_map: list[in
             "doc_type": cfg["doc_type"], "section_path": " > ".join(u.path) or cfg["doc_label"],
             "is_table": all(p.is_table for p in pk), "effective_date": cfg["effective_date"],
             "source_file": cfg["source_file"], "page": orig(pk[0].page),
+            "ocr": bool(cfg.get("ocr")),
+            "manual": any(p.is_table and p.page in cfg.get("_manual_pages", ()) for p in pk),
         })
     return out
 
 
 def apply_layout_rows(recs: list[Rec], pdf: str, lr: dict, vocab: set[str]) -> tuple[list[Rec], dict]:
-    """Thay bảng Docling trên trang lr["pages"] bằng mục dựng từ toạ độ dòng (src/ingest/layout_rows.py).
-
-    Bỏ: bảng trong khoảng trang; mọi item ở trang giữa (toàn bảng). Giữ item không phải bảng ở trang đầu
-    (lời dẫn trước bảng) và trang cuối (ghi chú sau bảng). Mỗi mục → Rec "N. Tên" + một Rec mỗi đoạn.
-    """
     from src.ingest.layout_rows import layout_rows
     a, b = lr["pages"]
     rows = layout_rows(pdf, (a, b), lr["split_x"], lr.get("stop"), lr.get("tol", 3.0))
@@ -590,30 +744,39 @@ def apply_layout_rows(recs: list[Rec], pdf: str, lr: dict, vocab: set[str]) -> t
                  "docling_items_dropped": dropped}
 
 
-# ---------------------------------------------------------------- API chính
-def make_token_counter(model_name: str = "BAAI/bge-m3") -> Callable[[str], int]:
-    from transformers import AutoTokenizer
-    tok = AutoTokenizer.from_pretrained(model_name)
-    return lambda s: len(tok(s, add_special_tokens=False)["input_ids"])
-
-
 def chunk_document(doc, cfg: dict, count: Callable[[str], int], page_map: list[int] | None = None,
                    toc_pdf: str | None = None, max_tokens: int = 512,
                    vocab_pdf: str | None = None) -> tuple[list[dict], dict]:
     vocab = build_vocab(vocab_pdf) if vocab_pdf else set()
     recs = linearize(doc, set(cfg.get("skip_pages", [])), vocab)
+    recs, n_fix = apply_text_fixes(recs, cfg.get("text_fixes"))
+    recs, ov_rep, manual_pages = apply_table_overrides(recs, cfg.get("table_overrides"))
+    cfg = {**cfg, "_manual_pages": manual_pages}
     if cfg.get("drop_tables"):
         recs = [r for r in recs if r.kind != "table"]
-    report: dict = {}
+    report: dict = {"text_fixes": n_fix} if cfg.get("text_fixes") else {}
+    if ov_rep:
+        report["table_overrides"] = ov_rep
+    if cfg.get("ocr_structure_repair"):
+        report["merged_heads_split"] = split_merged_heads(recs)
     if (lr := cfg.get("layout_rows")) and vocab_pdf:
         recs, report["layout_rows"] = apply_layout_rows(recs, vocab_pdf, lr, vocab)
     structure = cfg.get("structure", "legal")
     numbered = frozenset(roman_to_int(x) for x in cfg.get("numbered_units", []))
-    if structure == "legal" and cfg.get("toc_pages") and toc_pdf:
-        recs, toc_rep = reconcile(recs, toc_from_pdf(toc_pdf, cfg["toc_pages"]), cfg.get("toc_page_offset", 0),
-                                  numbered=numbered)
-        report.update(toc_rep)                                 # giữ report["layout_rows"]
-    units = build_units(recs, structure, numbered, cfg.get("note_units"))
+    
+    toc = None
+    if cfg.get("toc"):
+        toc = toc_from_cfg(cfg["toc"])
+        report.update(apply_toc_titles(recs, toc))
+    elif cfg.get("toc_pages") and toc_pdf:
+        toc = toc_from_pdf(toc_pdf, cfg["toc_pages"])
+    if cfg.get("ocr_structure_repair"):                        # sau khi tiêu đề chương đã sửa theo mục lục
+        report.update(repair_numbering(recs, numbered, compile_part_heads(cfg.get("part_heads"))))
+    if structure == "legal" and toc:
+        recs, toc_rep = reconcile(recs, toc, cfg.get("toc_page_offset", 0), numbered=numbered)
+        report.update(toc_rep)
+        
+    units = build_units(recs, structure, numbered, cfg.get("note_units"), compile_part_heads(cfg.get("part_heads")))
     chunks, seen = [], set()
     for u in units:
         for ch in unit_to_chunks(u, cfg, count, max_tokens, page_map):

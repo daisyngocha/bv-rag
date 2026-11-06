@@ -1,3 +1,4 @@
+import re
 from copy import copy
 from pypdf import PdfReader, PdfWriter
 from docling.document_converter import DocumentConverter, PdfFormatOption
@@ -23,17 +24,45 @@ def split_2up(src: str, dst: str) -> list[int]:
     return page_map
 
 
-def build_converter(ocr: bool = False, num_threads: int = 4, backend=None) -> DocumentConverter:
+def build_converter(ocr: dict | bool | None = None, num_threads: int = 4, backend=None) -> DocumentConverter:
+    """ocr: None/False = không OCR (giữ nguyên hành vi cũ); dict = Tesseract CLI, OCR toàn trang (bỏ qua lớp chữ có sẵn).
+    Khóa dict: lang (mặc định ["vie"]), scale (3.0 = 216 dpi), psm, tessdata (thư mục traineddata)."""
     try:
         from docling.datamodel.accelerator_options import AcceleratorOptions, AcceleratorDevice
     except ImportError:
         from docling.datamodel.pipeline_options import AcceleratorOptions, AcceleratorDevice
-    opts = PdfPipelineOptions(do_ocr=ocr, do_table_structure=True)
+    if ocr is True:
+        ocr = {}
+    opts = PdfPipelineOptions(do_ocr=ocr is not None and ocr is not False, do_table_structure=True)
+    if opts.do_ocr:
+        from docling.datamodel.pipeline_options import OcrMode, TesseractCliOcrOptions
+        opts.ocr_options = TesseractCliOcrOptions(
+            lang=ocr.get("lang", ["vie"]), mode=OcrMode.FULL_PAGE,     # thay force_full_page_ocr (deprecated, docling 2.142)
+            scale=ocr.get("scale", 3.0), psm=ocr.get("psm"), path=ocr.get("tessdata"))
     opts.table_structure_options.mode = TableFormerMode.ACCURATE
     opts.table_structure_options.do_cell_matching = True
     opts.accelerator_options = AcceleratorOptions(num_threads=num_threads, device=AcceleratorDevice.CPU)
     fmt = PdfFormatOption(pipeline_options=opts, backend=backend) if backend else PdfFormatOption(pipeline_options=opts)
     return DocumentConverter(format_options={InputFormat.PDF: fmt})
+
+
+def ocr_provenance(ocr: dict) -> dict:
+    """Ghi lại engine và traineddata để tái lập (data/parsed/{P}/{stem}.ocr.json, report.json)."""
+    import glob, hashlib, os, subprocess
+    from pathlib import Path
+    ver = subprocess.run(["tesseract", "--version"], capture_output=True, text=True)
+    ver = (ver.stdout or ver.stderr).splitlines()[0].strip()
+    lang = ocr.get("lang", ["vie"])
+    tdir = ocr.get("tessdata")
+    if not tdir:
+        out = subprocess.run(["tesseract", "--list-langs"], capture_output=True, text=True)
+        m = re.search(r'"(.+?)/?"', (out.stdout or "") + (out.stderr or ""))   # tesseract 5 in đường dẫn
+        cands = [m[1]] if m else []
+        cands += [os.environ.get("TESSDATA_PREFIX", "")] + sorted(glob.glob("/usr/share/tesseract-ocr/*/tessdata"))
+        tdir = next((d for d in cands if d and Path(d, f"{lang[0]}.traineddata").exists()), "")   # 4.1.1 không in
+    sha = {l: hashlib.sha256(Path(tdir, f"{l}.traineddata").read_bytes()).hexdigest()[:12]
+           for l in lang if Path(tdir, f"{l}.traineddata").exists()}
+    return {"engine": ver, "mode": "full_page", "config": ocr, "tessdata_dir": tdir, "traineddata_sha256": sha}
 
 LABELS_TO_CHECK = {"text", "list_item", "section_header", "caption", "page_header", "page_footer"}
 
