@@ -1,0 +1,28 @@
+# Cấu hình soạn nháp benchmark bằng Gemini (eval/bench_draft.py). Đổi model/prompt → tăng prompt_version.
+model: ""                     # điền tên model sau khi chạy: python -m eval.bench_draft models (decision-log ghi model đã dùng)
+prompt_version: p1
+temperature: 0.4
+seed: 42
+sleep_s: 1.0                  # nghỉ giữa 2 lần gọi API
+data_version: v1
+
+# Số task (đoạn/cặp đoạn) gửi Gemini mỗi nhóm; soạn dư ~30% so với số câu cần giữ
+per_group: {lookup: 18, table: 18, compare: 18, scenario: 18, out_of_scope: 18}
+lookup_def_share: 0.2         # tỷ lệ task lookup lấy từ chunk định nghĩa
+dev_prefill: 8                # số câu mỗi nhóm điền sẵn split=dev trong file duyệt (người duyệt chỉnh; v1 cần 6)
+
+# Ô/số không dùng làm đáp án (truth: data_quality, ghi chú chưa xác minh)
+avoid_numbers:
+  FLX: ["2.539.000", "20.460.000", "22.180.000", "27.782.000", "27.356.000"]
+  ITC: ["635"]
+# Trường catalog suy ra, không dùng để ghép câu compare
+avoid_catalog: {BTB: [age_min, age_max]}
+
+refusal: "Tài liệu sản phẩm hiện có không có thông tin để trả lời câu hỏi này."
+
+# Loại câu ngoài phạm vi và số task mỗi loại (tổng = per_group.out_of_scope)
+out_of_scope:
+  brochure_only: {n: 4, hint: "dịch vụ chỉ quảng cáo trên brochure/website, không có trong quy tắc, bảng quyền lợi, biểu phí (ví dụ bảo lãnh viện phí 24/7, ứng dụng BaoViet Direct, ưu đãi khi mua online)"}
+  legal: {n: 4, hint: "quy định pháp luật kinh doanh bảo hiểm (Luật KDBH, Nghị định 46/2023, Thông tư 67/2023), ví dụ thời gian chờ tối đa luật cho phép, quyền của doanh nghiệp bảo hiểm theo luật"}
+  other_product: {n: 5, hint: "sản phẩm bảo hiểm không có trong kho (sản phẩm nhân thọ, bảo hiểm xe, bảo hiểm nhà, sản phẩm của công ty khác)"}
+  not_stated: {n: 5, hint: "chi tiết về một trong 5 sản phẩm mà quy tắc, bảng quyền lợi, biểu phí không nêu (ví dụ hoa hồng đại lý, thời gian xử lý hồ sơ trên ứng dụng, danh sách bệnh viện bảo lãnh cụ thể)"}
