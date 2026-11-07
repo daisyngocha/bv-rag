@@ -102,7 +102,7 @@ def _run(tmp_path, monkeypatch, c, split="dev", **kw):
     meta = {"run_id": run_id, "config": c["_path"], "benchmark": str(bench), "benchmark_sha256": RE.sha256(bench),
             "benchmark_version": "v1", "data_version": "v1", "chunking": c["chunking"],
             "retrieval_mode": c["retrieval"]["mode"], "split": split, "runtime": "colab", "gpu": "L4",
-            "llm_gpu_pct_start": 100.0}
+            "llm_gpu_pct_start": 100.0, "ctx_check": {"over": []}}
     pipe.llm.gpu_status = lambda: {"gpu_pct": 100.0}
     return RE.run_one(pipe, c, rows, tmp_path / "runs" / run_id, run_id, meta, 42), tmp_path / "runs" / run_id
 
@@ -159,4 +159,14 @@ def test_b0_metrics_and_repeat_summary(tmp_path, monkeypatch):
 
 def test_official_flags():
     ok, why = M.official({"runtime": "local", "gpu": None, "llm_gpu_pct": 80, "n": 3, "n_logged": 2, "debug": True})
-    assert not ok and len(why) == 4
+    assert not ok and len(why) == 5          # thêm: không có ctx_check
+
+
+def test_check_prompt_lengths():
+    c = {**cfg(), "llm": {**LLM_CFG, "num_ctx": 1000, "max_tokens": 600}}   # ngân sách 1000 − 600 − 64 = 336
+    pipe = RAGPipeline(c, FakeLLM(), FakeRetriever(RANKING))
+    rows = [b for b in BENCH if b["split"] == "dev"]
+    long_q = "Q2 so sánh?"
+    count = lambda p: 500 if long_q in p else 100
+    res = RE.check_prompt_lengths(pipe, rows, count)
+    assert res["budget"] == 336 and res["max"] == 500 and res["over"] == ["v1-0002"]

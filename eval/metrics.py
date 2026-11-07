@@ -58,6 +58,8 @@ def official(meta: dict) -> tuple[bool, list[str]]:
         why.append("debug (--qids/--limit)")
     if meta.get("repo_dirty"):
         why.append("code chưa commit")
+    if not meta.get("ctx_check"):
+        why.append("không kiểm độ dài prompt (--skip-ctx-check)")
     if meta.get("ctx_overflow"):
         why.append(f"{meta['ctx_overflow']} câu prompt vượt num_ctx")
     return not why, why

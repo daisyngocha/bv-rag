@@ -66,11 +66,15 @@ class RAGPipeline:
         hits = self.retriever.search(query, top_k=self.top_k, mode=self.mode)
         return hits, int((time.perf_counter() - t0) * 1000)
 
-    def answer(self, query: str) -> dict:
-        t0 = time.perf_counter()
+    def prepare(self, query: str) -> tuple[list[dict], list[dict], str, int]:
+        """Truy xuất + dựng prompt, chưa gọi LLM (dùng cả cho bước kiểm độ dài prompt trước khi chạy)."""
         hits, retrieval_ms = self.retrieve(query)
         contexts = [{"chunk_id": h["chunk_id"], "text": h["payload"]["text"]} for h in hits[:self.context_n]]
-        prompt = build_prompt(self.prompt_name, query, contexts or None)
+        return hits, contexts, build_prompt(self.prompt_name, query, contexts or None), retrieval_ms
+
+    def answer(self, query: str) -> dict:
+        t0 = time.perf_counter()
+        hits, contexts, prompt, retrieval_ms = self.prepare(query)
         res = self.llm.generate(prompt)
         ctx_ids = [c["chunk_id"] for c in contexts]
         cites = parse_citations(res.text)
@@ -87,7 +91,8 @@ class RAGPipeline:
             "llm_ms": res.latency_ms,
             "tokens_in": res.tokens_in,
             "tokens_out": res.tokens_out,
-            # Ollama cắt phần ĐẦU prompt (mất hướng dẫn) khi prompt vượt num_ctx − max_tokens: phải kiểm sau khi chạy
+            # Ollama cắt phần ĐẦU prompt (mất hướng dẫn) khi prompt vượt ngữ cảnh. tokens_in có thể thiếu phần prefix
+            # Ollama tái dùng từ KV cache, nên cờ này chỉ là kiểm sau; kiểm chính là check_prompt_lengths trước khi chạy
             "ctx_overflow": bool(res.tokens_in and res.tokens_in >= self.prompt_budget),
             "prompt": self.prompt_name,
         }

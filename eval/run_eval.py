@@ -11,6 +11,8 @@ Nhiều config trong một phiên dùng chung LLM (đã warmup), bge-m3 và coll
 dùng trên dev để đo dao động của LLM.
 --resume RUN_ID: chạy tiếp một run bị ngắt (bỏ qua qid đã có trong log.jsonl), chỉ với 1 config, repeat 1.
 Mỗi câu ghi và flush ngay để không mất kết quả khi Colab ngắt.
+Trước khi sinh, mọi prompt được đếm token bằng tokenizer của LLM (llm.hf_tokenizer); có câu vượt
+num_ctx − max_tokens − TEMPLATE_MARGIN thì dừng (Ollama cắt phần đầu prompt, mất hướng dẫn).
 """
 from __future__ import annotations
 
@@ -75,6 +77,28 @@ def env_meta() -> dict:
             "gpu": "L4" if gpu and "L4" in gpu else gpu, "packages": pk, "repo_commit": commit, "repo_dirty": dirty}
 
 
+TEMPLATE_MARGIN = 64   # token chat template Ollama thêm vào (system mặc định của Qwen2.5, <|im_start|>…)
+
+
+def load_tokenizer(name: str):
+    from transformers import AutoTokenizer
+    return AutoTokenizer.from_pretrained(name)
+
+
+def check_prompt_lengths(pipe, rows: list[dict], count) -> dict:
+    """Đếm token mọi prompt của một config; count(str) -> int. Trả thống kê + danh sách qid vượt ngân sách."""
+    llm = pipe.cfg["llm"]
+    budget = llm.get("num_ctx", 4096) - llm.get("max_tokens", 600) - TEMPLATE_MARGIN
+    lens = {}
+    for r in rows:
+        _, _, prompt, _ = pipe.prepare(r["question"])
+        lens[r["qid"]] = count(prompt)
+    xs = sorted(lens.values())
+    over = sorted(q for q, n in lens.items() if n > budget)
+    return {"budget": budget, "max": xs[-1], "p95": xs[max(0, -(-95 * len(xs) // 100) - 1)],
+            "median": xs[len(xs) // 2], "over": over}
+
+
 def run_one(pipe, cfg: dict, rows: list[dict], run_dir: Path, run_id: str, meta: dict, seed: int) -> dict:
     """Chạy các câu chưa có trong log; trả meta đã cập nhật."""
     run_dir.mkdir(parents=True, exist_ok=True)
@@ -121,6 +145,8 @@ def main(argv=None):
     ap.add_argument("--qids", nargs="*", help="chỉ chạy các qid này (debug)")
     ap.add_argument("--limit", type=int, help="chỉ chạy n câu đầu (debug)")
     ap.add_argument("--resume", help="run_id cần chạy tiếp")
+    ap.add_argument("--check-only", action="store_true", help="chỉ kiểm độ dài prompt, không sinh")
+    ap.add_argument("--skip-ctx-check", action="store_true", help="bỏ kiểm độ dài prompt (debug; run bị đánh dấu)")
     a = ap.parse_args(argv)
 
     cfgs = [load_config(p) for p in a.config]
@@ -146,10 +172,25 @@ def main(argv=None):
     if env["runtime"] == "colab" and env["gpu"] != "L4":
         print("!!! GPU không phải L4: kết quả chỉ để debug, không đưa vào bảng báo cáo", flush=True)
 
+    pipes = {cfg["name"]: RAGPipeline(cfg, llm, comps["retrievers"].get(cfg["chunking"])) for cfg in cfgs}
+    ctx_check = {}
+    if not a.skip_ctx_check:
+        tok = load_tokenizer(cfgs[0]["llm"]["hf_tokenizer"])
+        count = lambda p: len(tok(p, add_special_tokens=False)["input_ids"])
+        for name, pipe in pipes.items():
+            ctx_check[name] = c = check_prompt_lengths(pipe, rows, count)
+            print(f"{name}: prompt token trung vị {c['median']}, p95 {c['p95']}, max {c['max']} "
+                  f"(ngân sách {c['budget']}), vượt {len(c['over'])} câu {c['over'][:10]}", flush=True)
+        bad = {n: c["over"] for n, c in ctx_check.items() if c["over"]}
+        if bad:
+            sys.exit(f"Prompt vượt num_ctx ở {sorted(bad)}: tăng llm.num_ctx (giống nhau ở mọi config B0–B4) rồi chạy lại")
+    if a.check_only:
+        return []
+
     stamp = datetime.now().strftime("%Y%m%d-%H%M")
     done = []
     for cfg in cfgs:
-        pipe = RAGPipeline(cfg, llm, comps["retrievers"].get(cfg["chunking"]))
+        pipe = pipes[cfg["name"]]
         for rep in range(a.repeat):
             run_id = a.resume or make_run_id(cfg, bench_ver, a.split, stamp, rep if a.repeat > 1 else None)
             run_dir = runs_dir / run_id
@@ -163,7 +204,8 @@ def main(argv=None):
                 "prompt": pipe.prompt_name, "context_n": pipe.context_n, "split": a.split, "debug": debug,
                 "processed": str(processed), "vectors": str(vectors),
                 "model": cfg["llm"]["model"], **llm_info, "warmup": comps.get("warmup"),
-                "llm_gpu_pct_start": gpu_start.get("gpu_pct"), **env}
+                "llm_gpu_pct_start": gpu_start.get("gpu_pct"), "ctx_check": ctx_check.get(cfg["name"]),
+                **env}
             meta = run_one(pipe, cfg, rows, run_dir, run_id, meta, cfg.get("seed", 42) + rep)
             done.append(run_id)
             print(f"{run_id}: {meta['n_logged']}/{meta['n']} câu, {meta['wall_s']} s, "
