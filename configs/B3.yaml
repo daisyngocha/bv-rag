@@ -3,7 +3,7 @@ benchmark: benchmark/benchmark_v1.jsonl
 data_version: v1
 chunking: structure        # fixed | structure
 chunk: {max_tokens: 512, overlap: 64}   # fixed: kích thước chunk; structure: ngưỡng tách Điều theo Khoản
-retrieval: {mode: hybrid, top_k: 30, use_filter: true}   # none | dense | sparse | hybrid
+retrieval: {mode: hybrid, top_k: 30, use_filter: true}   # use_filter: query processor (src/retrieve/query_processor.py)
 context_n: 5           # số chunk đầu đưa vào prompt (B4: sau rerank, = rerank.top_n)
 prompt: rag_v1         # src/generate/prompts.py
 rerank: {enabled: false, model: BAAI/bge-reranker-v2-m3, max_length: 1024, top_n: 5, min_score: 0.3}

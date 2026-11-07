@@ -149,6 +149,16 @@ PYTHONPATH=. python -m eval.metrics runs/B1_v1_dev_<stamp>_r0 --align-sweep     
 PYTHONPATH=. python -m eval.metrics runs/B*_v1_dev_<stamp>_r* --align-threshold 0.3   # ngưỡng chính; 0.5 để phân tích độ nhạy
 ```
 
+B3 (`retrieval.use_filter: true`) chạy thêm query processor `src/retrieve/query_processor.py`: nhận diện sản phẩm
+theo tên catalog + `data/manual/product_aliases.csv`, lọc `product_code`, câu nhắc ≥ 2 sản phẩm truy xuất riêng từng
+sản phẩm rồi ghép xen kẽ; log có khối `qp`. Ablation hybrid không lọc: `configs/ablation/B3hyb.yaml`.
+Rà câu nghi lỗi và phân tích lỗi theo từng câu qua nhiều run:
+
+```bash
+PYTHONPATH=. python -m eval.per_question runs/B1_v1_test_<stamp> runs/B2_v1_test_<stamp> runs/B3_v1_test_<stamp> \
+    --out results/review/per_question_v1_test.csv
+```
+
 `eval.metrics` đánh dấu run không chính thức (không phải Colab L4, LLM < 100% GPU, thiếu câu, `--qids/--limit`,
 code chưa commit, prompt vượt `num_ctx`); chỉ run chính thức được đưa vào bảng báo cáo.
 Prompt ở `src/generate/prompts.py`, chọn bằng khóa `prompt` trong config; prompt đã chạy chính thức thì không sửa, thêm tên mới.

@@ -143,6 +143,17 @@ def score_rows(pairs: list[tuple[dict, dict]], rel) -> dict:
     return m
 
 
+def qp_summary(log: list[dict], bench: dict[str, dict]) -> dict | None:
+    """B3+: tỷ lệ câu answerable nhận đúng tập sản phẩm, câu tách theo sản phẩm, câu phải fallback."""
+    qp = [(bench[l["qid"]], l["qp"]) for l in log if "qp" in l]
+    if not qp:
+        return None
+    ans = [(b, p) for b, p in qp if b["answerable"]]
+    return {"products_exact": _mean([float(set(p["products"]) == set(b["products"])) for b, p in ans]),
+            "filtered": _mean([float(bool(p["products"])) for _, p in qp]),
+            "split": sum(bool(p.get("split")) for _, p in qp), "fallback": sum(bool(p.get("fallback")) for _, p in qp)}
+
+
 def evaluate(meta: dict, log: list[dict], bench: dict[str, dict], align: dict | None, threshold: float) -> list[dict]:
     rel = relevance_fn(meta, align, threshold)
     missing = [l["qid"] for l in log if l["qid"] not in bench]
@@ -249,6 +260,9 @@ def main(argv=None):
         results[meta["run_id"]] = rows
         print_table(rows, ["group", "n", "recall@1", "recall@5", "full_recall@5", "mrr", "refusal_ok",
                            "false_refusal", "hedge_rate", "cite_rate", "cite_prec", "num_recall", "p95_s"])
+        qp = qp_summary(log, bench_cache[bpath])
+        if qp:
+            print("query processor: " + ", ".join(f"{k} {v}" for k, v in qp.items()))
         wall, n = meta.get("wall_s"), meta.get("n_logged")
         if wall and n:
             print(f"giờ GPU / 1.000 câu: {wall / n * 1000 / 3600:.2f} h (wall {wall} s, gồm cả truy xuất)")

@@ -53,6 +53,16 @@ def sha256(path) -> str:
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def qp_files(cfg: dict) -> dict | None:
+    """sha256 các file query processor dùng (B3+), để biết run nào chạy với từ điển alias nào."""
+    if not cfg["retrieval"].get("use_filter"):
+        return None
+    from src.retrieve import query_processor as QP
+    kw = cfg.get("query_processor", {})
+    files = [kw.get("catalog", QP.CATALOG), kw.get("aliases_csv", QP.ALIASES_CSV), kw.get("glossary", QP.GLOSSARY)]
+    return {str(f): sha256(f) for f in files if Path(f).exists()}
+
+
 def env_meta() -> dict:
     from importlib.metadata import version
 
@@ -205,6 +215,7 @@ def main(argv=None):
                 "processed": str(processed), "vectors": str(vectors),
                 "model": cfg["llm"]["model"], **llm_info, "warmup": comps.get("warmup"),
                 "llm_gpu_pct_start": gpu_start.get("gpu_pct"), "ctx_check": ctx_check.get(cfg["name"]),
+                "qp_files": qp_files(cfg),
                 **env}
             meta = run_one(pipe, cfg, rows, run_dir, run_id, meta, cfg.get("seed", 42) + rep)
             done.append(run_id)

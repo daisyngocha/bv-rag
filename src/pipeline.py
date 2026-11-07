@@ -6,7 +6,8 @@ cho nhiều config trong một phiên. Dựng đủ từ config: `build_componen
 Config dùng các khóa:
     retrieval.mode      none | dense | sparse | hybrid   (none = B0, không truy xuất)
     retrieval.top_k     số chunk truy xuất, ghi hết vào log để tính Recall@k với k bất kỳ ≤ top_k
-    retrieval.use_filter  B3+: lọc metadata (chưa dùng ở B0–B2)
+    retrieval.use_filter  B3+: query processor (src/retrieve/query_processor.py): lọc product_code theo sản phẩm nhận
+                        diện được, câu nhắc ≥ 2 sản phẩm truy xuất riêng từng sản phẩm rồi ghép xen kẽ
     context_n           số chunk đầu đưa vào prompt (mặc định 5)
     prompt              tên prompt trong src/generate/prompts.py
     rerank.enabled      B4 (chưa hỗ trợ ở đây; báo lỗi nếu bật)
@@ -65,7 +66,7 @@ def is_hedged(answer: str) -> bool:
 
 
 class RAGPipeline:
-    def __init__(self, cfg: dict, llm, retriever=None):
+    def __init__(self, cfg: dict, llm, retriever=None, qp=None):
         self.cfg = cfg
         self.mode = cfg["retrieval"]["mode"]
         self.top_k = cfg["retrieval"]["top_k"]
@@ -73,24 +74,53 @@ class RAGPipeline:
         self.prompt_name = cfg.get("prompt") or ("norag_v1" if self.mode == "none" else "rag_v1")
         if cfg.get("rerank", {}).get("enabled"):
             raise NotImplementedError("rerank chưa có trong pipeline (B4, tuần 6)")
-        if cfg["retrieval"].get("use_filter"):
-            raise NotImplementedError("lọc metadata/query processor chưa có trong pipeline (B3, tuần 5)")
         if self.mode != "none" and retriever is None:
             raise ValueError(f"retrieval.mode={self.mode} cần retriever")
         self.llm, self.retriever = llm, retriever
+        self.qp = None
+        if cfg["retrieval"].get("use_filter") and self.mode != "none":
+            if qp is None:
+                from src.retrieve.query_processor import QueryProcessor
+                qp = QueryProcessor.from_files(**cfg.get("query_processor", {}))
+            self.qp = qp
         num_ctx = cfg["llm"].get("num_ctx", 4096)
         self.prompt_budget = num_ctx - cfg["llm"].get("max_tokens", 600)
 
-    def retrieve(self, query: str) -> tuple[list[dict], int]:
+    def retrieve(self, query: str) -> tuple[list[dict], int, dict | None]:
+        """Trả (hits, retrieval_ms, plan của query processor hoặc None)."""
         if self.mode == "none":
-            return [], 0
+            return [], 0, None
         t0 = time.perf_counter()
-        hits = self.retriever.search(query, top_k=self.top_k, mode=self.mode)
-        return hits, int((time.perf_counter() - t0) * 1000)
+        if self.qp is None:
+            hits, plan = self.retriever.search(query, top_k=self.top_k, mode=self.mode), None
+        else:
+            hits, plan = self._retrieve_planned(query)
+        return hits, int((time.perf_counter() - t0) * 1000), plan
+
+    def _retrieve_planned(self, query: str) -> tuple[list[dict], dict]:
+        from src.retrieve.query_processor import interleave
+
+        plan = self.qp.plan(query)
+        subs = plan["subqueries"]
+        lists = [self.retriever.search(s["query"], filters=s["filters"], top_k=self.top_k, mode=self.mode) for s in subs]
+        hits = lists[0] if len(lists) == 1 else interleave(lists, self.top_k)
+        plan["fallback"] = False
+        if any(s["filters"] for s in subs) and len(hits) < self.context_n:
+            # Lọc sai sản phẩm hoặc sản phẩm ít chunk: bù bằng kết quả không lọc
+            extra = self.retriever.search(plan["query"], top_k=self.top_k, mode=self.mode)
+            seen = {h["chunk_id"] for h in hits}
+            hits = [dict(h) for h in hits] + [dict(h) for h in extra if h["chunk_id"] not in seen]
+            hits = hits[:self.top_k]
+            for r, h in enumerate(hits, 1):
+                h["rank"] = r
+            plan["fallback"] = True
+        plan["n_hits"] = [len(x) for x in lists]
+        return hits, plan
 
     def prepare(self, query: str) -> tuple[list[dict], list[dict], str, int]:
         """Truy xuất + dựng prompt, chưa gọi LLM (dùng cả cho bước kiểm độ dài prompt trước khi chạy)."""
-        hits, retrieval_ms = self.retrieve(query)
+        hits, retrieval_ms, plan = self.retrieve(query)
+        self.last_plan = plan
         contexts = [{"chunk_id": h["chunk_id"], "text": h["payload"]["text"]} for h in hits[:self.context_n]]
         return hits, contexts, build_prompt(self.prompt_name, query, contexts or None), retrieval_ms
 
@@ -117,6 +147,8 @@ class RAGPipeline:
             # Ollama tái dùng từ KV cache, nên cờ này chỉ là kiểm sau; kiểm chính là check_prompt_lengths trước khi chạy
             "ctx_overflow": bool(res.tokens_in and res.tokens_in >= self.prompt_budget),
             "prompt": self.prompt_name,
+            **({"qp": {k: v for k, v in self.last_plan.items() if k != "subqueries"}
+                       | {"filters": [s["filters"] for s in self.last_plan["subqueries"]]}} if self.last_plan else {}),
         }
 
 
