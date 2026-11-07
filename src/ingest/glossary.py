@@ -5,7 +5,7 @@
 - sản phẩm: mỗi định nghĩa trong quy tắc là một đơn vị chunk riêng; id có tiền tố checks.definitions.prefix của
   configs/products/{P}.yaml (ví dụ BVP_QT_C1_M1_K12). Thuật ngữ = cấp cuối của section_path (chunker coi
   "12. Bệnh có sẵn" là tiêu đề đơn vị), định nghĩa = text chunk bỏ header và chữ "Là" mở đầu; không dùng LLM; định nghĩa bị tách nhiều chunk (_P1, _P2…) được nối lại; source = chunk_id phần đầu.
-- aliases: chỉ lấy từ data/manual/glossary_aliases.csv (term, scope, aliases cách nhau bằng ";") sau khi người duyệt.
+- aliases: phần trong ngoặc cuối thuật ngữ do quy tắc ghi ("Hợp đồng bảo hiểm (HĐBH)"), cộng data/manual/glossary_aliases.csv (term, scope, aliases cách nhau bằng ";") sau khi người duyệt.
 - data/manual/glossary_term_overrides.csv (chunk_id, term, definition): sửa tay chỗ code không tách được.
 
 glossary.json không nằm trong processed/{ver} (v1 đã đóng băng) mà commit vào repo; _meta.data_version ghi
@@ -79,6 +79,13 @@ def term_from_heading(chunk: dict) -> tuple[str, str] | None:
     return (term, "") if term and len(term.split()) <= 15 else None
 
 
+def split_paren(term: str) -> tuple[str, list[str]]:
+    """'Hợp đồng bảo hiểm (HĐBH)' → ('Hợp đồng bảo hiểm', ['HĐBH']); ngoặc ở cuối thuật ngữ là tên gọi khác do
+    chính quy tắc ghi ('Điều trị nội trú (Nằm viện)'), nên đưa vào aliases không cần duyệt."""
+    m = re.match(r"^(.+?)\s*\(([^()]{1,40})\)$", term.strip())
+    return (m[1].strip(), [m[2].strip()]) if m else (term, [])
+
+
 def id_key(cid: str, prefix: str) -> tuple[int, str]:
     rest = cid[len(prefix):]
     n = re.match(r"\d+", rest)
@@ -113,7 +120,8 @@ def product_entries(chunks: list[dict], cfg_dir: Path, overrides: dict) -> tuple
             if not got or not got[1]:
                 errors.append(f"{first['chunk_id']}: không tách được thuật ngữ: {body[:80]!r}")
                 continue
-            entries.append({"term": got[0], "aliases": [], "definition": got[1], "scope": P,
+            term, aliases = split_paren(got[0])
+            entries.append({"term": term, "aliases": aliases, "definition": got[1], "scope": P,
                             "source": first["chunk_id"], "effective_date": first["effective_date"],
                             "parts": [c["chunk_id"] for c in parts]})
     return entries, errors
@@ -148,7 +156,7 @@ def apply_aliases(entries: list[dict], rows: list[dict]) -> list[str]:
         if not e:
             errors.append(f"alias: không có mục '{r['term']}' scope {r['scope']}")
             continue
-        e["aliases"] = [a.strip() for a in r["aliases"].split(";") if a.strip()]
+        e["aliases"] = list(dict.fromkeys(e["aliases"] + [a.strip() for a in r["aliases"].split(";") if a.strip()]))
     return errors
 
 

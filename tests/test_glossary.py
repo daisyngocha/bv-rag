@@ -1,5 +1,5 @@
 """Glossary 2 cấp. Chạy: PYTHONPATH=. python -m pytest -q tests/test_glossary.py"""
-from src.ingest.glossary import general_entries, lookup, product_entries, split_definition
+from src.ingest.glossary import general_entries, split_paren, lookup, product_entries, split_definition
 
 
 def test_split_definition_forms():
@@ -57,3 +57,9 @@ def test_term_from_section_path(tmp_path):
         ("Bác sĩ", "một bác sĩ được cấp giấy phép: gồm a) b)"),
         ("Thời hạn bảo hiểm", "Thời hạn bảo hiểm được tính từ"),
         ("Thương tật", "các tổn thương bị cản trở")]
+
+
+def test_split_paren_alias():
+    assert split_paren("Hợp đồng bảo hiểm (HĐBH)") == ("Hợp đồng bảo hiểm", ["HĐBH"])
+    assert split_paren("Điều trị nội trú (Nằm viện)") == ("Điều trị nội trú", ["Nằm viện"])
+    assert split_paren("Bệnh/ốm đau") == ("Bệnh/ốm đau", [])
