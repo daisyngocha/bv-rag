@@ -66,3 +66,22 @@ p95 dev không dùng (r1, r2 dùng lại KV cache của r0).
    ngưỡng và prompt B4. Chi phí không đổi: 0,67 giờ L4/1.000 câu, p95 4,35 s.
 8. Giới hạn: câu hỏi benchmark v1 luôn nêu tên sản phẩm (nhận diện đúng 120/120 câu answerable), nên phần đóng góp
    của bộ lọc là cận trên so với câu hỏi thật.
+
+## Rà câu nghi lỗi (test, B1/B2/B3hyb/B3)
+
+`eval.per_question` gắn cờ 14/120 câu (`results/review/per_question_v1_test.csv`, chi tiết evidence và câu trả lời
+`results/review/suspect_v1_test.md`). Đối chiếu tay từng đáp án chuẩn với text evidence: cả 14 đáp án và evidence đúng,
+không sửa benchmark v1 (CHANGELOG 07/11). Nguyên nhân thuộc hệ thống:
+
+| Loại lỗi | Câu | Ghi chú |
+| --- | --- | --- |
+| Từ chối dù evidence nằm trong top-5 của B3 | v1-0041, 0048, 0089, 0114, 0115, 0126, 0129 | Câu "có được chi trả không?" mà đáp án là loại trừ: model mở đầu bằng câu từ chối, phần "Lý do" sau đó nhiều khi đúng (0114, 0115 ở B2). 0089 có đáp án gần nguyên văn ở chunk hạng 1. 0126, 0129: B3 đưa đủ evidence của cả 2 sản phẩm vào top-3 nhưng vẫn từ chối |
+| Truy xuất trượt: chunk danh sách dài | v1-0046 (B3 hạng 13), 0087 (12), 0106 (18), 0049 (B3 ngoài top-30) | Câu trả lời là 1 dòng trong chunk liệt kê nhiều điểm loại trừ/nghĩa vụ; 0106 thêm nhiễu OCR (BTB quy tắc). 3 câu đầu còn trong top-30 nên reranker B4 có thể kéo lên; 0049 thì không |
+| Đọc nhầm ô bảng | v1-0092 (chọn cột Mở rộng 30.000.000 thay vì Nâng cao 50.000.000), 0100 (chọn dòng 51–65 tuổi 1.774.000 thay vì 41–50 tuổi 1.448.000) | Cả 4 run cùng sai: lỗi đọc bảng của LLM; 0092 là bảng gộp 2 dòng trong một ô đã biết (decision-log 07/11, lỗi parse P1) |
+| Thước đo khớp số | v1-0006 | Câu trả lời đúng ý chính, chỉ không nhắc trần 100% số tiền bảo hiểm nên num_recall = 0 |
+
+Hai quan sát thêm cho B4:
+- v1-0106: B1, B2, B3hyb, B3 đều trả lời "có thể được chi trả" (dựa vào điều khoản thẩm tách của ITC và định nghĩa bệnh
+  đặc biệt) trong khi BTB loại trừ rõ suy thận, chạy thận nhân tạo: câu trả lời sai có trích dẫn, cần đo bằng Faithfulness.
+- Model hay đổi mã chunk thật sang tiền tố mã ví dụ của prompt (`[SPMAU_QT_C2_A_M11]` thay vì `ITC_QT_C2_A_M11`,
+  gặp ở hầu hết câu trong file rà): trích dẫn bị tính không hợp lệ, góp phần làm tỷ lệ có trích dẫn thấp.
