@@ -182,7 +182,8 @@ def main(argv=None):
     if env["runtime"] == "colab" and env["gpu"] != "L4":
         print("!!! GPU không phải L4: kết quả chỉ để debug, không đưa vào bảng báo cáo", flush=True)
 
-    pipes = {cfg["name"]: RAGPipeline(cfg, llm, comps["retrievers"].get(cfg["chunking"])) for cfg in cfgs}
+    pipes = {cfg["name"]: RAGPipeline(cfg, llm, comps["retrievers"].get(cfg["chunking"]), reranker=comps.get("reranker"))
+             for cfg in cfgs}
     ctx_check = {}
     if not a.skip_ctx_check:
         tok = load_tokenizer(cfgs[0]["llm"]["hf_tokenizer"])
@@ -216,6 +217,8 @@ def main(argv=None):
                 "model": cfg["llm"]["model"], **llm_info, "warmup": comps.get("warmup"),
                 "llm_gpu_pct_start": gpu_start.get("gpu_pct"), "ctx_check": ctx_check.get(cfg["name"]),
                 "qp_files": qp_files(cfg),
+                "rerank": ({"model": cfg["rerank"]["model"], "max_length": cfg["rerank"].get("max_length"),
+                            "min_score": pipe.min_score} if pipe.reranker is not None else None),
                 **env}
             meta = run_one(pipe, cfg, rows, run_dir, run_id, meta, cfg.get("seed", 42) + rep)
             done.append(run_id)
