@@ -186,7 +186,7 @@ class RAGPipeline:
     def prepare(self, query: str) -> tuple[list[dict], list[dict], str, int]:
         """Truy xuất + dựng prompt, chưa gọi LLM (dùng cả cho bước kiểm độ dài prompt trước khi chạy)."""
         hits, retrieval_ms, plan = self.retrieve(query)
-        self.last_plan = plan
+        self.last_plan, self.last_hits = plan, hits   # demo (app/service.py) đọc payload chunk để hiển thị nguồn
         contexts = [{"chunk_id": h["chunk_id"], "text": h["payload"]["text"]} for h in hits[:self.context_n]]
         return hits, contexts, build_prompt(self.prompt_name, query, contexts or None), retrieval_ms
 
