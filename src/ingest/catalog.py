@@ -7,7 +7,7 @@ Hai nguồn:
   nhiều dòng (ví dụ programs). source = chunk_id trong processed/{ver}. LLM chỉ đề xuất, người duyệt ghi file này.
 
 Kiểm tra bằng code (không để LLM quyết định con số): source phải có trong kho chunk; mọi số trong value phải xuất hiện
-trong text của chunk source; mỗi sản phẩm phải đủ REQUIRED. Có lỗi thì không ghi file.
+trong text của chunk source; tên chương trình phải có nguyên văn; mỗi sản phẩm phải đủ REQUIRED. Có lỗi thì không ghi file.
 
 Chạy ở gốc repo (WSL):
     PYTHONPATH=. python -m src.ingest.catalog candidates --processed data/processed/v1 > data/manual/catalog_candidates.md
@@ -30,12 +30,13 @@ FIELDS = {
     "age_min": ("Tuổi tham gia nhỏ nhất (giữ đơn vị: 15 ngày tuổi, 18 tuổi…)", True, ["tuổi"]),
     "age_max": ("Tuổi tham gia lớn nhất", True, ["tuổi"]),
     "renewal_age_max": ("Tuổi tái tục tối đa (nếu có)", False, ["tái tục"]),
-    "territory": ("Phạm vi lãnh thổ", True, ["lãnh thổ", "phạm vi địa lý", "vùng bảo hiểm", "phạm vi bảo hiểm"]),
+    "territory": ("Phạm vi lãnh thổ", False, ["lãnh thổ", "phạm vi địa lý", "vùng bảo hiểm", "phạm vi bảo hiểm"]),
     "term": ("Thời hạn bảo hiểm", True, ["thời hạn bảo hiểm"]),
-    "programs": ("Chương trình/gói (mỗi chương trình một dòng)", True, ["chương trình"]),
+    "programs": ("Chương trình/gói (mỗi chương trình một dòng; tên phải có nguyên văn trong chunk)", False, ["chương trình"]),
     "sum_insured": ("Số tiền bảo hiểm/mức trách nhiệm (khoảng hoặc theo chương trình)", False, ["số tiền bảo hiểm", "mức trách nhiệm"]),
     "waiting_period": ("Thời gian chờ chính (bệnh thông thường)", False, ["thời gian chờ"]),
 }
+VERBATIM = {"programs"}          # giá trị phải có nguyên văn (không phân biệt hoa thường) trong chunk nguồn
 REQUIRED = [f for f, (_, req, _) in FIELDS.items() if req]
 
 
@@ -90,6 +91,8 @@ def build(processed: Path) -> tuple[dict, list[str]]:
             missing = [n for n in numbers(value) if n not in text_nums]
             if missing:
                 errors.append(f"{P}.{f}: số {missing} trong '{value}' không có trong {src}")
+            if f in VERBATIM and norm(value) not in norm(c["text"]):
+                errors.append(f"{P}.{f}: '{value}' không có nguyên văn trong {src}")
             item = {"value": value, "source": src}
             if r.get("note", "").strip():
                 item["note"] = r["note"].strip()
