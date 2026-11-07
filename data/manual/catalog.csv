@@ -1,0 +1,56 @@
+product_code,field,value,source,note
+BVP,product_type,"Bảo hiểm sức khỏe – chi phí y tế (quyền lợi chính: điều trị nội trú do bệnh, tai nạn)",BVP_QT_C2_M1_A_K1,
+BVP,insured,Người Việt Nam hoặc người nước ngoài cư trú hợp pháp tại Việt Nam,BVP_QT_C1_M3,trẻ em dưới 6 tuổi có điều kiện riêng (cùng đoạn)
+BVP,age_min,15 ngày tuổi,BVP_QT_C1_M3,tính tại thời điểm bắt đầu hiệu lực hợp đồng
+BVP,age_max,65 tuổi,BVP_QT_C1_M3,chỉ được tham gia đến 65 tuổi nếu đã tham gia liên tục trước đó từ năm 60 tuổi
+BVP,territory,Lãnh thổ Việt Nam,BVP_QT_C1_M2,trừ khi hợp đồng/phụ lục quy định khác
+BVP,term,01 năm; không chấp nhận tham gia ngắn hạn,BVP_QT_C1_M1_K45,
+BVP,programs,Đồng,BVP_BP_S1_TB1,
+BVP,programs,Bạc,BVP_BP_S1_TB1,
+BVP,programs,Vàng,BVP_BP_S1_TB1,
+BVP,programs,Bạch Kim,BVP_BP_S1_TB1,
+BVP,programs,Kim Cương,BVP_BP_S1_TB1,
+BVP,waiting_period,30 ngày đối với bệnh thông thường,BVP_QT_C2_M1_B,quyền lợi chính; biến chứng thai sản 90 ngày
+BTB,product_type,"Bảo hiểm sức khỏe – chi phí y tế do bệnh, tai nạn, thai sản; quyền lợi bổ sung tai nạn cá nhân, sinh mạng",BTB_QT_C2_A_M1,
+BTB,insured,"Cá nhân thỏa mãn điều kiện tham gia: không bị bệnh tâm thần, không bị ung thư (năm đầu), không bị thương tật vĩnh viễn từ 80% trở lên",BTB_QT_C4_M2_K3_P1,quy tắc BTB không có điều khoản tuổi tham gia chung; tuổi áp dụng như BVP theo xác nhận của người duyệt (07/11/2026)
+BTB,age_min,15 ngày tuổi,BTB_QT_C1_M35,suy từ định nghĩa Người phụ thuộc (con từ 15 ngày tuổi); áp dụng như BVP theo xác nhận của người duyệt
+BTB,age_max,65 tuổi,BTB_BP_S1_TB1,nhóm tuổi cao nhất trong biểu phí; áp dụng như BVP theo xác nhận của người duyệt
+BTB,territory,Lãnh thổ Việt Nam,BTB_QT_C4_M1,trừ khi hợp đồng/phụ lục quy định khác
+BTB,term,01 năm (hợp đồng cá nhân),BTB_QT_C1_M45,hợp đồng tổ chức theo thỏa thuận
+BTB,programs,Cơ bản,BTB_BQL_S2_TB9,
+BTB,programs,Mở rộng,BTB_BQL_S2_TB9,
+BTB,programs,Nâng cao,BTB_BQL_S2_TB9,
+BTB,programs,Toàn diện,BTB_BQL_S2_TB9,
+BTB,programs,Ưu việt,BTB_BQL_S2_TB9,
+BTB,sum_insured,Quyền lợi chính: 60.000.000 đến 330.000.000 đồng theo chương trình,BTB_BP_S1_TB1,
+C37,product_type,Bảo hiểm bệnh/tình trạng hiểm nghèo: trả 100% số tiền bảo hiểm khi được chẩn đoán mắc bệnh trong danh mục và còn sống 30 ngày,C37_QT_C2,
+C37,insured,Cá nhân; người nước ngoài phải có giấy phép lao động hoặc giấy phép cư trú hợp lệ,C37_QT_C4_M1,đối chiếu câu đầu của C37_QT_C4_M1 (đoạn ứng viên bị cắt)
+C37,age_min,18 tuổi,C37_QT_C4_M1,
+C37,age_max,60 tuổi,C37_QT_C4_M1,
+C37,renewal_age_max,65 tuổi,C37_QT_C4_M1,tái tục đến khi NĐBH tròn 65 tuổi
+C37,term,Tối đa 1 năm,C37_QT_C4_M9,
+C37,sum_insured,Từ 200.000.000 đến 1.000.000.000 đồng,C37_BQL_S2_P1,không chia chương trình
+C37,waiting_period,90 ngày kể từ ngày bắt đầu hiệu lực bảo hiểm,C37_QT_C2,
+FLX,product_type,"Bảo hiểm du lịch quốc tế: tai nạn cá nhân, chi phí y tế phát sinh ngoài lãnh thổ Việt Nam và các quyền lợi du lịch",FLX_QT_C2_M2_A_K1-2,
+FLX,insured,Người Việt Nam hoặc người nước ngoài đang ở Việt Nam (cư trú hợp pháp hoặc đang du lịch/công tác tại Việt Nam),FLX_QT_C1_M1_K15,
+FLX,age_min,06 tháng tuổi,FLX_QT_C1_M1_K15,
+FLX,age_max,85 tuổi,FLX_QT_C1_M1_K15,đến hết 85 tuổi; từ 70 tuổi quyền lợi tai nạn giới hạn 30%
+FLX,territory,"Ngoài lãnh thổ Việt Nam, theo Vùng 1, Vùng 2, Vùng 3; trừ quốc gia/khu vực bị cấm vận",FLX_QT_C1_M2,chuyến đi nhiều vùng tính phí theo vùng rộng nhất
+FLX,term,"Theo chuyến đi, tối đa 365 ngày",FLX_QT_C1_M1_K32,
+FLX,programs,Bạc,FLX_BQL_S2_P1,
+FLX,programs,Vàng,FLX_BQL_S2_P1,
+FLX,programs,Bạch Kim,FLX_BQL_S2_P1,
+FLX,programs,Kim Cương,FLX_BQL_S2_P1,
+ITC,product_type,"Bảo hiểm sức khỏe quốc tế – chi phí y tế, vận chuyển cấp cứu do ốm bệnh/tai nạn",ITC_QT_C2_A,
+ITC,insured,"Cá nhân thỏa mãn điều kiện tham gia: không bị bệnh tâm thần, không bị ung thư (năm đầu), không bị thương tật vĩnh viễn từ 80% trở lên",ITC_QT_C4_M1_P1,
+ITC,age_min,15 ngày tuổi,ITC_QT_C4_M1_P1,
+ITC,age_max,69 tuổi,ITC_QT_C4_M1_P1,tham gia lần đầu
+ITC,renewal_age_max,75 tuổi,ITC_QT_C4_M1_P1,
+ITC,territory,Theo chương trình: Vùng 1 đến Vùng 5,ITC_BQL_S5_TB1,phạm vi từng vùng ghi trong BQL; định nghĩa Vùng bảo hiểm ITC_QT_C1_M62
+ITC,term,01 năm (hợp đồng cá nhân),ITC_QT_C1_M53,hợp đồng tổ chức theo thỏa thuận
+ITC,programs,SELECT,ITC_BQL_S1_TB1,Vùng 1
+ITC,programs,ESSENTIAL,ITC_BQL_S1_TB1,Vùng 2
+ITC,programs,CLASSIC,ITC_BQL_S1_TB1,Vùng 3
+ITC,programs,GOLD,ITC_BQL_S1_TB1,Vùng 4
+ITC,programs,DIAMOND,ITC_BQL_S1_TB1,Vùng 5
+ITC,waiting_period,30 ngày đối với bệnh thông thường,ITC_QT_C4_M10_K1,"điều trị nội trú, hợp đồng cá nhân"
