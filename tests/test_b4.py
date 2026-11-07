@@ -118,3 +118,14 @@ def test_gate_sweep():
     assert rows[0.25]["false_refusal"] == 0.5 and rows[0.25]["fr_table"] == 1.0
     with pytest.raises(ValueError):
         M.gate_sweep([[dict(log[0], gated=True)]], bench)
+
+
+def test_gate_grid_and_detail():
+    assert M.parse_grid("0.9:0.95:0.01") == (0.9, 0.91, 0.92, 0.93, 0.94, 0.95)
+    bench = {"q1": {"answerable": True, "group": "lookup", "question": "a?"},
+             "q2": {"answerable": True, "group": "table", "question": "b?"},
+             "q3": {"answerable": False, "group": "out_of_scope", "question": "c?"}}
+    log = [{"qid": "q1", "rerank_max": 0.99, "answer": "x [1]"}, {"qid": "q2", "rerank_max": 0.95, "answer": "y [1]"},
+           {"qid": "q3", "rerank_max": 0.93, "answer": REFUSAL}]
+    det = M.gate_detail([({}, log), ({}, [dict(l, answer="z") for l in log])], bench, 0.97)
+    assert [d["qid"] for d in det] == ["q3", "q2"] and det[0]["llm_refused"] == "1/2"
