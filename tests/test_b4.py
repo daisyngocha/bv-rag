@@ -56,8 +56,9 @@ class QP:
         return {"products": prods, "matched": prods, "abbr": [], "query": q, "split": len(subs) > 1, "subqueries": subs}
 
 
-def test_rag_v2_prompt_numbered():
-    p = build_prompt("rag_v2", "Hỏi?", [{"chunk_id": "BVP_QT_C1", "text": "a"}, {"chunk_id": "BTB_QT_C2", "text": "b"}])
+@pytest.mark.parametrize("name", ["rag_v2", "rag_v3"])
+def test_rag_v2_prompt_numbered(name):
+    p = build_prompt(name, "Hỏi?", [{"chunk_id": "BVP_QT_C1", "text": "a"}, {"chunk_id": "BTB_QT_C2", "text": "b"}])
     assert '<doc so="1">' in p and '<doc so="2">' in p and "BVP_QT_C1" not in p and "SPMAU" not in p
     assert REFUSAL in p and p.endswith("Trả lời:")
 
