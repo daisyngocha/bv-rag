@@ -15,7 +15,9 @@ Mỗi khoản một dòng: term, definition, source ("<văn bản>, Điều N, k
 import argparse, csv, re, subprocess, sys
 
 ARTICLE = re.compile(r"^\s*Điều\s+(\d+)\s*[.:]\s*(.*)$")
-KHOAN = re.compile(r"^\s*(\d+)\s*\.\s+(\S.*)$")
+KHOAN = re.compile(r"^\s*(\d+)\s*\.\s*(\S.*)$")
+KHOAN_ALONE = re.compile(r"^\s*(\d+)\s*\.\s*$")          # số khoản nằm riêng một dòng
+NUM_START = re.compile(r"^\s*\d+\s*[.)]?\s*\S")
 FOOTNOTE = re.compile(r"(được|bị)\s+(sửa đổi|bổ sung|bãi bỏ|thay thế)|theo quy định tại .*(Luật|Thông tư|Nghị định) số", re.I)
 PAGE_NO = re.compile(r"^\s*\d{1,3}\s*$")
 COLS = ["term", "definition", "source", "amended_by", "keep", "review"]
@@ -37,12 +39,13 @@ def find_article(lines: list[str], title: str) -> tuple[str, list[str]]:
                     break
                 body.append(l2)
             return m.group(1), body
-    sys.exit(f"Không thấy điều có tiêu đề '{title}'")
+    hits = [f"   dòng {i + 1}: {l.strip()[:90]}" for i, l in enumerate(lines) if title.lower() in l.lower()]
+    sys.exit(f"Không thấy dòng 'Điều N. {title}'" + (":\n" + "\n".join(hits) if hits else f"; không dòng nào chứa '{title}'"))
 
 
 def split_khoan(body: list[str]) -> list[dict]:
     items, notes = [], []
-    for l in body:
+    for i, l in enumerate(body):
         if not l.strip() or PAGE_NO.match(l):
             continue
         if FOOTNOTE.search(l):
@@ -50,10 +53,14 @@ def split_khoan(body: list[str]) -> list[dict]:
             if items:
                 items[-1]["notes"].append(l.strip())
             continue
-        m = KHOAN.match(l)
-        if m and (not items or int(m.group(1)) == items[-1]["no"] + 1):
-            items.append({"no": int(m.group(1)), "text": m.group(2).strip(), "notes": []})
-        elif items:
+        m = KHOAN.match(l) or KHOAN_ALONE.match(l)
+        expected = items[-1]["no"] + 1 if items else 1
+        if m and int(m.group(1)) == expected:
+            items.append({"no": expected, "text": (m.group(2) if m.re is KHOAN else "").strip(), "notes": []})
+            continue
+        if m or NUM_START.match(l):
+            print(f"   ! dòng {i + 1} bắt đầu bằng số nhưng không phải khoản {expected}: {l.strip()[:90]}", file=sys.stderr)
+        if items:
             items[-1]["text"] += " " + l.strip()
     return items
 
@@ -83,7 +90,10 @@ def main():
     ap.add_argument("--header-off", action="store_true", help="không in dòng tiêu đề (khi nối thêm vào file đã có)")
     a = ap.parse_args()
 
-    dieu, body = find_article(pdf_lines(a.pdf), a.title)
+    lines = pdf_lines(a.pdf)
+    if not any(l.strip() for l in lines):
+        sys.exit("pdftotext không ra chữ: PDF không có lớp chữ (bản scan), cần OCR")
+    dieu, body = find_article(lines, a.title)
     items = split_khoan(body)
     w = csv.DictWriter(sys.stdout, fieldnames=COLS, lineterminator="\n")
     if not a.header_off:
