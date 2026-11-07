@@ -1,13 +1,13 @@
 # Cấu hình soạn nháp benchmark bằng Gemini (eval/bench_draft.py). Đổi model/prompt → tăng prompt_version.
 model: "gemini-3.8-flash"                     # điền tên model sau khi chạy: python -m eval.bench_draft models (decision-log ghi model đã dùng)
-prompt_version: p2                # p2: seed riêng mỗi task, out_of_scope kèm câu đã có (từ lô w3b)
+prompt_version: p3                # p2: seed riêng mỗi task, out_of_scope kèm câu đã có (w3b); p3: độ khó mục tiêu, không lặp chunk các lô trước (w4)
 temperature: 0.4
 seed: 42
 sleep_s: 1.0                  # nghỉ giữa 2 lần gọi API
 data_version: v1
 
 # Số task (đoạn/cặp đoạn) gửi Gemini mỗi nhóm; soạn dư ~30% so với số câu cần giữ
-per_group: {lookup: 18, table: 18, compare: 18, scenario: 18, out_of_scope: 18}
+per_group: {lookup: 16, table: 20, compare: 26, scenario: 18, out_of_scope: 24}   # w4: thiếu 12/14/17/13/15 câu; w3 dùng 18 mỗi nhóm
 lookup_def_share: 0.2         # tỷ lệ task lookup lấy từ chunk định nghĩa
 dev_prefill: 8                # số câu mỗi nhóm điền sẵn split=dev trong file duyệt (người duyệt chỉnh; v1 cần 6)
 
@@ -16,13 +16,23 @@ avoid_numbers:
   FLX: ["2.539.000", "20.460.000", "22.180.000", "27.782.000", "27.356.000"]
   ITC: ["635"]
 # Trường catalog suy ra, không dùng để ghép câu compare
-avoid_catalog: {BTB: [age_min, age_max]}
+avoid_catalog: {BTB: [age_min, age_max], ITC: [territory]}   # ITC territory: nguồn là bảng nha khoa
+# Chunk không dùng làm evidence: bảng ITC BQL_S1 mất tên chương trình ở tiêu đề cột (lỗi parse, decision-log 07/11)
+exclude_chunk_prefixes: [ITC_BQL_S1_TB]
+
+# Độ khó mục tiêu theo nhóm (đưa vào prompt từ p3); v1 cần ~40% easy, 40% medium, 20% hard
+difficulty_target:
+  lookup: {easy: 0.4, medium: 0.6}
+  table: {easy: 0.3, medium: 0.5, hard: 0.2}
+  scenario: {medium: 0.2, hard: 0.8}
+  compare: {medium: 0.4, hard: 0.6}
+  out_of_scope: {easy: 0.5, medium: 0.5}
 
 refusal: "Tài liệu sản phẩm hiện có không có thông tin để trả lời câu hỏi này."
 
-# Loại câu ngoài phạm vi và số task mỗi loại (tổng = per_group.out_of_scope)
+# Loại câu ngoài phạm vi và số task mỗi loại (tổng = per_group.out_of_scope; w3 dùng 4/4/5/5)
 out_of_scope:
-  brochure_only: {n: 4, hint: "dịch vụ chỉ quảng cáo trên brochure/website, không có trong quy tắc, bảng quyền lợi, biểu phí (ví dụ bảo lãnh viện phí 24/7, ứng dụng BaoViet Direct, ưu đãi khi mua online)"}
-  legal: {n: 4, hint: "quy định pháp luật kinh doanh bảo hiểm (Luật KDBH, Nghị định 46/2023, Thông tư 67/2023), ví dụ thời gian chờ tối đa luật cho phép, quyền của doanh nghiệp bảo hiểm theo luật"}
-  other_product: {n: 5, hint: "sản phẩm bảo hiểm không có trong kho (sản phẩm nhân thọ, bảo hiểm xe, bảo hiểm nhà, sản phẩm của công ty khác)"}
-  not_stated: {n: 5, hint: "chi tiết về một trong 5 sản phẩm mà quy tắc, bảng quyền lợi, biểu phí không nêu (ví dụ hoa hồng đại lý, thời gian xử lý hồ sơ trên ứng dụng, danh sách bệnh viện bảo lãnh cụ thể)"}
+  brochure_only: {n: 5, hint: "dịch vụ chỉ quảng cáo trên brochure/website, không có trong quy tắc, bảng quyền lợi, biểu phí (ví dụ bảo lãnh viện phí 24/7, ứng dụng BaoViet Direct, ưu đãi khi mua online)"}
+  legal: {n: 5, hint: "quy định pháp luật kinh doanh bảo hiểm (Luật KDBH, Nghị định 46/2023, Thông tư 67/2023), ví dụ thời gian chờ tối đa luật cho phép, quyền của doanh nghiệp bảo hiểm theo luật"}
+  other_product: {n: 7, hint: "sản phẩm bảo hiểm không có trong kho (sản phẩm nhân thọ, bảo hiểm xe, bảo hiểm nhà, sản phẩm của công ty khác)"}
+  not_stated: {n: 7, hint: "chi tiết về một trong 5 sản phẩm mà quy tắc, bảng quyền lợi, biểu phí không nêu (ví dụ hoa hồng đại lý, thời gian xử lý hồ sơ trên ứng dụng, danh sách bệnh viện bảo lãnh cụ thể)"}

@@ -53,6 +53,12 @@ Yêu cầu:
 - Nếu đoạn không đủ để đặt một câu hỏi rõ ràng có một đáp án duy nhất, trả {{"skip": true, "reason": "..."}}.
 Trả về đúng một đối tượng JSON: {{"question": "...", "answer": "...", "difficulty": "easy|medium|hard"}}
 """
+HARD = {   # mô tả độ khó mục tiêu đưa vào prompt (từ prompt p3)
+    "easy": "easy: hỏi trực tiếp một thông tin nêu rõ trong đoạn",
+    "medium": "medium: cần đọc kỹ một điều kiện, ngoại lệ hoặc phân biệt hai trường hợp gần nhau trong đoạn",
+    "hard": "hard: cần kết hợp từ hai điều kiện trở lên (tuổi, thời điểm tham gia, chương trình, loại sự kiện, giới hạn), "
+            "hoặc suy luận qua nhiều bước; đáp án vẫn chỉ dựa vào đoạn",
+}
 OOS_RULES = """
 Trả về đúng một đối tượng JSON: {{"question": "...", "reason": "vì sao tài liệu không trả lời được", "difficulty": "easy|medium|hard"}}
 """
@@ -119,7 +125,16 @@ def compare_pairs(c: dict, chunks: dict) -> list[dict]:
 def sample(tag: str, processed: Path, only: str | None = None) -> Path:
     c, chunks = cfg(), load_chunks(processed)
     names, def_prefix = product_meta()
-    rng, used, tasks = random.Random(c["seed"]), set(), []
+    rng, tasks = random.Random(f"{c['seed']}-{tag}"), []
+    used, used_pairs = set(), set()           # không lấy lại chunk/cặp đã dùng ở các lô trước
+    for path in DRAFTS.glob("*_tasks.jsonl"):
+        if path.name == f"{tag}_tasks.jsonl":
+            continue
+        for t in read_jsonl(path):
+            used.update(t["evidence_ids"])
+            if t["group"] == "compare":
+                used_pairs.add(frozenset(t["evidence_ids"]))
+    excl = tuple(c.get("exclude_chunk_prefixes", []))
     is_def = lambda ch: any(ch["chunk_id"].startswith(px) for px in def_prefix.values())
 
     def pool(pred):
@@ -135,14 +150,15 @@ def sample(tag: str, processed: Path, only: str | None = None) -> Path:
         "lookup": pick_round_robin(pool(lambda x: x["doc_type"] == "quy_tac" and not x["is_table"] and not is_def(x)
                                         and len(x["text"]) >= 300), n["lookup"] - n_def, rng, used)
                   + pick_round_robin(pool(is_def), n_def, rng, used),
-        "table": pick_round_robin(pool(lambda x: x["is_table"]), n["table"], rng, used),
+        "table": pick_round_robin(pool(lambda x: x["is_table"] and not x["chunk_id"].startswith(excl or ("\0",))),
+                                  n["table"], rng, used),
         "scenario": pick_round_robin(pool(lambda x: x["doc_type"] == "quy_tac" and not x["is_table"] and not is_def(x)
                                           and SCENARIO_RE.search(x["text"])), n["scenario"], rng, used),
     }
     for g, chs in groups.items():
         for ch in chs:
             tasks.append({"group": g, "evidence_ids": [ch["chunk_id"]], "products": [ch["product_code"]]})
-    pairs = compare_pairs(c, chunks)
+    pairs = [p for p in compare_pairs(c, chunks) if frozenset(p["evidence_ids"]) not in used_pairs]
     rng.shuffle(pairs)
     cat_pairs = [p for p in pairs if p["topic"].startswith("catalog")]
     gl_pairs = [p for p in pairs if p["topic"].startswith("glossary")]
@@ -154,6 +170,19 @@ def sample(tag: str, processed: Path, only: str | None = None) -> Path:
             tasks.append({"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": cat_name})
     if only:
         tasks = [t for t in tasks if t["group"] == only]
+    targets = c.get("difficulty_target", {})
+    by_group: dict[str, list] = {}
+    for t in tasks:
+        by_group.setdefault(t["group"], []).append(t)
+    for g, ts in by_group.items():          # gán độ khó mục tiêu theo tỷ lệ trong config, xen kẽ trong nhóm
+        mix = targets.get(g)
+        if not mix:
+            continue
+        seq = [d for d, share in mix.items() for _ in range(round(share * len(ts)))]
+        seq = (seq + [max(mix, key=mix.get)] * len(ts))[:len(ts)]
+        rng.shuffle(seq)
+        for t, d in zip(ts, seq):
+            t["difficulty_target"] = d
     for i, t in enumerate(tasks, 1):
         t["task_id"] = f"{tag}-{i:03d}"
     DRAFTS.mkdir(parents=True, exist_ok=True)
@@ -162,7 +191,8 @@ def sample(tag: str, processed: Path, only: str | None = None) -> Path:
         for t in tasks:
             f.write(json.dumps(t, ensure_ascii=False) + "\n")
     from collections import Counter
-    print(f"{len(tasks)} task: {dict(Counter(t['group'] for t in tasks))} → {out}")
+    print(f"{len(tasks)} task: {dict(Counter(t['group'] for t in tasks))}, "
+          f"độ khó mục tiêu {dict(Counter(t.get('difficulty_target', '-') for t in tasks))} → {out}")
     return out
 
 
@@ -173,7 +203,7 @@ def build_prompt(t: dict, chunks: dict, names: dict, c: dict, avoid: list[str] =
         prev = "".join(f"\n- {q}" for q in avoid)
         extra = f"\nKhông lặp lại ý của các câu đã có:{prev}\n" if prev else ""
         return (PROMPTS["out_of_scope"].format(product_names=", ".join(names.values()), hint=spec["hint"])
-                + extra + OOS_RULES.format())
+                + extra + target_line(t) + OOS_RULES.format())
     pn = ", ".join(names[p] for p in t["products"])
     topic = ""
     if t["group"] == "compare":
@@ -181,7 +211,13 @@ def build_prompt(t: dict, chunks: dict, names: dict, c: dict, avoid: list[str] =
         label = CATALOG_FIELDS[val][0].split(" (")[0].lower() if kind == "catalog" else f"định nghĩa '{val}'"
         topic = f" (khía cạnh gợi ý: {label})"
     doan = "\n\n".join(f"[{e}]\n{chunks[e]['text']}" for e in t["evidence_ids"])
-    return PROMPTS[t["group"]].format(product_names=pn, topic=topic) + RULES.format() + f"\nĐOẠN:\n{doan}\n"
+    return (PROMPTS[t["group"]].format(product_names=pn, topic=topic) + target_line(t) + RULES.format()
+            + f"\nĐOẠN:\n{doan}\n")
+
+
+def target_line(t: dict) -> str:
+    d = t.get("difficulty_target")
+    return f"\nĐộ khó mong muốn của câu hỏi: {HARD[d]}.\n" if d else ""
 
 
 def draft(tag: str, processed: Path) -> None:
