@@ -12,7 +12,9 @@ BVP,programs,Bạch Kim,BVP_BP_S1_TB1,
 BVP,programs,Kim Cương,BVP_BP_S1_TB1,
 BVP,waiting_period,30 ngày đối với bệnh thông thường,BVP_QT_C2_M1_B,quyền lợi chính; biến chứng thai sản 90 ngày
 BTB,product_type,"Bảo hiểm sức khỏe – chi phí y tế do bệnh, tai nạn, thai sản; quyền lợi bổ sung tai nạn cá nhân, sinh mạng",BTB_QT_C2_A_M1,
-BTB,insured,"Cá nhân thỏa mãn điều kiện tham gia: không bị bệnh tâm thần, không bị ung thư (năm đầu), không bị thương tật vĩnh viễn từ 80% trở lên",BTB_QT_C4_M2_K3_P1,điều kiện tuổi chưa tìm thấy trong đoạn ứng viên
+BTB,insured,"Cá nhân thỏa mãn điều kiện tham gia: không bị bệnh tâm thần, không bị ung thư (năm đầu), không bị thương tật vĩnh viễn từ 80% trở lên",BTB_QT_C4_M2_K3_P1,quy tắc BTB không có điều khoản tuổi tham gia chung; tuổi áp dụng như BVP theo xác nhận của người duyệt (07/11/2026)
+BTB,age_min,15 ngày tuổi,BTB_QT_C1_M35,suy từ định nghĩa Người phụ thuộc (con từ 15 ngày tuổi); áp dụng như BVP theo xác nhận của người duyệt
+BTB,age_max,65 tuổi,BTB_BP_S1_TB1,nhóm tuổi cao nhất trong biểu phí; áp dụng như BVP theo xác nhận của người duyệt
 BTB,territory,Lãnh thổ Việt Nam,BTB_QT_C4_M1,trừ khi hợp đồng/phụ lục quy định khác
 BTB,term,01 năm (hợp đồng cá nhân),BTB_QT_C1_M45,hợp đồng tổ chức theo thỏa thuận
 BTB,programs,Cơ bản,BTB_BQL_S2_TB9,
