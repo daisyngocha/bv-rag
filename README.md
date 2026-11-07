@@ -146,7 +146,7 @@ python -m eval.run_eval --config configs/B0.yaml configs/B1.yaml configs/B2.yaml
 # WSL: kéo log về, tính metric theo nhóm câu, ghi results/{config}_v1_{split}_{yyyymmdd}[_rN].csv
 scripts/sync.sh pull runs
 PYTHONPATH=. python -m eval.metrics runs/B1_v1_dev_<stamp>_r0 --align-sweep        # chọn ngưỡng căn chỉnh B1 (dev)
-PYTHONPATH=. python -m eval.metrics runs/B*_v1_dev_<stamp>_r* --align-threshold 0.5
+PYTHONPATH=. python -m eval.metrics runs/B*_v1_dev_<stamp>_r* --align-threshold 0.3   # ngưỡng chính; 0.5 để phân tích độ nhạy
 ```
 
 `eval.metrics` đánh dấu run không chính thức (không phải Colab L4, LLM < 100% GPU, thiếu câu, `--qids/--limit`,

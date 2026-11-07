@@ -37,9 +37,31 @@ def _norm(s: str) -> str:
     return " ".join(unicodedata.normalize("NFC", s).lower().split())
 
 
+REFUSAL_MAX_LEAD_WORDS = 8   # số từ tối đa đứng trước cụm từ chối ("Xin lỗi, tài liệu ..." vẫn là từ chối)
+WORD = re.compile(r"\w+", re.UNICODE)
+
+
+def _lead_words(answer: str) -> int | None:
+    """Số từ nội dung đứng trước lần xuất hiện ĐẦU TIÊN của cụm từ chối; None nếu không có cụm từ chối."""
+    a = _norm(answer)
+    i = a.find(_norm(REFUSAL_CORE))
+    if i < 0:
+        return None
+    return len(WORD.findall(CITE_BLOCK.sub(" ", a[:i])))
+
+
 def is_refusal(answer: str) -> bool:
-    """Từ chối = câu trả lời chứa cụm cốt lõi của câu từ chối chuẩn (kể cả khi model thêm lời dẫn)."""
-    return _norm(REFUSAL_CORE) in _norm(answer)
+    """Từ chối = câu trả lời MỞ ĐẦU bằng câu từ chối (trước cụm "không có thông tin để trả lời" tối đa
+    REFUSAL_MAX_LEAD_WORDS từ). Câu đã trả lời rồi chép thêm câu từ chối ở cuối không tính là từ chối
+    (decision-log 2026-11-07, dev B2: 3/8 câu "từ chối" theo quy tắc cũ là như vậy); xem is_hedged."""
+    n = _lead_words(answer)
+    return n is not None and n <= REFUSAL_MAX_LEAD_WORDS
+
+
+def is_hedged(answer: str) -> bool:
+    """Đã trả lời nhưng có chèn câu từ chối (thường ở cuối): đầu vào cho prompt B4."""
+    n = _lead_words(answer)
+    return n is not None and n > REFUSAL_MAX_LEAD_WORDS
 
 
 class RAGPipeline:

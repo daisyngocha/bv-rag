@@ -1,6 +1,6 @@
 """Tính metric từ runs/{run_id}/ (log.jsonl + meta.json) trên WSL, ghi results/*.csv.
 
-    PYTHONPATH=. python -m eval.metrics runs/B2_v1_test_20261110-2000 [runs/...] [--align-threshold 0.5]
+    PYTHONPATH=. python -m eval.metrics runs/B2_v1_test_20261110-2000 [runs/...] [--align-threshold 0.3]
     PYTHONPATH=. python -m eval.metrics runs/B1_v1_dev_*_r0 --align-sweep      # chọn ngưỡng căn chỉnh B1 trên dev
 
 Định nghĩa (skill conventions mục 10), tính theo từng group và "all":
@@ -8,7 +8,8 @@
   full_recall@5  câu answerable có MỌI evidence trong top-5 (compare/scenario nhiều đoạn)
   mrr            1/rank của chunk đúng đầu tiên trong top_k (0 nếu không có)
   refusal_ok     câu answerable=false bị từ chối
-  false_refusal  câu answerable=true bị từ chối
+  false_refusal  câu answerable=true bị từ chối (từ chối = câu trả lời MỞ ĐẦU bằng câu từ chối, src/pipeline.is_refusal)
+  hedge_rate     câu answerable, không từ chối, nhưng có chèn câu từ chối (thường ở cuối)
   cite_rate      câu answerable, không từ chối, có ≥ 1 trích dẫn hợp lệ (mã nằm trong ngữ cảnh)
   cite_prec      trung bình tỷ lệ trích dẫn trỏ đúng evidence (cận dưới: không tính chunk khác có chứa đáp án)
   num_recall     câu answerable có số trong đáp án chuẩn: tỷ lệ số đó xuất hiện trong câu trả lời (xấp xỉ đúng/sai,
@@ -30,12 +31,12 @@ from pathlib import Path
 
 from eval.benchmark import read_jsonl
 from src.ingest.catalog import numbers
-from src.pipeline import is_refusal
+from src.pipeline import is_hedged, is_refusal
 
 GROUPS = ("lookup", "table", "compare", "scenario", "out_of_scope")
 KS = (1, 3, 5, 10)
 COLUMNS = ["run_id", "config", "split", "group", "n", "n_answerable",
-           *[f"recall@{k}" for k in KS], "full_recall@5", "mrr", "refusal_ok", "false_refusal",
+           *[f"recall@{k}" for k in KS], "full_recall@5", "mrr", "refusal_ok", "false_refusal", "hedge_rate",
            "cite_rate", "cite_prec", "num_recall", "p50_s", "p95_s", "tokens_out_mean", "ctx_overflow", "official"]
 
 
@@ -122,6 +123,7 @@ def score_rows(pairs: list[tuple[dict, dict]], rel) -> dict:
     m["refusal_ok"] = _mean([float(is_refusal(l["answer"])) for _, l in neg])
     m["false_refusal"] = _mean([float(is_refusal(l["answer"])) for _, l in ans])
     answered = [(b, l) for b, l in ans if not is_refusal(l["answer"])]
+    m["hedge_rate"] = _mean([float(is_hedged(l["answer"])) for _, l in answered])
     if has_ret:
         m["cite_rate"] = _mean([float(bool(l["citations"])) for _, l in answered])
         m["cite_prec"] = _mean([sum(bool(rel(c, b["evidence_ids"])) for c in l["citations"]) / len(l["citations"])
@@ -198,7 +200,7 @@ def repeat_summary(results: dict[str, list[dict]]) -> list[dict]:
         if len(alls) < 2:
             continue
         row = {"config": cfg, "split": split, "runs": len(alls)}
-        for c in ("recall@5", "mrr", "refusal_ok", "false_refusal", "cite_rate", "num_recall", "p95_s"):
+        for c in ("recall@5", "mrr", "refusal_ok", "false_refusal", "hedge_rate", "cite_rate", "num_recall", "p95_s"):
             xs = [a[c] for a in alls if a.get(c) is not None]
             row[c] = f"{statistics.mean(xs):.3f} ± {statistics.stdev(xs):.3f}" if len(xs) > 1 else None
         out.append(row)
@@ -209,7 +211,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("runs", nargs="+", type=Path)
     ap.add_argument("--processed", type=Path, help="processed/{ver} có align_fixed.json; mặc định data/processed/{ver}")
-    ap.add_argument("--align-threshold", type=float, default=0.5)
+    ap.add_argument("--align-threshold", type=float, default=0.3)   # decision-log 2026-11-07
     ap.add_argument("--align-sweep", action="store_true", help="in recall@5/MRR theo ngưỡng căn chỉnh (run B1, split dev)")
     ap.add_argument("--out", type=Path, default=Path("results"))
     ap.add_argument("--no-write", action="store_true")
@@ -246,7 +248,7 @@ def main(argv=None):
             r["official"] = ok
         results[meta["run_id"]] = rows
         print_table(rows, ["group", "n", "recall@1", "recall@5", "full_recall@5", "mrr", "refusal_ok",
-                           "false_refusal", "cite_rate", "cite_prec", "num_recall", "p95_s"])
+                           "false_refusal", "hedge_rate", "cite_rate", "cite_prec", "num_recall", "p95_s"])
         wall, n = meta.get("wall_s"), meta.get("n_logged")
         if wall and n:
             print(f"giờ GPU / 1.000 câu: {wall / n * 1000 / 3600:.2f} h (wall {wall} s, gồm cả truy xuất)")

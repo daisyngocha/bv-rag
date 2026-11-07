@@ -170,3 +170,31 @@ def test_check_prompt_lengths():
     count = lambda p: 500 if long_q in p else 100
     res = RE.check_prompt_lengths(pipe, rows, count)
     assert res["budget"] == 336 and res["max"] == 500 and res["over"] == ["v1-0002"]
+
+
+# Câu trả lời thật của B2 trên dev (run B2_v1_dev_20261107-0832_r0), rút gọn
+REAL_REFUSED = [
+    REFUSAL + "\n\n(Tài liệu cung cấp thông tin về tỷ lệ trả tiền cho một số thương tật cụ thể như mất xương hàm, "
+              "lưỡi, nhưng không có thông tin về thương tật liên quan đến việc cắt bỏ vú.) [BVP_QT_PL1_TB1]",   # v1-0020
+    REFUSAL,                                                                                                    # v1-0038
+    REFUSAL + "\n\n(Tuy nhiên, thông qua phân tích các tài liệu, chúng ta có thể thấy rằng cả hai sản phẩm đều coi "
+              "các sự kiện như ngộ độc thức ăn ... là tai nạn.) [SPMAU_QT_C1_M2_K1]",                          # v1-0060
+    "Xin lỗi, tài liệu  KHÔNG có thông tin để trả lời câu hỏi này",
+]
+REAL_HEDGED = [
+    "Độ tuổi tối đa để tham gia lần đầu của Bảo hiểm 37 bệnh hiểm nghèo (CI37) là 60 tuổi, trong khi Bảo Việt "
+    "Intercare là 69 tuổi. Đối với tái tục, CI37 chỉ được tái tục cho đến khi NĐBH tròn 65 tuổi.\n\n"
+    "[" + REFUSAL + "] [C37_QT_C4_M1][ITC_QT_C4_M1_P1]",                                                       # v1-0053
+    "Khái niệm 'Tình trạng nguy kịch' có sự khác biệt nhỏ:\n\n- Bảo Việt An Gia: Cần điều trị khẩn cấp để tránh "
+    "tử vong [BVP_QT_C1_M1_K49].\n\n- Bảo hiểm Du lịch Flexi: Cần điều trị khẩn cấp để tránh đe dọa đến tính mạng "
+    "[FLX_QT_C1_M1_K34].\n\n" + REFUSAL,                                                                         # v1-0064
+]
+
+
+def test_refusal_vs_hedged_real_answers():
+    from src.pipeline import is_hedged
+    for a in REAL_REFUSED:
+        assert is_refusal(a) and not is_hedged(a), a[:60]
+    for a in REAL_HEDGED:
+        assert not is_refusal(a) and is_hedged(a), a[:60]
+    assert not is_refusal("Thời gian chờ là 30 ngày.") and not is_hedged("Thời gian chờ là 30 ngày.")
