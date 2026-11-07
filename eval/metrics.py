@@ -261,11 +261,22 @@ def print_table(rows: list[dict], cols: list[str]):
         print("| " + " | ".join(fmt(r.get(c)) for c in cols) + " |")
 
 
+def run_group(run_id: str) -> str:
+    """run_id bỏ hậu tố lần lặp _rN: các lần lặp của cùng một đợt chạy."""
+    head, _, tail = run_id.rpartition("_")
+    return head if tail[:1] == "r" and tail[1:].isdigit() else run_id
+
+
 def result_path(meta: dict, out_dir: Path) -> Path:
-    """results/{config}_{benchmark_ver}_{split}_{yyyymmdd}[_rN].csv"""
-    date = (meta.get("started_at") or "")[:10].replace("-", "")
-    rep = meta["run_id"].rsplit("_", 1)[-1] if meta["run_id"].rsplit("_", 1)[-1].startswith("r") else None
-    name = f"{Path(meta['config']).stem}_{meta.get('benchmark_version', 'v1')}_{meta['split']}_{date}"
+    """results/{config}_{benchmark_ver}_{split}_{yyyymmdd-HHMM}[_rN].csv, stamp lấy từ run_id.
+    Từ tuần 6 có thêm giờ chạy: hai đợt cùng config, cùng ngày (dev B4 1131 và 1259) không ghi đè nhau.
+    CSV tuần 4–5 giữ tên cũ {yyyymmdd}."""
+    rid = meta["run_id"]
+    rep = rid[len(run_group(rid)) + 1:] or None
+    stamp = run_group(rid).rsplit("_", 1)[-1]
+    if not (len(stamp) == 13 and stamp[8] == "-"):
+        stamp = (meta.get("started_at") or "")[:10].replace("-", "")
+    name = f"{Path(meta['config']).stem}_{meta.get('benchmark_version', 'v1')}_{meta['split']}_{stamp}"
     return out_dir / (name + (f"_{rep}" if rep else "") + ".csv")
 
 
@@ -278,16 +289,16 @@ def write_csv(rows: list[dict], path: Path):
 
 
 def repeat_summary(results: dict[str, list[dict]]) -> list[dict]:
-    """Gộp các lần lặp cùng config + split (dev × 3): mean ± sd của dòng "all"."""
+    """Gộp các lần lặp của cùng một đợt chạy (run_id bỏ _rN, vd. dev × 3): mean ± sd của dòng "all"."""
     by = defaultdict(list)
-    for rows in results.values():
+    for rid, rows in results.items():
         a = next(r for r in rows if r["group"] == "all")
-        by[a["config"], a["split"]].append(a)
+        by[run_group(rid), a["config"], a["split"]].append(a)
     out = []
-    for (cfg, split), alls in sorted(by.items()):
+    for (grp, cfg, split), alls in sorted(by.items()):
         if len(alls) < 2:
             continue
-        row = {"config": cfg, "split": split, "runs": len(alls)}
+        row = {"run": grp, "config": cfg, "split": split, "runs": len(alls)}
         for c in ("recall@5", "mrr", "refusal_ok", "false_refusal", "hedge_rate", "cite_rate", "num_recall", "p95_s"):
             xs = [a[c] for a in alls if a.get(c) is not None]
             row[c] = f"{statistics.mean(xs):.3f} ± {statistics.stdev(xs):.3f}" if len(xs) > 1 else None
