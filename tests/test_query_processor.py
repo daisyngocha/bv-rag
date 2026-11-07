@@ -115,3 +115,17 @@ def test_per_question_flags_and_qp_summary():
     assert rows["q1"]["suspect"] == "num0_all" and rows["q2"]["suspect"] == "oos_answered"
     s = qp_summary(runs[1][1], bench)
     assert s == {"products_exact": 1.0, "filtered": 0.5, "split": 0, "fallback": 0}
+
+
+def test_per_question_dump_md(tmp_path):
+    import eval.per_question as PQ
+    bench = {"q1": {"qid": "q1", "group": "lookup", "difficulty": "easy", "products": ["BVP"], "evidence_ids": ["E1"],
+                    "question": "Q1", "answer": "30 ngày", "answerable": True}}
+    runs = [({"config": "configs/B3.yaml", "retrieval_mode": "hybrid", "chunking": "structure"},
+             [{"qid": "q1", "retrieved": [{"chunk_id": "X", "rank": 1}, {"chunk_id": "E1", "rank": 2}],
+               "answer": "Dòng 1\nDòng 2", "qp": {"products": ["BVP"]}}])]
+    rows = PQ.build(runs, bench, None, 0.3)
+    p = tmp_path / "r.md"
+    PQ.dump_md(rows, runs, bench, {"E1": "text E1"}, ["q1"], p)
+    md = p.read_text(encoding="utf-8")
+    assert "text E1" in md and "X, **E1**" in md and "> Dòng 1\n> Dòng 2" in md and "rank 2" in md

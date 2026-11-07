@@ -1,0 +1,7 @@
+run_id,config,split,group,n,n_answerable,recall@1,recall@3,recall@5,recall@10,full_recall@5,mrr,refusal_ok,false_refusal,hedge_rate,cite_rate,cite_prec,num_recall,p50_s,p95_s,tokens_out_mean,ctx_overflow,official
+B3hyb_v1_dev_20261107-1012_r1,B3hyb,dev,all,30,24,0.75,0.9583,0.9583,0.9583,0.875,0.8371,1.0,0.2083,0.2632,0.5789,0.6212,0.8462,1.7,4.38,90.3,0,True
+B3hyb_v1_dev_20261107-1012_r1,B3hyb,dev,lookup,6,6,0.8333,1.0,1.0,1.0,1.0,0.9167,,0.0,0.0,0.6667,0.5,1.0,1.5,4.16,85.5,0,True
+B3hyb_v1_dev_20261107-1012_r1,B3hyb,dev,table,6,6,0.6667,0.8333,0.8333,0.8333,0.8333,0.7374,,0.1667,0.0,0.2,1.0,0.75,1.52,1.85,62.6667,0,True
+B3hyb_v1_dev_20261107-1012_r1,B3hyb,dev,compare,6,6,0.8333,1.0,1.0,1.0,0.6667,0.8889,,0.3333,1.0,0.75,0.6667,0.875,2.71,4.38,138.5,0,True
+B3hyb_v1_dev_20261107-1012_r1,B3hyb,dev,scenario,6,6,0.6667,1.0,1.0,1.0,1.0,0.8056,,0.3333,0.25,0.75,0.6111,1.0,1.92,6.73,130.8333,0,True
+B3hyb_v1_dev_20261107-1012_r1,B3hyb,dev,out_of_scope,6,0,,,,,,,1.0,,,,,,0.63,1.91,34.0,0,True
