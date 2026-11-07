@@ -1,0 +1,2 @@
+# Soạn nháp benchmark (WSL): eval/bench_draft.py. Không cần trên Colab.
+google-genai==2.30.0

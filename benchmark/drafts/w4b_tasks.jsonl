@@ -1,0 +1,3 @@
+{"group": "compare", "topic": "catalog:waiting_period", "evidence_ids": ["BVP_QT_C2_M1_B", "C37_QT_C2"], "products": ["BVP", "C37"], "difficulty_target": "medium", "task_id": "w4b-001"}
+{"group": "compare", "topic": "glossary:Tuổi được bảo hiểm", "evidence_ids": ["BTB_QT_C1_M50", "ITC_QT_C1_M59"], "products": ["BTB", "ITC"], "difficulty_target": "hard", "task_id": "w4b-002"}
+{"group": "compare", "topic": "glossary:Các bộ phận/thiết bị/dụng cụ y tế phục vụ điều trị", "evidence_ids": ["BVP_QT_C1_M1_K14_P1", "ITC_QT_C1_M12_P1"], "products": ["BVP", "ITC"], "difficulty_target": "hard", "task_id": "w4b-003"}

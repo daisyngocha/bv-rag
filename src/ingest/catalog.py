@@ -45,7 +45,9 @@ def norm(s: str) -> str:
 
 
 def numbers(s: str) -> list[str]:
-    """Số trong chuỗi, bỏ dấu phân cách nghìn: '1.000.000' → '1000000', '15' → '15'."""
+    """Số trong chuỗi, bỏ dấu phân cách nghìn: '1.000.000' → '1000000', '15' → '15'.
+    Dấu nghìn có khoảng trắng do parse ('15 . 200 . 000', biểu phí ITC) được ghép lại trước."""
+    s = re.sub(r"(?<=\d) ?([.,]) ?(?=\d{3}(?!\d))", r"\1", s)
     return [n.replace(".", "").replace(",", "") for n in re.findall(r"\d[\d.,]*\d|\d", s)]
 
 
