@@ -2,6 +2,7 @@
 
     PYTHONPATH=. python -m eval.metrics runs/B2_v1_test_20261110-2000 [runs/...] [--align-threshold 0.3]
     PYTHONPATH=. python -m eval.metrics runs/B1_v1_dev_*_r0 --align-sweep      # chọn ngưỡng căn chỉnh B1 trên dev
+    PYTHONPATH=. python -m eval.metrics runs/B4_v1_dev_*_r* --gate-sweep         # chọn rerank.min_score trên dev
 
 Định nghĩa (skill conventions mục 10), tính theo từng group và "all":
   recall@k       câu answerable có ≥ 1 evidence trong top-k truy xuất
@@ -14,6 +15,9 @@
   cite_prec      trung bình tỷ lệ trích dẫn trỏ đúng evidence (cận dưới: không tính chunk khác có chứa đáp án)
   num_recall     câu answerable có số trong đáp án chuẩn: tỷ lệ số đó xuất hiện trong câu trả lời (xấp xỉ đúng/sai,
                  không thay Answer Correctness của Ragas)
+  num_unsup      câu answerable, không từ chối, có ≥ 1 số không xuất hiện trong ngữ cảnh lẫn câu hỏi (log
+                 nums_unsupported, từ tuần 6; cờ nghi bịa số, không phải lỗi chắc chắn)
+  gated          (B4) tỷ lệ câu bị chặn bởi ngưỡng rerank, không gọi LLM
   p50_s, p95_s   độ trễ toàn câu (truy xuất + sinh), không gồm nạp model/warmup
 Chunk cố định (B1): chunk F tính là trúng evidence S nếu độ phủ cov(S, F) ≥ ngưỡng (align_fixed.json), hoặc F
 là chunk cố định phủ S nhiều nhất (để S dài hơn 1 cửa sổ 512 token vẫn có chunk trúng). Ngưỡng chọn trên dev.
@@ -37,7 +41,7 @@ GROUPS = ("lookup", "table", "compare", "scenario", "out_of_scope")
 KS = (1, 3, 5, 10)
 COLUMNS = ["run_id", "config", "split", "group", "n", "n_answerable",
            *[f"recall@{k}" for k in KS], "full_recall@5", "mrr", "refusal_ok", "false_refusal", "hedge_rate",
-           "cite_rate", "cite_prec", "num_recall", "p50_s", "p95_s", "tokens_out_mean", "ctx_overflow", "official"]
+           "cite_rate", "cite_prec", "num_recall", "num_unsup", "gated", "p50_s", "p95_s", "tokens_out_mean", "ctx_overflow", "official"]
 
 
 # ------------------------------------------------------------------ đọc run
@@ -136,6 +140,8 @@ def score_rows(pairs: list[tuple[dict, dict]], rel) -> dict:
         if gold:
             nr.append(len(gold & set(numbers(l["answer"]))) / len(gold))
     m["num_recall"] = _mean(nr)
+    m["num_unsup"] = _mean([float(bool(l["nums_unsupported"])) for _, l in answered if l.get("nums_unsupported") is not None])
+    m["gated"] = _mean([float(l["gated"]) for _, l in pairs if "gated" in l])
     lat = [l["latency_ms"] for _, l in pairs]
     m["p50_s"], m["p95_s"] = _pct(lat, 0.5), _pct(lat, 0.95)
     m["tokens_out_mean"] = _mean([l.get("tokens_out") for _, l in pairs])
@@ -173,6 +179,50 @@ def evaluate(meta: dict, log: list[dict], bench: dict[str, dict], align: dict | 
 
 
 # ------------------------------------------------------------------ in và ghi
+SWEEP = tuple(round(0.05 * i, 2) for i in range(13))   # 0,00 … 0,60
+
+
+def gate_sweep(logs: list[list[dict]], bench: dict[str, dict], thresholds=SWEEP) -> list[dict]:
+    """Quét ngưỡng rerank.min_score trên log chạy KHÔNG chặn (min_score null). Ngưỡng t: câu có rerank_max < t
+    coi như từ chối (pipeline trả câu từ chối, không gọi LLM), còn lại giữ câu trả lời của LLM. Nhiều log (dev × 3)
+    thì lấy trung bình. Tính lại được chính xác vì cổng chỉ thay câu trả lời, không đổi ngữ cảnh."""
+    out = []
+    for t in thresholds:
+        acc = defaultdict(list)
+        for log in logs:
+            if any("rerank_max" not in l for l in log):
+                raise ValueError("log không có rerank_max: --gate-sweep chỉ dùng cho run có rerank")
+            if any(l.get("gated") for l in log):
+                raise ValueError("log đã chặn theo ngưỡng: quét trên run min_score null")
+            ref = {l["qid"]: l["rerank_max"] < t or is_refusal(l["answer"]) for l in log}
+            ans = [q for q in ref if bench[q]["answerable"]]
+            neg = [q for q in ref if not bench[q]["answerable"]]
+            acc["refusal_ok"].append(sum(ref[q] for q in neg) / len(neg) if neg else None)
+            acc["false_refusal"].append(sum(ref[q] for q in ans) / len(ans) if ans else None)
+            acc["gated"].append(sum(l["rerank_max"] < t for l in log) / len(log))
+            acc["gated_answerable"].append(sum(next(l["rerank_max"] for l in log if l["qid"] == q) < t for q in ans)
+                                           / len(ans) if ans else None)
+            for g in ("lookup", "table", "compare", "scenario"):
+                qs = [q for q in ans if bench[q]["group"] == g]
+                acc[f"fr_{g}"].append(sum(ref[q] for q in qs) / len(qs) if qs else None)
+        row = {"min_score": t, **{k: _mean(v) for k, v in acc.items()}}
+        row["balanced"] = (round(row["refusal_ok"] - row["false_refusal"], 4)
+                           if row["refusal_ok"] is not None and row["false_refusal"] is not None else None)
+        out.append(row)
+    return out
+
+
+def rerank_score_summary(log: list[dict], bench: dict[str, dict]) -> dict:
+    """Phân bố rerank_max theo answerable / out_of_scope: xem hai nhóm tách nhau tới đâu."""
+    def q(xs, p):
+        xs = sorted(xs)
+        return round(xs[max(0, math.ceil(p * len(xs)) - 1)], 3) if xs else None
+    a = [l["rerank_max"] for l in log if bench[l["qid"]]["answerable"]]
+    n = [l["rerank_max"] for l in log if not bench[l["qid"]]["answerable"]]
+    return {"answerable p05/p25/p50": (q(a, .05), q(a, .25), q(a, .5)),
+            "out_of_scope p50/p75/p95": (q(n, .5), q(n, .75), q(n, .95))}
+
+
 def fmt(v):
     return "" if v is None else (f"{v:.3f}" if isinstance(v, float) else str(v))
 
@@ -224,11 +274,23 @@ def main(argv=None):
     ap.add_argument("--processed", type=Path, help="processed/{ver} có align_fixed.json; mặc định data/processed/{ver}")
     ap.add_argument("--align-threshold", type=float, default=0.3)   # decision-log 2026-11-07
     ap.add_argument("--align-sweep", action="store_true", help="in recall@5/MRR theo ngưỡng căn chỉnh (run B1, split dev)")
+    ap.add_argument("--gate-sweep", action="store_true",
+                    help="quét rerank.min_score 0–0,6 trên các run B4 dev chạy không chặn (gộp mọi run truyền vào)")
     ap.add_argument("--out", type=Path, default=Path("results"))
     ap.add_argument("--no-write", action="store_true")
     a = ap.parse_args(argv)
 
     results, bench_cache = {}, {}
+    if a.gate_sweep:
+        loaded = [load_run(r) for r in a.runs]
+        if any(m["split"] != "dev" for m, _ in loaded):
+            print("!!! chọn ngưỡng từ chối phải trên dev")
+        bench = {r["qid"]: r for r in read_jsonl(loaded[0][0]["benchmark"])}
+        for m, log in loaded:
+            print(f"{m['run_id']}: rerank_max " + ", ".join(f"{k} {v}" for k, v in rerank_score_summary(log, bench).items()))
+        rows = gate_sweep([log for _, log in loaded], bench)
+        print_table(rows, list(rows[0]))
+        return rows
     for run_dir in a.runs:
         meta, log = load_run(run_dir)
         bpath = meta["benchmark"]
@@ -259,7 +321,7 @@ def main(argv=None):
             r["official"] = ok
         results[meta["run_id"]] = rows
         print_table(rows, ["group", "n", "recall@1", "recall@5", "full_recall@5", "mrr", "refusal_ok",
-                           "false_refusal", "hedge_rate", "cite_rate", "cite_prec", "num_recall", "p95_s"])
+                           "false_refusal", "hedge_rate", "cite_rate", "cite_prec", "num_recall", "num_unsup", "gated", "p95_s"])
         qp = qp_summary(log, bench_cache[bpath])
         if qp:
             print("query processor: " + ", ".join(f"{k} {v}" for k, v in qp.items()))

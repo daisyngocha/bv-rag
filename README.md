@@ -161,4 +161,13 @@ PYTHONPATH=. python -m eval.per_question runs/B1_v1_test_<stamp> runs/B2_v1_test
 
 `eval.metrics` đánh dấu run không chính thức (không phải Colab L4, LLM < 100% GPU, thiếu câu, `--qids/--limit`,
 code chưa commit, prompt vượt `num_ctx`); chỉ run chính thức được đưa vào bảng báo cáo.
+B4 (`rerank.enabled: true`) chấm lại top-30 bằng bge-reranker-v2-m3 (`src/retrieve/reranker.py`; câu tách theo sản phẩm
+rerank riêng từng danh sách rồi ghép), đưa top-5 sau rerank vào prompt `rag_v2` (đoạn đánh số, trích dẫn `[n]` map về
+chunk_id). Điểm rerank cao nhất < `rerank.min_score` thì từ chối không gọi LLM. Chọn ngưỡng trên dev (B4 để `min_score: null`):
+
+```bash
+PYTHONPATH=. python -m eval.metrics runs/B4_v1_dev_<stamp>_r* --gate-sweep     # ghi min_score vào configs/B4.yaml rồi mới chạy test
+```
+
+Ablation: `configs/ablation/B4rr.yaml` (rerank, prompt rag_v1, không chặn), `configs/ablation/B4ng.yaml` (B4 không chặn, chỉ test).
 Prompt ở `src/generate/prompts.py`, chọn bằng khóa `prompt` trong config; prompt đã chạy chính thức thì không sửa, thêm tên mới.

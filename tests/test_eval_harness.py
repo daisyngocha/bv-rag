@@ -88,8 +88,8 @@ def test_pipeline_rag_and_norag():
     assert not out["refused"] and not out["ctx_overflow"]
     b0 = RAGPipeline(cfg("B0", "none", "fixed"), llm).answer("Q1 thời gian chờ?")
     assert b0["retrieved"] == [] and b0["contexts"] == [] and "<doc" not in llm.prompts[-1]
-    with pytest.raises(NotImplementedError):
-        RAGPipeline({**cfg(), "rerank": {"enabled": True}}, llm, FakeRetriever(RANKING))
+    with pytest.raises(ValueError):   # rerank.top_n phải bằng context_n
+        RAGPipeline({**cfg(), "rerank": {"enabled": True, "top_n": 5}}, llm, FakeRetriever(RANKING), reranker=object())
 
 
 def _run(tmp_path, monkeypatch, c, split="dev", **kw):
