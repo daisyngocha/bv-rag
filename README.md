@@ -136,7 +136,7 @@ lọc metadata bằng dict, ví dụ `{"product_code": ["BVP"], "doc_type": "quy
 
 ## Chạy benchmark và tính metric
 
-Colab L4: mở `scripts/colab_eval.ipynb`, sửa `BRANCH`/`CONFIGS` ở cell 2, Run all. Notebook kiểm manifest, cài Ollama,
+Colab L4: mở `scripts/colab_eval.ipynb`, sửa `CONFIGS` (và `BRANCH` nếu chạy nhánh khác main) ở cell 2, Run all. Notebook kiểm manifest, cài Ollama,
 rồi gọi `eval/run_eval.py` (dev × 3 lần với seed 42/43/44, test × 1). Mỗi câu ghi ngay vào `runs/{run_id}/log.jsonl`
 trên Drive; Colab ngắt thì chạy tiếp bằng `--resume <run_id>`.
 
