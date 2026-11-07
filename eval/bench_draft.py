@@ -122,7 +122,7 @@ def compare_pairs(c: dict, chunks: dict) -> list[dict]:
     return [p for p in pairs if all(e in chunks for e in p["evidence_ids"])]
 
 
-def sample(tag: str, processed: Path, only: str | None = None) -> Path:
+def sample(tag: str, processed: Path, only: str | None = None, n_only: int | None = None) -> Path:
     c, chunks = cfg(), load_chunks(processed)
     names, def_prefix = product_meta()
     rng, tasks = random.Random(f"{c['seed']}-{tag}"), []
@@ -144,7 +144,9 @@ def sample(tag: str, processed: Path, only: str | None = None) -> Path:
                 d.setdefault(ch["product_code"], []).append(ch)
         return d
 
-    n = c["per_group"]
+    n = dict(c["per_group"])
+    if only and n_only:                      # lô bổ sung nhỏ: chỉ n_only task cho nhóm only
+        n[only] = n_only
     n_def = round(n["lookup"] * c["lookup_def_share"])
     groups = {
         "lookup": pick_round_robin(pool(lambda x: x["doc_type"] == "quy_tac" and not x["is_table"] and not is_def(x)
@@ -165,9 +167,12 @@ def sample(tag: str, processed: Path, only: str | None = None) -> Path:
     half = n["compare"] // 2
     for p in cat_pairs[:half] + gl_pairs[:n["compare"] - min(half, len(cat_pairs))]:
         tasks.append({"group": "compare", **p})
-    for cat_name, spec in c["out_of_scope"].items():
-        for _ in range(spec["n"]):
-            tasks.append({"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": cat_name})
+    oos = [name for name, spec in c["out_of_scope"].items() for _ in range(spec["n"])]
+    if only == "out_of_scope" and n_only:
+        oos = sorted(c["out_of_scope"], key=lambda k: -c["out_of_scope"][k]["n"]) * n_only
+        oos = oos[:n_only]
+    for cat_name in oos:
+        tasks.append({"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": cat_name})
     if only:
         tasks = [t for t in tasks if t["group"] == only]
     targets = c.get("difficulty_target", {})
@@ -369,9 +374,10 @@ def main():
     ap.add_argument("--out", type=Path, default=Path("benchmark/benchmark_v1.jsonl"))
     ap.add_argument("--final", action="store_true")
     ap.add_argument("--only", choices=GROUPS, help="sample: chỉ lấy task của 1 nhóm")
+    ap.add_argument("--n", type=int, help="sample --only: số task của nhóm đó (lô bổ sung nhỏ)")
     ap.add_argument("--force", action="store_true", help="review: ghi đè file duyệt đã có")
     a = ap.parse_args()
-    {"models": models, "sample": lambda: sample(a.tag, a.processed, a.only), "draft": lambda: draft(a.tag, a.processed),
+    {"models": models, "sample": lambda: sample(a.tag, a.processed, a.only, a.n), "draft": lambda: draft(a.tag, a.processed),
      "review": lambda: review(a.tag, a.processed, a.force), "build": lambda: build(a.processed, a.out, a.final)}[a.cmd]()
 
 
