@@ -1,0 +1,7 @@
+run_id,config,split,group,n,n_answerable,recall@1,recall@3,recall@5,recall@10,full_recall@5,mrr,refusal_ok,false_refusal,hedge_rate,cite_rate,cite_prec,num_recall,p50_s,p95_s,tokens_out_mean,ctx_overflow,official
+B0_v1_dev_20261107-0832_r2,B0,dev,all,30,24,,,,,,,1.0,0.7917,0.2,,,0.0385,0.4,2.02,29.4667,0,True
+B0_v1_dev_20261107-0832_r2,B0,dev,lookup,6,6,,,,,,,,0.5,0.0,,,0.0,0.4,2.24,52.6667,0,True
+B0_v1_dev_20261107-0832_r2,B0,dev,table,6,6,,,,,,,,0.8333,0.0,,,0.0833,0.4,0.99,24.0,0,True
+B0_v1_dev_20261107-0832_r2,B0,dev,compare,6,6,,,,,,,,1.0,,,,0.0,0.4,0.4,19.0,0,True
+B0_v1_dev_20261107-0832_r2,B0,dev,scenario,6,6,,,,,,,,0.8333,1.0,,,0.0,0.39,2.02,32.6667,0,True
+B0_v1_dev_20261107-0832_r2,B0,dev,out_of_scope,6,0,,,,,,,1.0,,,,,,0.4,0.4,19.0,0,True
