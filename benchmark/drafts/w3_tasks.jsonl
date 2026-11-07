@@ -1,0 +1,90 @@
+{"group": "lookup", "evidence_ids": ["BTB_QT_C4_M13"], "products": ["BTB"], "task_id": "w3-001"}
+{"group": "lookup", "evidence_ids": ["BVP_QT_C4_M2_K1"], "products": ["BVP"], "task_id": "w3-002"}
+{"group": "lookup", "evidence_ids": ["C37_QT_C2_M15"], "products": ["C37"], "task_id": "w3-003"}
+{"group": "lookup", "evidence_ids": ["FLX_QT_C2_M2_B"], "products": ["FLX"], "task_id": "w3-004"}
+{"group": "lookup", "evidence_ids": ["ITC_QT_C2_B_M7"], "products": ["ITC"], "task_id": "w3-005"}
+{"group": "lookup", "evidence_ids": ["BTB_QT_C2_B_M1_K1"], "products": ["BTB"], "task_id": "w3-006"}
+{"group": "lookup", "evidence_ids": ["BVP_QT_C4_M1_K4-8"], "products": ["BVP"], "task_id": "w3-007"}
+{"group": "lookup", "evidence_ids": ["C37_QT_C2_GC1"], "products": ["C37"], "task_id": "w3-008"}
+{"group": "lookup", "evidence_ids": ["FLX_QT_C3_K1_P1"], "products": ["FLX"], "task_id": "w3-009"}
+{"group": "lookup", "evidence_ids": ["ITC_QT_C6_M1"], "products": ["ITC"], "task_id": "w3-010"}
+{"group": "lookup", "evidence_ids": ["BTB_QT_C2_A_M1"], "products": ["BTB"], "task_id": "w3-011"}
+{"group": "lookup", "evidence_ids": ["BVP_QT_C2_M2_B3_B"], "products": ["BVP"], "task_id": "w3-012"}
+{"group": "lookup", "evidence_ids": ["C37_QT_C4_M6"], "products": ["C37"], "task_id": "w3-013"}
+{"group": "lookup", "evidence_ids": ["FLX_QT_C1_M2"], "products": ["FLX"], "task_id": "w3-014"}
+{"group": "lookup", "evidence_ids": ["BTB_QT_C1_M4"], "products": ["BTB"], "task_id": "w3-015"}
+{"group": "lookup", "evidence_ids": ["BVP_QT_C1_M1_K38"], "products": ["BVP"], "task_id": "w3-016"}
+{"group": "lookup", "evidence_ids": ["C37_QT_C1_M17"], "products": ["C37"], "task_id": "w3-017"}
+{"group": "lookup", "evidence_ids": ["FLX_QT_C1_M1_K10"], "products": ["FLX"], "task_id": "w3-018"}
+{"group": "table", "evidence_ids": ["BTB_BP_S1_TB3"], "products": ["BTB"], "task_id": "w3-019"}
+{"group": "table", "evidence_ids": ["BVP_QT_PL1_TB9"], "products": ["BVP"], "task_id": "w3-020"}
+{"group": "table", "evidence_ids": ["C37_BP_S1_TB1"], "products": ["C37"], "task_id": "w3-021"}
+{"group": "table", "evidence_ids": ["FLX_BP_S2_TB3"], "products": ["FLX"], "task_id": "w3-022"}
+{"group": "table", "evidence_ids": ["ITC_BQL_S1_TB5"], "products": ["ITC"], "task_id": "w3-023"}
+{"group": "table", "evidence_ids": ["BTB_QT_PL3_TB8"], "products": ["BTB"], "task_id": "w3-024"}
+{"group": "table", "evidence_ids": ["BVP_BQL_S1_TB3"], "products": ["BVP"], "task_id": "w3-025"}
+{"group": "table", "evidence_ids": ["FLX_BP_S1_TB1"], "products": ["FLX"], "task_id": "w3-026"}
+{"group": "table", "evidence_ids": ["ITC_BQL_S1_TB4"], "products": ["ITC"], "task_id": "w3-027"}
+{"group": "table", "evidence_ids": ["BTB_BQL_S2_TB5"], "products": ["BTB"], "task_id": "w3-028"}
+{"group": "table", "evidence_ids": ["BVP_QT_PL1_TB6"], "products": ["BVP"], "task_id": "w3-029"}
+{"group": "table", "evidence_ids": ["FLX_BQL_S2_TB4"], "products": ["FLX"], "task_id": "w3-030"}
+{"group": "table", "evidence_ids": ["ITC_BQL_S7"], "products": ["ITC"], "task_id": "w3-031"}
+{"group": "table", "evidence_ids": ["BTB_BP_S2"], "products": ["BTB"], "task_id": "w3-032"}
+{"group": "table", "evidence_ids": ["BVP_BQL_S1_TB4"], "products": ["BVP"], "task_id": "w3-033"}
+{"group": "table", "evidence_ids": ["FLX_BP_S2_TB2"], "products": ["FLX"], "task_id": "w3-034"}
+{"group": "table", "evidence_ids": ["ITC_BQL_S5_TB1"], "products": ["ITC"], "task_id": "w3-035"}
+{"group": "table", "evidence_ids": ["BTB_BQL_S2_TB2"], "products": ["BTB"], "task_id": "w3-036"}
+{"group": "scenario", "evidence_ids": ["BTB_QT_C4_M14_K1"], "products": ["BTB"], "task_id": "w3-037"}
+{"group": "scenario", "evidence_ids": ["BVP_QT_C2_M1_A_P1"], "products": ["BVP"], "task_id": "w3-038"}
+{"group": "scenario", "evidence_ids": ["C37_QT_C2_M18"], "products": ["C37"], "task_id": "w3-039"}
+{"group": "scenario", "evidence_ids": ["FLX_QT_C2_M3_A_K1-3"], "products": ["FLX"], "task_id": "w3-040"}
+{"group": "scenario", "evidence_ids": ["ITC_QT_C3_K27-33"], "products": ["ITC"], "task_id": "w3-041"}
+{"group": "scenario", "evidence_ids": ["BTB_QT_C4_M7"], "products": ["BTB"], "task_id": "w3-042"}
+{"group": "scenario", "evidence_ids": ["BVP_QT_C2_M2_B1_A"], "products": ["BVP"], "task_id": "w3-043"}
+{"group": "scenario", "evidence_ids": ["C37_QT_C2_M32"], "products": ["C37"], "task_id": "w3-044"}
+{"group": "scenario", "evidence_ids": ["FLX_QT_C4_K8_P2"], "products": ["FLX"], "task_id": "w3-045"}
+{"group": "scenario", "evidence_ids": ["ITC_QT_C2_A_M15"], "products": ["ITC"], "task_id": "w3-046"}
+{"group": "scenario", "evidence_ids": ["BTB_QT_C4_M6"], "products": ["BTB"], "task_id": "w3-047"}
+{"group": "scenario", "evidence_ids": ["BVP_QT_C1_M4_K3-5"], "products": ["BVP"], "task_id": "w3-048"}
+{"group": "scenario", "evidence_ids": ["C37_QT_C3_K9"], "products": ["C37"], "task_id": "w3-049"}
+{"group": "scenario", "evidence_ids": ["FLX_QT_C3_K2-9"], "products": ["FLX"], "task_id": "w3-050"}
+{"group": "scenario", "evidence_ids": ["ITC_QT_C2_A_M11"], "products": ["ITC"], "task_id": "w3-051"}
+{"group": "scenario", "evidence_ids": ["BTB_QT_C4_M14_K2_P1"], "products": ["BTB"], "task_id": "w3-052"}
+{"group": "scenario", "evidence_ids": ["BVP_QT_C3_K46-47"], "products": ["BVP"], "task_id": "w3-053"}
+{"group": "scenario", "evidence_ids": ["C37_QT_C3_K1-4"], "products": ["C37"], "task_id": "w3-054"}
+{"group": "compare", "topic": "catalog:term", "evidence_ids": ["BVP_QT_C1_M1_K45", "FLX_QT_C1_M1_K32"], "products": ["BVP", "FLX"], "task_id": "w3-055"}
+{"group": "compare", "topic": "catalog:age_max", "evidence_ids": ["C37_QT_C4_M1", "ITC_QT_C4_M1_P1"], "products": ["C37", "ITC"], "task_id": "w3-056"}
+{"group": "compare", "topic": "catalog:age_max", "evidence_ids": ["FLX_QT_C1_M1_K15", "ITC_QT_C4_M1_P1"], "products": ["FLX", "ITC"], "task_id": "w3-057"}
+{"group": "compare", "topic": "catalog:age_min", "evidence_ids": ["BVP_QT_C1_M3", "C37_QT_C4_M1"], "products": ["BVP", "C37"], "task_id": "w3-058"}
+{"group": "compare", "topic": "catalog:term", "evidence_ids": ["BVP_QT_C1_M1_K45", "C37_QT_C4_M9"], "products": ["BVP", "C37"], "task_id": "w3-059"}
+{"group": "compare", "topic": "catalog:age_max", "evidence_ids": ["BVP_QT_C1_M3", "ITC_QT_C4_M1_P1"], "products": ["BVP", "ITC"], "task_id": "w3-060"}
+{"group": "compare", "topic": "catalog:term", "evidence_ids": ["C37_QT_C4_M9", "FLX_QT_C1_M1_K32"], "products": ["C37", "FLX"], "task_id": "w3-061"}
+{"group": "compare", "topic": "catalog:territory", "evidence_ids": ["BVP_QT_C1_M2", "ITC_BQL_S5_TB1"], "products": ["BVP", "ITC"], "task_id": "w3-062"}
+{"group": "compare", "topic": "catalog:territory", "evidence_ids": ["BTB_QT_C4_M1", "ITC_BQL_S5_TB1"], "products": ["BTB", "ITC"], "task_id": "w3-063"}
+{"group": "compare", "topic": "glossary:Bệnh viện", "evidence_ids": ["C37_QT_C1_M6", "FLX_QT_C1_M1_K6"], "products": ["C37", "FLX"], "task_id": "w3-064"}
+{"group": "compare", "topic": "glossary:Bên mua bảo hiểm/Người yêu cầu bảo hiểm", "evidence_ids": ["BTB_QT_C1_M3", "ITC_QT_C1_M4"], "products": ["BTB", "ITC"], "task_id": "w3-065"}
+{"group": "compare", "topic": "glossary:Tai nạn", "evidence_ids": ["FLX_QT_C1_M1_K30", "ITC_QT_C1_M50"], "products": ["FLX", "ITC"], "task_id": "w3-066"}
+{"group": "compare", "topic": "glossary:Điều trị trong ngày", "evidence_ids": ["BVP_QT_C1_M1_K25", "ITC_QT_C1_M24"], "products": ["BVP", "ITC"], "task_id": "w3-067"}
+{"group": "compare", "topic": "glossary:Số tiền bảo hiểm", "evidence_ids": ["FLX_QT_C1_M1_K29", "ITC_QT_C1_M48"], "products": ["FLX", "ITC"], "task_id": "w3-068"}
+{"group": "compare", "topic": "glossary:Bác sĩ", "evidence_ids": ["BTB_QT_C1_M1", "ITC_QT_C1_M1"], "products": ["BTB", "ITC"], "task_id": "w3-069"}
+{"group": "compare", "topic": "glossary:Bệnh đặc biệt", "evidence_ids": ["BVP_QT_C1_M1_K8_TB1", "ITC_QT_C1_M8"], "products": ["BVP", "ITC"], "task_id": "w3-070"}
+{"group": "compare", "topic": "glossary:Bệnh viện công lập", "evidence_ids": ["BTB_QT_C1_M11", "BVP_QT_C1_M1_K11"], "products": ["BTB", "BVP"], "task_id": "w3-071"}
+{"group": "compare", "topic": "glossary:Tình trạng nguy kịch", "evidence_ids": ["BVP_QT_C1_M1_K49", "FLX_QT_C1_M1_K34"], "products": ["BVP", "FLX"], "task_id": "w3-072"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "brochure_only", "task_id": "w3-073"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "brochure_only", "task_id": "w3-074"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "brochure_only", "task_id": "w3-075"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "brochure_only", "task_id": "w3-076"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "legal", "task_id": "w3-077"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "legal", "task_id": "w3-078"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "legal", "task_id": "w3-079"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "legal", "task_id": "w3-080"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "other_product", "task_id": "w3-081"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "other_product", "task_id": "w3-082"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "other_product", "task_id": "w3-083"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "other_product", "task_id": "w3-084"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "other_product", "task_id": "w3-085"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "not_stated", "task_id": "w3-086"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "not_stated", "task_id": "w3-087"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "not_stated", "task_id": "w3-088"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "not_stated", "task_id": "w3-089"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "not_stated", "task_id": "w3-090"}
