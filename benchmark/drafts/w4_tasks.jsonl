@@ -1,0 +1,104 @@
+{"group": "lookup", "evidence_ids": ["BTB_QT_C4_M15"], "products": ["BTB"], "difficulty_target": "easy", "task_id": "w4-001"}
+{"group": "lookup", "evidence_ids": ["BVP_QT_C3_K25-31"], "products": ["BVP"], "difficulty_target": "medium", "task_id": "w4-002"}
+{"group": "lookup", "evidence_ids": ["C37_QT_C4_M10"], "products": ["C37"], "difficulty_target": "medium", "task_id": "w4-003"}
+{"group": "lookup", "evidence_ids": ["FLX_QT_C2_M10"], "products": ["FLX"], "difficulty_target": "medium", "task_id": "w4-004"}
+{"group": "lookup", "evidence_ids": ["ITC_QT_C2_A_M13"], "products": ["ITC"], "difficulty_target": "medium", "task_id": "w4-005"}
+{"group": "lookup", "evidence_ids": ["BTB_QT_C2_B_M2_K3"], "products": ["BTB"], "difficulty_target": "easy", "task_id": "w4-006"}
+{"group": "lookup", "evidence_ids": ["BVP_QT_C3_K1-7"], "products": ["BVP"], "difficulty_target": "easy", "task_id": "w4-007"}
+{"group": "lookup", "evidence_ids": ["C37_QT_C5_M1"], "products": ["C37"], "difficulty_target": "medium", "task_id": "w4-008"}
+{"group": "lookup", "evidence_ids": ["FLX_QT_C4_K13-16"], "products": ["FLX"], "difficulty_target": "medium", "task_id": "w4-009"}
+{"group": "lookup", "evidence_ids": ["ITC_QT_C2_A_M16"], "products": ["ITC"], "difficulty_target": "easy", "task_id": "w4-010"}
+{"group": "lookup", "evidence_ids": ["BTB_QT_C5_M1_K2"], "products": ["BTB"], "difficulty_target": "medium", "task_id": "w4-011"}
+{"group": "lookup", "evidence_ids": ["BVP_QT_C1_M9"], "products": ["BVP"], "difficulty_target": "medium", "task_id": "w4-012"}
+{"group": "lookup", "evidence_ids": ["C37_QT_C2_M19"], "products": ["C37"], "difficulty_target": "easy", "task_id": "w4-013"}
+{"group": "lookup", "evidence_ids": ["BTB_QT_C1_M26"], "products": ["BTB"], "difficulty_target": "easy", "task_id": "w4-014"}
+{"group": "lookup", "evidence_ids": ["BVP_QT_C1_M1_K7"], "products": ["BVP"], "difficulty_target": "medium", "task_id": "w4-015"}
+{"group": "lookup", "evidence_ids": ["C37_QT_C1_M10"], "products": ["C37"], "difficulty_target": "medium", "task_id": "w4-016"}
+{"group": "table", "evidence_ids": ["BTB_BQL_S2_TB1"], "products": ["BTB"], "difficulty_target": "hard", "task_id": "w4-017"}
+{"group": "table", "evidence_ids": ["BVP_BQL_S1_TB2"], "products": ["BVP"], "difficulty_target": "medium", "task_id": "w4-018"}
+{"group": "table", "evidence_ids": ["FLX_BQL_S2_TB3"], "products": ["FLX"], "difficulty_target": "hard", "task_id": "w4-019"}
+{"group": "table", "evidence_ids": ["ITC_QT_PL1_TB5"], "products": ["ITC"], "difficulty_target": "hard", "task_id": "w4-020"}
+{"group": "table", "evidence_ids": ["BTB_QT_PL3_TB4"], "products": ["BTB"], "difficulty_target": "medium", "task_id": "w4-021"}
+{"group": "table", "evidence_ids": ["BVP_QT_PL1_TB3"], "products": ["BVP"], "difficulty_target": "hard", "task_id": "w4-022"}
+{"group": "table", "evidence_ids": ["FLX_BP_S2_TB1"], "products": ["FLX"], "difficulty_target": "medium", "task_id": "w4-023"}
+{"group": "table", "evidence_ids": ["ITC_QT_PL1_TB7"], "products": ["ITC"], "difficulty_target": "medium", "task_id": "w4-024"}
+{"group": "table", "evidence_ids": ["BTB_BP_S1_TB1"], "products": ["BTB"], "difficulty_target": "medium", "task_id": "w4-025"}
+{"group": "table", "evidence_ids": ["BVP_QT_PL1_TB5"], "products": ["BVP"], "difficulty_target": "medium", "task_id": "w4-026"}
+{"group": "table", "evidence_ids": ["FLX_BP_S1_TB4"], "products": ["FLX"], "difficulty_target": "medium", "task_id": "w4-027"}
+{"group": "table", "evidence_ids": ["ITC_BQL_S5_TB2"], "products": ["ITC"], "difficulty_target": "medium", "task_id": "w4-028"}
+{"group": "table", "evidence_ids": ["BTB_QT_PL3_TB5"], "products": ["BTB"], "difficulty_target": "easy", "task_id": "w4-029"}
+{"group": "table", "evidence_ids": ["BVP_QT_PL1_TB7"], "products": ["BVP"], "difficulty_target": "easy", "task_id": "w4-030"}
+{"group": "table", "evidence_ids": ["FLX_BQL_S2_TB1"], "products": ["FLX"], "difficulty_target": "easy", "task_id": "w4-031"}
+{"group": "table", "evidence_ids": ["ITC_QT_PL1_TB2"], "products": ["ITC"], "difficulty_target": "medium", "task_id": "w4-032"}
+{"group": "table", "evidence_ids": ["BTB_QT_PL3_TB9"], "products": ["BTB"], "difficulty_target": "medium", "task_id": "w4-033"}
+{"group": "table", "evidence_ids": ["BVP_BQL_S1_TB1"], "products": ["BVP"], "difficulty_target": "easy", "task_id": "w4-034"}
+{"group": "table", "evidence_ids": ["FLX_BP_S2_TB4"], "products": ["FLX"], "difficulty_target": "easy", "task_id": "w4-035"}
+{"group": "table", "evidence_ids": ["ITC_BP_S2_TB1"], "products": ["ITC"], "difficulty_target": "easy", "task_id": "w4-036"}
+{"group": "scenario", "evidence_ids": ["BTB_QT_C3_K1_P2"], "products": ["BTB"], "difficulty_target": "hard", "task_id": "w4-037"}
+{"group": "scenario", "evidence_ids": ["BVP_QT_C2_M2_B4_B"], "products": ["BVP"], "difficulty_target": "hard", "task_id": "w4-038"}
+{"group": "scenario", "evidence_ids": ["C37_QT_C2_M12"], "products": ["C37"], "difficulty_target": "hard", "task_id": "w4-039"}
+{"group": "scenario", "evidence_ids": ["FLX_QT_C3_K13"], "products": ["FLX"], "difficulty_target": "hard", "task_id": "w4-040"}
+{"group": "scenario", "evidence_ids": ["ITC_QT_C2_A"], "products": ["ITC"], "difficulty_target": "hard", "task_id": "w4-041"}
+{"group": "scenario", "evidence_ids": ["BTB_QT_C2"], "products": ["BTB"], "difficulty_target": "hard", "task_id": "w4-042"}
+{"group": "scenario", "evidence_ids": ["BVP_QT_C3_K32-38"], "products": ["BVP"], "difficulty_target": "hard", "task_id": "w4-043"}
+{"group": "scenario", "evidence_ids": ["C37_QT_C2_M26"], "products": ["C37"], "difficulty_target": "hard", "task_id": "w4-044"}
+{"group": "scenario", "evidence_ids": ["FLX_QT_C2_M3_A_K4"], "products": ["FLX"], "difficulty_target": "medium", "task_id": "w4-045"}
+{"group": "scenario", "evidence_ids": ["ITC_QT_C2_A_M10"], "products": ["ITC"], "difficulty_target": "medium", "task_id": "w4-046"}
+{"group": "scenario", "evidence_ids": ["BTB_QT_C2_A_M3"], "products": ["BTB"], "difficulty_target": "hard", "task_id": "w4-047"}
+{"group": "scenario", "evidence_ids": ["BVP_QT_C1_M4_K1-2"], "products": ["BVP"], "difficulty_target": "medium", "task_id": "w4-048"}
+{"group": "scenario", "evidence_ids": ["C37_QT_C2_M17"], "products": ["C37"], "difficulty_target": "hard", "task_id": "w4-049"}
+{"group": "scenario", "evidence_ids": ["FLX_QT_C2_M5"], "products": ["FLX"], "difficulty_target": "medium", "task_id": "w4-050"}
+{"group": "scenario", "evidence_ids": ["ITC_QT_C4_M8"], "products": ["ITC"], "difficulty_target": "hard", "task_id": "w4-051"}
+{"group": "scenario", "evidence_ids": ["BTB_QT_C4_M4"], "products": ["BTB"], "difficulty_target": "hard", "task_id": "w4-052"}
+{"group": "scenario", "evidence_ids": ["BVP_QT_C1_M8_K2_P1"], "products": ["BVP"], "difficulty_target": "hard", "task_id": "w4-053"}
+{"group": "scenario", "evidence_ids": ["C37_QT_C2_M29"], "products": ["C37"], "difficulty_target": "hard", "task_id": "w4-054"}
+{"group": "compare", "topic": "catalog:programs", "evidence_ids": ["BVP_BP_S1_TB1", "ITC_BQL_S1_TB1"], "products": ["BVP", "ITC"], "difficulty_target": "hard", "task_id": "w4-055"}
+{"group": "compare", "topic": "catalog:programs", "evidence_ids": ["FLX_BQL_S2_P1", "ITC_BQL_S1_TB1"], "products": ["FLX", "ITC"], "difficulty_target": "hard", "task_id": "w4-056"}
+{"group": "compare", "topic": "catalog:programs", "evidence_ids": ["BTB_BQL_S2_TB9", "FLX_BQL_S2_P1"], "products": ["BTB", "FLX"], "difficulty_target": "hard", "task_id": "w4-057"}
+{"group": "compare", "topic": "catalog:programs", "evidence_ids": ["BTB_BQL_S2_TB9", "ITC_BQL_S1_TB1"], "products": ["BTB", "ITC"], "difficulty_target": "medium", "task_id": "w4-058"}
+{"group": "compare", "topic": "catalog:age_min", "evidence_ids": ["BVP_QT_C1_M3", "FLX_QT_C1_M1_K15"], "products": ["BVP", "FLX"], "difficulty_target": "hard", "task_id": "w4-059"}
+{"group": "compare", "topic": "catalog:term", "evidence_ids": ["BTB_QT_C1_M45", "ITC_QT_C1_M53"], "products": ["BTB", "ITC"], "difficulty_target": "hard", "task_id": "w4-060"}
+{"group": "compare", "topic": "catalog:territory", "evidence_ids": ["BTB_QT_C4_M1", "BVP_QT_C1_M2"], "products": ["BTB", "BVP"], "difficulty_target": "hard", "task_id": "w4-061"}
+{"group": "compare", "topic": "catalog:waiting_period", "evidence_ids": ["BVP_QT_C2_M1_B", "ITC_QT_C4_M10_K1"], "products": ["BVP", "ITC"], "difficulty_target": "medium", "task_id": "w4-062"}
+{"group": "compare", "topic": "catalog:territory", "evidence_ids": ["BTB_QT_C4_M1", "FLX_QT_C1_M2"], "products": ["BTB", "FLX"], "difficulty_target": "medium", "task_id": "w4-063"}
+{"group": "compare", "topic": "catalog:sum_insured", "evidence_ids": ["BTB_BP_S1_TB1", "C37_BQL_S2_P1"], "products": ["BTB", "C37"], "difficulty_target": "medium", "task_id": "w4-064"}
+{"group": "compare", "topic": "catalog:programs", "evidence_ids": ["BTB_BQL_S2_TB9", "BVP_BP_S1_TB1"], "products": ["BTB", "BVP"], "difficulty_target": "medium", "task_id": "w4-065"}
+{"group": "compare", "topic": "catalog:term", "evidence_ids": ["C37_QT_C4_M9", "ITC_QT_C1_M53"], "products": ["C37", "ITC"], "difficulty_target": "medium", "task_id": "w4-066"}
+{"group": "compare", "topic": "catalog:term", "evidence_ids": ["FLX_QT_C1_M1_K32", "ITC_QT_C1_M53"], "products": ["FLX", "ITC"], "difficulty_target": "hard", "task_id": "w4-067"}
+{"group": "compare", "topic": "glossary:Bên mua bảo hiểm/Người yêu cầu bảo hiểm", "evidence_ids": ["BVP_QT_C1_M1_K3", "ITC_QT_C1_M4"], "products": ["BVP", "ITC"], "difficulty_target": "hard", "task_id": "w4-068"}
+{"group": "compare", "topic": "glossary:Thương tật toàn bộ vĩnh viễn", "evidence_ids": ["BVP_QT_C1_M1_K48_P1", "ITC_QT_C1_M56_P1"], "products": ["BVP", "ITC"], "difficulty_target": "medium", "task_id": "w4-069"}
+{"group": "compare", "topic": "glossary:Mất tích", "evidence_ids": ["BVP_QT_C1_M1_K32", "FLX_QT_C1_M1_K21"], "products": ["BVP", "FLX"], "difficulty_target": "medium", "task_id": "w4-070"}
+{"group": "compare", "topic": "glossary:Người phụ thuộc (người thân)", "evidence_ids": ["BTB_QT_C1_M35", "BVP_QT_C1_M1_K35"], "products": ["BTB", "BVP"], "difficulty_target": "hard", "task_id": "w4-071"}
+{"group": "compare", "topic": "glossary:Người thụ hưởng", "evidence_ids": ["BTB_QT_C1_M36", "FLX_QT_C1_M1_K25"], "products": ["BTB", "FLX"], "difficulty_target": "hard", "task_id": "w4-072"}
+{"group": "compare", "topic": "glossary:Các hoạt động thể thao mạo hiểm", "evidence_ids": ["BVP_QT_C1_M1_K16", "ITC_QT_C1_M14"], "products": ["BVP", "ITC"], "difficulty_target": "hard", "task_id": "w4-073"}
+{"group": "compare", "topic": "glossary:Phòng và giường điều trị", "evidence_ids": ["BTB_QT_C1_M40", "BVP_QT_C1_M1_K39"], "products": ["BTB", "BVP"], "difficulty_target": "hard", "task_id": "w4-074"}
+{"group": "compare", "topic": "glossary:Bộ phận giả", "evidence_ids": ["BVP_QT_C1_M1_K13", "ITC_QT_C1_M11"], "products": ["BVP", "ITC"], "difficulty_target": "medium", "task_id": "w4-075"}
+{"group": "compare", "topic": "glossary:Người phụ thuộc (người thân)", "evidence_ids": ["BTB_QT_C1_M35", "ITC_QT_C1_M41"], "products": ["BTB", "ITC"], "difficulty_target": "hard", "task_id": "w4-076"}
+{"group": "compare", "topic": "glossary:Các hoạt động thể thao mạo hiểm", "evidence_ids": ["BTB_QT_C1_M16", "BVP_QT_C1_M1_K16"], "products": ["BTB", "BVP"], "difficulty_target": "hard", "task_id": "w4-077"}
+{"group": "compare", "topic": "glossary:Thương tật toàn bộ vĩnh viễn", "evidence_ids": ["BTB_QT_C1_M48_P1", "ITC_QT_C1_M56_P1"], "products": ["BTB", "ITC"], "difficulty_target": "hard", "task_id": "w4-078"}
+{"group": "compare", "topic": "glossary:Bộ phận giả", "evidence_ids": ["BTB_QT_C1_M12", "ITC_QT_C1_M11"], "products": ["BTB", "ITC"], "difficulty_target": "medium", "task_id": "w4-079"}
+{"group": "compare", "topic": "glossary:Tình trạng nguy kịch", "evidence_ids": ["FLX_QT_C1_M1_K34", "ITC_QT_C1_M57"], "products": ["FLX", "ITC"], "difficulty_target": "hard", "task_id": "w4-080"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "brochure_only", "difficulty_target": "medium", "task_id": "w4-081"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "brochure_only", "difficulty_target": "easy", "task_id": "w4-082"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "brochure_only", "difficulty_target": "medium", "task_id": "w4-083"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "brochure_only", "difficulty_target": "easy", "task_id": "w4-084"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "brochure_only", "difficulty_target": "easy", "task_id": "w4-085"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "legal", "difficulty_target": "easy", "task_id": "w4-086"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "legal", "difficulty_target": "medium", "task_id": "w4-087"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "legal", "difficulty_target": "easy", "task_id": "w4-088"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "legal", "difficulty_target": "easy", "task_id": "w4-089"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "legal", "difficulty_target": "medium", "task_id": "w4-090"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "other_product", "difficulty_target": "easy", "task_id": "w4-091"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "other_product", "difficulty_target": "medium", "task_id": "w4-092"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "other_product", "difficulty_target": "easy", "task_id": "w4-093"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "other_product", "difficulty_target": "medium", "task_id": "w4-094"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "other_product", "difficulty_target": "medium", "task_id": "w4-095"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "other_product", "difficulty_target": "medium", "task_id": "w4-096"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "other_product", "difficulty_target": "easy", "task_id": "w4-097"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "not_stated", "difficulty_target": "easy", "task_id": "w4-098"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "not_stated", "difficulty_target": "medium", "task_id": "w4-099"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "not_stated", "difficulty_target": "medium", "task_id": "w4-100"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "not_stated", "difficulty_target": "easy", "task_id": "w4-101"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "not_stated", "difficulty_target": "medium", "task_id": "w4-102"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "not_stated", "difficulty_target": "easy", "task_id": "w4-103"}
+{"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": "not_stated", "difficulty_target": "medium", "task_id": "w4-104"}
