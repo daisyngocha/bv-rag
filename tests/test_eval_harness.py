@@ -124,7 +124,21 @@ def test_run_and_metrics_structure(tmp_path, monkeypatch):
     assert rows["out_of_scope"]["recall@5"] is None or rows["out_of_scope"]["n_answerable"] == 0
     assert a["num_recall"] == pytest.approx(0.75)                  # Q1: 30 có; Q2: 30 có, 60 không
     path = M.result_path(m, tmp_path / "results")
-    assert path.name == "B2_v1_dev_" + m["started_at"][:10].replace("-", "") + ".csv"
+    assert path.name == "B2_v1_dev_20261110-2000.csv"
+
+
+def test_result_path_and_groups():
+    meta = lambda rid: {"run_id": rid, "config": "configs/B4.yaml", "benchmark_version": "v1", "split": "dev",
+                        "started_at": "2026-11-07T11:31:00"}
+    a, b = M.result_path(meta("B4_v1_dev_20261107-1131_r0"), M.Path("r")), M.result_path(meta("B4_v1_dev_20261107-1259_r0"), M.Path("r"))
+    assert a.name == "B4_v1_dev_20261107-1131_r0.csv" and b.name == "B4_v1_dev_20261107-1259_r0.csv"
+    assert M.result_path(dict(meta("B4_v1_test_20261107-1400"), split="test"), M.Path("r")).name == "B4_v1_test_20261107-1400.csv"
+    assert M.run_group("B4_v1_dev_20261107-1259_r2") == "B4_v1_dev_20261107-1259"
+    row = lambda v: [{"group": "all", "config": "B4", "split": "dev", "refusal_ok": v}]
+    summ = M.repeat_summary({"B4_v1_dev_20261107-1131_r0": row(0.6), "B4_v1_dev_20261107-1131_r1": row(0.6),
+                             "B4_v1_dev_20261107-1259_r0": row(0.8), "B4_v1_dev_20261107-1259_r1": row(0.8)})
+    assert [(r["run"], r["runs"], r["refusal_ok"]) for r in summ] == \
+        [("B4_v1_dev_20261107-1131", 2, "0.600 ± 0.000"), ("B4_v1_dev_20261107-1259", 2, "0.800 ± 0.000")]
 
 
 def test_full_recall_all_evidence(tmp_path, monkeypatch):
