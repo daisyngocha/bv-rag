@@ -133,3 +133,22 @@ Collection đặt tên `bv_{ver}_{chunking}`. Truy xuất qua `src.retrieve.hybr
 lọc metadata bằng dict, ví dụ `{"product_code": ["BVP"], "doc_type": "quy_tac"}`); câu hỏi encode bằng
 `src.retrieve.encoder.M3Encoder`, trên WSL chạy CPU được vì câu hỏi ngắn.
 
+
+## Chạy benchmark và tính metric
+
+Colab L4: mở `scripts/colab_eval.ipynb`, sửa `CONFIGS` (và `BRANCH` nếu chạy nhánh khác main) ở cell 2, Run all. Notebook kiểm manifest, cài Ollama,
+rồi gọi `eval/run_eval.py` (dev × 3 lần với seed 42/43/44, test × 1). Mỗi câu ghi ngay vào `runs/{run_id}/log.jsonl`
+trên Drive; Colab ngắt thì chạy tiếp bằng `--resume <run_id>`.
+
+```bash
+# Colab (notebook gọi sẵn): nhiều config dùng chung LLM đã warmup, bge-m3 và Qdrant :memory:
+python -m eval.run_eval --config configs/B0.yaml configs/B1.yaml configs/B2.yaml --split dev --repeat 3
+# WSL: kéo log về, tính metric theo nhóm câu, ghi results/{config}_v1_{split}_{yyyymmdd}[_rN].csv
+scripts/sync.sh pull runs
+PYTHONPATH=. python -m eval.metrics runs/B1_v1_dev_<stamp>_r0 --align-sweep        # chọn ngưỡng căn chỉnh B1 (dev)
+PYTHONPATH=. python -m eval.metrics runs/B*_v1_dev_<stamp>_r* --align-threshold 0.3   # ngưỡng chính; 0.5 để phân tích độ nhạy
+```
+
+`eval.metrics` đánh dấu run không chính thức (không phải Colab L4, LLM < 100% GPU, thiếu câu, `--qids/--limit`,
+code chưa commit, prompt vượt `num_ctx`); chỉ run chính thức được đưa vào bảng báo cáo.
+Prompt ở `src/generate/prompts.py`, chọn bằng khóa `prompt` trong config; prompt đã chạy chính thức thì không sửa, thêm tên mới.
