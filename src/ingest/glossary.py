@@ -3,8 +3,8 @@
 - general: các dòng keep=1 của data/manual/glossary_general_candidates.csv (đã duyệt tay); source = điều/khoản văn bản,
   effective_date lấy từ data/raw/sources.csv theo văn bản.
 - sản phẩm: mỗi định nghĩa trong quy tắc là một đơn vị chunk riêng; id có tiền tố checks.definitions.prefix của
-  configs/products/{P}.yaml (ví dụ BVP_QT_C1_M1_K12). Thuật ngữ và định nghĩa tách bằng code từ text chunk,
-  không dùng LLM; định nghĩa bị tách nhiều chunk (_P1, _P2…) được nối lại; source = chunk_id phần đầu.
+  configs/products/{P}.yaml (ví dụ BVP_QT_C1_M1_K12). Thuật ngữ = cấp cuối của section_path (chunker coi
+  "12. Bệnh có sẵn" là tiêu đề đơn vị), định nghĩa = text chunk bỏ header và chữ "Là" mở đầu; không dùng LLM; định nghĩa bị tách nhiều chunk (_P1, _P2…) được nối lại; source = chunk_id phần đầu.
 - aliases: chỉ lấy từ data/manual/glossary_aliases.csv (term, scope, aliases cách nhau bằng ";") sau khi người duyệt.
 - data/manual/glossary_term_overrides.csv (chunk_id, term, definition): sửa tay chỗ code không tách được.
 
@@ -59,6 +59,26 @@ def split_definition(body: str) -> tuple[str, str] | None:
     return term, definition
 
 
+def clean_body(body: str) -> str:
+    """Bỏ rác OCR đầu đoạn và chữ 'Là' mở đầu định nghĩa; gộp khoảng trắng."""
+    text = re.sub(r"\s+", " ", body).strip()
+    text = re.sub(r"^[^\wÀ-ỹ]+", "", text)
+    return re.sub(r"^là\s*[:,]?\s*", "", text, flags=re.I)
+
+
+def term_from_heading(chunk: dict) -> tuple[str, str] | None:
+    """Chunker coi dòng '12. Bệnh có sẵn' là tiêu đề đơn vị: thuật ngữ = cấp cuối của section_path.
+    Tiêu đề có cả định nghĩa ('12. Bệnh có sẵn: là …') thì trả phần sau làm đầu định nghĩa."""
+    last = chunk.get("section_path", "").split(" > ")[-1].strip()
+    if not NUM_HEAD.match(last):
+        return None
+    head = NUM_HEAD.sub("", last).strip()
+    if got := split_definition(head):
+        return got
+    term = head.strip(QUOTES + " :.")
+    return (term, "") if term and len(term.split()) <= 15 else None
+
+
 def id_key(cid: str, prefix: str) -> tuple[int, str]:
     rest = cid[len(prefix):]
     n = re.match(r"\d+", rest)
@@ -84,8 +104,13 @@ def product_entries(chunks: list[dict], cfg_dir: Path, overrides: dict) -> tuple
             first = parts[0]
             body = "\n".join(c["text"].split("\n", 1)[1] if c["text"].startswith("[") else c["text"] for c in parts)
             ov = overrides.get(first["chunk_id"])
-            got = (ov["term"], ov["definition"] or split_definition(body)[1]) if ov else split_definition(body)
-            if not got:
+            if ov:
+                got = (ov["term"], ov["definition"] or clean_body(body))
+            elif head := term_from_heading(first):
+                got = (head[0], clean_body(" ".join(filter(None, [head[1], body]))))
+            else:
+                got = split_definition(body)
+            if not got or not got[1]:
                 errors.append(f"{first['chunk_id']}: không tách được thuật ngữ: {body[:80]!r}")
                 continue
             entries.append({"term": got[0], "aliases": [], "definition": got[1], "scope": P,

@@ -9,9 +9,9 @@ def test_split_definition_forms():
     assert split_definition("Không có dấu phân tách nào ở đây cả") is None
 
 
-def chunk(cid, text, P="BVP"):
-    return {"chunk_id": cid, "text": f"[An Gia | Quy tắc | Định nghĩa]\n{text}", "effective_date": "2025-06-27",
-            "product_code": P}
+def chunk(cid, text, P="BVP", path="Chương I > I. Định nghĩa"):
+    return {"chunk_id": cid, "text": f"[An Gia | Quy tắc | {path.split(' > ')[-1]}]\n{text}",
+            "effective_date": "2025-06-27", "product_code": P, "section_path": path}
 
 
 def test_product_entries_merge_parts_and_count(tmp_path):
@@ -43,3 +43,17 @@ def test_lookup_prefers_product_scope():
           {"term": "Thời gian chờ", "aliases": [], "scope": "BVP"}]
     assert [e["scope"] for e in lookup(es, "thời gian chờ", ["BVP"])] == ["BVP"]
     assert [e["scope"] for e in lookup(es, "TGC", ["ITC"])] == ["general"]
+
+
+def test_term_from_section_path(tmp_path):
+    (tmp_path / "BTB.yaml").write_text("product_code: BTB\nchecks:\n  definitions: {prefix: BTB_QT_C1_M, count: 3}\n",
+                                       encoding="utf-8")
+    chunks = [chunk("BTB_QT_C1_M1", "Là một bác sĩ được cấp giấy phép: gồm a) b)", "BTB", "CHƯƠNG I: ĐỊNH NGHĨA > 1. Bác sĩ"),
+              chunk("BTB_QT_C1_M2", "`.\n.&\nThời hạn bảo hiểm được tính từ", "BTB", "CHƯƠNG I: ĐỊNH NGHĨA > 2. Thời hạn bảo hiểm:"),
+              chunk("BTB_QT_C1_M3", "bị cản trở", "BTB", "CHƯƠNG I: ĐỊNH NGHĨA > 3. “Thương tật”: là các tổn thương")]
+    entries, errors = product_entries(chunks, tmp_path, {})
+    assert errors == []
+    assert [(e["term"], e["definition"]) for e in entries] == [
+        ("Bác sĩ", "một bác sĩ được cấp giấy phép: gồm a) b)"),
+        ("Thời hạn bảo hiểm", "Thời hạn bảo hiểm được tính từ"),
+        ("Thương tật", "các tổn thương bị cản trở")]
