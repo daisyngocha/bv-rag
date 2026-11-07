@@ -1,0 +1,2639 @@
+{
+ "_meta": {
+  "data_version": "v1",
+  "built_at": "2026-11-07T10:20:20",
+  "counts": {
+   "general": 13,
+   "BTB": 52,
+   "BVP": 53,
+   "C37": 22,
+   "FLX": 39,
+   "ITC": 62
+  },
+  "total": 241,
+  "general_source": "data/manual/glossary_general_candidates.csv",
+  "note": "scope sản phẩm: source = chunk_id định nghĩa trong processed/{data_version}"
+ },
+ "entries": [
+  {
+   "term": "Giám định tổn thất bảo hiểm",
+   "aliases": [],
+   "definition": "hoạt động xác định hiện trạng, nguyên nhân, mức độ tổn thất và tính toán phân bổ trách nhiệm bồi thường tổn thất làm cơ sở giải quyết bồi thường bảo hiểm.",
+   "scope": "general",
+   "source": "Luật Kinh doanh bảo hiểm (VBHN 31/VBHN-VPQH), Điều 4, khoản 11",
+   "effective_date": "2026-01-01"
+  },
+  {
+   "term": "Bảo hiểm nhân thọ",
+   "aliases": [],
+   "definition": "loại hình bảo hiểm cho trường hợp người được bảo hiểm sống hoặc chết.",
+   "scope": "general",
+   "source": "Luật Kinh doanh bảo hiểm (VBHN 31/VBHN-VPQH), Điều 4, khoản 13",
+   "effective_date": "2026-01-01"
+  },
+  {
+   "term": "Bảo hiểm phi nhân thọ",
+   "aliases": [],
+   "definition": "loại hình bảo hiểm cho những thiệt hại về tài sản và những tổn thất khác hoặc trách nhiệm dân sự đối với người thứ ba.",
+   "scope": "general",
+   "source": "Luật Kinh doanh bảo hiểm (VBHN 31/VBHN-VPQH), Điều 4, khoản 14",
+   "effective_date": "2026-01-01"
+  },
+  {
+   "term": "Bảo hiểm sức khỏe",
+   "aliases": [],
+   "definition": "loại hình bảo hiểm cho trường hợp người được bảo hiểm bị thương tật, tai nạn, ốm đau, bệnh tật hoặc chăm sóc sức khỏe.",
+   "scope": "general",
+   "source": "Luật Kinh doanh bảo hiểm (VBHN 31/VBHN-VPQH), Điều 4, khoản 15",
+   "effective_date": "2026-01-01"
+  },
+  {
+   "term": "Hợp đồng bảo hiểm",
+   "aliases": [],
+   "definition": "sự thoả thuận giữa bên mua bảo hiểm và doanh nghiệp bảo hiểm, chi nhánh doanh nghiệp bảo hiểm phi nhân thọ nước ngoài, tổ chức tương hỗ cung cấp bảo hiểm vi mô, theo đó bên mua bảo hiểm phải đóng phí bảo hiểm, doanh nghiệp bảo hiểm, chi nhánh doanh nghiệp bảo hiểm phi nhân thọ nước ngoài, tổ chức tương hỗ cung cấp bảo hiểm vi mô phải bồi thường, trả tiền bảo hiểm theo thỏa thuận trong hợp đồng.",
+   "scope": "general",
+   "source": "Luật Kinh doanh bảo hiểm (VBHN 31/VBHN-VPQH), Điều 4, khoản 16",
+   "effective_date": "2026-01-01"
+  },
+  {
+   "term": "Bên mua bảo hiểm",
+   "aliases": [],
+   "definition": "tổ chức, cá nhân giao kết hợp đồng bảo hiểm với doanh nghiệp bảo hiểm, chi nhánh doanh nghiệp bảo hiểm phi nhân thọ nước ngoài, tổ chức tương hỗ cung cấp bảo hiểm vi mô và đóng phí bảo hiểm.",
+   "scope": "general",
+   "source": "Luật Kinh doanh bảo hiểm (VBHN 31/VBHN-VPQH), Điều 4, khoản 24",
+   "effective_date": "2026-01-01"
+  },
+  {
+   "term": "Người được bảo hiểm",
+   "aliases": [],
+   "definition": "tổ chức, cá nhân có tài sản, trách nhiệm dân sự, sức khỏe, tính mạng, nghĩa vụ hoặc lợi ích kinh tế được bảo hiểm theo hợp đồng bảo hiểm.",
+   "scope": "general",
+   "source": "Luật Kinh doanh bảo hiểm (VBHN 31/VBHN-VPQH), Điều 4, khoản 25",
+   "effective_date": "2026-01-01"
+  },
+  {
+   "term": "Người thụ hưởng",
+   "aliases": [],
+   "definition": "tổ chức, cá nhân được bên mua bảo hiểm hoặc người được bảo hiểm chỉ định để nhận tiền bảo hiểm theo thỏa thuận trong hợp đồng bảo hiểm.",
+   "scope": "general",
+   "source": "Luật Kinh doanh bảo hiểm (VBHN 31/VBHN-VPQH), Điều 4, khoản 26",
+   "effective_date": "2026-01-01"
+  },
+  {
+   "term": "Sự kiện bảo hiểm",
+   "aliases": [],
+   "definition": "sự kiện khách quan do các bên thỏa thuận hoặc pháp luật quy định mà khi sự kiện đó xảy ra thì doanh nghiệp bảo hiểm, chi nhánh doanh nghiệp bảo hiểm phi nhân thọ nước ngoài, tổ chức tương hỗ cung cấp bảo hiểm vi mô phải bồi thường, trả tiền bảo hiểm theo thỏa thuận trong hợp đồng bảo hiểm.",
+   "scope": "general",
+   "source": "Luật Kinh doanh bảo hiểm (VBHN 31/VBHN-VPQH), Điều 4, khoản 27",
+   "effective_date": "2026-01-01"
+  },
+  {
+   "term": "Phí bảo hiểm",
+   "aliases": [],
+   "definition": "khoản tiền mà bên mua bảo hiểm phải đóng cho doanh nghiệp bảo hiểm, chi nhánh doanh nghiệp bảo hiểm phi nhân thọ nước ngoài, tổ chức tương hỗ cung cấp bảo hiểm vi mô theo quy định của pháp luật hoặc do các bên thỏa thuận trong hợp đồng bảo hiểm.",
+   "scope": "general",
+   "source": "Luật Kinh doanh bảo hiểm (VBHN 31/VBHN-VPQH), Điều 4, khoản 28",
+   "effective_date": "2026-01-01"
+  },
+  {
+   "term": "Thời gian chờ",
+   "aliases": [],
+   "definition": "khoảng thời gian mà các sự kiện bảo hiểm xảy ra sẽ không được doanh nghiệp bảo hiểm, chi nhánh doanh nghiệp bảo hiểm phi nhân thọ nước ngoài chi trả đối với một số quyền lợi bảo hiểm sức khỏe",
+   "scope": "general",
+   "source": "TT 67/2023/TT-BTC, Điều 12, khoản 2",
+   "effective_date": "2023-11-02"
+  },
+  {
+   "term": "Bệnh có sẵn",
+   "aliases": [],
+   "definition": "tình trạng bệnh tật hoặc thương tật của người được bảo hiểm đã được bác sỹ chẩn đoán hoặc điều trị trước ngày hiệu lực hoặc ngày khôi phục hiệu lực (gần nhất) của hợp đồng bảo hiểm.",
+   "scope": "general",
+   "source": "TT 67/2023/TT-BTC, Điều 12, khoản 3, điểm a",
+   "effective_date": "2023-11-02"
+  },
+  {
+   "term": "Thương tật toàn bộ vĩnh viễn",
+   "aliases": [],
+   "definition": "- Người được bảo hiểm bị mất, liệt hoàn toàn và không thể phục hồi được chức năng của: hai tay; hoặc hai chân; hoặc một tay và một chân; hoặc hai mắt; hoặc một tay và một mắt; hoặc một chân và một mắt. Trong trường hợp này, mất hoàn toàn, liệt hoàn toàn và không thể phục hồi được chức năng của tay được tính từ cổ tay trở lên; mất hoàn toàn, liệt hoàn toàn và không thể phục hồi được chức năng của chân được tính từ mắt cá chân trở lên; mất hoàn toàn và không thể phục hồi được chức năng của mắt được hiểu là mất hoàn toàn hoặc mù hoàn toàn; - Người được bảo hiểm bị tổn thương cơ thể từ 81% trở lên theo xác nhận của cơ quan y tế hoặc Hội đồng giám định Y khoa cấp tỉnh, thành phố trực thuộc Trung ương hoặc tổ chức giám định y tế hợp pháp được doanh nghiệp bảo hiểm, chi nhánh doanh nghiệp bảo hiểm phi nhân thọ nước ngoài chấp thuận.",
+   "scope": "general",
+   "source": "TT 67/2023/TT-BTC, Điều 12, khoản 1, điểm a",
+   "effective_date": "2023-11-02"
+  },
+  {
+   "term": "Bác sĩ",
+   "aliases": [],
+   "definition": "một bác sĩ được cấp giấy phép hành nghề hợp pháp, được luật pháp nước sở tại công nhận và bác sĩ đó đang điều trị, hành nghề trong phạm vi Giấy phép được cấp và trong phạm vi chuyên ngành đào tạo của mình. Một bác sĩ có thể là một bác sĩ chuyên khoa hay cố vấn y tế. Định nghĩa về bác sĩ không bao gồm những người sau đây: -_ Bên mua bảo hiểm, Người được bảo hiểm; -_ Thành viên gia đình trực hệ của Người được bảo hiểm hoặc Bên mua bảo hiểm (ông nội, bà nội, ông ngoại, bà ngoại, bố đẻ, mẹ đẻ, bố/mẹ vợ, bố/mẹ chồng, bố/mẹ nuôi hợp pháp, vợ. chồng, con đẻ, con nuôi hợp pháp, anh/chị/em ruột), người giám hộ hợp pháp, người thụ hưởng.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M1",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M1"
+   ]
+  },
+  {
+   "term": "Bảng quyền lợi bảo hiểm",
+   "aliases": [],
+   "definition": "Bảng quyền lợi bảo hiểm cung cấp các thông tin tóm tắt về quyền lợi bảo hiểm. Bảng quyền lợi bảo hiểm được cấp cùng và là bộ phận không tách rời của hợp đồng bảo hiểm.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M2",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M2"
+   ]
+  },
+  {
+   "term": "Bên mua bảo hiểm/Người yêu cầu bảo hiểm",
+   "aliases": [],
+   "definition": "tổ chức được thành lập và hoạt động hợp pháp tại Việt Nam, hoặc cá nhân tại Việt Nam từ đủ 18 tuổi trở lên có năng lực hành vi dân sự đầy đủ tại thời điểm giao kết hợp đồng bảo hiểm với Bảo hiểm Bảo Việt. Bên mua bảo hiểm phải đáp ứng các điều kiện để mua bảo hiểm theo quy tắc, điều kiện. điều khoản bảo hiểm và đóng phí bảo hiểm cho Bảo hiểm Bảo Việt. Bên mua bảo hiểm phải có quyền lợi có thể được bảo hiểm theo quy định của pháp luật. Bên mua bảo hiểm có quyền lợi có thẻ được bảo hiểm đối với những người sau đây: -_ Bản thân Bên mua bảo hiểm; - _ Bố/mẹ đẻ, bố/mẹ của vợ/chồng của Bên mua bảo hiểm; -_ Vợ/chồng, con của Bên mua bảo hiểm; -_ Người có quan hệ nuôi dưỡng và cấp dưỡng hợp pháp với Bên mua bảo hiểm; -_ Nhân viên có Hợp đồng lao động/Hợp đồng thử việc/Các thỏa thuận lao động với Bên mua bảo hiểm theo quy định của pháp luật, làm việc cho Bên mua bảo hiểm và có tên trong danh sách Người được bảo hiểm trong suốt thời hạn bảo hiểm, và người thân của nhân viên. -_ Người khác, nếu người đó đồng ý cho Bên mua bảo hiểm mua bảo hiểm cho mình.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M3",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M3"
+   ]
+  },
+  {
+   "term": "Bệnh/ốm đau",
+   "aliases": [],
+   "definition": "tình trạng cơ thể có dấu hiệu của một bệnh lý khác với tình trạng sức khỏe bình thường, được biểu hiện bằng các triệu chứng hay hội chứng có chẩn đoán của bác sĩ. Theo quy tắc bảo hiểm này, bệnh không bao gồm tình trạng liên quan đến thai sản và điều trị răng.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M4",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M4"
+   ]
+  },
+  {
+   "term": "Bệnh bẩm sinh/dị tật bẩm sinh",
+   "aliases": [],
+   "definition": "Ã @u!Ò, liã: Là bất kỳ bệnh/dị tật nào được hình thành trên thai nhỉ trong quá trình mang thai của người mẹ dưới tác động của yếu tố môi trường lên sự phát triển của thai nhỉ và có thể được cơ quan y tế mô tả dưới nhiều tên gọi khác nhau như \"bệnh bâm sinh, dị tật bẩm sinh, khuyết tật bẩm sinh, bất thường của nhiễm sắc thể\". Bệnh/dị tật bâm sinh có thể được phát hiện trong quá trình mang thai, sinh con của người mẹ hoặc trong quá trình phát triển của Người được bảo hiểm. Việc xác định tình trạng bệnh/dị tật bẩm sinh phải do bác sĩ thực hiện.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M5",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M5"
+   ]
+  },
+  {
+   "term": "Bệnh có săn",
+   "aliases": [],
+   "definition": "tình trạng bệnh tật hoặc thương tật của Người được bảo hiểm có từ trước ngày bắt đầu được nhận bảo hiểm theo hợp đồng bảo hiểm và là bệnh/thương tật mà Người được bảo hiểm: a. Đã được bác sĩ chẩn đoán hoặc điều trị trước ngày bắt đầu hiệu lực bảo hiểm, và/hoặc b. Dấu hiệu. triệu chứng của bệnh/thương tật khởi phát trong vòng 36 tháng trước ngày bắt đầu hiệu lực bảo hiểm mà Người được bảo hiểm đã biết hoặc ý thức được cho dù Người được bảo hiểm có thực sự khám, điều trị hay không. Việc xác định bệnh có sẵn phải căn cứ vào: hồ sơ y tế được lưu trữ tại bệnh viện hoặc cơ sở y tế được thành lập hợp pháp: các tài liệu y khoa được Bộ Y tế và các cơ quan có thâm quyền ban hành; hoặc các thông tin do Bên mua bảo hiểm, Người được bảo hiểm tự kê khai trên hồ sơ yêu cầu bảo hiểm hoặc phiếu bổ sung thông tin; hoặc lịch sử bồi thường của Người được bảo hiểm.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M6",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M6"
+   ]
+  },
+  {
+   "term": "Bệnh di truyền",
+   "aliases": [],
+   "definition": "bất kỳ bệnh nào xuất hiện ở những người có cùng huyết thống hay sự chuyền những bệnh lý của bồ, mẹ cho con cái thông qua gen của bố, mẹ và/hoặc được truyền từ đời này sang đời khác, từ thế hệ này sang thế hệ khác trong những người có cùng huyết thống bao gồm cả di truyền đột biến gen lặn. Việc xác định bệnh di truyền phải do bác sỹ thực hiện.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M7",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M7"
+   ]
+  },
+  {
+   "term": "Bệnh đặc biệt",
+   "aliases": [],
+   "definition": "Theo quy tắc bảo hiểm này, những bệnh sau đây được coi là bệnh đặc biệt: | e Bệnh hệ thần kinh: | Các bệnh viêm hệ thần kinh trung ương (não), teo hệ thống ảnh hưởng lên hệ thần kinh trung ương (teo cơ cột sống và hội chứng liên quan), rối loạn vận động ngoài tháp (Parkinson, rối loạn trương lực cơ, rối loạn vận động và ngoại tháp khác), Alzheimer, hội chứng Apallic, hội chứng mất trí nhớ, động kinh, hôn mê, các bệnh bại não và hội chứng liệt khác. | |---|---| | e Bệnh hệ hô hấp: | Suy phổi, tràn khí màng phi, phỏi tắc nghẽn mãn tính (COPD). | | se Bệnh hệ tuần hoàn: | Bệnh của tim, tăng/cao huyết áp, các bệnh của mạch máu não hoặc đột quy và các hậu quả hoặc di chứng của các bệnh này. | | e Bệnh hệ tiêu hóa: | Viêm gan A, Viêm gan B, Viêm gan C, xơ gan, suy gan, sỏi mật. | | e Bệnh hệ tiết niệu: | Bệnh của cầu thận, bệnh của ống thận, sỏi thận, sỏi niệu quản, sỏi đường tiết niệu dưới, suy thận, hội chứng thận hư. | | e Bệnh hệ thần kinh: | Các bệnh viêm hệ thần kinh trung ương (não), teo hệ thống ảnh hưởng lên hệ thần kinh trung ương (teo cơ cột sống và hội chứng liên quan), rối loạn vận động ngoài tháp (Parkinson, rối loạn trương lực cơ, rối loạn vận động và ngoại tháp khác), Alzheimer, hội chứng Apallic, hội chứng mất trí nhớ, động kinh, hôn mê, các bệnh bại não và hội chứng liệt khác. | |---|---| | se Bệnh hệ nội tiết: | Rối loạn tuyến giáp, đái tháo đường và rồi loạn nội tiết tuyến tụy, bệnh của tuyến thượng thận, rối loạn các tuyến nội tiết khác. | | se Bệnh khối U: | Khối U/bướu lành tính các loại. | | e Bệnh của máu: | Rối loạn đông máu, rồi loạn chức năng của bạch cầu hạt trung tính, bệnh liên quan mô bạch huyết và hệ thống mô bào, ghép tủy. | | e _ Bệnh của da và mô liên kết: | Lupus ban đỏ, xơ cứng bì toàn thể, xơ cứng rải rác, xơ cứng bì toàn thể tiến triển/cột bên teo cơ, loạn dưỡng cơ và biến chứng của các bệnh này, Pemphigus, vây nến, mê đay dị ứng mãn tính (có điều trị bằng kháng nguyên của nước ngoài). |",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M8_TB1",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M8_TB1",
+    "BTB_QT_C1_M8_TB2"
+   ]
+  },
+  {
+   "term": "Bệnh nghề nghiệp",
+   "aliases": [],
+   "definition": "bệnh phát sinh do điều kiện lao động có hại của nghề nghiệp tác động đối với người lao động. Danh mục các loại bệnh nghề nghiệp do Bộ Y tế hoặc cơ quan có thâm quyền tương đương ban hành.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M9",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M9"
+   ]
+  },
+  {
+   "term": "Bệnh viện",
+   "aliases": [],
+   "definition": "một cơ sở khám và điều trị bệnh hợp pháp được Nhà nước công nhận, và: - _ Có khả năng và phương tiện chẩn đoán bệnh, điều trị và phẫu thuật. -__ Có điều kiện thuận lợi cho việc điều trị nội trú và có hệ thống theo dõi sức khoẻ hàng ngày cho các bệnh nhân điều trị nội trú. - _ Không phải là nơi để an dưỡng phục hồi sức khỏe, mát xa, xông hơi hoặc là một nơi đặc biệt chỉ có mục đích duy nhất là phục vụ cho người già hoặc giúp đỡ cai nghiện rượu, thuốc phiện. ma tuý hoặc đề điều trị rối loạn tâm thần.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M10",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M10"
+   ]
+  },
+  {
+   "term": "Bệnh viện công lập",
+   "aliases": [],
+   "definition": "Bệnh viện công lập là bệnh viện do Cơ quan nhà nước có thẩm quyền thành lập và được quản lý theo quy định của pháp luật, có tư cách pháp nhân, con dấu, tài khoản và tổ chức bộ máy kế toán theo quy định của pháp luật đề thực hiện nhiệm vụ cung cấp dịch vụ công hoặc phục vụ quản lý nhà nước trong các lĩnh vực chuyên môn khám chữa bệnh.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M11",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M11"
+   ]
+  },
+  {
+   "term": "Bộ phận giả",
+   "aliases": [],
+   "definition": "tắt cả các bộ phận/thiết bị/chất liệu nhân tạo được lắp/đặt/cáy/trồng vào cơ thể con người đề thay thế và thực hiện chức năng của một bộ phận cơ thể nào đó đã bị khiếm khuyết, mắt đi, hoặc mát/giảm chức năng.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M12",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M12"
+   ]
+  },
+  {
+   "term": "Biến chứng thai sản",
+   "aliases": [],
+   "definition": "tình trạng bất thường của bào thai, biến chứng do nguyên nhân bệnh lý phát sinh trong quá trình mang thai của Người được bảo hiểm (nhưng không liên quan đến việc điều trị vô sinh, sinh non. sinh nở) phải điều trị theo chỉ định của bác sĩ. Biến chứng thai sản bao gồm các trường hợp sau: - _ Sẩy thai hoặc thai nhi chết trong tử cung (thai lưu); - Mang thai trứng nước; — £@1 - Thai ngoài tử cung; - _ Băng huyết sau khi sinh; - Sót nhau thai trong tử cung sau khi sinh; - _ Phá thai điều trị, bao gồm trường hợp phá thai do các bệnh lý di truyền/dị tật bẩm sinh của thai nhi hoặc phải phá thai để bảo vệ tính mạng của người mẹ; - _ Dọa sinh non đối với thai từ tuần thứ 22 đến tuần thứ 35 của thai kỳ; - _ Biến chứng của các nguyên nhân trên.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M13",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M13"
+   ]
+  },
+  {
+   "term": "Các bộ phận/thiết bị/dụng cụ y tế phục vụ điều trị",
+   "aliases": [],
+   "definition": "các bộ phận/thiết bị/dụng cụ y tế: Được đặtcấy/trồng vào bất cứ một bộ phận nào của cơ thẻ để hỗ trợ cho chức năng hoạt động của bộ phận đó, bao gồm những danh mục liệt kê dưới đây và/hoặc các danh mục được liệt kê trong Sửa đổi bổ sung như là một bộ phận đính kèm của Quy tắc bảo hiểm/Hợp đồng bảo hiểm như: stent, van tim, bộ máy tạo nhịp tim và phá rung, ống thông, lưới lọc, lưới thoát vị, lưới titanium 3D, cement (xi-măng) cột sống/đốt sống, miếng ghép cột sống/đốt sống, màng tái tạo mô, màng sinh học, chốt/trụ implant, nẹp/vis/chốt treo các loại, tắm nâng trực tràng, lưới (mesh). Có tính chất đặc thù, chỉ sử dụng riêng cho từng loại hình điều trị hoặc phẫu thuật, sử dụng một lần và không khấu hao, bao gồm những danh mục liệt kê dưới đây và/hoặc các danh mục được liệt kê trong Sửa đổi bổ sung như là một bộ phận đính kèm của Quy tắc bảo hiểềm/Hợp đồng bảo hiểm như: dao plasma, tay dao/dụng cụ coblator, dao/dụng cụ hummer, dụng cụ phẫu thuật trĩ phương pháp longo, dao bào phẫu thuật khớp, dao cắt sụn, lưỡi bào, đầu đốt, dao siêu âm, catheter các loại, dao harmonic mổ hở/nội soi, hệ thống robot, bóng nong, rọ tán sỏi, lưỡi shaver, trocar, dây dẫn, dao ligasure, bộ dụng cụ nội soi tán sỏi và vỏ đỡ, thiết bị đốt sóng cao tần. Bên ngoài cơ thể có tác dụng hỗ trợ chức năng vận động hoặc các chức năng khác của cơ thể bao gồm những danh mục liệt kê dưới đây và/hoặc các danh mục được liệt kê trong Sửa đổi bổ sung như là một bộ phận đính kèm của Quy tắc bảo hiểm/Hợp đồng bảo hiểm như: nạng, nẹp, xe lăn, thiết bị trợ thính, kính thuốc, máy hỗ trợ tim, máy ECMO. Các dụng cụ chỉnh hình mang tính chất thâm mỹ khác.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M14_P1",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M14_P1",
+    "BTB_QT_C1_M14_P2"
+   ]
+  },
+  {
+   "term": "Các hoạt động thể thao chuyên nghiệp",
+   "aliases": [],
+   "definition": "các hoạt động thể thao mang lại nguồn thu nhập chính và thường xuyên cho Người được bảo hiểm.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M15",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M15"
+   ]
+  },
+  {
+   "term": "Các hoạt động thể thao mạo hiểm",
+   "aliases": [],
+   "definition": "các hoạt động trên không (trừ khi với tư cách là hành khách trên máy bay thương mại có giấy phép chở khách), môn thê thao bay lượn, nhảy dù, các môn thê thao mùa đông, hockey trên băng, đâu vật, quyền anh, môn bóng ngựa, môn lướt ván, lướt sóng, bơi thuyền buồm cách xa bờ 5 km, leo núi, tham gia vào các hoạt động khám phá không gian, các hoạt động khác như săn bắn, thám hiểm trên núi, thám hiểm Nam/Bắc Cực, tham gia lực lượng thám hiểm, bất kỳ hoạt động đua nào.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M16",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M16"
+   ]
+  },
+  {
+   "term": "Cấy ghép nội tạng",
+   "aliases": [],
+   "definition": "việc phẫu thuật đẻ cấy ghép các cơ quan nội tạng như tim, phỏi, gan, tuyến tụy, thận, bao gồm cả tủy xương cho Người được bảo hiểm tiến hành tại một bệnh viện bởi bác sĩ có bằng cấp được phép thực hiện loại phẫu thuật này. Các chi phí mua, vận chuyền, bảo quản cơ quan cấy ghép và toàn bộ các chi phí phát sinh cho người hiến bộ phận cơ thể không được bảo hiểm theo quy tắc bảo hiểm này.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M17",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M17"
+   ]
+  },
+  {
+   "term": "Chi phí thông lệ và hợp lý",
+   "aliases": [],
+   "definition": "những chi phí y tế cần thiết không vượt quá mức chi phí chung của các nhà cung cấp dịch vụ y tế có cùng mức độ trong phạm vi địa lý của hợp đồng, nơi phát sinh những chi phí đó, khi cung cấp các dịch vụ điều trị tương đương hoặc mức độ điều trị, dịch vụ, hay việc cung cấp dịch vụ đối với bệnh tật hay tình trạng tương tự.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M18",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M18"
+   ]
+  },
+  {
+   "term": "Chi phí y tế thực tế",
+   "aliases": [],
+   "definition": "các chi phí y tế phát sinh cần thiết, hợp lý và chỉ liên quan đến việc khám và điều trị y tế của Người được bảo hiểm theo chỉ định của bác sĩ trong trường hợp rủi ro thuộc phạm vi bảo hiểm.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M19",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M19"
+   ]
+  },
+  {
+   "term": "Cơ sở y tế",
+   "aliases": [],
+   "definition": "một cơ sở khám chữa bệnh hợp pháp được luật pháp công nhận, có giấy phép điều trị nội trú và/hoặc ngoại trú, không phải là nơi dùng đề nghỉ ngơi hoặc điều dưỡng hay một cơ sở đặc biệt dành riêng cho người già, hoặc đề cai nghiện rượu, ma túy, chất kích thích.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M20",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M20"
+   ]
+  },
+  {
+   "term": "Công ty bảo hiểm",
+   "aliases": [],
+   "definition": "Tổng công ty Bảo hiểm Bảo Việt (Bảo hiểm Bảo Việt) hoặc các công ty thành viên trực thuộc được thành lập và hoạt động theo pháp luật Việt Nam.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M21",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M21"
+   ]
+  },
+  {
+   "term": "Điều trị cấp cứu",
+   "aliases": [],
+   "definition": "việc điều trị khẩn cấp tại cơ sở y tế trong vòng 24 giờ sau khi có tai nạn hoặc triệu chứng ốm đau/bệnh tật có thể nguy hiểm đến tính mạng, sức khỏe cần thiết phải điều trị khẩn cấp tại phòng cấp cứu. có phát sinh chi phí giường bệnh và hồ sơ có dấu xác nhận cấp cứu của cơ sở y tế. Trường hợp điều trị tại phòng cấp cứu chỉ vì lý do ngoài giờ phục vụ của phòng khám/bệnh viện thì được coi là điều trị ngoại trú.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M22",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M22"
+   ]
+  },
+  {
+   "term": "Điều trị ngoại trú",
+   "aliases": [],
+   "definition": "việc điều trị y tế tại một cơ sở y tế, bệnh viện/phòng khám như định nghĩa nhưng không nhập viện điều trị nội trú, hoặc có nhập viện nhưng thời gian lưu trú đề điều trị dưới 24 giờ. Các trường hợp điều trị trong ngày, phẫu thuật/tiểu phẫu/thủ thuật/nội soi chẩn đoán bệnh trong ngày được giải quyết theo quyền lợi điều trị ngoại trú.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M23",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M23"
+   ]
+  },
+  {
+   "term": "Điều trị nội trú (Nằm viện)",
+   "aliases": [],
+   "definition": "việc Người được bảo hiểm phải nhập viện để điều trị rủi ro thuộc phạm vi bảo hiểm, có phát sinh chi phí giường bệnh và lưu trú tại bệnh viện ít nhất 24 giờ. Trong trường hợp bệnh viện không cấp được giấy nhập viện hoặc xuất viện, hồ sơ y tế hoặc hóa đơn thanh toán thẻ hiện rõ thời gian điều trị sẽ được coi như chứng từ thay thế. Đơn vị ngày nằm viện được tính bằng 24 giờ và theo đơn vị giường nằm trong giấy nhập viện/xuất viện hoặc trong chứng từ viện phí chỉ tiết. Việc điều trị nội trú chỉ được chấp \".<\" Nước nhận khi Người được bảo hiểm được thực hiện điều trị tại một bệnh viện như định nghĩa, không phải là phòng khám hay cơ sở y tế điều trị ngoại trú. Trường hợp Người được bảo hiểm lưu trú tại bệnh viện để thực hiện xét nghiệm, chẩn đoán hình ảnh, nội soi và các thủ thuật chỉ nhằm mục đích chẩn đoán bệnh mà không phát sinh điều trị nội trú sẽ không được coi là điều trị nội trú.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M24",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M24"
+   ]
+  },
+  {
+   "term": "Điều trị trong ngày",
+   "aliases": [],
+   "definition": "việc Người được bảo hiểm nhập viện để điều trị rủi ro thuộc phạm vi bảo hiểm, có phát sinh chi phí giường bệnh nhưng không lưu trú tại bệnh viện đủ 24 giờ.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M25",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M25"
+   ]
+  },
+  {
+   "term": "Điều trị y tế",
+   "aliases": [],
+   "definition": "việc sử dụng phương pháp chuyên môn kỹ thuật đã được công nhận và thuốc đã được cấp phép lưu hành. theo chỉ định của bác sĩ với mục đích duy nhất là chữa trị và/hoặc làm giảm nhẹ tình trạng tồn thương cơ thể hay mục đích điều trị y tế liên quan đến thai sản.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M26",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M26"
+   ]
+  },
+  {
+   "term": "Đồng chi trả",
+   "aliases": [],
+   "definition": "số tiền theo tỷ lệ mà Công ty bảo hiểm và Người được bảo hiểm cùng chi trả trên các quyền lợi liên quan phát sinh thuộc phạm vi bảo hiểm. Đồng chi trả được tính theo tỷ lệ phân trăm (%) trên tổng chi phí thực tế phát sinh thuộc phạm vi bảo hiểm hoặc trên các mức giới hạn phụ của quyền lợi bảo hiểm, tùy theo số tiền nào thấp hơn thì được áp dụng. Giới hạn chi phí được bảo hiểm sau khi áp dụng đồng chi trả tối đa bằng giới hạn của mục quyền lợi trong bảng quyền lợi bảo hiểm. Khi hợp đồng bảo hiểm quy định áp dụng đồng chi trả theo cơ sở y tế, việc đồng chi trả này được áp dụng cho mọi chi phí phát sinh tại cơ sở y tế đó và các chi phí phát sinh liên quan do bác sĩ tại cơ sở y tế đó chỉ định. Khi Hợp đồng bảo hiểm quy định nhiều tỷ lệ đồng chi trả thì sẽ áp dụng đồng thời và lần lượt từng tỷ lệ đồng chi trả.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M27",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M27"
+   ]
+  },
+  {
+   "term": "Giới hạn phụ",
+   "aliases": [],
+   "definition": "giới hạn bồi thường tối đa cho mỗi hạng mục được quy định chỉ tiết trong Bảng quyền lợi bảo hiểm. Trong mọi trường hợp, tông số tiền bồi thường các giới hạn phụ chỉ tiết không vượt quá tông mức trách nhiệm bảo hiểm.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M28",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M28"
+   ]
+  },
+  {
+   "term": "Hệ thống bảo lãnh viện phí",
+   "aliases": [],
+   "definition": "hệ thống các cơ sở y tế có ký kết thỏa thuận cung cấp dịch vụ bảo lãnh viện phí với Bảo hiểm Bảo Việt. Người được bảo hiểm khi khám và điều trị tại những cơ sở y tế này sẽ được Bảo hiểm Bảo Việt bảo lãnh thanh toán tùy theo chương trình bảo hiểm tham gia đối với các chi phí phát sinh thuộc phạm vi bảo hiểm và theo hạn mức quy định trong hợp đồng bảo hiểm. Người được bảo hiểm phải tự chi trả cho những chi phí không thuộc phạm vi bảo hiểm và/hoặc những chi phí vượt quá mức trách nhiệm đã tham gia trong hợp đồng bảo hiểm tại thời điểm điều trị. Danh sách các cơ sở y tế trong hệ thống bảo lãnh viện phí có thể thay đổi và được cập nhật thường xuyên trên trang thông tin điện tử chính thức của Bảo hiểm Bảo Việt.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M29",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M29"
+   ]
+  },
+  {
+   "term": "Hợp đồng bảo hiểm",
+   "aliases": [],
+   "definition": "thoả thuận giữa Bên mua bảo hiểm và Công ty bảo hiểm, theo đó Bên mua bảo hiểm phải đóng phí bảo hiểm, Bên mua bảo hiểm và Người được bảo hiểm cam kết đã đọc kỹ và hiểu toàn bộ nội dung tại quy tắc bảo hiểm/hợp đồng bảo hiểm; Công ty bảo hiểm phải bồi thường, trả tiền bảo hiểm theo thỏa thuận trong hợp đồng bảo hiểm.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M30",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M30"
+   ]
+  },
+  {
+   "term": "Lần khám/lần điều trị",
+   "aliases": [],
+   "definition": "một lần người bệnh được bác sĩ thăm khám lâm sàng, thực hiện các xét nghiệm, chẩn đoán hình ảnh hay các thủ thuật thăm dò khác và/hoặc sử dụng thuốc điều trị theo chỉ định của bác sĩ tại cùng một cơ sở y tế hợp pháp nhằm mục đích chẩn đoán và điều trị rủi ro thuộc phạm vi bảo hiểm: e_ Trường hợp nhiều bác sĩ chuyên khoa cùng hội chân trước một người bệnh theo quy chế bệnh viện thì tất cả chỉ được tính là một lần khám/điều trị; e Trường hợp người bệnh khám một chuyên khoa nhiều lần trong ngày thì tất cả chỉ tính là một lần khám/điều trị; e _ Trường hợp người bệnh phải khám nhiều chuyên khoa khác dù có chỉ định của bác sĩ trong cùng một cơ sở y tế, trong một ngày thì tất cả vẫn chỉ tính là một lần khám/điều trị: e _ Trường hợp người bệnh khám/xét nghiệm ngày đầu tiên nhưng chưa có kết luận bệnh của bác sĩ được bác sĩ chỉ định khám/xét nghiệm thêm một số mục ở ngày sau đó đề có cơ sở đưa ra kết luận bệnh, thì chi phí phát sinh trong tất cả các ngày này được tính là một lần khám/điều trị; e_ Trong trường hợp người bệnh khám và điều trị tại một bệnh viện/phòng khám, nhưng được chỉ định làm xét nghiệm/chẩn đoán hình ảnh ở bệnh viện/phòng khám khác thì tất cả chỉ tính là một lần khám/điều trị.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M31",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M31"
+   ]
+  },
+  {
+   "term": "Mất tích",
+   "aliases": [],
+   "definition": "Người được bảo hiểm được xem như đã tử vong nếu như không được tìm thấy trong 24 tháng liên tục và có bằng chứng đầy đủ cho việc kết luận rằng sự kiện mất tích đó là do tai nạn gây ra. Tuy nhiên, nếu vào bất cứ thời điểm nào sau khi Bảo hiểm Bảo Việt đã chi trả bồi thường cho trường hợp tử vong đó mà Người được bảo hiểm được phát hiện là vẫn còn sống thì số tiền này phải được Người thụ hưởng hoàn lại cho Bảo hiểm Bảo Việt.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M32",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M32"
+   ]
+  },
+  {
+   "term": "Ngày bắt đầu hiệu lực bảo hiểm",
+   "aliases": [],
+   "definition": "ngày hiệu lực của hợp đồng bảo hiểm đầu tiên (được tính từ 0 giờ 1 phút của ngày quy định trên hợp đồng) khi Bên mua bảo hiểm tham gia chương trình bảo hiểm này hoặc của hợp đồng bảo hiểm tái tục liên tục hàng năm. Đối với những hợp đồng bảo hiểm không được tái tục liên tục hàng năm, ngày bắt đầu hiệu lực bảo hiểm đầu tiên là ngày hiệu lực của hợp đồng bảo hiểm mới nhất trừ khi có thỏa thuận khác..",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M33",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M33"
+   ]
+  },
+  {
+   "term": "Người được bảo hiểm",
+   "aliases": [],
+   "definition": "__—/_Ä6/4.&.\": N: Là cá nhân có tính mạng hoặc tình trạng sức khỏe được bảo hiểm theo hợp đồng bảo hiểm, thỏa mãn điều kiện tham gia bảo hiểm nêu tại quy tắc bảo hiểm và/hoặc hợp đồng bảo hiểm. Người được bảo hiểm trong hợp đồng bảo hiểm cá nhân cần hoàn thành việc kê khai trong giấy yêu cầu bảo hiểm và được Bảo hiểm Bảo Việt xác nhận.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M34",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M34"
+   ]
+  },
+  {
+   "term": "Người phụ thuộc (người thân)",
+   "aliases": [],
+   "definition": "Đối với hợp đồng bảo hiểm cá nhân: Người phụ thuộc là con hợp pháp của Bên mua bảo hiểm/Người được bảo hiểm có độ tuổi từ 15 ngày tuổi đến 18 tuổi, hoặc đến 24 tuổi nếu đang theo học các khóa học dài hạn tại Việt Nam và chưa kết hôn, kề từ ngày có hiệu lực bảo hiểm hoặc ngày tái tục bảo hiểm hàng năm tiếp theo. Tất cả người phụ thuộc phải có tên trong danh sách yêu cầu được bảo hiểm. Đối với hợp đồng bảo hiểm tổ chức: Người phụ thuộc là vợ/chồng, bó/mẹ đẻ, bố mẹ vợ/chồng dưới 66 tuổi (đến 70 tuổi nều tham gia tái tục trừ khi có thỏa thuận khác) của nhân viên được bảo hiểm, là con hợp pháp của nhân viên được bảo hiểm có độ tuổi từ 15 ngày tuổi đến 18 tuổi, hoặc đến 24 tuổi nếu đang theo học các khóa học dài hạn tại Việt Nam và chưa kết hôn, kể từ ngày có hiệu lực bảo hiểm hoặc ngày tái tục bảo hiểm hàng năm tiếp theo. Tất cả người phụ thuộc phải có tên trong danh sách Người được bảo hiểm.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M35",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M35"
+   ]
+  },
+  {
+   "term": "Người thụ hưởng",
+   "aliases": [],
+   "definition": "cá nhân, hoặc nhóm cá nhân được Bên mua bảo hiểm/Người được bảo hiểm chỉ định nhận toàn bộ hoặc một phần các quyền lợi bảo hiểm của hợp đồng bảo hiểm. Người thụ hưởng được ghi tên trong giấy yêu cầu bảo hiểm, giấy yêu cầu trả tiền bảo hiểm và trong hợp đồng bảo hiểm. Trường hợp Bên mua bảo hiểm không đồng thời là Người được bảo hiểm, Bên mua bảo hiểm phải có sự đồng ý bằng văn bản của Người được bảo hiểm khi chỉ định người thụ hưởng: trường hợp Người được bảo hiểm chưa thành niên thì việc chỉ định người thụ hưởng phải được người đại diện theo pháp luật đồng ý. Trường hợp không có chỉ định người thụ hưởng Bảo hiểm Bảo Việt sẽ giải quyết theo các quy định của pháp luật về thừa kế (áp dụng cho trường hợp Người được bảo hiểm tử vong).",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M36",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M36"
+   ]
+  },
+  {
+   "term": "Phẫu thuật",
+   "aliases": [],
+   "definition": "một phương pháp khoa học đề điều trị bệnh, tai nạn, thai sản thuộc phạm vi bảo hiểm được thực hiện bởi những phẫu thuật viên có bằng cấp thông qua những ca mỏ với các dụng cụ y tế trong một bệnh viện, bao gồm mồ phanh, mồ nội soi, mồ bằng tỉa laser, tiều phẫu, thủ thuật điều trị với điều kiện Người được bảo hiểm lưu trú tại viện từ 24 giờ trở lên. Theo đó, phẫu thuật được phân loại như sau: - Phẫu thuật đặc biệt: là phẫu thuật được liệt kê theo Phụ lục II — Danh mục phẫu thuật đặc biệt đính kèm quy tắc bảo hiểm; - Phẫu thuật sinh con và các loại thủ thuật điều trị, tiểu phẫu; - Phẫu thuật khác.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M37",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M37"
+   ]
+  },
+  {
+   "term": "Phòng khám",
+   "aliases": [],
+   "definition": "cơ sở y tế khám, chữa bệnh ngoại trú hoạt động hợp pháp theo quy định của pháp luật Việt Nam (có giấy phép kinh doanh hợp lệ, con dấu riêng và chứng chỉ hành nghề của từng cá nhân trong phòng khám), có khả năng và phương tiện khám bệnh, chẩn đoán, điều trị hoặc phẫu thuật. Các chứng từ như hóa đơn/biên lai/phiếu thu phát sinh tại phòng khám phải tuân thủ theo quy định của Bộ Tài chính. Định nghĩa này không bao gồm phòng mạch bác sĩ tư.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M38",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M38"
+   ]
+  },
+  {
+   "term": "Phương tiện giao thông công cộng",
+   "aliases": [],
+   "definition": "T rong phạm vi quy tắc bảo hiểm này, phương tiện giao thông công cộng gồm: xe lửa (tàu hỏa), máy bay thương mại, xe buýt, xe taxi, phà, tàu đệm khí, tàu cánh ngầm, tàu thủy, xe điện, tàu điện ngầm, hoặc các phương tiện công cộng khác do người vận chuyển có giấy phép vận chuyên hành khách thông thường cung cấp.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M39",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M39"
+   ]
+  },
+  {
+   "term": "Phòng và giường điều trị",
+   "aliases": [],
+   "definition": "các chi phí tiền phòng, giường cho Người được bảo hiểm nằm điều trị. Trường hợp Người được bảo hiểm sử dụng phòng từ 2 giường bệnh trở lên, Bảo hiểm Bảo Việt chỉ chi trả chi phí cho 1 giường bệnh phục vụ cho Người được bảo hiểm.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M40",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M40"
+   ]
+  },
+  {
+   "term": "Số tiền bảo hiểm",
+   "aliases": [],
+   "definition": "tổng mức trách nhiệm bảo hiểm tối đa của Bảo hiểm Bảo Việt đối với Người được bảo hiểm trong suốt thời hạn bảo hiểm. Số tiền bảo hiểm được quy định trong hợp đồng bảo hiểm và/hoặc bảng quyền lợi bảo hiểm đính kèm quy tắc bảo hiểm/hợp đồng bảo hiểm.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M41",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M41"
+   ]
+  },
+  {
+   "term": "Tai nạn",
+   "aliases": [],
+   "definition": "bắt kỳ sự kiện bất ngờ hay không lường trước, gây ra bởi một lực/tác nhân có thẻ nhìn thấy được từ bên ngoài lên thân thể Người được bảo hiểm và xảy ra trong thời hạn bảo hiểm, là nguyên nhân trực tiếp dẫn đến tổn thương thân thẻ hoặc tử vong cho Người được bảo hiểm và xảy ra ngoài sự kiểm soát/ý định của Người được bảo hiểm. Theo quy tắc bảo hiểm này, sự kiện ngộ độc thức ăn, đồ uống hoặc hít phải hơi độc, khí độc, chất độc, khí gas, đuối nước, điện giật được coi là tai nạn.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M42",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M42"
+   ]
+  },
+  {
+   "term": "Thai sản",
+   "aliases": [],
+   "definition": "Thai sản là quá trình thai nghén từ khi hình thành thai nhi đến khi sinh đẻ. Trong phạm vi quy tắc bảo hiểm này, thai sản bao gồm sinh con và biến chứng thai sản.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M43",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M43"
+   ]
+  },
+  {
+   "term": "Thời gian chờ",
+   "aliases": [],
+   "definition": "khoảng thời gian mà các sự kiện bảo hiểm xảy ra sẽ không được Bảo hiểm Bảo Việt chi trả đối với các quyền lợi bảo hiểm có liên quan, không chi trả cả những trường hợp thời điểm phát sinh rủi ro nằm trong thời gian chờ nhưng chi phí phát sinh hoặc hậu quả của đợt điều trị rủi ro này lại kéo dài quá thời gian chờ quy định. Thời gian chờ được tính kể từ Ngày bắt đầu hiệu lực bảo hiểm. Đối với các hợp đồng bảo hiểm tái tục liên tục hàng năm và không thay đổi quyền lợi bảo hiểm, thời gian chờ được tính từ Ngày bắt đầu hiệu lực bảo hiểm của hợp đồng bảo hiểm năm đầu tiên.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M44",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M44"
+   ]
+  },
+  {
+   "term": "Thời hạn bảo hiểm",
+   "aliases": [],
+   "definition": "Thời hạn bảo hiểm được tính từ thời điểm Bảo hiểm Bảo Việt bắt đầu nhận bảo hiểm cho đến khi kết thúc bảo hiểm. Thời hạn bảo hiểm bắt đầu từ 0 giờ 1 phút sáng ngày bắt đầu hiệu lực bảo hiểm và được kết thúc vào 23 giờ 59 phút ngày hết hạn hiệu lực bảo hiểm. Đối với hợp đồng bảo hiểm cá nhân: Thời hạn bảo hiểm là 01 năm và được quy định cụ thẻ trong hợp đồng bảo hiểm. Đối với hợp đồng bảo hiểm tổ chức: Thời hạn bảo hiểm là 01 năm hoặc ít hơn, và được quy định cụ thê trong hợp đồng bảo hiểm.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M45",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M45"
+   ]
+  },
+  {
+   "term": "Thuốc kê theo đơn của bác sĩ",
+   "aliases": [],
+   "definition": "những thuốc được bán và sử dụng theo đơn của bác sĩ, theo quy định của pháp luật và không bao gồm: thực phẩm chức năng, dược mỹ phẩm, mỹ phẩm, chế phẩm không nằm trong danh mục thuốc điều trị của Bộ Y tế, khoáng chất, vitamin. Tuy nhiên, Bảo hiểm Bảo Việt sẽ xem xét bồi thường khoáng chất, vitamin tối đa 20% tổng chi phí của cả toa thuốc khi thỏa mãn các điều kiện sau: - Các loại khoáng chất và vitamin này được sự chỉ định của bác sĩ điều trị; - Hỗ trợ cho việc điều trị: - Trong toa thuốc phải có thuốc điều trị đi kèm.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M46",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M46"
+   ]
+  },
+  {
+   "term": "Thương tật bộ phận vĩnh viễn",
+   "aliases": [],
+   "definition": "các tôn thương thân thể do tai nạn gây ra làm cho Người được bảo hiểm vĩnh viễn mắt đi chức năng hoạt động của một hay nhiều bộ phận cơ thể do hậu quả của việc bị cắt cụt (mất) hoặc liệt hoàn toàn và vĩnh viễn bộ phận đó. Thương tật bộ phận vĩnh viễn chỉ được xác định sau khi điều trị tổn thương thân thể gây ra thương tật đó đã kết thúc. Trong trường hợp thương tật bộ phận vĩnh viễn chưa được xác định ngay sau khi kết thúc việc điều trị tổn thương thân thể, thương tật đó được coi là thương tật bộ phận vĩnh viễn nếu nó diễn biến kéo dài trong vòng 52 tuần liên tục kể từ ngày kết thúc điều trị. Bảo hiểm Bảo Việt chỉ bảo hiểm cho các Thương tật bộ phận vĩnh viễn được liệt kê trong Bảng tỉ lệ trả tiền tử vong/thương tật vĩnh viễn đính kèm quy tắc bảo hiểm.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M47",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M47"
+   ]
+  },
+  {
+   "term": "Thương tật toàn bộ vĩnh viễn",
+   "aliases": [],
+   "definition": "các tốn thương cơ thẻ làm cho Người được bảo hiểm bị cản trở hoàn toàn khi tham gia vào công việc của người đó hay bị mất hoàn toàn khả năng lao động trong bát kỳ loại lao động nào, kéo dài 180 ngày liên tục kể từ ngày kết thúc điều trị và không hy vọng vào sự tiến triên của thương tật đó. a) Quyền lợi thương tật toàn bộ vĩnh viễn được xem xét chi trả khi xảy ra một trong các trường hợp sau: -_ Người được bảo hiểm bị mắt hoàn toàn, liệt hoàn toàn và không thể phục hồi được chức năng của: hai tay; hoặc hai chân; hoặc một tay và một chân; hoặc hai mắt; hoặc một tay và một mắt; hoặc một chân và một mắt. Trong trường hợp này, mất hoàn toàn, liệt hoàn toàn và không thê phục hồi được chức năng của tay được tính từ cổ tay trở lên (theo chiều từ cổ tay đến vai); mất hoàn toàn, liệt hoàn toàn và không thể phục hồi được chức năng của chân được tính từ mắt cá chân trở lên (theo chiều từ mắt cá chân đến đùi); mất hoàn toàn và không thể phục hồi được chức năng của mắt được hiểu là mắt hoàn toàn hoặc mù hoàn toàn; -_ Người được bảo hiểm bị tổn thương cơ thể từ 81% trở lên dẫn đến bị cản trở hoàn toàn khi tham gia vào công việc của người đó hay bị mắt hoàn toàn khả năng lao động trong bất kỳ loại lao động nào theo xác nhận của cơ quan y tế hoặc Hội đồng giám định Y khoa cấp tỉnh, thành phố trực thuộc trung ương hoặc tổ chức giám định y tế hợp pháp được Công ty bảo hiểm chấp thuận. - Các trường hợp thương tật toàn bộ vĩnh viễn khác được liệt kê trong Bảng tỉ lệ trả tiền tử vong/thương tật vĩnh viễn đính kèm quy tắc bảo hiểm. b) Việc chứng nhận người được bảo hiểm bị mắt hoàn toàn bộ phận cơ thề (tay, chân hoặc mắt) có thể được thực hiện ngay sau khi sự kiện bảo hiểm xảy ra hoặc sau khi kết thúc việc điều trị. Việc chứng nhận bị liệt hoàn toàn và không thê phục hồi chức năng của các bộ phận cơ thể hoặc mù hoàn toàn hoặc bị tổn thương cơ thẻ từ 81% trở lên được thực hiện không sớm hơn 180 ngày kề từ ngày xảy ra sự kiện bảo hiểm hoặc từ ngày bệnh lý được chẩn đoán.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M48_P1",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M48_P1",
+    "BTB_QT_C1_M48_P2"
+   ]
+  },
+  {
+   "term": "Tôn thương cơ thể",
+   "aliases": [],
+   "definition": "Tổn thương cơ thể (hay tổn thương thân thẻ) là tổn hại về mặt sinh học đối với cơ thể con người do bắt kỳ sự tác động nào gây ra. Tổn thương này có thể do tai nạn hoặc do bệnh lý gây ra. Theo quy tắc bảo hiểm này, tồn thương cơ thể không bao gồm tình trạng liên quan đến thai sản.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M49",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M49"
+   ]
+  },
+  {
+   "term": "Tuổi được bảo hiểm",
+   "aliases": [],
+   "definition": "tuổi của Người được bảo hiểm vào ngày có hiệu lực của Hợp đồng bảo hiểm. được tính theo lần sinh nhật liền trước ngày hợp đồng bảo hiểm có hiệu lực.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M50",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M50"
+   ]
+  },
+  {
+   "term": "Thẻ bảo lãnh",
+   "aliases": [],
+   "definition": "thẻ phục vụ mục đích sử dụng bảo lãnh và do Bảo hiểm Bảo Việt cung cấp cho Người được bảo hiểm đề xuất trình với cơ sở y tế khi người được bảo hiểm điều trị. phẫu thuật tại cơ sở y tế đó.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M51",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M51"
+   ]
+  },
+  {
+   "term": "Vật tư tiêu hao",
+   "aliases": [],
+   "definition": "vật tư y tế được sử dụng một lần hoặc nhiều lần nhằm mục đích hỗ trợ cho điều trị và khám chữa bệnh, không lắp đặt vĩnh viễn trong cơ thể ngoại trừ trường hợp các vật tư này tự tiêu trong cơ thể hoặc lẽ ra có thể lấy ra khỏi cơ thẻ mà không ảnh hưởng đến chức năng hoạt động của cơ thể nhưng do cơ thể không đào thải nên không cần thiết phải lấy ra.",
+   "scope": "BTB",
+   "source": "BTB_QT_C1_M52",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BTB_QT_C1_M52"
+   ]
+  },
+  {
+   "term": "Bác sĩ",
+   "aliases": [],
+   "definition": "một bác sĩ được cấp giấy phép hành nghề hợp pháp, được luật pháp nước sở tại công nhận và bác sĩ đó đang điều trị, hành nghề trong phạm vi Giấy phép được cấp và trong phạm vi chuyên ngành đào tạo của mình. Một bác sĩ có thể là một bác sĩ chuyên khoa hay cố vấn y tế. Định nghĩa về bác sĩ không bao gồm những người sau đây: - Bên mua bảo hiểm, Người được bảo hiểm; - Thành viên gia đình trực hệ của Người được bảo hiểm hoặc Bên mua bảo hiểm (ông nội, bà nội, ông ngoại, bà ngoại, bố đẻ, mẹ đẻ, bố/mẹ vợ, bố/mẹ chồng, bố/mẹ nuôi hợp pháp, vợ, chồng, con đẻ, con nuôi hợp pháp, anh/chị/em ruột), người giám hộ hợp pháp, người thụ hưởng.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K1",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K1"
+   ]
+  },
+  {
+   "term": "Bảng quyền lợi bảo hiểm",
+   "aliases": [],
+   "definition": "Bảng quyền lợi bảo hiểm cung cấp các thông tin tóm tắt về quyền lợi bảo hiểm. Bảng quyền lợi bảo hiểm được cấp cùng và là bộ phận không tách rời của hợp đồng bảo hiểm.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K2",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K2"
+   ]
+  },
+  {
+   "term": "Bên mua bảo hiểm/Người yêu cầu bảo hiểm",
+   "aliases": [],
+   "definition": "tổ chức được thành lập và hoạt động hợp pháp tại Việt Nam, hoặc cá nhân tại Việt Nam từ đủ 18 tuổi trở lên có năng lực hành vi dân sự đầy đủ tại thời điểm giao kết hợp đồng bảo hiểm với Bảo hiểm Bảo Việt. Bên mua bảo hiểm phải đáp ứng các điều kiện để mua bảo hiểm theo quy tắc, điều kiện, điều khoản bảo hiểm và đóng phí bảo hiểm cho Bảo hiểm Bảo Việt. Bên mua bảo hiểm phải có quyền lợi có thể được bảo hiểm theo quy định của pháp luật. Bên mua bảo hiểm có quyền lợi có thể được bảo hiểm đối với những người sau đây: - Bản thân Bên mua bảo hiểm; - Bố/mẹ của Bên mua bảo hiểm; - Vợ/chồng, con của Bên mua bảo hiểm; - Người có quan hệ nuôi dưỡng và cấp dưỡng hợp pháp với Bên mua bảo hiểm; - Người khác, nếu người đó đồng ý cho Bên mua bảo hiểm mua bảo hiểm cho mình.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K3",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K3"
+   ]
+  },
+  {
+   "term": "Bệnh/Ốm đau",
+   "aliases": [],
+   "definition": "tình trạng cơ thể có dấu hiệu của một bệnh lý khác với tình trạng sức khỏe bình thường, được biểu hiện bằng các triệu chứng hay hội chứng có chẩn đoán của bác sĩ. Theo quy tắc bảo hiểm này, bệnh không bao gồm tình trạng liên quan đến thai sản và răng/nha khoa.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K4",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K4"
+   ]
+  },
+  {
+   "term": "Bệnh bẩm sinh/dị tật bẩm sinh",
+   "aliases": [],
+   "definition": "bất kỳ bệnh/dị tật nào được hình thành trên thai nhi trong quá trình mang thai của người mẹ dưới tác động của yếu tố môi trường lên sự phát triển của thai nhi và có thể được cơ quan y tế mô tả dưới nhiều tên gọi khác nhau như \"bệnh bẩm sinh, dị tật bẩm sinh, khuyết tật bẩm sinh, bất thường của nhiễm sắc thể\". Bệnh/dị tật bẩm sinh có thể được phát hiện trong quá trình mang thai, sinh con của người mẹ hoặc trong quá trình phát triển của Người được bảo hiểm. Việc xác định tình trạng bệnh/dị tật bẩm sinh phải do bác sĩ thực hiện.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K5",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K5"
+   ]
+  },
+  {
+   "term": "Bệnh có sẵn",
+   "aliases": [],
+   "definition": "tình trạng bệnh tật hoặc thương tật của Người được bảo hiểm có từ trước ngày bắt đầu được nhận bảo hiểm theo hợp đồng bảo hiểm và là bệnh/thương tật mà Người được bảo hiểm: a. Đã được bác sĩ chẩn đoán hoặc điều trị trước ngày bắt đầu hiệu lực bảo hiểm, và/hoặc b. Dấu hiệu, triệu chứng của bệnh/thương tật khởi phát trong vòng 36 tháng trước ngày bắt đầu hiệu lực bảo hiểm mà Người được bảo hiểm đã biết hoặc ý thức được cho dù Người được bảo hiểm có thực sự khám, điều trị hay không. Việc xác định bệnh có sẵn phải căn cứ vào: hồ sơ y tế được lưu trữ tại bệnh viện hoặc cơ sở y tế được thành lập hợp pháp; các tài liệu y khoa được Bộ Y tế và các cơ quan có thẩm quyền ban hành; hoặc các thông tin do Bên mua bảo hiểm, Người được bảo hiểm tự kê khai trên hồ sơ yêu cầu bảo hiểm hoặc phiếu bổ sung thông tin; hoặc lịch sử bồi thường của Người được bảo hiểm.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K6",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K6"
+   ]
+  },
+  {
+   "term": "Bệnh di truyền",
+   "aliases": [],
+   "definition": "bất kỳ bệnh nào xuất hiện ở những người có cùng huyết thống hay sự chuyển những bệnh lý của bố, mẹ cho con cái thông qua gen của bố, mẹ và/hoặc được truyền từ đời này sang đời khác, từ thế hệ này sang thế hệ khác trong những người có cùng huyết thống, bao gồm cả di truyền đột biến gen lặn. Việc xác định bệnh di truyền phải do bác sĩ thực hiện.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K7",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K7"
+   ]
+  },
+  {
+   "term": "Bệnh đặc biệt",
+   "aliases": [],
+   "definition": "Theo quy tắc bảo hiểm này, những bệnh sau đây được coi là bệnh đặc biệt: | Theo quy tắc bảo hiểm này, những bệnh sau đây được coi là bệnh đặc biệt: | |---|---| | 1. Bệnh hệ thần kinh: | Các bệnh viêm hệ thần kinh trung ương (não), teo hệ thống ảnh hưởng lên hệ thần kinh trung ương (teo cơ cột sống và hội chứng liên quan), rối loạn vận động ngoài tháp (Parkison, rối loạn trương lực cơ, rối loạn vận động và ngoại tháp khác), Alzheimer, hội chứng Apallic, hội chứng mất trí nhớ, động kinh, hôn mê, các bệnh bại não và hội chứng liệt khác. | | 2. Bệnh hệ hô hấp: | Bệnh suy phổi, tràn khí phổi, phổi tắc nghẽn mãn tính (COPD). | | 3. Bệnh hệ tuần hoàn: | Bệnh của tim, tăng/cao huyết áp, tăng áp lực động mạch vô căn, các bệnh mạch máu não, đột quỵ, và các hậu quả/di chứng của các bệnh này. | | 4. Bệnh hệ tiêu hóa: | Viêm gan A, viêm gan B, viêm gan C, viêm gan D, xơ gan, suy gan, sỏi mật. | | 5. Bệnh hệ tiết niệu: | Bệnh của cầu thận, bệnh của ống thận, sỏi thận, sỏi niệu quản, sỏi đường tiết niệu, suy thận, hội chứng thận hư. | | Theo quy tắc bảo hiểm này, những bệnh sau đây được coi là bệnh đặc biệt: | Theo quy tắc bảo hiểm này, những bệnh sau đây được coi là bệnh đặc biệt: | |---|---| | 6. Bệnh hệ nội tiết: | Rối loạn tuyến giáp, đái tháo đường và rối loạn nội tiết tuyến tụy, bệnh của tuyến thượng thận, rối loạn các tuyến nội tiết khác. | | 7. Bệnh khối U: | Khối u/bướu lành tính các loại. | | 8. Bệnh của máu: | Rối loạn đông máu, rối loạn chức năng của bạch cầu đa trung tính, bệnh liên quan mô lưới bạch huyết và hệ thống lưới mô bào, ghép tủy. | | 9. Bệnh của da và mô liên kết: | Bệnh Lupus ban đỏ, xơ cứng bì toàn thể, xơ cứng rải rác, xơ cứng biểu bì tiến triển/cột bên teo cơ, loạn dưỡng cơ và biến chứng của các bệnh này, Pemphi gus, vẩy nến, mề đay dị ứng mãn (có điều trị bằng kháng nguyên của nước ngoài). |",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K8_TB1",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K8_TB1",
+    "BVP_QT_C1_M1_K8_TB2"
+   ]
+  },
+  {
+   "term": "Bệnh nghề nghiệp",
+   "aliases": [],
+   "definition": "bệnh phát sinh do điều kiện lao động có hại của nghề nghiệp tác động đối với người lao động. Danh mục các loại bệnh nghề nghiệp do Bộ Y tế hoặc cơ quan có thẩm quyền tương đương ban hành.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K9",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K9"
+   ]
+  },
+  {
+   "term": "Bệnh viện",
+   "aliases": [],
+   "definition": "một cơ sở khám và điều trị bệnh hợp pháp được Nhà nước công nhận, và: - Có khả năng và phương tiện chẩn đoán bệnh, điều trị và phẫu thuật. - Có điều kiện thuận lợi cho việc điều trị nội trú và có hệ thống theo dõi sức khoẻ hàng ngày cho các bệnh nhân điều trị nội trú. - Không phải là nơi để an dưỡng phục hồi sức khỏe, mát xa, xông hơi hoặc là một nơi đặc biệt chỉ có mục đích duy nhất là phục vụ cho người già hoặc giúp đỡ cai nghiện rượu, thuốc phiện, ma tuý hoặc để điều trị rối loạn tâm thần.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K10",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K10"
+   ]
+  },
+  {
+   "term": "Bệnh viện công lập",
+   "aliases": [],
+   "definition": "Bệnh viện công lập là bệnh viện do Cơ quan nhà nước có thẩm quyền thành lập và được quản lý theo quy định của pháp luật, có tư cách pháp nhân, con dấu, tài khoản và tổ chức bộ máy kế toán theo quy định của pháp luật để thực hiện nhiệm vụ cung cấp dịch vụ công hoặc phục vụ quản lý nhà nước trong các lĩnh vực chuyên môn khám chữa bệnh.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K11",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K11"
+   ]
+  },
+  {
+   "term": "Biến chứng thai sản",
+   "aliases": [],
+   "definition": "tình trạng bất thường của bào thai, biến chứng do nguyên nhân bệnh lý phát sinh trong quá trình mang thai của Người được bảo hiểm (nhưng không liên quan đến việc điều trị vô sinh, sinh non, sinh nở) phải điều trị theo chỉ định của bác sĩ. Biến chứng thai sản bao gồm các trường hợp sau: - Sẩy thai hoặc thai nhi chết trong tử cung (thai lưu); - Mang thai trứng nước; - Thai ngoài tử cung; - Băng huyết sau khi sinh; - Sót nhau thai trong tử cung sau khi sinh; - Phá thai điều trị, bao gồm trường hợp phá thai do các bệnh lý di truyền/dị tật bẩm sinh của thai nhi hoặc phải phá thai để bảo vệ tính mạng của người mẹ; - Dọa sinh non đối với thai từ tuần thứ 22 đến tuần thứ 35 của thai kỳ; - Biến chứng của các nguyên nhân trên.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K12",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K12"
+   ]
+  },
+  {
+   "term": "Bộ phận giả",
+   "aliases": [],
+   "definition": "tất cả các bộ phận/ thiết bị/ chất liệu nhân tạo được lắp/ đặt/ cấy/ trồng vào cơ thể con người để thay thế và thực hiện chức năng của một bộ phận cơ thể nào đó đã bị khiếm khuyết, mất đi, hoặc mất/ giảm chức năng.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K13",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K13"
+   ]
+  },
+  {
+   "term": "Các bộ phận/thiết bị/dụng cụ y tế phục vụ điều trị",
+   "aliases": [],
+   "definition": "các bộ phận/thiết bị/dụng cụ y tế: - Được đặt/cấy/trồng vào bất cứ một bộ phận nào của cơ thể để hỗ trợ cho chức năng hoạt động của bộ phận đó, bao gồm những danh mục liệt kê dưới đây và/hoặc các danh mục được liệt kê trong Sửa đổi bổ sung như là một bộ phận đính kèm của Quy tắc bảo hiểm/Hợp đồng bảo hiểm như: stent, van tim, bộ máy tạo nhịp tim và phá rung, ống thông, lưới lọc, lưới thoát vị, lưới titanium 3D, cement (xi-măng) cột sống/đốt sống, miếng ghép cột sống/đốt sống, màng tái tạo mô, màng sinh học, chốt/trụ implant, nẹp/vis/chốt treo các loại, tấm nâng trực tràng, lưới (mesh). - Có tính chất đặc thù, chỉ sử dụng riêng cho từng loại hình điều trị hoặc phẫu thuật, sử dụng một lần và không khấu hao, bao gồm những danh mục liệt kê dưới đây và/hoặc các danh mục được liệt kê trong Sửa đổi bổ sung như là một bộ phận đính kèm của Quy tắc bảo hiểm/Hợp đồng bảo hiểm như: dao plasma, tay dao/dụng cụ coblator, dao/dụng cụ hummer, dụng cụ phẫu thuật trĩ phương pháp longo, dao bào phẫu thuật khớp, dao cắt sụn, lưỡi bào, đầu đốt, dao siêu âm, catheter các loại, dao harmonic mổ hở/nội soi, hệ thống robot, bóng nong, rọ tán sỏi, lưỡi shaver, trocar, dây dẫn, dao ligasure, bộ dụng cụ nội soi tán sỏi và vỏ đỡ, thiết bị đốt sóng cao tần. - Bên ngoài cơ thể có tác dụng hỗ trợ chức năng vận động hoặc các chức năng khác của cơ thể bao gồm những danh mục liệt kê dưới đây và/hoặc các danh mục được liệt kê trong Sửa đổi bổ sung như là một bộ phận đính kèm của Quy tắc bảo hiểm/Hợp đồng bảo hiểm như: nạng, nẹp, xe lăn, thiết bị trợ thính, kính thuốc, máy hỗ trợ tim, máy ECMO. - Các dụng cụ chỉnh hình mang tính chất thẩm mỹ khác.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K14_P1",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K14_P1",
+    "BVP_QT_C1_M1_K14_P2"
+   ]
+  },
+  {
+   "term": "Các hoạt động thể thao chuyên nghiệp",
+   "aliases": [],
+   "definition": "các hoạt động thể thao mang lại nguồn thu nhập chính và thường xuyên cho Người được bảo hiểm.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K15",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K15"
+   ]
+  },
+  {
+   "term": "Các hoạt động thể thao mạo hiểm",
+   "aliases": [],
+   "definition": "các hoạt động trên không (trừ khi với tư cách là hành khách trên máy bay thương mại có giấy phép chở khách), môn thể thao bay lượn, nhảy dù, các môn thể thao mùa đông, hockey trên băng, đấu vật, quyền anh, môn bóng ngựa, môn lướt ván, lướt sóng, bơi thuyền buồm cách xa bờ 5 km, leo núi, tham gia vào các hoạt động khám phá không gian, các hoạt động khác như săn bắn, thám hiểm trên núi, thám hiểm Nam/Bắc Cực, tham gia lực lượng thám hiểm, bất kỳ hoạt động đua nào.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K16",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K16"
+   ]
+  },
+  {
+   "term": "Cấy ghép nội tạng",
+   "aliases": [],
+   "definition": "việc phẫu thuật để cấy ghép các cơ quan nội tạng như tim, phổi, gan, tuyến tụy, thận, bao gồm cả tủy xương cho Người được bảo hiểm tiến hành tại một bệnh viện bởi bác sĩ có bằng cấp được phép thực hiện loại phẫu thuật này. Các chi phí mua, vận chuyển, bảo quản cơ quan cấy ghép và toàn bộ các chi phí phát sinh cho người hiến bộ phận cơ thể không được bảo hiểm theo quy tắc bảo hiểm này.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K17",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K17"
+   ]
+  },
+  {
+   "term": "Chi phí thông lệ và hợp lý",
+   "aliases": [],
+   "definition": "những chi phí y tế cần thiết không vượt quá mức chi phí chung của các nhà cung cấp dịch vụ y tế có cùng mức độ trong phạm vi địa lý của hợp đồng bảo hiểm, nơi phát sinh những chi phí đó, khi cung cấp các dịch vụ điều trị tương đương hoặc mức độ điều trị, dịch vụ, hay việc cung cấp dịch vụ đối với bệnh tật hay tình trạng tương tự.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K18",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K18"
+   ]
+  },
+  {
+   "term": "Chi phí y tế thực tế",
+   "aliases": [],
+   "definition": "các chi phí y tế phát sinh cần thiết, hợp lý và chỉ liên quan đến việc khám và điều trị y tế của Người được bảo hiểm theo chỉ định của bác sĩ trong trường hợp rủi ro thuộc phạm vi bảo hiểm.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K19",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K19"
+   ]
+  },
+  {
+   "term": "Cơ sở y tế",
+   "aliases": [],
+   "definition": "một cơ sở khám chữa bệnh hợp pháp được luật pháp công nhận, có giấy phép điều trị nội trú và/hoặc ngoại trú, không phải là nơi dùng để nghỉ ngơi hoặc điều dưỡng hay một cơ sở đặc biệt dành riêng cho người già, hoặc để cai nghiện rượu, ma túy, chất kích thích.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K20",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K20"
+   ]
+  },
+  {
+   "term": "Công ty Bảo hiểm",
+   "aliases": [],
+   "definition": "Tổng công ty Bảo hiểm Bảo Việt (Bảo hiểm Bảo Việt) hoặc các công ty thành viên trực thuộc được thành lập và hoạt động theo pháp luật Việt Nam.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K21",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K21"
+   ]
+  },
+  {
+   "term": "Điều trị cấp cứu",
+   "aliases": [],
+   "definition": "việc điều trị khẩn cấp tại cơ sở y tế trong vòng 24 giờ sau khi có tai nạn hoặc triệu chứng ốm đau/bệnh tật có thể nguy hiểm đến tính mạng, sức khỏe cần thiết phải điều trị khẩn cấp tại phòng cấp cứu, có phát sinh chi phí giường bệnh và hồ sơ có dấu xác nhận cấp cứu của cơ sở y tế. Trường hợp điều trị tại phòng cấp cứu chỉ vì lý do ngoài giờ phục vụ của phòng khám/bệnh viện thì được coi là điều trị ngoại trú.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K22",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K22"
+   ]
+  },
+  {
+   "term": "Điều trị ngoại trú",
+   "aliases": [],
+   "definition": "việc điều trị y tế tại một cơ sở y tế, bệnh viện/phòng khám như định nghĩa nhưng không nhập viện điều trị nội trú, hoặc có nhập viện nhưng thời gian lưu trú để điều trị dưới 24 giờ. Các trường hợp điều trị trong ngày, phẫu thuật/tiểu phẫu/thủ thuật/nội soi chẩn đoán bệnh trong ngày được giải quyết theo quyền lợi điều trị ngoại trú.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K23",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K23"
+   ]
+  },
+  {
+   "term": "Điều trị nội trú",
+   "aliases": [],
+   "definition": "việc Người được bảo hiểm phải nhập viện để điều trị rủi ro thuộc phạm vi bảo hiểm, có phát sinh chi phí giường bệnh và lưu trú tại bệnh viện ít nhất 24 giờ. Trong trường hợp bệnh viện không cấp được giấy nhập viện hoặc xuất viện, hồ sơ y tế hoặc hóa đơn thanh toán thể hiện rõ thời gian điều trị sẽ được coi như chứng từ thay thế. Đơn vị ngày nằm viện được tính bằng 24 giờ và theo đơn vị giường nằm trong giấy nhập viện/xuất viện hoặc trong chứng từ viện phí chi tiết. Việc điều trị nội trú chỉ được chấp nhận khi Người được bảo hiểm được thực hiện điều trị tại một bệnh viện như định nghĩa, không phải là phòng khám hay cơ sở y tế điều trị ngoại trú. Trường hợp Người được bảo hiểm lưu trú tại bệnh viện để thực hiện xét nghiệm, chẩn đoán hình ảnh, nội soi và các thủ thuật chỉ nhằm mục đích chẩn đoán bệnh mà không phát sinh điều trị nội trú sẽ không được coi là điều trị nội trú.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K24",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K24"
+   ]
+  },
+  {
+   "term": "Điều trị trong ngày",
+   "aliases": [],
+   "definition": "việc Người được bảo hiểm nhập viện để điều trị rủi ro thuộc phạm vi bảo hiểm, có phát sinh chi phí giường bệnh nhưng không lưu trú tại bệnh viện đủ 24 giờ.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K25",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K25"
+   ]
+  },
+  {
+   "term": "Điều trị y tế",
+   "aliases": [],
+   "definition": "việc sử dụng phương pháp chuyên môn kỹ thuật đã được công nhận và thuốc đã được cấp phép lưu hành, theo chỉ định của bác sĩ với mục đích duy nhất là chữa trị và/hoặc làm giảm nhẹ tình trạng tổn thương cơ thể hay mục đích điều trị y tế liên quan đến thai sản.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K26",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K26"
+   ]
+  },
+  {
+   "term": "Đồng chi trả",
+   "aliases": [],
+   "definition": "số tiền theo tỉ lệ mà Công ty bảo hiểm và Người được bảo hiểm cùng chi trả trên các quyền lợi liên quan phát sinh thuộc phạm vi bảo hiểm. Đồng chi trả được tính theo tỉ lệ phần trăm (%) trên tổng chi phí thực tế phát sinh thuộc phạm vi bảo hiểm hoặc trên các mức giới hạn phụ của quyền lợi bảo hiểm, tùy theo số tiền nào thấp hơn thì được áp dụng. Giới hạn chi phí được bảo hiểm sau khi áp dụng đồng chi trả tối đa bằng giới hạn của mục quyền lợi trong bảng quyền lợi bảo hiểm. Khi hợp đồng bảo hiểm quy định áp dụng đồng chi trả theo cơ sở y tế, việc đồng chi trả này được áp dụng cho mọi chi phí phát sinh tại cơ sở y tế đó và các chi phí phát sinh liên quan do bác sĩ tại cơ sở y tế đó chỉ định. Khi hợp đồng bảo hiểm quy định nhiều tỉ lệ đồng chi trả thì sẽ áp dụng đồng thời và lần lượt từng tỉ lệ đồng chi trả.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K27",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K27"
+   ]
+  },
+  {
+   "term": "Giới hạn phụ",
+   "aliases": [],
+   "definition": "giới hạn bồi thường tối đa cho mỗi hạng mục được quy định chi tiết trong Bảng quyền lợi bảo hiểm. Trong mọi trường hợp, tổng số tiền bồi thường các giới hạn phụ chi tiết không vượt quá tổng mức trách nhiệm bảo hiểm.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K28",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K28"
+   ]
+  },
+  {
+   "term": "Hệ thống bảo lãnh viện phí",
+   "aliases": [],
+   "definition": "hệ thống các cơ sở y tế có ký kết thỏa thuận cung cấp dịch vụ bảo lãnh viện phí với Bảo hiểm Bảo Việt. Người được bảo hiểm khi khám và điều trị tại những cơ sở y tế này sẽ được Bảo hiểm Bảo Việt bảo lãnh thanh toán tùy theo chương trình bảo hiểm tham gia đối với các chi phí phát sinh thuộc phạm vi bảo hiểm và theo hạn mức quy định trong hợp đồng bảo hiểm. Người được bảo hiểm phải tự chi trả cho những chi phí không thuộc phạm vi bảo hiểm và/hoặc những chi phí vượt quá mức trách nhiệm đã tham gia trong hợp đồng bảo hiểm tại thời điểm điều trị. Danh sách các cơ sở y tế trong hệ thống bảo lãnh viện phí có thể thay đổi và được cập nhật thường xuyên trên trang thông tin điện tử chính thức của Bảo hiểm Bảo Việt.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K29",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K29"
+   ]
+  },
+  {
+   "term": "Hợp đồng bảo hiểm",
+   "aliases": [],
+   "definition": "hợp đồng bảo hiểm/giấy chứng nhận bảo hiểm (sau đây gọi chung là hợp đồng bảo hiểm) do Bảo hiểm Bảo Việt phát hành dựa trên yêu cầu bảo hiểm và cam kết của Bên mua bảo hiểm/Người được bảo hiểm đã đọc kỹ và hiểu toàn bộ nội dung tại quy tắc bảo hiểm, theo đó Bên mua bảo hiểm/Người được bảo hiểm phải đóng phí bảo hiểm, Bảo hiểm Bảo Việt cung cấp dịch vụ bảo hiểm như được liệt kê trong hợp đồng bảo hiểm/quy tắc bảo hiểm. Giấy yêu cầu bảo hiểm, quy tắc bảo hiểm, hợp đồng bảo hiểm, bảng quyền lợi bảo hiểm, phụ lục hợp đồng, sửa đổi bổ sung của hợp đồng là những bộ phận cấu thành và không tách rời của hợp đồng bảo hiểm.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K30",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K30"
+   ]
+  },
+  {
+   "term": "Lần khám/điều trị",
+   "aliases": [],
+   "definition": "một lần người bệnh được bác sĩ thăm khám lâm sàng, thực hiện các xét nghiệm, chẩn đoán hình ảnh hay các thủ thuật thăm dò khác và/hoặc sử dụng thuốc điều trị theo chỉ định của bác sĩ tại cùng một cơ sở y tế hợp pháp nhằm mục đích chẩn đoán và điều trị rủi ro thuộc phạm vi bảo hiểm. - Trường hợp nhiều bác sĩ chuyên khoa cùng hội chẩn trước một người bệnh theo quy chế bệnh viện thì tất cả chỉ được tính là một lần khám/điều trị. - Trường hợp người bệnh khám một chuyên khoa nhiều lần trong ngày thì tất cả chỉ tính là một lần khám/điều trị. - Trường hợp người bệnh phải khám nhiều chuyên khoa khác dù có chỉ định của bác sĩ trong cùng một cơ sở y tế, trong một ngày thì tất cả vẫn chỉ tính là một lần khám/điều trị. - Trường hợp người bệnh khám/xét nghiệm ngày đầu tiên nhưng chưa có kết luận bệnh của bác sĩ được bác sĩ chỉ định khám/xét nghiệm thêm một số mục ở ngày sau đó để có cơ sở đưa ra kết luận bệnh, thì chi phí phát sinh trong tất cả các ngày này được tính là một lần khám/điều trị. - Trường hợp người bệnh khám và điều trị tại một bệnh viện/phòng khám, nhưng được chỉ định làm xét nghiệm/chẩn đoán hình ảnh ở bệnh viện/phòng khám khác thì tất cả chỉ tính là một lần khám/điều trị.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K31",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K31"
+   ]
+  },
+  {
+   "term": "Mất tích",
+   "aliases": [],
+   "definition": "Người được bảo hiểm được xem như đã tử vong nếu như không được tìm thấy trong 24 tháng liên tục và có bằng chứng đầy đủ cho việc kết luận rằng sự kiện mất tích đó là do tai nạn gây ra. Tuy nhiên, nếu vào bất cứ thời điểm nào sau khi Bảo hiểm Bảo Việt đã chi trả bồi thường cho trường hợp tử vong đó mà Người được bảo hiểm được phát hiện là vẫn còn sống thì số tiền này phải được Người thụ hưởng hoàn lại cho Bảo hiểm Bảo Việt.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K32",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K32"
+   ]
+  },
+  {
+   "term": "Ngày bắt đầu hiệu lực bảo hiểm",
+   "aliases": [],
+   "definition": "ngày hiệu lực của hợp đồng bảo hiểm đầu tiên (được tính từ 0 giờ 1 phút của ngày quy định trên hợp đồng) khi Bên mua bảo hiểm tham gia chương trình bảo hiểm này hoặc của hợp đồng bảo hiểm tái tục liên tục hàng năm. Đối với những hợp đồng bảo hiểm không được tái tục liên tục hàng năm, ngày bắt đầu hiệu lực bảo hiểm đầu tiên là ngày hiệu lực của hợp đồng bảo hiểm mới nhất trừ khi có thỏa thuận khác.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K33",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K33"
+   ]
+  },
+  {
+   "term": "Người được bảo hiểm",
+   "aliases": [],
+   "definition": "cá nhân có tính mạng hoặc tình trạng sức khỏe được bảo hiểm theo hợp đồng bảo hiểm, thỏa mãn điều kiện tham gia bảo hiểm nêu tại quy tắc bảo hiểm và/hoặc hợp đồng bảo hiểm. Người được bảo hiểm đã hoàn thành việc kê khai trong giấy yêu cầu bảo hiểm và hiệu lực bảo hiểm đã được Bảo hiểm Bảo Việt xác nhận.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K34",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K34"
+   ]
+  },
+  {
+   "term": "Người phụ thuộc (người thân)",
+   "aliases": [],
+   "definition": "con hợp pháp của Bên mua bảo hiểm/Người được bảo hiểm có độ tuổi từ 15 ngày tuổi đến 18 tuổi hoặc 24 tuổi nếu đang theo học các khóa học dài hạn tại Việt Nam và chưa kết hôn, kể từ ngày có hiệu lực bảo hiểm hoặc ngày tái tục bảo hiểm hàng năm tiếp theo. Tất cả người phụ thuộc phải có tên trong danh sách yêu cầu được bảo hiểm.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K35",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K35"
+   ]
+  },
+  {
+   "term": "Người thụ hưởng",
+   "aliases": [],
+   "definition": "cá nhân, hoặc nhóm cá nhân được Bên mua bảo hiểm/Người được bảo hiểm chỉ định nhận toàn bộ hoặc một phần các quyền lợi bảo hiểm của hợp đồng bảo hiểm. Người thụ hưởng được ghi tên trong giấy yêu cầu bảo hiểm, giấy yêu cầu trả tiền bảo hiểm và trong hợp đồng bảo hiểm. Trường hợp Bên mua bảo hiểm không đồng thời là Người được bảo hiểm, Bên mua bảo hiểm phải có sự đồng ý bằng văn bản của Người được bảo hiểm khi chỉ định người thụ hưởng; trường hợp Người được bảo hiểm chưa thành niên thì việc chỉ định người thụ hưởng phải được người đại diện theo pháp luật đồng ý. Trường hợp không có chỉ định người thụ hưởng Bảo hiểm Bảo Việt sẽ giải quyết theo các quy định của pháp luật về thừa kế (áp dụng cho trường hợp Người được bảo hiểm tử vong).",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K36",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K36"
+   ]
+  },
+  {
+   "term": "Phẫu thuật",
+   "aliases": [],
+   "definition": "một phương pháp khoa học để điều trị bệnh, tai nạn, thai sản thuộc phạm vi bảo hiểm được thực hiện bởi những phẫu thuật viên có bằng cấp thông qua những ca mổ với các dụng cụ y tế tại cơ sở y tế, bao gồm những danh mục liệt kê dưới đây: Mổ phanh, mổ nội soi, mổ bằng tia laser, tiểu phẫu, thủ thuật điều trị và/hoặc các danh mục được liệt kê trong Sửa đổi bổ sung như là một bộ phận đính kèm của quy tắc/hợp đồng bảo hiểm. Phẫu thuật bao gồm hai loại: - Phẫu thuật nội trú: là hình thức bệnh nhân nhập viện phẫu thuật và tổng thời gian lưu trú để điều trị tại bệnh viện ít nhất 24 giờ . - Phẫu thuật ngoại trú: là hình thức bệnh nhân có phẫu thuật và chỉ lưu trú tại bệnh viện dưới 24 giờ.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K37",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K37"
+   ]
+  },
+  {
+   "term": "Phòng khám",
+   "aliases": [],
+   "definition": "cơ sở y tế khám, chữa bệnh ngoại trú hoạt động hợp pháp theo quy định của pháp luật Việt Nam (có giấy phép kinh doanh hợp lệ, con dấu riêng và chứng chỉ hành nghề của từng cá nhân trong phòng khám), có khả năng và phương tiện khám bệnh, chẩn đoán, điều trị hoặc phẫu thuật. Các chứng từ thanh toán như hóa đơn/biên lai/phiếu thu phát sinh tại phòng khám phải tuân thủ theo quy định của Bộ Tài chính. Định nghĩa này không bao gồm phòng mạch bác sĩ tư.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K38",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K38"
+   ]
+  },
+  {
+   "term": "Phòng và giường điều trị",
+   "aliases": [],
+   "definition": "các chi phí tiền giường nằm điều trị trong một phòng đơn và các khoản chi phí liên quan khác phục vụ cho Người được bảo hiểm điều trị, bao gồm cả phòng chăm sóc đặc biệt và các chi phí chăm sóc y tế cần thiết khác do một y tá có bằng cấp chăm sóc.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K39",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K39"
+   ]
+  },
+  {
+   "term": "Phục hồi chức năng",
+   "aliases": [],
+   "definition": "phương pháp điều trị nhằm mục đích khôi phục lại tình trạng bình thường và/hoặc chức năng sau tổn thương cấp tính do tai nạn hoặc do bệnh kể từ khi người bệnh được bác sĩ chỉ định chuyển sang điều trị tại chuyên khoa phục hồi chức năng.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K40",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K40"
+   ]
+  },
+  {
+   "term": "Số tiền bảo hiểm",
+   "aliases": [],
+   "definition": "tổng mức trách nhiệm bảo hiểm tối đa của Bảo hiểm Bảo Việt đối với Người được bảo hiểm trong suốt thời hạn bảo hiểm. Số tiền bảo hiểm được quy định trong hợp đồng bảo hiểm và/hoặc bảng quyền lợi bảo hiểm đính kèm quy tắc bảo hiểm/hợp đồng bảo hiểm.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K41",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K41"
+   ]
+  },
+  {
+   "term": "Tai nạn",
+   "aliases": [],
+   "definition": "bất kỳ sự kiện bất ngờ hay không lường trước, gây ra bởi một lực/tác nhân có thể nhìn thấy được từ bên ngoài lên thân thể Người được bảo hiểm và xảy ra trong thời hạn bảo hiểm, là nguyên nhân trực tiếp dẫn đến tổn thương thân thể hoặc tử vong cho Người được bảo hiểm và xảy ra ngoài sự kiểm soát/ý định của Người được bảo hiểm. Theo quy tắc bảo hiểm này, sự kiện ngộ độc thức ăn, đồ uống hoặc hít phải hơi độc, khí độc, chất độc, khí gas, đuối nước, điện giật được coi là tai nạn.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K42",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K42"
+   ]
+  },
+  {
+   "term": "Thai sản",
+   "aliases": [],
+   "definition": "Thai sản là quá trình thai nghén từ khi hình thành thai nhi đến khi sinh đẻ. Trong phạm vi quy tắc bảo hiểm này, thai sản bao gồm sinh con và biến chứng thai sản.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K43",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K43"
+   ]
+  },
+  {
+   "term": "Thời gian chờ",
+   "aliases": [],
+   "definition": "khoảng thời gian mà các sự kiện bảo hiểm xảy ra sẽ không được Bảo hiểm Bảo Việt chi trả đối với các quyền lợi bảo hiểm có liên quan, không chi trả cả những trường hợp thời điểm phát sinh rủi ro nằm trong thời gian chờ nhưng chi phí phát sinh hoặc hậu quả của đợt điều trị rủi ro này lại kéo dài quá thời gian chờ quy định. Thời gian chờ được tính kể từ Ngày bắt đầu hiệu lực bảo hiểm. Đối với các hợp đồng bảo hiểm tái tục liên tục hàng năm và không thay đổi quyền lợi bảo hiểm, thời gian chờ được tính từ Ngày bắt đầu hiệu lực bảo hiểm của hợp đồng bảo hiểm năm đầu tiên.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K44",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K44"
+   ]
+  },
+  {
+   "term": "Thời hạn bảo hiểm",
+   "aliases": [],
+   "definition": "Thời hạn bảo hiểm được tính từ thời điểm Bảo hiểm Bảo Việt bắt đầu nhận bảo hiểm cho đến khi kết thúc bảo hiểm. Thời hạn bảo hiểm bắt đầu từ 0 giờ 1 phút sáng ngày bắt đầu hiệu lực bảo hiểm và được kết thúc vào 23 giờ 59 phút ngày hết hạn hiệu lực bảo hiểm. Thời hạn bảo hiểm là 01 năm và được quy định cụ thể trong hợp đồng bảo hiểm, không chấp nhận các trường hợp tham gia ngắn hạn hoặc bổ sung quyền lợi giữa kỳ.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K45",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K45"
+   ]
+  },
+  {
+   "term": "Thuốc theo kê đơn của bác sĩ",
+   "aliases": [],
+   "definition": "những thuốc được bán và sử dụng theo đơn của bác sĩ, theo quy định của pháp luật và không bao gồm: thực phẩm chức năng, dược mỹ phẩm, mỹ phẩm, chế phẩm không nằm trong danh mục thuốc điều trị của Bộ Y tế, khoáng chất, vitamin. Tuy nhiên, Bảo hiểm Bảo Việt sẽ xem xét bồi thường khoáng chất, vitamin tối đa 20% tổng chi phí của cả toa thuốc khi thỏa mãn các điều kiện sau: - Các loại khoáng chất và vitamin này được sự chỉ định của bác sĩ điều trị; - Hỗ trợ cho việc điều trị; - Trong toa thuốc phải có thuốc điều trị đi kèm.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K46",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K46"
+   ]
+  },
+  {
+   "term": "Thương tật bộ phận vĩnh viễn",
+   "aliases": [],
+   "definition": "các tổn thương cơ thể do tai nạn gây ra làm cho Người được bảo hiểm vĩnh viễn mất đi chức năng hoạt động của một hay nhiều bộ phận cơ thể do hậu quả của việc bị cắt cụt (mất) hoặc liệt hoàn toàn và vĩnh viễn bộ phận đó. Thương tật bộ phận vĩnh viễn chỉ được xác định sau khi điều trị tổn thương cơ thể gây ra thương tật đó đã kết thúc. Trong trường hợp thương tật bộ phận vĩnh viễn chưa được xác định ngay sau khi kết thúc việc điều trị tổn thương cơ thể, thương tật đó được coi là thương tật bộ phận vĩnh viễn nếu nó diễn biến kéo dài trong vòng 52 tuần liên tục kể từ ngày kết thúc điều trị. Bảo hiểm Bảo Việt chỉ bảo hiểm cho các thương tật bộ phận vĩnh viễn được liệt kê trong Bảng tỉ lệ trả tiền tử vong/thương tật vĩnh viễn đính kèm quy tắc bảo hiểm.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K47",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K47"
+   ]
+  },
+  {
+   "term": "Thương tật toàn bộ vĩnh viễn",
+   "aliases": [],
+   "definition": "các tổn thương cơ thể làm cho Người được bảo hiểm bị cản trở hoàn toàn khi tham gia vào công việc của người đó hay bị mất hoàn toàn khả năng lao động trong bất kỳ loại lao động nào, kéo dài 180 ngày liên tục kể từ ngày kết thúc điều trị và không hy vọng vào sự tiến triển của thương tật đó. a) Quyền lợi thương tật toàn bộ vĩnh viễn được xem xét chi trả khi xảy ra một trong các trường hợp sau: - Người được bảo hiểm bị mất hoàn toàn, liệt hoàn toàn và không thể phục hồi được chức năng của: hai tay; hoặc hai chân; hoặc một tay và một chân; hoặc hai mắt; hoặc một tay và một mắt; hoặc một chân và một mắt. Trong trường hợp này, mất hoàn toàn, liệt hoàn toàn và không thể phục hồi được chức năng của tay được tính từ cổ tay trở lên (theo chiều từ cổ tay đến vai); mất hoàn toàn, liệt hoàn toàn và không thể phục hồi được chức năng của chân được tính từ mắt cá chân trở lên (theo chiều từ mắt cá chân đến đùi); mất hoàn toàn và không thể phục hồi được chức năng của mắt được hiểu là mất hoàn toàn hoặc mù hoàn toàn; - Người được bảo hiểm bị tổn thương cơ thể từ 81% trở lên dẫn đến bị cản trở hoàn toàn khi tham gia vào công việc của người đó hay bị mất hoàn toàn khả năng lao động trong bất kỳ loại lao động nào theo xác nhận của cơ quan y tế hoặc Hội đồng giám định Y khoa cấp tỉnh, thành phố trực thuộc trung ương hoặc tổ chức giám định y tế hợp pháp được Công ty bảo hiểm chấp thuận. - Các trường hợp thương tật toàn bộ vĩnh viễn khác được liệt kê trong Bảng tỉ lệ trả tiền tử vong/thương tật vĩnh viễn đính kèm quy tắc bảo hiểm . b) Việc chứng nhận người được bảo hiểm bị mất hoàn toàn bộ phận cơ thể (tay, chân hoặc mắt) có thể được thực hiện ngay sau khi sự kiện bảo hiểm xảy ra hoặc sau khi kết thúc việc điều trị. Việc chứng nhận bị liệt hoàn toàn và không thể phục hồi chức năng của các bộ phận cơ thể hoặc mù hoàn toàn hoặc bị tổn thương cơ thể từ 81% trở lên được thực hiện không sớm hơn 180 ngày kể từ ngày xảy ra sự kiện bảo hiểm hoặc từ ngày bệnh lý được chẩn đoán.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K48_P1",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K48_P1",
+    "BVP_QT_C1_M1_K48_P2"
+   ]
+  },
+  {
+   "term": "Tình trạng nguy kịch",
+   "aliases": [],
+   "definition": "tình trạng sức khoẻ mà theo ý kiến bác sĩ cần phải điều trị khẩn cấp để tránh tử vong.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K49",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K49"
+   ]
+  },
+  {
+   "term": "Tổn thương cơ thể",
+   "aliases": [],
+   "definition": "Tổn thương cơ thể (hay tổn thương thân thể) là tổn hại về mặt sinh học đối với cơ thể con người do bất kỳ sự tác động nào gây ra. Tổn thương này có thể do tai nạn hoặc do bệnh lý gây ra. Theo quy tắc bảo hiểm này, tổn thương cơ thể không bao gồm tình trạng liên quan đến thai sản.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K50",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K50"
+   ]
+  },
+  {
+   "term": "Tuổi được bảo hiểm",
+   "aliases": [],
+   "definition": "tuổi của Người được bảo hiểm vào ngày có hiệu lực của hợp đồng bảo hiểm, được tính theo lần sinh nhật liền trước ngày hợp đồng bảo hiểm có hiệu lực.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K51",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K51"
+   ]
+  },
+  {
+   "term": "Vật lý trị liệu",
+   "aliases": [],
+   "definition": "phương pháp chữa bệnh bằng cách sử dụng các tác nhân vật lý, tự nhiên hay nhân tạo như: nước, không khí, nhiệt độ, điện, tia X, tia cực tím, tia hồng ngoại, siêu âm, các chất đồng vị phóng xạ, xoa bóp, cấy chỉ, các phương pháp điều trị được coi là vật lý trị liệu theo quy định về y tế. Quy tắc bảo hiểm này không bảo hiểm các chi phí nhằm mục đích thư giãn, mát xa, spa, sửa dáng đi.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K52",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K52"
+   ]
+  },
+  {
+   "term": "Vật tư tiêu hao",
+   "aliases": [],
+   "definition": "vật tư y tế được sử dụng một lần hoặc nhiều lần nhằm mục đích hỗ trợ cho điều trị và khám chữa bệnh, không lắp đặt vĩnh viễn trong cơ thể ngoại trừ trường hợp các vật tư này tự tiêu trong cơ thể hoặc lẽ ra có thể lấy ra khỏi cơ thể mà không ảnh hưởng đến chức năng hoạt động của cơ thể nhưng do cơ thể không đào thải nên không cần thiết phải lấy ra.",
+   "scope": "BVP",
+   "source": "BVP_QT_C1_M1_K53",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "BVP_QT_C1_M1_K53"
+   ]
+  },
+  {
+   "term": "Bác sĩ",
+   "aliases": [],
+   "definition": "một bác sĩ được cấp giấy phép hành nghề hợp pháp, được luật pháp nước sở tại công nhận và bác sĩ đó đang điều trị, hành nghề trong phạm vi Giấy phép được cấp và trong phạm vi chuyên ngành đào tạo của mình. Một bác sĩ có thể là một bác sĩ chuyên khoa hay cố vấn y tế. Định nghĩa về bác sĩ không bao gồm những người sau đây: - Bên mua bảo hiểm (BMBH), Người được bảo hiểm (NĐBH). - Thành viên gia đình trực hệ của Người được bảo hiểm hoặc Bên mua bảo hiểm (ông nội, bà nội, ông ngoại, bà ngoại, bố đẻ, mẹ đẻ, bố/mẹ vợ, bố/mẹ chồng, bố/mẹ nuôi hợp pháp, vợ, chồng, con đẻ, con nuôi hợp pháp, anh/chị/em ruột), người giám hộ hợp pháp, người thụ hưởng. - Đại lý bảo hiểm, chủ sử dụng lao động/nhân viên của BMBH hoặc NĐBH.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M1",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M1"
+   ]
+  },
+  {
+   "term": "Bên mua bảo hiểm",
+   "aliases": [],
+   "definition": "tổ chức được thành lập và hoạt động hợp pháp tại Việt Nam, hoặc cá nhân tại Việt Nam từ đủ 18 tuổi trở lên có năng lực hành vi dân sự đầy đủ tại thời điểm giao kết hợp đồng bảo hiểm với Bảo hiểm Bảo Việt. Bên mua bảo hiểm phải đáp ứng các điều kiện để mua bảo hiểm theo quy tắc, điều kiện, điều khoản bảo hiểm và đóng phí bảo hiểm cho Bảo hiểm Bảo Việt. Bên mua bảo hiểm phải có quyền lợi có thể được bảo hiểm theo quy định của pháp luật. Bên mua bảo hiểm có quyền lợi có thể được bảo hiểm đối với những người sau đây: - Bản thân Bên mua bảo hiểm; - Bố/mẹ của Bên mua bảo hiểm; - Vợ/chồng, con của Bên mua bảo hiểm; - Người có quan hệ nuôi dưỡng và cấp dưỡng hợp pháp với Bên mua bảo hiểm; - Người khác, nếu người đó đồng ý cho Bên mua bảo hiểm mua bảo hiểm cho mình.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M2",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M2"
+   ]
+  },
+  {
+   "term": "Bệnh bẩm sinh",
+   "aliases": [],
+   "definition": "bất kỳ bệnh/dị tật/khuyết tật nào được hình thành trên thai nhi trong quá trình mang thai của người mẹ dưới tác động của yếu tố môi trường lên sự phát triển của thai nhi và có thể được cơ quan y tế mô tả dưới nhiều tên gọi khác nhau như \"bệnh bẩm sinh, dị tật bẩm sinh, khuyết tật bẩm sinh, bất thường của nhiễm sắc thể\". Bệnh/dị tật bẩm sinh có thể được phát hiện trong quá trình mang thai, sinh con của người mẹ hoặc trong quá trình phát triển của Người được bảo hiểm. Việc xác định tình trạng bệnh/dị tật bẩm sinh phải do bác sĩ thực hiện.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M3",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M3"
+   ]
+  },
+  {
+   "term": "Bệnh có sẵn",
+   "aliases": [],
+   "definition": "tình trạng bệnh tật hoặc thương tật của Người được bảo hiểm có từ trước ngày bắt đầu được nhận bảo hiểm theo hợp đồng bảo hiểm và là bệnh/thương tật mà Người được bảo hiểm: a. Đã được bác sĩ chẩn đoán hoặc điều trị trước ngày bắt đầu hiệu lực bảo hiểm, và/hoặc b. Dấu hiệu, triệu chứng của bệnh/thương tật khởi phát trong vòng 36 tháng trước ngày bắt đầu hiệu lực bảo hiểm mà Người được bảo hiểm đã biết hoặc ý thức được cho dù Người được bảo hiểm có thực sự khám, điều trị hay không. Việc xác định bệnh có sẵn phải căn cứ vào: hồ sơ y tế được lưu trữ tại bệnh viện hoặc cơ sở y tế được thành lập hợp pháp; các tài liệu y khoa được Bộ Y tế và các cơ quan có thẩm quyền ban hành; hoặc các thông tin do Bên mua bảo hiểm, Người được bảo hiểm tự kê khai trên hồ sơ yêu cầu bảo hiểm hoặc phiếu bổ sung thông tin; hoặc lịch sử bồi thường của Người được bảo hiểm.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M4",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M4"
+   ]
+  },
+  {
+   "term": "Bệnh/tình trạng hiểm nghèo được bảo hiểm",
+   "aliases": [],
+   "definition": "bệnh/tình trạng nằm trong danh sách bệnh/tình trạng được quy định tại Chương 2 - Quyền lợi bảo hiểm của quy tắc bảo hiểm này.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M5",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M5"
+   ]
+  },
+  {
+   "term": "Bệnh viện",
+   "aliases": [],
+   "definition": "cơ sở điều trị y tế tại Việt Nam được thành lập và hoạt động hợp pháp theo luật pháp Việt Nam. Cơ sở phải được cấp giấy phép là một bệnh viện với từ \"bệnh viện\" trên con dấu hoặc được cấp giấy phép là bệnh viện/trung tâm y tế chuyên khoa của một tỉnh/thành phố trực thuộc trung ương hoặc là cấp trung ương. Bệnh viện không bao gồm các cơ sở sau đây dù các cơ sở này hoạt động độc lập hoặc chịu sự quản lý của bệnh viện: - Bệnh viện điều trị bệnh tâm thần, rối loạn tâm thần; - Bệnh viện y học cổ truyền, vật lý trị liệu và/hoặc phục hồi chức năng; - Bệnh viện điều trị bệnh phong; - Bệnh viện điều dưỡng, nhà an dưỡng, nơi điều trị suối khoáng, xông hơi, massage, các cơ sở chủ yếu dành cho việc điều trị cho người già, điều trị cai nghiện rượu, chất ma túy, thuốc phiện, chất kích thích.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M6",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M6"
+   ]
+  },
+  {
+   "term": "Công ty bảo hiểm (CTBH)",
+   "aliases": [],
+   "definition": "Tổng công ty Bảo hiểm Bảo Việt (Bảo hiểm Bảo Việt) hoặc các công ty thành viên trực thuộc được thành lập và hoạt động theo pháp luật Việt Nam.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M7",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M7"
+   ]
+  },
+  {
+   "term": "Độ tuổi của Người được bảo hiểm",
+   "aliases": [],
+   "definition": "tuổi của Người được bảo hiểm vào ngày có hiệu lực của hợp đồng bảo hiểm, được tính theo lần sinh nhật liền trước ngày hợp đồng bảo hiểm có hiệu lực.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M8",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M8"
+   ]
+  },
+  {
+   "term": "Hệ thống TNM",
+   "aliases": [],
+   "definition": "một trong những hệ thống xác định giai đoạn của ung thư được sử dụng rộng rãi nhất. Hệ thống này được chấp nhận bởi Hiệp hội kiểm soát ung thư quốc tế (UICC - Union for International Cancer Control) và Ủy ban Ung Thư Hoa Kỳ (AJCC - American Joint Committee on Cancer). Hệ thống TNM dựa vào phạm vi lan rộng của khối u (T - Tumor), phạm vi ảnh hưởng đến các hạch bạch huyết (N - Node), và sự hiện diện của các di căn xa (M - Metastasis). Con số được thêm vào phía sau mỗi chữ cái xác định kích thước hoặc phạm vi của khối u và di căn. - Khối u nguyên phát (Primary Tumor) ◦ Tx: không đánh giá được khối u nguyên phát ◦ T0: không có bằng chứng về sự hiện diện của khối u nguyên phát ◦ Tis: Carcinoma in situ (CIS - ung thư biểu mô tại chỗ): có sự hiện diện của các tế bào bất thường nhưng chúng không lan sang các mô lân cận, mặc dù không phải là ung thư nhưng CIS có thể trở thành ung thư và đôi khi nó được gọi là ung thư giai đoạn tiền xâm lấn. ◦ T1, T2, T3, T4: kích thước và/hoặc phạm vi của khối u nguyên phát. - Hạch vùng (Regional Lymph Nodes) ◦ Nx: không đánh giá được hạch vùng ◦ N0: không có hạch vùng liên quan ◦ N1, N2, N3: có hạch vùng liên quan (số lượng hạch bạch huyết và/hoặc phạm vi liên quan) - Di căn xa (Distant Metastasis): ◦ Mx: không thể đánh giá được di căn xa ◦ M0: không có di căn xa ◦ M1: có di căn xa",
+   "scope": "C37",
+   "source": "C37_QT_C1_M9",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M9"
+   ]
+  },
+  {
+   "term": "Hợp đồng bảo hiểm (HĐBH)",
+   "aliases": [],
+   "definition": "hợp đồng bảo hiểm/giấy chứng nhận bảo hiểm (sau đây gọi chung là hợp đồng bảo hiểm) do Bảo hiểm Bảo Việt phát hành dựa trên yêu cầu bảo hiểm và cam kết của Bên mua bảo hiểm/Người được bảo hiểm đã đọc kỹ và hiểu toàn bộ nội dung tại quy tắc bảo hiểm, theo đó Bên mua bảo hiểm/Người được bảo hiểm phải đóng phí bảo hiểm, Bảo hiểm Bảo Việt cung cấp dịch vụ bảo hiểm như được liệt kê trong hợp đồng bảo hiểm/quy tắc bảo hiểm. Giấy yêu cầu bảo hiểm, quy tắc bảo hiểm, hợp đồng bảo hiểm, phụ lục hợp đồng, sửa đổi bổ sung của hợp đồng là những bộ phận cấu thành và không tách rời của hợp đồng bảo hiểm.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M10",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M10"
+   ]
+  },
+  {
+   "term": "Hợp đồng tái tục liên tục",
+   "aliases": [],
+   "definition": "hợp đồng bảo hiểm được tái tục vào ngày hoặc trước ngày hết hạn hiệu lực của hợp đồng bảo hiểm cũ. Bảo hiểm Bảo Việt không yêu cầu Người được bảo hiểm phải kê khai lại giấy yêu cầu bảo hiểm trong trường hợp tái tục liên tục.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M11",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M11"
+   ]
+  },
+  {
+   "term": "Mô bệnh học",
+   "aliases": [],
+   "definition": "kết quả xét nghiệm để khẳng định loại tế bào và mức độ xâm nhập của các tế bào ung thư thông qua việc chẩn đoán bằng cách làm \"sinh thiết\" (việc làm xét nghiệm bằng một phẫu thuật/thủ thuật y tế để lấy một mẫu nhỏ của mô cơ thể, hoặc sử dụng kim chuyên biệt xuyên qua da và chọc hút ra tế bào chứa chất lỏng từ một khối u và gửi mẫu đến phòng thí nghiệm để phân tích).",
+   "scope": "C37",
+   "source": "C37_QT_C1_M12",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M12"
+   ]
+  },
+  {
+   "term": "Ngày bắt đầu hiệu lực bảo hiểm",
+   "aliases": [],
+   "definition": "ngày hiệu lực của hợp đồng bảo hiểm đầu tiên (được tính từ 0 giờ 1 phút của ngày quy định trên hợp đồng) khi Bên mua bảo hiểm tham gia chương trình bảo hiểm này hoặc của hợp đồng bảo hiểm tái tục liên tục hàng năm. Đối với những hợp đồng bảo hiểm không được tái tục liên tục hàng năm, ngày bắt đầu hiệu lực bảo hiểm đầu tiên là ngày hiệu lực của hợp đồng bảo hiểm mới nhất trừ khi có thỏa thuận khác.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M13",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M13"
+   ]
+  },
+  {
+   "term": "Ngày cấp hợp đồng bảo hiểm",
+   "aliases": [],
+   "definition": "ngày Bảo hiểm Bảo Việt cấp hợp đồng bảo hiểm cho Bên mua bảo hiểm. Ngày này được ghi trên hợp đồng bảo hiểm.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M14",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M14"
+   ]
+  },
+  {
+   "term": "Ngày hết hạn hợp đồng",
+   "aliases": [],
+   "definition": "ngày có hiệu lực cuối cùng của hợp đồng bảo hiểm và được ghi trên hợp đồng bảo hiểm.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M15",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M15"
+   ]
+  },
+  {
+   "term": "Người được bảo hiểm (NĐBH)",
+   "aliases": [],
+   "definition": "cá nhân có tính mạng hoặc tình trạng sức khỏe được bảo hiểm theo hợp đồng bảo hiểm, thỏa mãn điều kiện tham gia bảo hiểm nêu tại quy tắc bảo hiểm và/hoặc hợp đồng bảo hiểm. Người được bảo hiểm đã hoàn thành việc kê khai trong giấy yêu cầu bảo hiểm và hiệu lực bảo hiểm đã được Bảo hiểm Bảo Việt xác nhận. Quy định về kê khai giấy yêu cầu bảo hiểm đối với hợp đồng bảo hiểm tổ chức được nêu chi tiết tại hợp đồng bảo hiểm.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M16",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M16"
+   ]
+  },
+  {
+   "term": "Người thụ hưởng",
+   "aliases": [],
+   "definition": "cá nhân, hoặc nhóm cá nhân được Bên mua bảo hiểm/Người được bảo hiểm chỉ định nhận toàn bộ hoặc một phần các quyền lợi bảo hiểm của hợp đồng bảo hiểm. Người thụ hưởng được ghi tên trong giấy yêu cầu bảo hiểm, giấy yêu cầu trả tiền bảo hiểm và trong hợp đồng bảo hiểm. Trường hợp Bên mua bảo hiểm không đồng thời là Người được bảo hiểm, Bên mua bảo hiểm phải có sự đồng ý bằng văn bản của Người được bảo hiểm khi chỉ định người thụ hưởng; trường hợp Người được bảo hiểm chưa thành niên thì việc chỉ định người thụ hưởng phải được người đại diện theo pháp luật đồng ý. Trường hợp không có chỉ định người thụ hưởng Bảo hiểm Bảo Việt sẽ giải quyết theo các quy định của pháp luật về thừa kế.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M17",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M17"
+   ]
+  },
+  {
+   "term": "Phí bảo hiểm",
+   "aliases": [],
+   "definition": "khoản tiền mà BMBH phải đóng cho CTBH. Phí bảo hiểm được quy định trên HĐBH và/hoặc trên Sửa đổi bổ sung mới nhất (nếu có) theo thời hạn và phương thức do các bên thỏa thuận trong hợp đồng bảo hiểm theo quy định pháp luật.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M18",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M18"
+   ]
+  },
+  {
+   "term": "Số tiền bảo hiểm",
+   "aliases": [],
+   "definition": "tổng mức trách nhiệm bảo hiểm tối đa của Bảo hiểm Bảo Việt đối với Người được bảo hiểm trong suốt thời hạn bảo hiểm. Số tiền bảo hiểm được quy định trong hợp đồng bảo hiểm và/hoặc bảng quyền lợi bảo hiểm đính kèm quy tắc bảo hiểm/hợp đồng bảo hiểm.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M19",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M19"
+   ]
+  },
+  {
+   "term": "Sự kiện được bảo hiểm",
+   "aliases": [],
+   "definition": "các sự kiện khách quan do các bên thỏa thuận với nhau hoặc do pháp luật quy định khi sự kiện xảy ra mà CTBH sẽ phải trả tiền bảo hiểm cho người thụ hưởng hoặc bồi thường cho NĐBH.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M20",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M20"
+   ]
+  },
+  {
+   "term": "Thời hạn bảo hiểm",
+   "aliases": [],
+   "definition": "Thời hạn bảo hiểm được tính từ thời điểm Bảo hiểm Bảo Việt bắt đầu nhận bảo hiểm cho đến khi kết thúc bảo hiểm. Thời hạn bảo hiểm bắt đầu từ 0 giờ 1 phút sáng ngày bắt đầu hiệu lực bảo hiểm và được kết thúc vào 23 giờ 59 phút ngày hết hạn hiệu lực bảo hiểm. Đối với hợp đồng bảo hiểm cá nhân: Thời hạn bảo hiểm là 01 năm và được quy định cụ thể trong hợp đồng bảo hiểm. Đối với hợp đồng bảo hiểm tổ chức: Thời hạn bảo hiểm là 01 năm hoặc ít hơn, và được quy định cụ thể trong hợp đồng bảo hiểm.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M21",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M21"
+   ]
+  },
+  {
+   "term": "Thời gian chờ",
+   "aliases": [],
+   "definition": "khoảng thời gian mà các sự kiện bảo hiểm xảy ra sẽ không được Bảo hiểm Bảo Việt chi trả đối với các quyền lợi bảo hiểm có liên quan, không chi trả cả những trường hợp thời điểm phát sinh rủi ro nằm trong thời gian chờ nhưng chi phí phát sinh hoặc hậu quả của đợt điều trị rủi ro này lại kéo dài quá thời gian chờ quy định. Thời gian chờ được tính kể từ Ngày bắt đầu hiệu lực bảo hiểm. Đối với các hợp đồng bảo hiểm tái tục liên tục hàng năm và không thay đổi quyền lợi bảo hiểm, thời gian chờ được tính từ Ngày bắt đầu hiệu lực bảo hiểm của hợp đồng bảo hiểm năm đầu tiên.",
+   "scope": "C37",
+   "source": "C37_QT_C1_M22",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "C37_QT_C1_M22"
+   ]
+  },
+  {
+   "term": "Bác sĩ chuyên khoa, Bác sĩ điều trị, Bác sĩ đa khoa",
+   "aliases": [],
+   "definition": "bác sĩ được cấp giấy phép hành nghề hợp pháp, được luật pháp nước sở tại công nhận, và bác sĩ đó hành nghề trong phạm vi chuyên ngành đào tạo của mình. Một bác sĩ có thể là một bác sĩ chuyên khoa hay cố vấn y tế. Định nghĩa về bác sĩ không bao gồm những người sau đây: - Bên mua bảo hiểm, Người được bảo hiểm; - Người thân của Người được bảo hiểm và/hoặc người thân của Bên mua bảo hiểm, người giám hộ hợp pháp, người thụ hưởng.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K1",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K1"
+   ]
+  },
+  {
+   "term": "Bên mua bảo hiểm/Người yêu cầu bảo hiểm",
+   "aliases": [],
+   "definition": "tổ chức được thành lập và hoạt động hợp pháp hoặc cá nhân từ đủ 18 tuổi trở lên có năng lực hành vi dân sự đầy đủ tại thời điểm giao kết hợp đồng bảo hiểm với Bảo hiểm Bảo Việt. Bên mua bảo hiểm phải đáp ứng các điều kiện để mua bảo hiểm theo quy tắc, điều kiện, điều khoản bảo hiểm và đóng phí bảo hiểm cho Bảo hiểm Bảo Việt. Bên mua bảo hiểm phải có quyền lợi có thể được bảo hiểm theo quy định của pháp luật. Bên mua bảo hiểm có quyền lợi có thể được bảo hiểm đối với những người sau đây: - Bản thân Bên mua bảo hiểm; - Bố/mẹ của Bên mua bảo hiểm; - Vợ/chồng, con đẻ/con nuôi hợp pháp của Bên mua bảo hiểm; - Người có quan hệ nuôi dưỡng và cấp dưỡng hợp pháp với Bên mua bảo hiểm; - Tổ chức, doanh nghiệp đại diện mua bảo hiểm cho các cá nhân có liên quan.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K2",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K2"
+   ]
+  },
+  {
+   "term": "Bệnh/Ốm đau",
+   "aliases": [],
+   "definition": "tình trạng cơ thể có dấu hiệu của một bệnh lý khác với tình trạng sức khỏe bình thường, được biểu hiện bằng các triệu chứng hay hội chứng có chẩn đoán của bác sĩ. Theo quy tắc bảo hiểm này, bệnh/ốm đau phải phát sinh trong chuyến đi nhưng loại trừ trường hợp bệnh có sẵn, bệnh đặc biệt, không bao gồm tình trạng liên quan đến thai sản và răng/nha khoa.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K3",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K3"
+   ]
+  },
+  {
+   "term": "Bệnh đặc biệt",
+   "aliases": [],
+   "definition": "Theo quy tắc bảo hiểm này, những bệnh sau đây được hiểu là bệnh đặc biệt: - Bệnh ung thư và u các loại; - Các bệnh liên quan đến tim, tụy, thận, suy phổi; - Viêm gan (A, B, C), suy gan giai đoạn cuối, viêm gan siêu vi tối cấp; - Các bệnh liên quan đến hệ thống tạo máu bao gồm bệnh suy tủy, bạch cầu cấp, bạch cầu mãn tính, thiếu máu bất sản, bệnh rối loạn đông máu; - Bệnh thiếu hormone sinh trưởng; - Bệnh đái tháo đường; - Bệnh Parkinson; Phẫu thuật sọ não do bệnh của não bộ, tai biến mạch máu não (đột quỵ), - viêm não/viêm màng não, hôn mê, hội chứng Apallic; - Bệnh bại liệt; - Bệnh Lupus ban đỏ.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K4",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K4"
+   ]
+  },
+  {
+   "term": "Bệnh/thương tật có sẵn",
+   "aliases": [],
+   "definition": "tình trạng bệnh tật hoặc thương tật của Người được bảo hiểm có từ trước ngày bắt đầu được nhận bảo hiểm theo hợp đồng bảo hiểm và là bệnh/thương tật mà Người được bảo hiểm: a. Đã được bác sĩ chẩn đoán hoặc điều trị trước ngày bắt đầu hiệu lực bảo hiểm, và/hoặc b. Dấu hiệu, triệu chứng của bệnh/thương tật khởi phát trong vòng 36 tháng trước ngày bắt đầu hiệu lực bảo hiểm mà Người được bảo hiểm đã biết hoặc ý thức được cho dù Người được bảo hiểm có thực sự khám, điều trị hay không. Việc xác định bệnh có sẵn phải căn cứ vào: hồ sơ y tế được lưu trữ tại bệnh viện hoặc cơ sở y tế được thành lập hợp pháp; các tài liệu y khoa được Bộ Y tế và các cơ quan có thẩm quyền ban hành; hoặc các thông tin do Bên mua bảo hiểm, Người được bảo hiểm tự kê khai trên hồ sơ yêu cầu bảo hiểm hoặc phiếu bổ sung thông tin; hoặc lịch sử bồi thường của Người được bảo hiểm.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K5",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K5"
+   ]
+  },
+  {
+   "term": "Bệnh viện",
+   "aliases": [],
+   "definition": "một cơ sở khám và điều trị bệnh hợp pháp, được cấp giấy phép hoạt động theo luật pháp của nước sở tại và: - Có khả năng và phương tiện chẩn đoán bệnh, điều trị và phẫu thuật. - Có điều kiện thuận lợi cho việc điều trị nội trú và có hệ thống theo dõi sức khoẻ hàng ngày cho các bệnh nhân điều trị nội trú. - Không phải là nơi để an dưỡng phục hồi sức khỏe, mát xa, xông hơi hoặc là một nơi đặc biệt chỉ có mục đích duy nhất là phục vụ cho người già hoặc giúp đỡ cai nghiện rượu, thuốc phiện, ma tuý hoặc để điều trị rối loạn tâm thần.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K6",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K6"
+   ]
+  },
+  {
+   "term": "Các hoạt động có tính chất nguy hiểm",
+   "aliases": [],
+   "definition": "các hoạt động bao gồm nhưng không giới hạn: tất cả các hình thức thi đấu võ thuật (boxing, đấu vật, karate, taekwondo và các hình thức võ thuật khác), nhảy dù, nhào lộn trên không, nhảy bungee, lướt sóng và/hoặc các hoạt động khám phá bờ biển nhiều vách đá bằng cách leo, trèo, bơi lội; các chuyến thám hiểm;trượt tuyết mạo hiểm; leo núi đá, leo núi tuyết, leo núi băng hoặc leo núi tự do hoặc leo không dùng dây và tất cả các hình thức leo núi một mình; Đối với các hoạt động leo núi theo tuyến đường cố định hoặc các hoạt động mạo hiểm, khám phá khác không có hệ thống phân cấp hoặc đơn vị tổ chức không đưa ra chỉ dẫn về cấp độ khó, Người được bảo hiểm cần thông báo cho Công ty bảo hiểm và được Công ty bảo hiểm chấp thuận.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K7",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K7"
+   ]
+  },
+  {
+   "term": "Chi phí y tế thực tế",
+   "aliases": [],
+   "definition": "các chi phí y tế phát sinh cần thiết, hợp lý và chỉ liên quan đến việc khám và điều trị y tế của Người được bảo hiểm theo chỉ định của bác sĩ trong trường hợp bệnh/ốm đau, tổn thương cơ thể do tai nạn thuộc phạm vi bảo hiểm.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K8",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K8"
+   ]
+  },
+  {
+   "term": "Chương trình bảo hiểm",
+   "aliases": [],
+   "definition": "loại hình hoặc Mức trách nhiệm bảo hiểm được quy định trong Giấy chứng nhận bảo hiểm và/hoặc hợp đồng bảo hiểm mà Người được bảo hiểm đã thanh toán tiền phí bảo hiểm.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K9",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K9"
+   ]
+  },
+  {
+   "term": "Chuyến đi",
+   "aliases": [],
+   "definition": "hành trình mà Người được bảo hiểm thực hiện và được bảo hiểm bởi Công ty bảo hiểm theo Hợp đồng bảo hiểm này. Chuyến đi bắt đầu có hiệu lực 03 tiếng đồng hồ trước khi Người được bảo hiểm rời Việt Nam theo lịch trình để đến điểm đến ở nước ngoài và sẽ kết thúc khi một trong những điều kiện sau đây xảy ra, tùy thời điểm nào sớm hơn: a. Kết thúc 23 giờ 59 phút của ngày cuối cùng của thời hạn bảo hiểm ghi trên hợp đồng bảo hiểm/giấy chứng nhận bảo hiểm; hoặc b. Thời điểm Người được bảo hiểm hoàn thành thủ tục nhập cảnh quay trở về Việt Nam (căn cứ vào dấu nhập cảnh và/hoặc vé/thẻ lên máy bay, vé phương tiện di chuyển hoặc bất kỳ giấy tờ liên quan chứng minh được Người được bảo hiểm đã hoàn thành thủ tục nhập cảnh)",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K10",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K10"
+   ]
+  },
+  {
+   "term": "Cơ sở y tế",
+   "aliases": [],
+   "definition": "một cơ sở khám chữa bệnh hợp pháp được luật pháp nước sở tại công nhận, có giấy phép điều trị nội trú và/hoặc ngoại trú, không phải là nơi dùng để nghỉ ngơi hoặc điều dưỡng hay một cơ sở đặc biệt dành riêng cho người già, hoặc để cai nghiện rượu, ma túy, chất kích thích.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K11",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K11"
+   ]
+  },
+  {
+   "term": "Công ty Bảo hiểm",
+   "aliases": [],
+   "definition": "Tổng công ty Bảo hiểm Bảo Việt (Bảo hiểm Bảo Việt) hoặc các công ty thành viên trực thuộc được thành lập và hoạt động theo pháp luật Việt Nam.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K12",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K12"
+   ]
+  },
+  {
+   "term": "Công ty cứu trợ",
+   "aliases": [],
+   "definition": "công ty/đơn vị cung cấp dịch vụ hỗ trợ y tế khẩn cấp do Công ty bảo hiểm hợp tác và ủy quyền thực hiện các dịch vụ cứu trợ y tế và hồi hương.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K13",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K13"
+   ]
+  },
+  {
+   "term": "Điều trị nội trú",
+   "aliases": [],
+   "definition": "việc Người được bảo hiểm phải nhập viện để điều trị rủi ro thuộc phạm vi bảo hiểm, có phát sinh chi phí giường bệnh và lưu trú tại bệnh viện ít nhất 24 giờ. Trong trường hợp bệnh viện không cấp được giấy nhập viện hoặc xuất viện, hồ sơ y tế hoặc hóa đơn thanh toán thể hiện rõ thời gian điều trị sẽ được coi như chứng từ thay thế. Đơn vị ngày nằm viện được tính bằng 24 giờ và theo đơn vị giường nằm trong giấy nhập viện/xuất viện hoặc trong chứng từ viện phí chi tiết (tính theo đơn vị nào thấp hơn). Việc điều trị nội trú chỉ được chấp nhận khi Người được bảo hiểm được thực hiện điều trị tại một bệnh viện như định nghĩa, không phải là phòng khám hay cơ sở y tế điều trị ngoại trú.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K14",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K14"
+   ]
+  },
+  {
+   "term": "Đối tượng tham gia bảo hiểm",
+   "aliases": [],
+   "definition": "người Việt Nam hoặc người nước ngoài đang ở Việt Nam bao gồm (người cư trú hợp pháp tại Việt Nam và/hoặc những người đang du lịch/công tác tại Việt Nam) và có độ tuổi từ 06 (sáu) tháng tuổi đến hết 85 (tám mươi lăm) tuổi tại ngày bắt đầu hiệu lực của hợp đồng bảo hiểm/giấy chứng nhận bảo hiểm.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K15",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K15"
+   ]
+  },
+  {
+   "term": "Giấy tờ thông hành",
+   "aliases": [],
+   "definition": "những loại giấy tờ sau của người được bảo hiểm: a. Giấy tờ tùy thân: hộ chiếu, thị thực và các giấy tờ cần thiết khác để chứng minh mục đích nhập cảnh. b. Vé du lịch: Thẻ tàu hoặc thẻ giao thông công cộng tích hợp có mệnh giá vượt quá 100 USD hoặc tỷ giá tương đương, vé du thuyền hoặc vé máy bay cho Chuyến đi.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K16",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K16"
+   ]
+  },
+  {
+   "term": "Hành lý",
+   "aliases": [],
+   "definition": "tài sản cá nhân của người được bảo hiểm mang theo trong chuyến đi, bao gồm vali, túi xách, quần áo, giày dép, vật dụng cá nhân, thiết bị điện tử xách tay (như máy ảnh, điện thoại, máy tính xách tay), và các đồ dùng thiết yếu khác phục vụ cho mục đích của chuyến đi",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K17",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K17"
+   ]
+  },
+  {
+   "term": "Hành trình",
+   "aliases": [],
+   "definition": "quá trình di chuyển của Người được bảo hiểm bằng một hoặc nhiều phương tiện giao thông để di chuyển từ địa điểm này sang địa điểm khác. Một chuyến đi có thể bao gồm nhiều hành trình.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K18",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K18"
+   ]
+  },
+  {
+   "term": "Hợp đồng bảo hiểm nguyên tắc/Hợp đồng bao",
+   "aliases": [],
+   "definition": "Hợp đồng bảo hiểm nguyên tắc/ Hợp đồng bao là thỏa thuận giữa bên mua bảo hiểm và công ty bảo hiểm xác lập các quyền, nghĩa vụ nhất định về việc cung cấp dịch vụ bảo hiểm cho nhiều lượt/chuyến/lần lưu trú phát sinh trong thời hạn hiệu lực bảo hiểm của hợp đồng. Theo đó, công ty bảo hiểm cam kết bồi thường cho người được bảo hiểm trong trường hợp xảy ra sự kiện thuộc phạm vi bảo hiểm được quy định trong hợp đồng. Hợp đồng bảo hiểm nguyên tắc/hợp đồng bao được thực hiện theo dạng khung cho thời hạn 1 năm hoặc theo thỏa thuận để các bên tiếp tục thực hiện các giao dịch phát sinh sau đó.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K19",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K19"
+   ]
+  },
+  {
+   "term": "Khủng bố",
+   "aliases": [],
+   "definition": "Bao gồm các hoạt động mà không giới hạn việc sử dụng lực lượng hoặc bạo lực và/hoặc sự đe dọa của bất kỳ một cá nhân hay một nhóm người, được thực hiện bởi một cá nhân hay nhân danh các tổ chức, Chính phủ, hay phục vụ cho mục đích hay lý do chính trị, tư tưởng tôn giáo hoặc dân tộc bao gồm cả sự gây căng thẳng để gây ảnh hưởng cho bất kỳ Chính phủ hay đặt các nơi và khu vực công cộng trong sự sợ hãi",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K20",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K20"
+   ]
+  },
+  {
+   "term": "Mất tích",
+   "aliases": [],
+   "definition": "Người được bảo hiểm được xem như đã tử vong nếu như không được tìm thấy trong 24 tháng liên tục và có bằng chứng đầy đủ cho việc kết luận rằng sự kiện mất tích đó là do tai nạn gây ra. Tuy nhiên, nếu vào bất cứ thời điểm nào sau khi Công ty bảo hiểm đã chi trả bồi thường cho trường hợp tử vong đó mà Người được bảo hiểm được phát hiện là vẫn còn sống thì số tiền này phải được Người thụ hưởng hoàn lại cho Công ty Bảo hiểm.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K21",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K21"
+   ]
+  },
+  {
+   "term": "Nơi cư trú",
+   "aliases": [],
+   "definition": "nơi Người được bảo hiểm đang sinh sống thường xuyên vào thời điểm bắt đầu Thời hạn bảo hiểm. Người nước ngoài sống tại Việt Nam theo thị thực du lịch không được xem là cư trú tại Việt Nam.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K22",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K22"
+   ]
+  },
+  {
+   "term": "Người được bảo hiểm",
+   "aliases": [],
+   "definition": "cá nhân được Công ty bảo hiểm chấp nhận bảo hiểm theo quy tắc bảo hiểm này, có tên trong Giấy yêu cầu bảo hiểm và được liệt kê, thể hiện trong Hợp đồng bảo hiểm/Giấy chứng nhận bảo hiểm và thỏa mãn quy định về đối tượng tham gia bảo hiểm.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K23",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K23"
+   ]
+  },
+  {
+   "term": "Người thân",
+   "aliases": [],
+   "definition": "Bao gồm Thành viên gia đình và cha mẹ đẻ, cha mẹ nuôi hợp pháp theo pháp luật, cha mẹ vợ/chồng, ông bà nội/ngoại, anh chị em ruột, cháu nội/cháu ngoại, anh chị em dâu/rể của Người được bảo hiểm.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K24",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K24"
+   ]
+  },
+  {
+   "term": "Người thụ hưởng",
+   "aliases": [],
+   "definition": "cá nhân, hoặc nhóm cá nhân được nhận toàn bộ hoặc một phần các quyền lợi bảo hiểm của hợp đồng bảo hiểm. Người thụ hưởng là Người được bảo hiểm hoặc người được Người được bảo hiểm chỉ định để nhận tiền bảo hiểm và được ghi tên trong giấy yêu cầu trả tiền bảo hiểm (trừ khi hợp đồng có quy định khác). Trường hợp Người được bảo hiểm tử vong mà không có chỉ định người thụ hưởng, Công ty bảo hiểm chi trả quyền lợi bảo hiểm cho người thừa kế hợp pháp của Người được bảo hiểm theo các quy định của pháp luật.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K25",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K25"
+   ]
+  },
+  {
+   "term": "Phụ lục của Hợp đồng bảo hiểm",
+   "aliases": [],
+   "definition": "một bản phụ lục được đính kèm và là một phần của hợp đồng bảo hiểm.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K26",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K26"
+   ]
+  },
+  {
+   "term": "Phương tiện giao thông công cộng",
+   "aliases": [],
+   "definition": "bất cứ phương tiện vận chuyển nào được thực hiện theo lịch trình đều đặn do một hãng vận tải được phép hoạt động hợp pháp quản lý và vận hành và đối với mục đích vận chuyển công cộng tại địa phương, phương tiện vận chuyển công cộng được hiểu là các phương tiện để đi lại và được các nước sở tại công nhận (chẳng hạn như xe buýt, phà, tàu cao tốc, tàu chạy trên đệm không khí, tàu thuỷ, tàu hoả, tàu điện hay tàu điện ngầm, máy bay dân dụng). Vận chuyển công cộng không bao gồm các phương thức vận chuyển được thuê chuyến hay được thu xếp trong khuôn khổ chuyến du lịch; cho dù phương tiện vận chuyển đó được thực hiện theo một lịch trình đều đặn.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K27",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K27"
+   ]
+  },
+  {
+   "term": "Quê hương",
+   "aliases": [],
+   "definition": "nơi Người được bảo hiểm được sinh ra và/hoặc có tư cách công dân.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K28",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K28"
+   ]
+  },
+  {
+   "term": "Số tiền bảo hiểm",
+   "aliases": [],
+   "definition": "tổng mức trách nhiệm bảo hiểm tối đa của Bảo hiểm Bảo Việt đối với Người được bảo hiểm trong suốt thời hạn bảo hiểm. Số tiền bảo hiểm được quy định trong Giấy chứng nhận bảo hiểm/ Hợp đồng bảo hiểm đính kèm quy tắc bảo hiểm này.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K29",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K29"
+   ]
+  },
+  {
+   "term": "Tai nạn",
+   "aliases": [],
+   "definition": "bất kỳ sự kiện bất ngờ hay không lường trước, gây ra bởi một lực/tác nhân có thể nhìn thấy được từ bên ngoài lên thân thể Người được bảo hiểm và xảy ra trong thời hạn bảo hiểm, là nguyên nhân trực tiếp dẫn đến tổn thương thân thể hoặc tử vong cho Người được bảo hiểm và xảy ra ngoài sự kiểm soát/ý định của Người được bảo hiểm. Theo quy tắc này, Bảo hiểm Bảo Việt đồng ý tai nạn có bao gồm sự kiện ngộ độc thức ăn, đồ uống hoặc hít phải hơi độc, khí độc, chất độc, khí gas.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K30",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K30"
+   ]
+  },
+  {
+   "term": "Thành viên gia đình",
+   "aliases": [],
+   "definition": "vợ/chồng đang ở trong tình trạng kết hôn hợp pháp, con hợp pháp (bao gồm con đẻ, con riêng của vợ/chồng của Người được bảo hiểm hoặc con nuôi hợp pháp) của Người được bảo hiểm.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K31",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K31"
+   ]
+  },
+  {
+   "term": "Thời hạn bảo hiểm",
+   "aliases": [],
+   "definition": "khoảng thời gian từ thời điểm bắt đầu của Chuyến đi và thời điểm kết thúc của Chuyến đi vào Ngày hết hạn trong Giấy chứng nhận bảo hiểm. Thời hạn bảo hiểm được quy định trong Hợp đồng bảo hiểm/Giấy chứng nhận bảo hiểm. Thời hạn bảo hiểm sẽ được tính theo giờ tại Việt Nam và tối đa 365 ngày cho một chuyến đi.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K32",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K32"
+   ]
+  },
+  {
+   "term": "Tiền mang theo",
+   "aliases": [],
+   "definition": "Nghĩa là tiền mặt, séc, séc du lịch và ủy nhiệm chi của người được bảo hiểm, không bao gồm thẻ tín dụng và thẻ tích lũy có giá trị.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K33",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K33"
+   ]
+  },
+  {
+   "term": "Tình trạng nguy kịch",
+   "aliases": [],
+   "definition": "tình trạng sức khoẻ, tổn thương cơ thể mà theo ý kiến bác sĩ cần phải điều trị khẩn cấp để tránh đe dọa đến tính mạng.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K34",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K34"
+   ]
+  },
+  {
+   "term": "Trẻ em",
+   "aliases": [],
+   "definition": "người có độ tuổi từ 6 (sáu) tháng tuổi đến 16 (mười sáu) tuổi tại ngày bắt đầu hiệu lực của Hợp đồng bảo hiểm/Giấy chứng nhận bảo hiểm, là con hợp pháp của Người được bảo hiểm và/hoặc người được giám hộ bởi Người được bảo hiểm và tham gia chuyến đi cùng với Người được bảo hiểm. Trẻ em có độ tuổi từ 11 trở xuống phải được một người được bảo hiểm là người lớn đi kèm và được bảo hiểm cùng với người đó. Trẻ em có độ tuổi từ 12 đến 16 đi du lịch một mình cũng sẽ được chấp nhận bảo hiểm theo Hợp đồng bảo hiểm/Giấy chứng nhận bảo hiểm với điều kiện đóng phí bảo hiểm theo phí chuẩn của người lớn. Với những trường hợp này, các quyền lợi được chi trả theo hạn mức giới hạn của đối tượng Trẻ em.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K35",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K35"
+   ]
+  },
+  {
+   "term": "Tuổi được bảo hiểm",
+   "aliases": [],
+   "definition": "tuổi của Người được bảo hiểm vào ngày có hiệu lực của Hợp đồng bảo hiểm/Giấy chứng nhận bảo hiểm và được tính theo lần sinh nhật liền trước ngày hợp đồng bảo hiểm có hiệu lực.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K36",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K36"
+   ]
+  },
+  {
+   "term": "Tổn thương cơ thể",
+   "aliases": [],
+   "definition": "Tổn thương cơ thể (hay tổn thương thân thể) là tổn hại về mặt sinh học đối với cơ thể con người do tai nạn gây ra. Theo quy tắc bảo hiểm này, tổn thương cơ thể không bao gồm tình trạng liên quan đến thai sản.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K37",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K37"
+   ]
+  },
+  {
+   "term": "Thương tật toàn bộ vĩnh viễn",
+   "aliases": [],
+   "definition": "các tổn thương cơ thể làm cho Người được bảo hiểm bị cản trở hoàn toàn khi tham gia vào công việc của người đó hay bị mất hoàn toàn khả năng lao động trong bất kỳ loại lao động nào, kéo dài 180 ngày liên tục kể từ ngày kết thúc điều trị và không hy vọng vào sự tiến triển của thương tật đó. a. Quyền lợi thương tật toàn bộ vĩnh viễn được xem xét chi trả khi xảy ra một trong các trường hợp sau: - Người được bảo hiểm bị mất hoàn toàn, liệt hoàn toàn và không thể phục hồi được chức năng của: hai tay; hoặc hai chân; hoặc một tay và một chân; hoặc hai mắt; hoặc một tay và một mắt; hoặc một chân và một mắt. Trong trường hợp này, mất hoàn toàn, liệt hoàn toàn và không thể phục hồi được chức năng của tay được tính từ cổ tay trở lên (theo chiều từ cổ tay đến vai); mất hoàn toàn, liệt hoàn toàn và không thể phục hồi được chức năng của chân được tính từ mắt cá chân trở lên (theo chiều từ mắt cá chân đến đùi); mất hoàn toàn và không thể phục hồi được chức năng của mắt được hiểu là mất hoàn toàn hoặc mù hoàn toàn; - Người được bảo hiểm bị tổn thương cơ thể từ 81% trở lên dẫn đến bị cản trở hoàn toàn khi tham gia vào công việc của người đó hay bị mất hoàn toàn khả năng lao động trong bất kỳ loại lao động nào theo xác nhận của cơ quan y tế hoặc Hội đồng giám định Y khoa cấp tỉnh, thành phố trực thuộc trung ương hoặc tổ chức giám định y tế hợp pháp được Công ty bảo hiểm chấp thuận. b. Việc chứng nhận Người được bảo hiểm bị mất hoàn toàn bộ phận cơ thể (tay, chân hoặc mắt) có thể được thực hiện ngay sau khi sự kiện bảo hiểm xảy ra. Việc chứng nhận bị liệt hoàn toàn và không thể phục hồi chức năng của các bộ phận cơ thể hoặc mù hoàn toàn hoặc bị tổn thương cơ thể từ 81% trở lên được thực hiện không sớm hơn 180 ngày kể từ ngày xảy ra sự kiện bảo hiểm..",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K38",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K38"
+   ]
+  },
+  {
+   "term": "Xe ô tô riêng",
+   "aliases": [],
+   "definition": "phương tiện di chuyển bốn bánh, nhưng không bao gồm loại xe được cấp giấy phép hoạt động chuyên chở hành khách thông thường hoặc chuyên chở hàng hóa để bán hoặc giao hàng.",
+   "scope": "FLX",
+   "source": "FLX_QT_C1_M1_K39",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "FLX_QT_C1_M1_K39"
+   ]
+  },
+  {
+   "term": "Bác sĩ",
+   "aliases": [],
+   "definition": "bác sĩ được cấp giấy phép hành nghề hợp pháp, được luật pháp nước sở tại công nhận và bác sĩ đó đang điều trị, hành nghề trong phạm vi giấy phép được cấp và trong phạm vi chuyên ngành đào tạo của mình. Một bác sĩ có thể là một bác sĩ chuyên khoa hay cố vấn y tế. Định nghĩa về bác sĩ không bao gồm những người sau đây: - Bên mua bảo hiểm, Người được bảo hiểm; - Thành viên gia đình trực hệ của Người được bảo hiểm hoặc Bên mua bảo hiểm (ông nội, bà nội, ông ngoại, bà ngoại, bố đẻ, mẹ đẻ, bố/mẹ vợ, bố/mẹ chồng, bố/mẹ nuôi hợp pháp, vợ, chồng, con đẻ, con nuôi hợp pháp, anh/chị/em ruột), người giám hộ hợp pháp, người thụ hưởng.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M1",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M1"
+   ]
+  },
+  {
+   "term": "Bác sĩ chuyên khoa/Cố vấn y tế",
+   "aliases": [],
+   "definition": "bác sĩ (như đã định nghĩa) được cấp giấy phép hành nghề hợp pháp, được đăng ký theo y pháp phù hợp với Luật pháp của quốc gia và được Luật pháp quốc gia sở tại công nhận là một bác sĩ chuyên khoa/cố vấn y tế .",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M2",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M2"
+   ]
+  },
+  {
+   "term": "Bảng quyền lợi bảo hiểm",
+   "aliases": [],
+   "definition": "Bảng quyền lợi bảo hiểm cung cấp các thông tin tóm tắt về quyền lợi bảo hiểm. Bảng quyền lợi bảo hiểm được cấp cùng và là bộ phận không tách rời của hợp đồng bảo hiểm.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M3",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M3"
+   ]
+  },
+  {
+   "term": "Bên mua bảo hiểm/Người yêu cầu bảo hiểm",
+   "aliases": [],
+   "definition": "tổ chức được thành lập và hoạt động hợp pháp tại Việt Nam, hoặc cá nhân tại Việt Nam từ đủ 18 tuổi trở lên có năng lực hành vi dân sự đầy đủ tại thời điểm giao kết hợp đồng bảo hiểm với Bảo hiểm Bảo Việt. Bên mua bảo hiểm phải đáp ứng các điều kiện để mua bảo hiểm theo quy tắc, điều kiện, điều khoản bảo hiểm và đóng phí bảo hiểm cho Bảo hiểm Bảo Việt. Bên mua bảo hiểm phải có quyền lợi có thể được bảo hiểm theo quy định của pháp luật. Bên mua bảo hiểm có quyền lợi có thể được bảo hiểm đối với những người sau đây: - Bản thân Bên mua bảo hiểm; - Bố/mẹ đẻ, bố/mẹ của vợ/chồng của Bên mua bảo hiểm; - Vợ/chồng, con của Bên mua bảo hiểm; - Người có quan hệ nuôi dưỡng và cấp dưỡng hợp pháp với Bên mua bảo hiểm; - Nhân viên có Hợp đồng lao động/Hợp đồng thử việc/Các thỏa thuận lao động với Bên mua bảo hiểm theo quy định của pháp luật, làm việc cho Bên mua bảo hiểm và có tên trong danh sách Người được bảo hiểm trong suốt thời hạn bảo hiểm, và người thân của nhân viên. - Người khác, nếu người đó đồng ý cho Bên mua bảo hiểm mua bảo hiểm cho mình",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M4",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M4"
+   ]
+  },
+  {
+   "term": "Bệnh/Ốm đau",
+   "aliases": [],
+   "definition": "tình trạng cơ thể có dấu hiệu của một bệnh lý khác với tình trạng sức khỏe bình thường, được biểu hiện bằng các triệu chứng hay hội chứng có chẩn đoán của bác sĩ. Theo quy tắc bảo hiểm này, bệnh không bao gồm tình trạng liên quan đến thai sản và răng.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M5",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M5"
+   ]
+  },
+  {
+   "term": "Bệnh bẩm sinh/Dị tật bẩm sinh",
+   "aliases": [],
+   "definition": "bất kỳ bệnh/dị tật nào được hình thành trên thai nhi trong quá trình mang thai của người mẹ dưới tác động của yếu tố môi trường lên sự phát triển của thai nhi và có thể được cơ quan y tế mô tả dưới nhiều tên gọi khác nhau như \"bệnh bẩm sinh, dị tật bẩm sinh, khuyết tật bẩm sinh, bất thường của nhiễm sắc thể\". Bệnh/dị tật bẩm sinh có thể được phát hiện trong quá trình mang thai, sinh con của người mẹ hoặc trong quá trình phát triển của Người được bảo hiểm. Việc xác định tình trạng bệnh/dị tật bẩm sinh phải do bác sĩ thực hiện.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M6",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M6"
+   ]
+  },
+  {
+   "term": "Bệnh có sẵn",
+   "aliases": [],
+   "definition": "tình trạng bệnh tật hoặc thương tật của Người được bảo hiểm có từ trước ngày bắt đầu được nhận bảo hiểm theo hợp đồng bảo hiểm và là bệnh/thương tật mà Người được bảo hiểm: a. Đã được bác sĩ chẩn đoán hoặc điều trị trước ngày bắt đầu hiệu lực bảo hiểm, và/hoặc b. Dấu hiệu, triệu chứng của bệnh/thương tật khởi phát trong vòng 36 tháng trước ngày bắt đầu hiệu lực bảo hiểm mà Người được bảo hiểm đã biết hoặc ý thức được cho dù Người được bảo hiểm có thực sự khám, điều trị hay không. Việc xác định bệnh có sẵn phải căn cứ vào: hồ sơ y tế được lưu trữ tại bệnh viện hoặc cơ sở y tế được thành lập hợp pháp; các tài liệu y khoa được Bộ Y tế và các cơ quan có thẩm quyền ban hành; hoặc các thông tin do Bên mua bảo hiểm, Người được bảo hiểm tự kê khai trên hồ sơ yêu cầu bảo hiểm hoặc phiếu bổ sung thông tin; hoặc lịch sử bồi thường của Người được bảo hiểm.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M7",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M7"
+   ]
+  },
+  {
+   "term": "Bệnh đặc biệt",
+   "aliases": [],
+   "definition": "Theo quy tắc bảo hiểm này, những bệnh/tình trạng sau đây được coi là bệnh đặc biệt: - Bệnh ung thư và u các loại; - Các bệnh liên quan đến tim, tụy, thận, suy phổi; - Viêm gan (A, B, C), suy gan giai đoạn cuối, viêm gan siêu vi tối cấp; - Các bệnh liên quan đến hệ thống tạo máu bao gồm bệnh suy tủy, bạch cầu cấp, bạch cầu mãn tính, thiếu máu bất sản, bệnh rối loạn đông máu; - Bênh thiếu hooc môn sinh trưởng; - Bệnh đái tháo đường; - Bệnh Parkinson; - Phẫu thuật sọ não do bệnh của não bộ, tai biến mạch máu não (đột quỵ), viêm não/viêm màng não, hôn mê, hội chứng Apallic; - Bệnh bại liệt; - Bệnh Lupus ban đỏ.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M8",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M8"
+   ]
+  },
+  {
+   "term": "Bệnh di truyền",
+   "aliases": [],
+   "definition": "bất kỳ bệnh nào xuất hiện ở những người có cùng huyết thống hay sự chuyển những bệnh lý của bố, mẹ cho con cái thông qua gen của bố, mẹ và/hoặc được truyền từ đời này sang đời khác, từ thế hệ này sang thế hệ khác trong những người có cùng huyết thống, bao gồm cả di truyền đột biến gen lặn. Việc xác định bệnh di truyền phải do bác sĩ thực hiện.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M9",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M9"
+   ]
+  },
+  {
+   "term": "Bệnh viện",
+   "aliases": [],
+   "definition": "một cơ sở khám và điều trị bệnh hợp pháp được Nhà nước công nhận, và: - Có khả năng và phương tiện chẩn đoán bệnh, điều trị và phẫu thuật. - Có điều kiện thuận lợi cho việc điều trị nội trú và có hệ thống theo dõi sức khoẻ hàng ngày cho các bệnh nhân điều trị nội trú. - Không phải là nơi để an dưỡng phục hồi sức khỏe, mát xa, xông hơi hoặc là một nơi đặc biệt chỉ có mục đích duy nhất là phục vụ cho người già hoặc giúp đỡ cai nghiện rượu, thuốc phiện, ma tuý hoặc để điều trị rối loạn tâm thần.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M10",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M10"
+   ]
+  },
+  {
+   "term": "Bộ phận giả",
+   "aliases": [],
+   "definition": "tất cả các bộ phận/thiết bị/chất liệu nhân tạo được lắp/đặt/cấy/trồng vào cơ thể con người để thay thế và thực hiện chức năng của một bộ phận cơ thể nào đó đã bị khiếm khuyết, mất đi, hoặc mất/giảm chức năng.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M11",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M11"
+   ]
+  },
+  {
+   "term": "Các bộ phận/thiết bị/dụng cụ y tế phục vụ điều trị",
+   "aliases": [],
+   "definition": "các bộ phận/thiết bị/dụng cụ y tế:. - Được đặt/cấy/trồng vào bất cứ một bộ phận nào của cơ thể để hỗ trợ cho chức năng hoạt động của bộ phận đó, bao gồm những danh mục liệt kê dưới đây và/hoặc các danh mục được liệt kê trong Sửa đổi bổ sung như là một bộ phận đính kèm của Quy tắc bảo hiểm/Hợp đồng bảo hiểm như: stent, van tim, bộ máy tạo nhịp tim và phá rung, ống thông, lưới lọc, lưới thoát vị, lưới titanium 3D, cement (xi-măng) cột sống/đốt sống, miếng ghép cột sống/đốt sống, màng tái tạo mô, màng sinh học, chốt/trụ implant, nẹp/vis/chốt treo các loại, tấm nâng trực tràng, lưới (mesh). - Có tính chất đặc thù, chỉ sử dụng riêng cho từng loại hình điều trị hoặc phẫu thuật, sử dụng một lần và không khấu hao, bao gồm những danh mục liệt kê dưới đây và/hoặc các danh mục được liệt kê trong Sửa đổi bổ sung như là một bộ phận đính kèm của Quy tắc bảo hiểm/Hợp đồng bảo hiểm như: dao plasma, tay dao/dụng cụ coblator, dao/dụng cụ hummer, dụng cụ phẫu thuật trĩ phương pháp longo, dao bào phẫu thuật khớp, dao cắt sụn, lưỡi bào, đầu đốt, dao siêu âm, catheter các loại, dao harmonic mổ hở/nội soi, hệ thống robot, bóng nong, rọ tán sỏi, lưỡi shaver, trocar, dây dẫn, dao ligasure, bộ dụng cụ nội soi tán sỏi và vỏ đỡ, thiết bị đốt sóng cao tần. - Bên ngoài cơ thể có tác dụng hỗ trợ chức năng vận động hoặc các chức năng khác của cơ thể bao gồm những danh mục liệt kê dưới đây và/hoặc các danh mục được liệt kê trong Sửa đổi bổ sung như là một bộ phận đính kèm của Quy tắc bảo hiểm/Hợp đồng bảo hiểm như: nạng, nẹp, xe lăn, thiết bị trợ thính, kính thuốc, máy hỗ trợ tim, máy ECMO. - Các dụng cụ chỉnh hình mang tính chất thẩm mỹ khác.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M12_P1",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M12_P1",
+    "ITC_QT_C1_M12_P2"
+   ]
+  },
+  {
+   "term": "Các hoạt động thể thao chuyên nghiệp",
+   "aliases": [],
+   "definition": "các hoạt động thể thao mang lại nguồn thu nhập chính và thường xuyên cho Người được bảo hiểm.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M13",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M13"
+   ]
+  },
+  {
+   "term": "Các hoạt động thể thao mạo hiểm",
+   "aliases": [],
+   "definition": "các hoạt động trên không (trừ khi đi lại bằng đường hàng không), các môn thể thao mùa đông, môn thể thao bay lượn, săn bắn, hockey trên băng, nhảy dù, đấu vật, môn bóng ngựa, môn lướt ván, bơi thuyền buồm cách xa bờ 5 km, lặn dưới nước có sử dụng thiết bị lặn, phóng lao, đấm bốc, leo núi sử dụng dây leo, các cuộc đua (không bao gồm các cuộc đua mang tính chất từ thiện, các cuộc đua mang tính chất nội bộ do Bên mua bảo hiểm là doanh nghiệp tổ chức).",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M14",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M14"
+   ]
+  },
+  {
+   "term": "Cấp tính",
+   "aliases": [],
+   "definition": "Tình trạng bệnh khởi phát nhanh, tồn tại trong khoảng thời gian ngắn và được xác định có thể chữa khỏi.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M15",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M15"
+   ]
+  },
+  {
+   "term": "Chi phí thông lệ và hợp lý",
+   "aliases": [],
+   "definition": "những chi phí y tế cần thiết không vượt quá mức chi phí chung của các nhà cung cấp dịch vụ y tế có cùng mức độ trong phạm vi địa lý của hợp đồng bảo hiểm, nơi phát sinh những chi phí đó, khi cung cấp các dịch vụ điều trị tương đương hoặc mức độ điều trị, dịch vụ, hay việc cung cấp dịch vụ đối với bệnh tật hay tình trạng tương tự.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M16",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M16"
+   ]
+  },
+  {
+   "term": "Chi phí y tế thực tế",
+   "aliases": [],
+   "definition": "các chi phí y tế phát sinh cần thiết, hợp lý và chỉ liên quan đến việc khám và điều trị y tế của Người được bảo hiểm theo chỉ định của bác sĩ trong trường hợp rủi ro thuộc phạm vi bảo hiểm.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M17",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M17"
+   ]
+  },
+  {
+   "term": "Cơ sở y tế",
+   "aliases": [],
+   "definition": "một cơ sở khám chữa bệnh hợp pháp được luật pháp công nhận, có giấy phép điều trị nội trú và/hoặc ngoại trú, không phải là nơi dùng để nghỉ ngơi hoặc điều dưỡng hay một cơ sở đặc biệt dành riêng cho người già, hoặc để cai nghiện rượu, ma túy, chất kích thích.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M18",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M18"
+   ]
+  },
+  {
+   "term": "Công ty bảo hiểm",
+   "aliases": [],
+   "definition": "Tổng công ty Bảo hiểm Bảo Việt (Bảo hiểm Bảo Việt) hoặc các công ty thành viên trực thuộc được thành lập và hoạt động theo pháp luật Việt Nam.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M19",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M19"
+   ]
+  },
+  {
+   "term": "Công ty cứu trợ do Bảo Việt chỉ định",
+   "aliases": [],
+   "definition": "công ty cứu trợ quốc tế do Bảo hiểm Bảo Việt ủy quyền thực hiện các dịch vụ cứu trợ y tế và hồi hương.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M20",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M20"
+   ]
+  },
+  {
+   "term": "Điều trị cấp cứu",
+   "aliases": [],
+   "definition": "việc điều trị khẩn cấp tại cơ sở y tế trong vòng 24 giờ sau khi có tai nạn hoặc triệu chứng ốm đau/bệnh tật có thể nguy hiểm đến tính mạng, sức khỏe cần thiết phải điều trị khẩn cấp tại phòng cấp cứu, có phát sinh chi phí giường bệnh và hồ sơ có dấu xác nhận cấp cứu của cơ sở y tế. Trường hợp điều trị tại phòng cấp cứu chỉ vì lý do ngoài giờ phục vụ của phòng khám/bệnh viện thì được coi là điều trị ngoại trú.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M21",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M21"
+   ]
+  },
+  {
+   "term": "Điều trị ngoại trú",
+   "aliases": [],
+   "definition": "việc điều trị y tế tại một cơ sở y tế, bệnh viện/phòng khám như định nghĩa nhưng không nhập viện điều trị và không phát sinh chí phí giường bệnh như điều trị nội trú hoặc điều trị trong ngày. Trường hợp Người được bảo hiểm thực hiện nội soi/thủ thuật (bao gồm nội trú, trong ngày hoặc ngoại trú) chỉ nhằm mục đích chẩn đoán bệnh mà không điều trị chỉ được giải quyết theo quyền lợi điều trị ngoại trú.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M22",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M22"
+   ]
+  },
+  {
+   "term": "Điều trị nội trú",
+   "aliases": [],
+   "definition": "việc Người được bảo hiểm phải nhập viện để điều trị rủi ro thuộc phạm vi bảo hiểm, có phát sinh chi phí giường bệnh và lưu trú tại bệnh viện ít nhất 24 giờ. Việc điều trị nội trú chỉ được chấp nhận khi Người được bảo hiểm được thực hiện điều trị tại một bệnh viện như định nghĩa, không phải là phòng khám hay cơ sở y tế điều trị ngoại trú. Trong trường hợp bệnh viện không cấp được giấy nhập viện hoặc xuất viện, hồ sơ y tế hoặc hóa đơn thanh toán thể hiện rõ thời gian điều trị sẽ được coi như chứng từ thay thế. Đơn vị ngày nằm viện được tính bằng 24 giờ và theo đơn vị giường nằm trong giấy nhập viện/xuất viện hoặc trong chứng từ viện phí chi tiết. Trường hợp Người được bảo hiểm lưu trú tại bệnh viện để thực hiện xét nghiệm, chẩn đoán hình ảnh, nội soi và các thủ thuật chỉ nhằm mục đích chẩn đoán bệnh mà không phát sinh điều trị nội trú sẽ không được coi là điều trị nội trú.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M23",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M23"
+   ]
+  },
+  {
+   "term": "Điều trị trong ngày",
+   "aliases": [],
+   "definition": "việc Người được bảo hiểm nhập viện để điều trị rủi ro thuộc phạm vi bảo hiểm, có phát sinh chi phí giường bệnh nhưng không lưu trú tại bệnh viện qua đêm. Giấy xuất viện là chứng từ cần thiết để yêu cầu bồi thường cho quyền lợi này. Các trường hợp lưu trú tại bệnh viện để thực hiện xét nghiệm hoặc chẩn đoán nhưng không điều trị sẽ không được coi là Điều trị trong ngày.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M24",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M24"
+   ]
+  },
+  {
+   "term": "Điều trị y tế",
+   "aliases": [],
+   "definition": "việc sử dụng phương pháp chuyên môn kỹ thuật đã được công nhận và thuốc đã được cấp phép lưu hành, theo chỉ định của bác sĩ với mục đích duy nhất là chữa trị và/hoặc làm giảm nhẹ tình trạng tổn thương cơ thể hay mục đích điều trị y tế liên quan đến thai sản.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M25",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M25"
+   ]
+  },
+  {
+   "term": "Đồng chi trả",
+   "aliases": [],
+   "definition": "số tiền theo tỷ lệ mà Công ty bảo hiểm và Người được bảo hiểm cùng chi trả trên các quyền lợi liên quan phát sinh thuộc phạm vi bảo hiểm. Đồng chi trả được tính theo tỷ lệ phần trăm (%) trên tổng chi phí thực tế phát sinh thuộc phạm vi bảo hiểm hoặc trên các mức giới hạn phụ của quyền lợi bảo hiểm, tùy theo số tiền nào thấp hơn thì được áp dụng. Giới hạn chi phí được bảo hiểm sau khi áp dụng đồng chi trả tối đa bằng giới hạn của mục quyền lợi trong bảng quyền lợi bảo hiểm. Khi hợp đồng bảo hiểm quy định áp dụng đồng chi trả theo cơ sở y tế, việc đồng chi trả này được áp dụng cho mọi chi phí phát sinh tại cơ sở y tế đó và các chi phí phát sinh liên quan do bác sĩ tại cơ sở y tế đó chỉ định. Khi Hợp đồng bảo hiểm quy định nhiều tỷ lệ đồng chi trả thì sẽ áp dụng đồng thời và lần lượt từng tỷ lệ đồng chi trả.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M26",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M26"
+   ]
+  },
+  {
+   "term": "Gián đoạn học tập",
+   "aliases": [],
+   "definition": "việc người được bảo hiểm (là du học sinh) bị gián đoạn học tập (trong thời gian hơn 30 ngày) do bị ốm bệnh hoặc tai nạn phải nằm viện thuộc phạm vi bảo hiểm. Trong trường hợp này, Bảo hiểm Bảo Việt sẽ chi trả cho Người được bảo hiểm khoản tiền trợ cấp quy định trong bảng quyền lợi bảo hiểm do: - Học phí học lại mà Người được bảo hiểm phải trả để có thể học lại các kỳ học gián đoạn hoặc - Phần học phí đã bị mất của kỳ học bị gián đoạn.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M27",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M27"
+   ]
+  },
+  {
+   "term": "Giới hạn cả đời",
+   "aliases": [],
+   "definition": "giới hạn số tiền bảo hiểm tối đa mà Bảo hiểm Bảo Việt có thể chi trả cho Người được bảo hiểm trong suốt cuộc đời Người được bảo hiểm kể từ ngày tham gia bảo hiểm đầu tiên tại Bảo hiểm Bảo Việt đến cuối cuộc đời (Kể cả trường hợp Người được bảo hiểm tham gia bảo hiểm liên tục hay gián đoạn với Bảo hiểm Bảo Việt). Giới hạn cả đời cho một người được bảo hiểm đối với tất cả các bệnh thuộc danh mục bệnh đặc biệt theo định nghĩa, tình trạng bỏng từ độ III trở lên, chấn thương sọ não có thang điểm hôn mê Glasgow dưới 8 (GCS <8): bằng 20% của số tiền bảo hiểm quyền lợi bảo hiểm chính, và được quy định cụ thể trong bảng quyền lợi bảo hiểm.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M28",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M28"
+   ]
+  },
+  {
+   "term": "Giới hạn phụ",
+   "aliases": [],
+   "definition": "giới hạn bồi thường tối đa cho mỗi hạng mục được quy định chi tiết trong bảng quyền lợi bảo hiểm. Trong mọi trường hợp, tổng số tiền bồi thường các giới hạn phụ chi tiết không vượt quá tổng mức trách nhiệm bảo hiểm.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M29",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M29"
+   ]
+  },
+  {
+   "term": "Hệ thống bảo lãnh viện phí",
+   "aliases": [],
+   "definition": "hệ thống các cơ sở y tế có ký kết thỏa thuận cung cấp dịch vụ bảo lãnh viện phí với Bảo hiểm Bảo Việt. Người được bảo hiểm khi khám và điều trị tại những cơ sở y tế này sẽ được Bảo hiểm Bảo Việt bảo lãnh thanh toán tùy theo chương trình bảo hiểm tham gia đối với các chi phí phát sinh thuộc phạm vi bảo hiểm và theo hạn mức quy định trong hợp đồng bảo hiểm. Người được bảo hiểm phải tự chi trả cho những chi phí không thuộc phạm vi bảo hiểm và/hoặc những chi phí vượt quá mức trách nhiệm đã tham gia trong hợp đồng bảo hiểm tại thời điểm điều trị. Danh sách các cơ sở y tế trong hệ thống bảo lãnh viện phí có thể thay đổi và được cập nhật thường xuyên trên trang thông tin điện tử chính thức của Bảo hiểm Bảo Việt.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M30",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M30"
+   ]
+  },
+  {
+   "term": "Hỗ trợ giáo dục",
+   "aliases": [],
+   "definition": "khoản trợ cấp mà Bảo hiểm Bảo Việt chi trả cho du học sinh là Người được bảo hiểm phát sinh trong thời gian du học ở nước ngoài trong trường hợp người bảo trợ là bố/mẹ của Người được bảo hiểm tử vong do tai nạn.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M31",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M31"
+   ]
+  },
+  {
+   "term": "Hoạt động khủng bố",
+   "aliases": [],
+   "definition": "Bao gồm các hoạt động mà không giới hạn việc sử dụng lực lượng hoặc bạo lực và/hoặc sự đe dọa của bất kỳ một cá nhân hay một nhóm người, được thực hiện bởi một cá nhân hay nhân danh các tổ chức, Chính phủ, hay phục vụ cho mục đích hay lý do chính trị, tư tưởng tôn giáo hoặc dân tộc bao gồm cả sự gây căng thẳng để gây ảnh hưởng cho bất kỳ Chính phủ hay đặt các nơi và khu vực công cộng trong sự sợ hãi.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M32",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M32"
+   ]
+  },
+  {
+   "term": "Học phí",
+   "aliases": [],
+   "definition": "tổng số tiền phí chi trả cho khóa đào tạo đã đăng ký tại tổ chức giáo dục nước ngoài như đã thông báo bằng văn bản bởi tổ chức giáo dục đó (bao gồm phí sử dụng phòng thí nghiệm và các chi phí khác cho việc sử dụng các cơ sở vật chất khi tham gia khóa học nói trên, nhưng không bao gồm các chi phí như sách vở, lưu trú).",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M33",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M33"
+   ]
+  },
+  {
+   "term": "Hợp đồng bảo hiểm",
+   "aliases": [],
+   "definition": "thoả thuận giữa Bên mua bảo hiểm và Công ty bảo hiểm, theo đó Bên mua bảo hiểm phải đóng phí bảo hiểm, Bên mua bảo hiểm và Người được bảo hiểm cam kết đã đọc kỹ và hiểu toàn bộ nội dung tại quy tắc bảo hiểm/hợp đồng bảo hiểm; Công ty bảo hiểm phải bồi thường, trả tiền bảo hiểm theo thỏa thuận trong hợp đồng bảo hiểm.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M34",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M34"
+   ]
+  },
+  {
+   "term": "Kiểm tra sức khỏe định kỳ",
+   "aliases": [],
+   "definition": "những xét nghiệm/tầm soát được làm khi không có bất cứ triệu chứng lâm sàng nào. Những xét nghiệm này bao gồm cả các hình thức kiểm tra dưới đây, ở một độ tuổi thích hợp để sớm phát hiện các ốm đau/bệnh tật: - Dấu hiệu sống (huyết áp, mỡ máu, mạch, hô hấp, nhiệt độ…) - Kiểm tra tim mạch - Kiểm tra hệ thần kinh - Tầm soát bệnh ung thư - Kiểm tra phản xạ của trẻ em (đối với các trẻ em từ 0 - 6 tuổi) Quyền lợi Kiểm tra sức khỏe định kỳ (nếu có) cũng áp dụng cho tiêm vắc xin và kiểm tra sức khỏe bổ sung hồ sơ lao động.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M35",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M35"
+   ]
+  },
+  {
+   "term": "Lần khám/Điều trị",
+   "aliases": [],
+   "definition": "một lần người bệnh được bác sĩ thăm khám lâm sàng, thực hiện các xét nghiệm, chẩn đoán hình ảnh hay các thủ thuật thăm dò khác và/hoặc sử dụng thuốc điều trị theo chỉ định của bác sĩ tại cùng một cơ sở y tế hợp pháp nhằm mục đích chẩn đoán và điều trị rủi ro thuộc phạm vi bảo hiểm. - Trường hợp nhiều bác sĩ chuyên khoa cùng hội chẩn trước một người bệnh theo quy chế bệnh viện thì tất cả chỉ được tính là một lần khám/điều trị. - Trường hợp người bệnh khám một chuyên khoa nhiều lần trong ngày thì tất cả chỉ tính là một lần khám/điều trị. - Trường hợp người bệnh phải khám nhiều chuyên khoa khác dù có chỉ định của bác sĩ trong cùng một cơ sở y tế, trong một ngày thì tất cả vẫn chỉ tính là một lần khám/điều trị. - Trường hợp người bệnh khám/xét nghiệm ngày đầu tiên nhưng chưa có kết luận bệnh của bác sĩ được bác sĩ chỉ định khám/xét nghiệm thêm một số mục ở ngày sau đó để có cơ sở đưa ra kết luận bệnh, thì chi phí phát sinh trong tất cả các ngày này được tính là một lần khám/điều trị. - Trường hợp người bệnh khám và điều trị tại một bệnh viện/phòng khám, nhưng được chỉ định làm xét nghiệm/chẩn đoán hình ảnh ở bệnh viện/phòng khám khác thì tất cả chỉ tính là một lần khám/điều trị.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M36",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M36"
+   ]
+  },
+  {
+   "term": "Mất tích",
+   "aliases": [],
+   "definition": "Người được bảo hiểm được xem như đã tử vong nếu như không được tìm thấy trong 24 tháng liên tục và có bằng chứng đầy đủ cho việc kết luận rằng sự kiện mất tích đó là do tai nạn gây ra. Tuy nhiên, nếu vào bất cứ thời điểm nào sau khi Công ty bảo hiểm đã chi trả bồi thường cho trường hợp tử vong đó mà Người được bảo hiểm được phát hiện là vẫn còn sống thì số tiền này phải được Người thụ hưởng hoàn lại cho Công ty Bảo hiểm.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M37",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M37"
+   ]
+  },
+  {
+   "term": "Ngày bắt đầu hiệu lực bảo hiểm",
+   "aliases": [],
+   "definition": "ngày hiệu lực của hợp đồng bảo hiểm đầu tiên (được tính từ 0 giờ 1 phút của ngày quy định trên hợp đồng) khi Bên mua bảo hiểm tham gia chương trình bảo hiểm này hoặc của hợp đồng bảo hiểm tái tục liên tục hàng năm. Đối với những hợp đồng bảo hiểm không được tái tục liên tục hàng năm, ngày bắt đầu hiệu lực bảo hiểm đầu tiên là ngày hiệu lực của hợp đồng bảo hiểm mới nhất trừ khi có thỏa thuận khác.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M38",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M38"
+   ]
+  },
+  {
+   "term": "Người bảo trợ",
+   "aliases": [],
+   "definition": "người đã đăng ký là Người bảo trợ trong yêu cầu bảo hiểm của Hợp đồng bảo hiểm/bố/mẹ có trách nhiệm chi trả học phí cho sinh viên (là Người được bảo hiểm) cho toàn thời gian học đã đăng ký tại một trường đào tạo ngoài Việt Nam.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M39",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M39"
+   ]
+  },
+  {
+   "term": "Người được bảo hiểm",
+   "aliases": [],
+   "definition": "cá nhân có tính mạng hoặc tình trạng sức khỏe được bảo hiểm theo hợp đồng bảo hiểm, thỏa mãn điều kiện tham gia bảo hiểm nêu tại quy tắc bảo hiểm và/hoặc hợp đồng bảo hiểm. Người được bảo hiểm trong hợp đồng bảo hiểm cá nhân cần hoàn thành việc kê khai trong giấy yêu cầu bảo hiểm và được Bảo hiểm Bảo Việt xác nhận.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M40",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M40"
+   ]
+  },
+  {
+   "term": "Người phụ thuộc (người thân)",
+   "aliases": [],
+   "definition": "Đối với hợp đồng bảo hiểm cá nhân: Người phụ thuộc là con hợp pháp của Bên mua bảo hiểm/Người được bảo hiểm có độ tuổi từ 15 ngày tuổi đến 18 tuổi, hoặc đến 24 tuổi nếu đang theo học các khóa học dài hạn tại Việt Nam và chưa kết hôn, kể từ ngày có hiệu lực bảo hiểm hoặc ngày tái tục bảo hiểm hàng năm tiếp theo. Tất cả người phụ thuộc phải có tên trong danh sách yêu cầu được bảo hiểm. Đối với hợp đồng bảo hiểm tổ chức: Người phụ thuộc là vợ/chồng, bố/mẹ đẻ, bố mẹ vợ/chồng dưới 66 tuổi (đến 75 tuổi nếu tham gia tái tục trừ khi có thỏa thuận khác) của nhân viên được bảo hiểm, là con hợp pháp của nhân viên được bảo hiểm có độ tuổi từ 15 ngày tuổi đến 18 tuổi, hoặc đến 24 tuổi nếu đang theo học các khóa học dài hạn tại Việt Nam và chưa kết hôn, kể từ ngày có hiệu lực bảo hiểm hoặc ngày tái tục bảo hiểm hàng năm tiếp theo. Tất cả người phụ thuộc phải có tên trong danh sách Người được bảo hiểm.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M41",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M41"
+   ]
+  },
+  {
+   "term": "Người thụ hưởng",
+   "aliases": [],
+   "definition": "cá nhân, hoặc nhóm cá nhân được Bên mua bảo hiểm/Người được bảo hiểm chỉ định nhận toàn bộ hoặc một phần các quyền lợi bảo hiểm của hợp đồng bảo hiểm. Người thụ hưởng được ghi tên trong giấy yêu cầu bảo hiểm, giấy yêu cầu trả tiền bảo hiểm và trong hợp đồng bảo hiểm/giấy chứng nhận bảo hiểm. Trường hợp Bên mua bảo hiểm không đồng thời là Người được bảo hiểm, Bên mua bảo hiểm phải có sự đồng ý bằng văn bản của Người được bảo hiểm khi chỉ định người thụ hưởng; trường hợp Người được bảo hiểm chưa thành niên thì việc chỉ định người thụ hưởng phải được người đại diện theo pháp luật đồng ý. Trường hợp không có chỉ định người thụ hưởng, Bảo hiểm Bảo Việt sẽ giải quyết theo các quy định của pháp luật về thừa kế.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M42",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M42"
+   ]
+  },
+  {
+   "term": "Nơi cư trú",
+   "aliases": [],
+   "definition": "địa danh ở Việt Nam nơi mà Người được bảo hiểm khai trong yêu cầu bảo hiểm hoặc được chấp thuận và ghi trong hợp đồng bảo hiểm.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M43",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M43"
+   ]
+  },
+  {
+   "term": "Phẫu thuật",
+   "aliases": [],
+   "definition": "một phương pháp khoa học để điều trị thương tật, bệnh tật, thai sản thuộc phạm vi bảo hiểm được thực hiện bởi những phẫu thuật viên có bằng cấp thông qua những ca mổ, bao gồm nhưng không giới hạn ở các phương pháp mang lại kết quả tương đương phẫu thuật như mổ nội soi, tán sỏi ngoài cơ thể, tiểu phẫu, thủ thuật điều trị với các dụng cụ y tế tại cơ sở y tế. Phẫu thuật bao gồm 03 loại: - Phẫu thuật nội trú: là trường hợp phẫu thuật mà Người được bảo hiểm lưu trú tại viện từ 24 giờ trở lên; - Phẫu thuật trong ngày: là trường hợp phẫu thuật mà Người được bảo hiểm lưu trú tại bệnh viện có phát sinh giường, phòng nhưng không đủ 24 giờ; - Phẫu thuật ngoại trú: là trường hợp phẫu thuật mà Người được bảo hiểm lưu trú tại bệnh viện dưới 24 giờ nhưng không phát sinh tiền giường, phòng hoặc Người được bảo hiểm thực hiện tại phòng khám.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M44",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M44"
+   ]
+  },
+  {
+   "term": "Phòng khám",
+   "aliases": [],
+   "definition": "cơ sở y tế khám, chữa bệnh ngoại trú hoạt động hợp pháp theo quy định của pháp luật (có giấy phép kinh doanh hợp lệ, con dấu riêng và chứng chỉ hành nghề của từng cá nhân trong phòng khám), có khả năng và phương tiện khám bệnh, chẩn đoán, điều trị hoặc phẫu thuật. Các chứng từ thanh toán như hóa đơn/biên lai/phiếu thu phát sinh tại phòng khám phải tuân thủ theo quy định của pháp luật. Định nghĩa này không bao gồm phòng mạch bác sĩ tư.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M45",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M45"
+   ]
+  },
+  {
+   "term": "Phòng, giường điều trị",
+   "aliases": [],
+   "definition": "các chi phí tiền giường nằm điều trị trong một phòng đơn và các khoản chi phí liên quan khác phục vụ cho Người được bảo hiểm điều trị .",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M46",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M46"
+   ]
+  },
+  {
+   "term": "Quê hương",
+   "aliases": [],
+   "definition": "quốc gia mà Người được bảo hiểm sinh ra hoặc đăng ký quốc tịch.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M47",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M47"
+   ]
+  },
+  {
+   "term": "Số tiền bảo hiểm",
+   "aliases": [],
+   "definition": "tổng mức trách nhiệm bảo hiểm tối đa của Bảo hiểm Bảo Việt đối với Người được bảo hiểm trong suốt thời hạn bảo hiểm. Số tiền bảo hiểm được quy định trong hợp đồng bảo hiểm và/hoặc bảng quyền lợi bảo hiểm đính kèm quy tắc bảo hiểm/hợp đồng bảo hiểm.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M48",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M48"
+   ]
+  },
+  {
+   "term": "Sự kiện bảo hiểm",
+   "aliases": [],
+   "definition": "Sự kiện bảo hiểm là sự kiện khách quan do Bên mua bảo hiểm và Bảo hiểm Bảo Việt thỏa thuận mà khi sự kiện đó xảy ra thì Bảo hiểm Bảo Việt phải bồi thường, trả tiền bảo hiểm theo thỏa thuận trong hợp đồng bảo hiểm.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M49",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M49"
+   ]
+  },
+  {
+   "term": "Tai nạn",
+   "aliases": [],
+   "definition": "bất kỳ sự kiện bất ngờ hay không lường trước, gây ra bởi một lực/tác nhân có thể nhìn thấy được từ bên ngoài lên thân thể Người được bảo hiểm và xảy ra trong thời hạn bảo hiểm, là nguyên nhân trực tiếp dẫn đến tổn thương thân thể hoặc tử vong cho Người được bảo hiểm và xảy ra ngoài sự kiểm soát/ý định của Người được bảo hiểm. Theo quy tắc bảo hiểm này, sự kiện ngộ độc thức ăn, đồ uống hoặc hít phải hơi độc, khí độc, chất độc, khí gas, đuối nước, điện giật được coi là tai nạn.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M50",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M50"
+   ]
+  },
+  {
+   "term": "Thai sản",
+   "aliases": [],
+   "definition": "Thai sản là quá trình thai nghén từ khi hình thành thai nhi đến khi sinh đẻ. Trong phạm vi quy tắc bảo hiểm này, thai sản bao gồm sinh con và biến chứng thai sản.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M51",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M51"
+   ]
+  },
+  {
+   "term": "Thời gian chờ",
+   "aliases": [],
+   "definition": "khoảng thời gian mà các sự kiện bảo hiểm xảy ra sẽ không được Bảo hiểm Bảo Việt chi trả đối với các quyền lợi bảo hiểm có liên quan, không chi trả cả những trường hợp thời điểm phát sinh rủi ro nằm trong thời gian chờ nhưng chi phí phát sinh hoặc hậu quả của đợt điều trị rủi ro này lại kéo dài quá thời gian chờ quy định. Thời gian chờ được tính kể từ Ngày bắt đầu hiệu lực bảo hiểm. Đối với các hợp đồng bảo hiểm tái tục liên tục hàng năm và không thay đổi quyền lợi bảo hiểm, thời gian chờ được tính từ Ngày bắt đầu hiệu lực bảo hiểm của hợp đồng bảo hiểm năm đầu tiên.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M52",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M52"
+   ]
+  },
+  {
+   "term": "Thời hạn bảo hiểm",
+   "aliases": [],
+   "definition": "Thời hạn bảo hiểm được tính từ thời điểm Bảo hiểm Bảo Việt bắt đầu nhận bảo hiểm cho đến khi kết thúc bảo hiểm. Thời hạn bảo hiểm bắt đầu từ 0 giờ 1 phút sáng ngày bắt đầu hiệu lực bảo hiểm và được kết thúc vào 23 giờ 59 phút ngày hết hạn hiệu lực bảo hiểm. Đối với hợp đồng bảo hiểm cá nhân: Thời hạn bảo hiểm là 01 năm và được quy định cụ thể trong hợp đồng bảo hiểm. Đối với hợp đồng bảo hiểm tổ chức: Thời hạn bảo hiểm là 01 năm hoặc ít hơn, và được quy định cụ thể trong hợp đồng bảo hiểm.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M53",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M53"
+   ]
+  },
+  {
+   "term": "Thuốc kê theo đơn của bác sĩ",
+   "aliases": [],
+   "definition": "những thuốc được bán và sử dụng theo đơn của bác sĩ, theo quy định của pháp luật và không bao gồm: thực phẩm chức năng, dược mỹ phẩm, mỹ phẩm, chế phẩm không nằm trong danh mục thuốc điều trị của Bộ Y tế, khoáng chất, vitamin. Tuy nhiên, Bảo hiểm Bảo Việt sẽ xem xét bồi thường khoáng chất, vitamin tối đa 20% tổng chi phí của cả toa thuốc khi thỏa mãn các điều kiện sau: - Các loại khoáng chất và vitamin này được sự chỉ định của bác sĩ điều trị; - Hỗ trợ cho việc điều trị; - Trong toa thuốc phải có thuốc điều trị đi kèm.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M54",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M54"
+   ]
+  },
+  {
+   "term": "Thương tật bộ phận vĩnh viễn",
+   "aliases": [],
+   "definition": "các tổn thương cơ thể do tai nạn gây ra làm cho Người được bảo hiểm vĩnh viễn mất đi chức năng hoạt động của một hay nhiều bộ phận cơ thể do hậu quả của việc bị cắt cụt (mất) hoặc liệt hoàn toàn và vĩnh viễn bộ phận đó. Thương tật bộ phận vĩnh viễn chỉ được xác định sau khi điều trị tổn thương cơ thể gây ra thương tật đó đã kết thúc. Trong trường hợp thương tật bộ phận vĩnh viễn chưa được xác định ngay sau khi kết thúc việc điều trị tổn thương cơ thể, thương tật đó được coi là thương tật bộ phận vĩnh viễn nếu nó diễn biến kéo dài trong vòng 52 tuần liên tục kể từ ngày kết thúc điều trị. Bảo hiểm Bảo Việt chỉ bảo hiểm cho các Thương tật bộ phận vĩnh viễn được liệt kê trong Bảng tỷ lệ trả tiền tử vong/thương tật vĩnh viễn đính kèm quy tắc bảo hiểm.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M55",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M55"
+   ]
+  },
+  {
+   "term": "Thương tật toàn bộ vĩnh viễn",
+   "aliases": [],
+   "definition": "các tổn thương cơ thể làm cho Người được bảo hiểm bị cản trở hoàn toàn khi tham gia vào công việc của người đó hay bị mất hoàn toàn khả năng lao động trong bất kỳ loại lao động nào, kéo dài 180 ngày liên tục kể từ ngày kết thúc điều trị và không hy vọng vào sự tiến triển của thương tật đó. a. Quyền lợi thương tật toàn bộ vĩnh viễn được xem xét chi trả khi xảy ra một trong các trường hợp sau: - Người được bảo hiểm bị mất hoàn toàn, liệt hoàn toàn và không thể phục hồi được chức năng của: hai tay; hoặc hai chân; hoặc một tay và một chân; hoặc hai mắt; hoặc một tay và một mắt; hoặc một chân và một mắt. Trong trường hợp này, mất hoàn toàn, liệt hoàn toàn và không thể phục hồi được chức năng của tay được tính từ cổ tay trở lên (theo chiều từ cổ tay đến vai); mất hoàn toàn, liệt hoàn toàn và không thể phục hồi được chức năng của chân được tính từ mắt cá chân trở lên (theo chiều từ mắt cá chân đến đùi); mất hoàn toàn và không thể phục hồi được chức năng của mắt được hiểu là mất hoàn toàn hoặc mù hoàn toàn; - Người được bảo hiểm bị tổn thương cơ thể từ 81% trở lên dẫn đến bị cản trở hoàn toàn khi tham gia vào công việc của người đó hay bị mất hoàn toàn khả năng lao động trong bất kỳ loại lao động nào theo xác nhận của cơ quan y tế hoặc Hội đồng giám định Y khoa cấp tỉnh, thành phố trực thuộc trung ương hoặc tổ chức giám định y tế hợp pháp được Công ty bảo hiểm chấp thuận. - Các trường hợp thương tật toàn bộ vĩnh viễn khác được liệt kê trong Bảng tỷ lệ trả tiền tử vong/thương tật vĩnh viễn đính kèm quy tắc bảo hiểm. b. Việc chứng nhận người được bảo hiểm bị mất hoàn toàn bộ phận cơ thể (tay, chân hoặc mắt) có thể được thực hiện ngay sau khi sự kiện bảo hiểm xảy ra hoặc sau khi kết thúc việc điều trị. Việc chứng nhận bị liệt hoàn toàn và không thể phục hồi chức năng của các bộ phận cơ thể hoặc mù hoàn toàn hoặc bị tổn thương cơ thể từ 81% trở lên được thực hiện không sớm hơn 180 ngày kể từ ngày xảy ra sự kiện bảo hiểm hoặc từ ngày bệnh lý được chẩn đoán.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M56_P1",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M56_P1",
+    "ITC_QT_C1_M56_P2"
+   ]
+  },
+  {
+   "term": "Tình trạng nguy kịch",
+   "aliases": [],
+   "definition": "tình trạng sức khoẻ mà theo ý kiến bác sĩ cần phải điều trị khẩn cấp để tránh tử vong.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M57",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M57"
+   ]
+  },
+  {
+   "term": "Tổn thương cơ thể",
+   "aliases": [],
+   "definition": "Tổn thương cơ thể (hay tổn thương thân thể) là tổn hại về mặt sinh học đối với cơ thể con người do bất kỳ sự tác động nào gây ra. Tổn thương này có thể do tai nạn hoặc do bệnh lý gây ra. Theo quy tắc bảo hiểm này, tổn thương cơ thể không bao gồm tình trạng liên quan đến thai sản.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M58",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M58"
+   ]
+  },
+  {
+   "term": "Tuổi được bảo hiểm",
+   "aliases": [],
+   "definition": "tuổi của Người được bảo hiểm vào ngày có hiệu lực của hợp đồng bảo hiểm, được tính theo lần sinh nhật liền trước ngày hợp đồng bảo hiểm có hiệu lực.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M59",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M59"
+   ]
+  },
+  {
+   "term": "Vật lý trị liệu",
+   "aliases": [],
+   "definition": "phương pháp chữa bệnh bằng cách sử dụng các tác nhân vật lý, tự nhiên hay nhân tạo như: nước, không khí, nhiệt độ, điện, tia X, tia cực tím, tia hồng ngoại, siêu âm, các chất đồng vị phóng xạ, xoa bóp, cấy chỉ, các phương pháp điều trị được coi là vật lý trị liệu theo quy định về y tế. Quy tắc bảo hiểm này không bảo hiểm các chi phí nhằm mục đích thư giãn, mát xa, spa, sửa dáng đi.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M60",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M60"
+   ]
+  },
+  {
+   "term": "Vật tư tiêu hao",
+   "aliases": [],
+   "definition": "vật tư y tế được sử dụng một lần hoặc nhiều lần nhằm mục đích hỗ trợ cho điều trị và khám chữa bệnh, không lắp đặt vĩnh viễn trong cơ thể ngoại trừ trường hợp các vật tư này tự tiêu trong cơ thể hoặc lẽ ra có thể lấy ra khỏi cơ thể mà không ảnh hưởng đến chức năng hoạt động của cơ thể nhưng do cơ thể không đào thải nên không cần thiết phải lấy ra.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M61",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M61"
+   ]
+  },
+  {
+   "term": "Vùng bảo hiểm",
+   "aliases": [],
+   "definition": "phạm vi lãnh thổ như qui định trong bảng quyền lợi bảo hiểm, bao gồm nơi Người được bảo hiểm có thể được vận chuyển tới khi cần cấp cứu khẩn cấp khi những điều trị cần thiết không thể có được tại nơi tình trạng khẩn cấp đó xảy ra và là nơi những chi phí y tế hợp lý và cần thiết phát sinh cho Người được bảo hiểm có thể được xét bồi thường theo quy tắc bảo hiểm này.",
+   "scope": "ITC",
+   "source": "ITC_QT_C1_M62",
+   "effective_date": "2025-06-27",
+   "parts": [
+    "ITC_QT_C1_M62"
+   ]
+  }
+ ]
+}
