@@ -3,6 +3,7 @@
     PYTHONPATH=. python -m eval.metrics runs/B2_v1_test_20261110-2000 [runs/...] [--align-threshold 0.3]
     PYTHONPATH=. python -m eval.metrics runs/B1_v1_dev_*_r0 --align-sweep      # chọn ngưỡng căn chỉnh B1 trên dev
     PYTHONPATH=. python -m eval.metrics runs/B4_v1_dev_*_r* --gate-sweep         # chọn rerank.min_score trên dev
+    PYTHONPATH=. python -m eval.metrics runs/B4_v1_dev_*_r* --gate-sweep --gate-grid 0.90:0.995:0.005 --gate-detail 0.97
 
 Định nghĩa (skill conventions mục 10), tính theo từng group và "all":
   recall@k       câu answerable có ≥ 1 evidence trong top-k truy xuất
@@ -212,6 +213,32 @@ def gate_sweep(logs: list[list[dict]], bench: dict[str, dict], thresholds=SWEEP)
     return out
 
 
+def parse_grid(spec: str) -> tuple[float, ...]:
+    """"a:b:step" → (a, a+step, …, b), làm tròn 4 chữ số."""
+    a, b, step = (float(x) for x in spec.split(":"))
+    n = int(round((b - a) / step))
+    return tuple(round(a + i * step, 4) for i in range(n + 1))
+
+
+def gate_detail(loaded: list[tuple[dict, list[dict]]], bench: dict[str, dict], below: float) -> list[dict]:
+    """Từng câu: mọi câu out_of_scope và câu answerable có rerank_max < below. rerank_max giống nhau giữa các lần
+    lặp (truy xuất + rerank tất định), còn LLM có từ chối hay không thì đếm số lần trên tổng số lần chạy."""
+    by = defaultdict(list)
+    for _, log in loaded:
+        for l in log:
+            by[l["qid"]].append(l)
+    out = []
+    for qid, ls in by.items():
+        b = bench[qid]
+        mx = min(l["rerank_max"] for l in ls)
+        if b["answerable"] and mx >= below:
+            continue
+        out.append({"qid": qid, "group": b["group"], "answerable": b["answerable"], "rerank_max": round(mx, 4),
+                    "llm_refused": f"{sum(is_refusal(l['answer']) for l in ls)}/{len(ls)}",
+                    "question": b["question"][:80], "answer": ls[0]["answer"][:100].replace("\n", " ")})
+    return sorted(out, key=lambda r: r["rerank_max"])
+
+
 def rerank_score_summary(log: list[dict], bench: dict[str, dict]) -> dict:
     """Phân bố rerank_max theo answerable / out_of_scope: xem hai nhóm tách nhau tới đâu."""
     def q(xs, p):
@@ -276,6 +303,9 @@ def main(argv=None):
     ap.add_argument("--align-sweep", action="store_true", help="in recall@5/MRR theo ngưỡng căn chỉnh (run B1, split dev)")
     ap.add_argument("--gate-sweep", action="store_true",
                     help="quét rerank.min_score 0–0,6 trên các run B4 dev chạy không chặn (gộp mọi run truyền vào)")
+    ap.add_argument("--gate-grid", default="0:0.6:0.05", help="dải ngưỡng quét a:b:bước (mặc định 0:0.6:0.05)")
+    ap.add_argument("--gate-detail", type=float, metavar="T",
+                    help="in từng câu out_of_scope và câu answerable có rerank_max < T")
     ap.add_argument("--out", type=Path, default=Path("results"))
     ap.add_argument("--no-write", action="store_true")
     a = ap.parse_args(argv)
@@ -288,8 +318,12 @@ def main(argv=None):
         bench = {r["qid"]: r for r in read_jsonl(loaded[0][0]["benchmark"])}
         for m, log in loaded:
             print(f"{m['run_id']}: rerank_max " + ", ".join(f"{k} {v}" for k, v in rerank_score_summary(log, bench).items()))
-        rows = gate_sweep([log for _, log in loaded], bench)
+        rows = gate_sweep([log for _, log in loaded], bench, parse_grid(a.gate_grid))
         print_table(rows, list(rows[0]))
+        if a.gate_detail is not None:
+            det = gate_detail(loaded, bench, a.gate_detail)
+            print(f"\n## Câu out_of_scope và câu answerable có rerank_max < {a.gate_detail}")
+            print_table(det, ["qid", "group", "answerable", "rerank_max", "llm_refused", "question", "answer"])
         return rows
     for run_dir in a.runs:
         meta, log = load_run(run_dir)
