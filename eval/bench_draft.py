@@ -9,6 +9,7 @@ Chỉ gửi Gemini chunk từ tài liệu công khai. Gemini viết câu hỏi/�
     PYTHONPATH=. python -m eval.bench_draft draft   --tag w3     # → benchmark/drafts/w3_drafts.jsonl (chạy lại để tiếp)
     PYTHONPATH=. python -m eval.bench_draft review  --tag w3     # → benchmark/drafts/w3_review.csv (duyệt trên Excel)
     PYTHONPATH=. python -m eval.bench_draft build                # mọi *_review.csv → benchmark/benchmark_v1.jsonl
+    PYTHONPATH=. python -m eval.bench_draft sample --tag w3b --only out_of_scope   # soạn bổ sung 1 nhóm
 """
 import argparse, csv, difflib, json, os, random, re, sys, time
 from datetime import datetime
@@ -115,7 +116,7 @@ def compare_pairs(c: dict, chunks: dict) -> list[dict]:
     return [p for p in pairs if all(e in chunks for e in p["evidence_ids"])]
 
 
-def sample(tag: str, processed: Path) -> Path:
+def sample(tag: str, processed: Path, only: str | None = None) -> Path:
     c, chunks = cfg(), load_chunks(processed)
     names, def_prefix = product_meta()
     rng, used, tasks = random.Random(c["seed"]), set(), []
@@ -151,6 +152,8 @@ def sample(tag: str, processed: Path) -> Path:
     for cat_name, spec in c["out_of_scope"].items():
         for _ in range(spec["n"]):
             tasks.append({"group": "out_of_scope", "evidence_ids": [], "products": [], "topic": cat_name})
+    if only:
+        tasks = [t for t in tasks if t["group"] == only]
     for i, t in enumerate(tasks, 1):
         t["task_id"] = f"{tag}-{i:03d}"
     DRAFTS.mkdir(parents=True, exist_ok=True)
@@ -164,10 +167,13 @@ def sample(tag: str, processed: Path) -> Path:
 
 
 # ---------- draft ----------
-def build_prompt(t: dict, chunks: dict, names: dict, c: dict) -> str:
+def build_prompt(t: dict, chunks: dict, names: dict, c: dict, avoid: list[str] = ()) -> str:
     if t["group"] == "out_of_scope":
         spec = c["out_of_scope"][t["topic"]]
-        return PROMPTS["out_of_scope"].format(product_names=", ".join(names.values()), hint=spec["hint"]) + OOS_RULES.format()
+        prev = "".join(f"\n- {q}" for q in avoid)
+        extra = f"\nKhông lặp lại ý của các câu đã có:{prev}\n" if prev else ""
+        return (PROMPTS["out_of_scope"].format(product_names=", ".join(names.values()), hint=spec["hint"])
+                + extra + OOS_RULES.format())
     pn = ", ".join(names[p] for p in t["products"])
     topic = ""
     if t["group"] == "compare":
@@ -189,18 +195,28 @@ def draft(tag: str, processed: Path) -> None:
     tasks = read_jsonl(DRAFTS / f"{tag}_tasks.jsonl")
     out = DRAFTS / f"{tag}_drafts.jsonl"
     done = {d["task_id"] for d in read_jsonl(out)} if out.exists() else set()
-    gen_cfg = types.GenerateContentConfig(temperature=c["temperature"], seed=c["seed"],
-                                          response_mime_type="application/json")
+    oos_seen = {}                                # câu ngoài phạm vi đã có (mọi tag) theo loại, để Gemini không lặp ý
+    for path in DRAFTS.glob("*_drafts.jsonl"):
+        for d in read_jsonl(path):
+            if d["group"] == "out_of_scope" and d["output"].get("question"):
+                oos_seen.setdefault(d["topic"], [])
+                if d["output"]["question"] not in oos_seen[d["topic"]]:
+                    oos_seen[d["topic"]].append(d["output"]["question"])
     with open(out, "a", encoding="utf-8") as f:
-        for t in tasks:
+        for i, t in enumerate(tasks):
             if t["task_id"] in done:
                 continue
+            gen_cfg = types.GenerateContentConfig(temperature=c["temperature"], seed=c["seed"] + i,  # seed riêng mỗi task
+                                                  response_mime_type="application/json")
             rec = {**t, "model": c["model"], "prompt_version": c["prompt_version"],
                    "created_at": datetime.now().isoformat(timespec="seconds")}
             try:
-                resp = client.models.generate_content(model=c["model"], contents=build_prompt(t, chunks, names, c),
+                avoid = oos_seen.get(t.get("topic"), []) if t["group"] == "out_of_scope" else []
+                resp = client.models.generate_content(model=c["model"], contents=build_prompt(t, chunks, names, c, avoid),
                                                       config=gen_cfg)
                 rec["output"] = json.loads(resp.text)
+                if t["group"] == "out_of_scope" and rec["output"].get("question"):
+                    oos_seen.setdefault(t["topic"], []).append(rec["output"]["question"])
             except Exception as e:                       # ghi lỗi để chạy lại; không dừng cả lô
                 rec["error"] = f"{type(e).__name__}: {e}"[:300]
             if "error" not in rec:
@@ -217,7 +233,11 @@ def longest_common_words(a: str, b: str) -> int:
     return m.size
 
 
-def review(tag: str, processed: Path) -> Path:
+def review(tag: str, processed: Path, force: bool = False) -> Path:
+    out = DRAFTS / f"{tag}_review.csv"
+    if out.exists() and not force and any(r["decision"] and not r["decision"].startswith("drop")
+                                          for r in csv.DictReader(open(out, encoding="utf-8-sig"))):
+        sys.exit(f"{out} đã có quyết định duyệt; không ghi đè (thêm --force nếu chắc chắn)")
     c, chunks = cfg(), load_chunks(processed)
     drafts = read_jsonl(DRAFTS / f"{tag}_drafts.jsonl")
     rows, seen_q, dev_count = [], [], {g: 0 for g in GROUPS}
@@ -254,7 +274,6 @@ def review(tag: str, processed: Path) -> Path:
                      "flags": " | ".join(flags),
                      "evidence_text": "\n\n".join(f"[{e}]\n{chunks[e]['text']}" for e in d["evidence_ids"])[:6000],
                      "note": ""})
-    out = DRAFTS / f"{tag}_review.csv"
     with open(out, "w", encoding="utf-8-sig", newline="") as f:     # utf-8-sig: Excel mở đúng tiếng Việt
         w = csv.DictWriter(f, fieldnames=REVIEW_COLS)
         w.writeheader()
@@ -313,9 +332,11 @@ def main():
     ap.add_argument("--processed", type=Path, default=Path("data/processed/v1"))
     ap.add_argument("--out", type=Path, default=Path("benchmark/benchmark_v1.jsonl"))
     ap.add_argument("--final", action="store_true")
+    ap.add_argument("--only", choices=GROUPS, help="sample: chỉ lấy task của 1 nhóm")
+    ap.add_argument("--force", action="store_true", help="review: ghi đè file duyệt đã có")
     a = ap.parse_args()
-    {"models": models, "sample": lambda: sample(a.tag, a.processed), "draft": lambda: draft(a.tag, a.processed),
-     "review": lambda: review(a.tag, a.processed), "build": lambda: build(a.processed, a.out, a.final)}[a.cmd]()
+    {"models": models, "sample": lambda: sample(a.tag, a.processed, a.only), "draft": lambda: draft(a.tag, a.processed),
+     "review": lambda: review(a.tag, a.processed, a.force), "build": lambda: build(a.processed, a.out, a.final)}[a.cmd]()
 
 
 if __name__ == "__main__":

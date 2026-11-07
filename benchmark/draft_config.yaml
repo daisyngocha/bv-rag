@@ -1,5 +1,5 @@
 # Cấu hình soạn nháp benchmark bằng Gemini (eval/bench_draft.py). Đổi model/prompt → tăng prompt_version.
-model: ""                     # điền tên model sau khi chạy: python -m eval.bench_draft models (decision-log ghi model đã dùng)
+model: "gemini-3.8-flash"                   # điền tên model sau khi chạy: python -m eval.bench_draft models (decision-log ghi model đã dùng)
 prompt_version: p1
 temperature: 0.4
 seed: 42
