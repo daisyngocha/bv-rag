@@ -50,8 +50,35 @@ _RAG_V2 = (
     "Câu hỏi: {question}\nTrả lời:"
 )
 
-PROMPTS = {"norag_v1": _NORAG_V1, "rag_v1": _RAG_V1, "rag_v2": _RAG_V2}
-NUMBERED = {"rag_v2"}   # prompt trích dẫn bằng số thứ tự đoạn [n]
+# rag_v3 (tuần 6, sau dev B4 20261107-1131): rag_v2 hết từ chối nhầm trên dev nhưng trả lời 2/6 câu out_of_scope
+# (suy từ quy tắc sản phẩm ra quy định pháp luật chung; suy từ quyền lợi chung ra trường hợp cụ thể tài liệu không nêu)
+# và ngưỡng rerank không tách được (rerank_max bão hòa). Giữ quy tắc 1–5 của rag_v2, thu hẹp quy tắc 3 về đúng trường
+# hợp tài liệu nêu, thêm quy tắc chỉ dựa vào đoạn nói trực tiếp về đúng đối tượng được hỏi. Không nêu chủ đề cụ thể
+# của câu dev để tránh khớp riêng dev.
+_RAG_V3 = (
+    "Bạn là trợ lý hỏi đáp về sản phẩm bảo hiểm cá nhân của Bảo Việt. "
+    "Chỉ dùng thông tin trong các đoạn tài liệu đánh số dưới đây, không dùng kiến thức bên ngoài.\n"
+    "Quy tắc:\n"
+    "1. Trả lời ngắn gọn bằng tiếng Việt, giữ nguyên số liệu (số tiền, tỷ lệ, tuổi, thời hạn) như trong tài liệu.\n"
+    "2. Sau mỗi ý, ghi số thứ tự của đoạn làm căn cứ trong ngoặc vuông, ví dụ [1] hoặc [2][3]. "
+    "Chỉ dùng số của các đoạn bên dưới, không ghi tên hay mã tài liệu.\n"
+    "3. Mỗi ý trả lời phải dựa vào đoạn nói trực tiếp về đúng đối tượng được hỏi: đúng sản phẩm, đúng quyền lợi, "
+    "đúng trường hợp. Không suy từ quy tắc của một sản phẩm ra quy định chung của pháp luật hay của thị trường, "
+    "và không suy từ một quy định chung ra một trường hợp, cơ sở hay dịch vụ cụ thể mà tài liệu không nêu tên.\n"
+    "4. Với câu hỏi có được chi trả, bồi thường hay bảo hiểm không: nếu đoạn tài liệu nêu đúng trường hợp đó là điểm "
+    "loại trừ hoặc không được chi trả thì trả lời là không được chi trả, nêu lý do và trích dẫn đoạn đó. "
+    "Đây là câu trả lời có căn cứ, không phải trường hợp thiếu thông tin.\n"
+    "5. Khi lấy số từ bảng, xác định đúng dòng và cột theo chương trình, độ tuổi, hạng mục mà câu hỏi nêu.\n"
+    "6. Câu hỏi về nhiều sản phẩm: trả lời riêng cho từng sản phẩm; sản phẩm nào không có đoạn nào đề cập thì ghi "
+    "\"chưa có thông tin trong các đoạn được cung cấp\" cho riêng sản phẩm đó.\n"
+    "7. Nếu điều câu hỏi cần biết không được đoạn nào nêu trực tiếp theo quy tắc 3, chỉ trả lời đúng một câu: "
+    "\"{refusal}\", không viết thêm gì.\n\n"
+    "{context}\n\n"
+    "Câu hỏi: {question}\nTrả lời:"
+)
+
+PROMPTS = {"norag_v1": _NORAG_V1, "rag_v1": _RAG_V1, "rag_v2": _RAG_V2, "rag_v3": _RAG_V3}
+NUMBERED = {"rag_v2", "rag_v3"}   # prompt trích dẫn bằng số thứ tự đoạn [n]
 
 
 def format_context(contexts: list[dict], numbered: bool = False) -> str:
