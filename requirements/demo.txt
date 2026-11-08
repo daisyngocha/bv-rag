@@ -1,0 +1,5 @@
+# Demo tuần 7 (FastAPI + Streamlit). Cài SAU requirements/base.txt. httpx cho tests/test_demo.py (TestClient).
+fastapi==0.162.1
+uvicorn==0.54.0
+streamlit==1.67.0
+httpx==0.28.1

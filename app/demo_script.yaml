@@ -1,0 +1,10 @@
+# Kịch bản demo tuần 7: chỉ dùng câu split dev (không lộ test). Câu hỏi lấy từ benchmark theo qid.
+# Thứ tự trình bày: tra cứu quy tắc → bảng phí → tình huống → so sánh 2 sản phẩm → 2 câu ngoài phạm vi (từ chối).
+benchmark: benchmark/benchmark_v1.jsonl
+questions:
+  - {qid: v1-0002, label: "Tra cứu quy tắc", note: "thời hạn giải quyết bồi thường, An Gia"}
+  - {qid: v1-0022, label: "Bảng phí", note: "đọc ô bảng phí gia đình Flexi, Kim Cương 204–210 ngày"}
+  - {qid: v1-0035, label: "Tình huống", note: "trẻ 2 tuổi nằm viện nội trú, An Gia"}
+  - {qid: v1-0053, label: "So sánh", note: "tuổi tham gia/tái tục CI37 và Intercare: query processor tách theo sản phẩm"}
+  - {qid: v1-0067, label: "Ngoài phạm vi", note: "bảo hiểm xe ô tô: không có trong kho → từ chối"}
+  - {qid: v1-0075, label: "Ngoài phạm vi", note: "sản phẩm công ty khác (PVI Care) → từ chối"}

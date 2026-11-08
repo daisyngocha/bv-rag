@@ -171,3 +171,22 @@ PYTHONPATH=. python -m eval.metrics runs/B4_v1_dev_<stamp>_r* --gate-sweep     #
 
 Ablation: `configs/ablation/B4rr.yaml` (rerank, prompt rag_v1, không chặn), `configs/ablation/B4ng.yaml` (B4 không chặn, chỉ test).
 Prompt ở `src/generate/prompts.py`, chọn bằng khóa `prompt` trong config; prompt đã chạy chính thức thì không sửa, thêm tên mới.
+
+## Demo chatbot có trích dẫn (tuần 7)
+
+FastAPI `app/api.py` (`POST /ask`, `GET /products`, `GET /demo-questions`, `GET /health`) bọc `RAGPipeline` với đúng
+config B4 của run test; `app/service.py` gắn nguồn cho mỗi đoạn ngữ cảnh (sản phẩm, loại tài liệu, mục, trang, link
+trang sản phẩm từ catalog, đoạn văn bản) và đánh dấu đoạn được trích dẫn. Giao diện `app/streamlit_app.py`: câu trả lời
+với `[n]`, danh sách nguồn mở rộng được, cảnh báo khi từ chối do ngưỡng, số không có trong nguồn hoặc trích dẫn sai.
+Mỗi câu hỏi độc lập (không dùng lịch sử hội thoại).
+
+Colab L4: mở `scripts/colab_demo.ipynb`, Run all; cell 7 in link `https://….trycloudflare.com`, cell 8 chạy kịch bản
+`app/demo_script.yaml` (6 câu dev: tra cứu, bảng phí, tình huống, so sánh, 2 câu ngoài phạm vi) và ghi bản chép lên
+Drive `runs/demo/`. Chạy cục bộ (WSL, Ollama CPU rất chậm, chỉ để debug):
+
+```bash
+uv pip install -r requirements/demo.txt
+DEMO_CONFIG=configs/B4.yaml PYTHONPATH=. uvicorn app.api:app --port 8000
+BV_API_URL=http://localhost:8000 streamlit run app/streamlit_app.py
+python scripts/demo_check.py --api http://localhost:8000 --out runs/demo/demo_local
+```
