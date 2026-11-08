@@ -8,6 +8,11 @@ export const LanguageContext = createContext({ language: "vi", tx: (vi) => vi, l
 export const useLanguage = () => useContext(LanguageContext);
 
 export function Modal({ title, subtitle, onClose, children, wide = false }) {
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
   return <div className="modal-layer"><button className="modal-scrim" onClick={onClose} aria-label="Đóng" /><div className={`modal-card ${wide ? "wide" : ""}`} role="dialog" aria-modal="true"><div className="modal-head"><div><h2>{title}</h2>{subtitle && <p>{subtitle}</p>}</div><button className="icon-button" onClick={onClose} aria-label="Đóng"><X size={20} /></button></div>{children}</div></div>;
 }
 

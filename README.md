@@ -251,3 +251,29 @@ BV_TEST_PG="host=/var/run/postgresql user=postgres" PYTHONPATH=. pytest tests/te
 ```
 
 Với Supabase local (`npx supabase start`): `npx supabase db reset` rồi `psql "$DB_URL" -f tests/db/rls_check.sql`.
+
+## Giao diện React (web/)
+
+Thiết kế Figma, nối Supabase (supabase-js + RLS: đăng nhập, lịch sử, cài đặt, danh mục, nhật ký, dashboard) và
+FastAPI (hỏi đáp stream, quản trị tài khoản, cấu hình, so sánh, trạng thái hệ thống). Tạo `.env.local` ở gốc repo
+(không commit; chỉ anon key, không bao giờ service_role):
+
+```bash
+VITE_SUPABASE_URL=https://<project-ref>.supabase.co
+VITE_SUPABASE_ANON_KEY=<anon key>
+VITE_API_URL=https://<link>.trycloudflare.com
+```
+
+```bash
+npm install && npm run dev
+```
+
+Mở http://localhost:5173, đăng nhập bằng tài khoản demo. `CORS_ORIGINS` của API phải có `http://localhost:5173`
+(mặc định đã có). Câu hỏi được che CCCD/CMND/SĐT/email ngay trong trình duyệt trước khi gửi.
+
+Kiểm luồng giao diện không cần Colab (Playwright giả lập Supabase + FastAPI ở tầng mạng):
+
+```bash
+node tests/e2e/frontend_smoke.cjs
+```
+

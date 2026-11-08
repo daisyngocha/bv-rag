@@ -134,8 +134,8 @@ const step = (name) => console.log(`- ${name}`);
     await page.fill('input[type="password"]', "dung");
     await page.click('button[type="submit"]');
     await page.getByText("Bạn muốn tìm hiểu điều gì?").waitFor();
-    assert(await page.getByText("Thời hạn giải quyết bồi thường An Gia?").isVisible(), "câu hỏi mẫu từ sample_questions");
-    assert(await page.getByText("Thời gian chờ An Gia").first().isVisible(), "lịch sử gần đây");
+    await page.getByText("Thời hạn giải quyết bồi thường An Gia?").waitFor();     // câu hỏi mẫu từ sample_questions
+    await page.getByText("Thời gian chờ An Gia").first().waitFor();                 // lịch sử gần đây
 
     step("hỏi đáp");
     // Hỏi: chọn sản phẩm, có SĐT → che trước khi gửi
@@ -220,7 +220,7 @@ const step = (name) => console.log(`- ${name}`);
     await page.click('.sidebar-footer button:has-text("Trạng thái hệ thống")');
     await page.getByText("Tất cả thành phần đang hoạt động").waitFor();
     await page.keyboard.press("Escape");
-    await page.click(".modal-scrim");
+    assert(!(await page.locator(".modal-card").count()), "Escape đóng modal");
 
     step("xem như người dùng");
     // Xem như người dùng: ẩn menu quản trị; đăng xuất
@@ -239,7 +239,8 @@ const step = (name) => console.log(`- ${name}`);
     if (errors.length) console.error("pageerror:", errors.join(" | "));
     process.exitCode = 1;
   } finally {
-    await browser.close();
+    await Promise.race([browser.close(), new Promise((r) => setTimeout(r, 5000))]);
     server.kill();
+    setTimeout(() => process.exit(), 500);
   }
 })();

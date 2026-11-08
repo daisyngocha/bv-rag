@@ -216,9 +216,13 @@ function Workspace({ user, profile, onLogout }) {
     }
   }
 
-  function newChat() {
+  function resetChat() {
     stopPending();
     setMessages([]); setConversation(null); setOpenKey(null); setPrivacyMasked(false);
+  }
+
+  function newChat() {
+    resetChat();
     setView("chat"); setMobileNav(false);
   }
 
@@ -263,7 +267,7 @@ function Workspace({ user, profile, onLogout }) {
   async function doDelete() {
     try {
       if (deleteItem.all) await deleteAllConversations(uid); else await deleteConversation(deleteItem.id);
-      if (deleteItem.all || conversation?.id === deleteItem.id) newChat();
+      if (deleteItem.all || conversation?.id === deleteItem.id) resetChat();   // giữ nguyên màn đang xem
       setDeleteItem(null); refreshLists(); notify(tx("Đã xóa", "Deleted"));
     } catch (e) { notify(e.message, "error"); }
   }
