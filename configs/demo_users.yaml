@@ -1,0 +1,8 @@
+# Tài khoản demo ban đầu (OPS-05). Email giả *@bv-rag.local, không phải email thật; sign-up đã tắt.
+# Mật khẩu KHÔNG ghi ở đây: lấy từ biến môi trường password_env (.env, không commit);
+# thiếu biến → script sinh mật khẩu tạm và in ra một lần.
+users:
+  - {username: admin01, email: admin01@bv-rag.local, display_name: "Quản trị viên", role: admin, password_env: DEMO_PW_ADMIN01}
+  - {username: demo01,  email: demo01@bv-rag.local,  display_name: "Người dùng demo 01", role: user, password_env: DEMO_PW_DEMO01}
+  - {username: demo02,  email: demo02@bv-rag.local,  display_name: "Người dùng demo 02", role: user, password_env: DEMO_PW_DEMO02}
+  - {username: demo03,  email: demo03@bv-rag.local,  display_name: "Người dùng demo 03", role: user, password_env: DEMO_PW_DEMO03}

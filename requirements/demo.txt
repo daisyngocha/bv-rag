@@ -1,4 +1,4 @@
-# Demo tuần 7: backend FastAPI (frontend React ở web/, cài bằng npm). Cài SAU requirements/base.txt. httpx cho tests/test_demo.py (TestClient).
+# Demo tuần 7: backend FastAPI (frontend React ở web/, cài bằng npm). Cài SAU requirements/base.txt. httpx: TestClient và client Supabase (app/supabase_rest.py).
 fastapi==0.162.1
 uvicorn==0.54.0
 httpx==0.28.1
