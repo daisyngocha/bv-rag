@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 from pathlib import Path
 
@@ -37,12 +38,15 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--api", default="http://localhost:8000")
     ap.add_argument("--out", required=True, help="tiền tố file ra: <out>.md, <out>.jsonl")
+    ap.add_argument("--key", default=os.environ.get("DEMO_CHECK_KEY"),
+                    help="X-Demo-Key khi API đã nối Supabase (mặc định $DEMO_CHECK_KEY)")
     a = ap.parse_args(argv)
     api = a.api.rstrip("/")
+    headers = {"X-Demo-Key": a.key} if a.key else {}
     qs = requests.get(f"{api}/demo-questions", timeout=10).json()
     items = []
     for q in qs:
-        r = requests.post(f"{api}/ask", json={"question": q["question"]}, timeout=300)
+        r = requests.post(f"{api}/ask", json={"question": q["question"]}, headers=headers, timeout=300)
         r.raise_for_status()
         items.append((q, r.json()))
         ok = r.json()["refused"] != q["answerable"]

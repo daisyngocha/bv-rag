@@ -136,16 +136,23 @@ class RAGPipeline:
         num_ctx = cfg["llm"].get("num_ctx", 4096)
         self.prompt_budget = num_ctx - cfg["llm"].get("max_tokens", 600)
 
-    def retrieve(self, query: str) -> tuple[list[dict], int, dict | None]:
-        """Trả (hits, retrieval_ms, plan của query processor hoặc None). retrieval_ms gồm cả rerank."""
+    def retrieve(self, query: str, product_filter: list[str] | None = None) -> tuple[list[dict], int, dict | None]:
+        """Trả (hits, retrieval_ms, plan của query processor hoặc None). retrieval_ms gồm cả rerank.
+        product_filter (demo, UC-CHAT-02): người dùng chọn sản phẩm → thay bộ lọc của query processor;
+        None = hành vi cũ (eval B0–B4 không truyền tham số này)."""
+        self.rerank_ms = 0
         if self.mode == "none":
             return [], 0, None
         t0 = time.perf_counter()
-        self.rerank_ms = 0
+        product_filter = list(dict.fromkeys(product_filter)) if product_filter else None
         if self.qp is None:
-            hits, plan = self._rerank(query, self.retriever.search(query, top_k=self.top_k, mode=self.mode)), None
+            flt = {"product_code": product_filter} if product_filter else None
+            kw = {"filters": flt} if flt else {}
+            hits = self._rerank(query, self.retriever.search(query, top_k=self.top_k, mode=self.mode, **kw))
+            plan = {"products": [], "user_filter": product_filter, "query": query, "split": False,
+                    "subqueries": [{"query": query, "filters": flt}]} if product_filter else None
         else:
-            hits, plan = self._retrieve_planned(query)
+            hits, plan = self._retrieve_planned(query, product_filter)
         return hits, int((time.perf_counter() - t0) * 1000), plan
 
     def _rerank(self, query: str, hits: list[dict]) -> list[dict]:
@@ -158,10 +165,18 @@ class RAGPipeline:
         self.rerank_ms += int((time.perf_counter() - t0) * 1000)
         return out
 
-    def _retrieve_planned(self, query: str) -> tuple[list[dict], dict]:
+    def _retrieve_planned(self, query: str, product_filter: list[str] | None = None) -> tuple[list[dict], dict]:
         from src.retrieve.query_processor import interleave
 
         plan = self.qp.plan(query)
+        if product_filter:
+            q = plan["query"]
+            if len(product_filter) >= 2 and getattr(self.qp, "split_compare", True):
+                plan["subqueries"] = [{"query": q, "filters": {"product_code": [p]}} for p in product_filter]
+            else:
+                plan["subqueries"] = [{"query": q, "filters": {"product_code": product_filter}}]
+            plan["split"] = len(plan["subqueries"]) > 1
+            plan["user_filter"] = product_filter
         subs = plan["subqueries"]
         lists = [self.retriever.search(s["query"], filters=s["filters"], top_k=self.top_k, mode=self.mode) for s in subs]
         # B4: rerank TRƯỚC khi ghép để mỗi sản phẩm vẫn giữ suất trong top-n (rerank chung dễ dồn về một sản phẩm)
@@ -183,9 +198,9 @@ class RAGPipeline:
         plan["n_hits"] = [len(x) for x in lists]
         return hits, plan
 
-    def prepare(self, query: str) -> tuple[list[dict], list[dict], str, int]:
+    def prepare(self, query: str, product_filter: list[str] | None = None) -> tuple[list[dict], list[dict], str, int]:
         """Truy xuất + dựng prompt, chưa gọi LLM (dùng cả cho bước kiểm độ dài prompt trước khi chạy)."""
-        hits, retrieval_ms, plan = self.retrieve(query)
+        hits, retrieval_ms, plan = self.retrieve(query, product_filter)
         self.last_plan, self.last_hits = plan, hits   # demo (app/service.py) đọc payload chunk để hiển thị nguồn
         contexts = [{"chunk_id": h["chunk_id"], "text": h["payload"]["text"]} for h in hits[:self.context_n]]
         return hits, contexts, build_prompt(self.prompt_name, query, contexts or None), retrieval_ms
@@ -195,15 +210,43 @@ class RAGPipeline:
         return self.reranker is not None and self.min_score is not None and \
             (not hits or max(h["score"] for h in hits) < self.min_score)
 
-    def answer(self, query: str) -> dict:
+    def answer(self, query: str, product_filter: list[str] | None = None) -> dict:
         t0 = time.perf_counter()
-        hits, contexts, prompt, retrieval_ms = self.prepare(query)
+        hits, contexts, prompt, retrieval_ms = self.prepare(query, product_filter)
         gated = self.gated(hits)
         if gated:
             text, res = REFUSAL, None
         else:
             res = self.llm.generate(prompt)
             text = res.text
+        return self._result(query, hits, contexts, text, res, gated, retrieval_ms, t0)
+
+    def answer_stream(self, query: str, product_filter: list[str] | None = None):
+        """Như answer() nhưng yield sự kiện: {"type": "status", "stage"}, {"type": "token", "text"} rồi
+        {"type": "done", "result": <dict như answer()>}. Câu bị chặn ngưỡng trả từ chối ngay, không stream.
+        Trích dẫn chỉ tính sau khi sinh xong."""
+        t0 = time.perf_counter()
+        yield {"type": "status", "stage": "retrieve"}
+        hits, contexts, prompt, retrieval_ms = self.prepare(query, product_filter)
+        gated = self.gated(hits)
+        if gated:
+            text, res = REFUSAL, None
+        else:
+            yield {"type": "status", "stage": "generate"}
+            if hasattr(self.llm, "generate_stream"):
+                parts = []
+                for tok in self.llm.generate_stream(prompt):
+                    parts.append(tok)
+                    yield {"type": "token", "text": tok}
+                res = self.llm.last_result
+                text = res.text if res is not None else "".join(parts).strip()
+            else:   # LLM không hỗ trợ stream: trả cả câu một lần
+                res = self.llm.generate(prompt)
+                text = res.text
+                yield {"type": "token", "text": text}
+        yield {"type": "done", "result": self._result(query, hits, contexts, text, res, gated, retrieval_ms, t0)}
+
+    def _result(self, query, hits, contexts, text, res, gated, retrieval_ms, t0) -> dict:
         ctx_ids = [c["chunk_id"] for c in contexts]
         if self.prompt_name in NUMBERED:
             cites, bad = parse_numbered_citations(text, ctx_ids)

@@ -85,6 +85,42 @@ class OllamaClient:
             decode_tok_s=rate(d.get("eval_count"), d.get("eval_duration")),
         )
 
+    def generate_stream(self, prompt: str, timeout: int = 1800, **options):
+        """Như generate() nhưng yield từng đoạn text khi Ollama sinh; cùng load_options để không nạp lại model.
+        Kết thúc: self.last_result = LLMResult (text đầy đủ, số token, tốc độ) của lượt này."""
+        import json
+
+        opts = {**self.gen_options, **options, **self.load_options}
+        self.last_result = None
+        t0 = time.perf_counter()
+        parts, last = [], {}
+        with requests.post(f"{self.base_url}/api/generate", timeout=timeout, stream=True, json={
+                "model": self.model, "prompt": prompt, "stream": True,
+                "keep_alive": self.keep_alive, "options": opts}) as r:
+            r.raise_for_status()
+            for line in r.iter_lines():
+                if not line:
+                    continue
+                d = json.loads(line)
+                if d.get("error"):
+                    raise RuntimeError(f"Ollama: {d['error']}")
+                tok = d.get("response", "")
+                if tok:
+                    parts.append(tok)
+                    yield tok
+                if d.get("done"):
+                    last = d
+                    break
+
+        def rate(n, dur):
+            return round(n / (dur / NS), 1) if n and dur else None
+
+        self.last_result = LLMResult(
+            text="".join(parts).strip(), tokens_in=last.get("prompt_eval_count"), tokens_out=last.get("eval_count"),
+            latency_ms=int((time.perf_counter() - t0) * 1000),
+            prefill_tok_s=rate(last.get("prompt_eval_count"), last.get("prompt_eval_duration")),
+            decode_tok_s=rate(last.get("eval_count"), last.get("eval_duration")))
+
     # ------------------------------------------------------------ thông tin môi trường (ghi vào meta.json)
     def gpu_status(self) -> dict:
         """Tỷ lệ model nằm trên VRAM, từ /api/ps. 100 = toàn bộ trên GPU."""
