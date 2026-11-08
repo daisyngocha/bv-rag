@@ -194,3 +194,43 @@ DEMO_CONFIG=configs/B4.yaml PYTHONPATH=. uvicorn app.api:app --port 8000
 npm install && VITE_API_URL=http://localhost:8000 npm run dev
 python scripts/demo_check.py --api http://localhost:8000 --out runs/demo/demo_local
 ```
+
+## Supabase (Auth + Postgres)
+
+Schema theo `docs/roadmap/5.DA1_DataDictionary.xlsx` (nhóm A–D, đủ ưu tiên 1/2/3; nhóm E để ĐA2/ĐATN):
+`supabase/migrations/0001_enums` → `0002_tables` → `0003_indexes` → `0004_rls_grants` → `0005_views_rpc` → `0006_triggers`.
+React dùng anon key + JWT (RLS); FastAPI và script dùng service_role (`app/supabase_rest.py`). Key đặt trong `.env`
+(mẫu `.env.example`, không commit).
+
+Tạo project cloud (region Singapore), rồi:
+
+```bash
+npx supabase@2.20.12 link --project-ref <project-ref>
+```
+
+```bash
+npx supabase@2.20.12 db push
+```
+
+Nạp dữ liệu (cần `chunks.jsonl` của bản đã đóng băng; `--dry-run` để kiểm không ghi):
+
+```bash
+PYTHONPATH=. python scripts/sync_supabase.py all --version v1 --processed $DRIVE_DIR/processed/v1 --activate
+```
+
+```bash
+PYTHONPATH=. python scripts/seed_demo_users.py
+```
+
+Thứ tự trong `all`: pipeline_configs → kho tri thức (data_versions, products, documents, chunks) → câu hỏi mẫu (24 câu
+dev) → runs + eval_results từ `results/*.csv`. Tài khoản demo trong `configs/demo_users.yaml`; mật khẩu từ `.env`, thiếu thì
+script sinh mật khẩu tạm và in một lần. Bảng mới thêm sau này phải tự GRANT/RLS: `0004` thu hồi quyền mặc định của
+anon/authenticated chỉ với các bảng đã có.
+
+Kiểm tra migrations + RLS không cần Docker (Postgres ≥ 15 có pg_trgm, stub `auth` trong `tests/db/auth_stub.sql`):
+
+```bash
+BV_TEST_PG="host=/var/run/postgresql user=postgres" PYTHONPATH=. pytest tests/test_supabase_db.py tests/test_supabase_sync.py
+```
+
+Với Supabase local (`npx supabase start`): `npx supabase db reset` rồi `psql "$DB_URL" -f tests/db/rls_check.sql`.
