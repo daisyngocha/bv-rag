@@ -10,7 +10,6 @@ import {
   CheckCircle2,
   ChevronDown,
   ChevronRight,
-  CircleHelp,
   Clock3,
   Copy,
   Download,
@@ -305,16 +304,14 @@ export default function FullApp() {
           <span><strong>{tx("Trợ lý tư vấn sản phẩm bảo hiểm", "Insurance product advisory assistant")}</strong><small>{tx("Hỏi đáp có trích dẫn", "Citation-grounded answers")}</small></span>
         </button>
         <div className="topbar-actions">
-          {role === "admin" && <button className="status-pill" onClick={() => setSystemOpen(true)}><span /> {tx("Hệ thống sẵn sàng", "System ready")}</button>}
           <button className="session-pill" onClick={() => setSessionSeconds(29 * 60 + 59)} title="Nhấn để gia hạn phiên"><Clock3 size={15} /> {mm}:{ss}</button>
-          <button className="icon-button" onClick={() => setSystemOpen(true)} aria-label="Trợ giúp"><CircleHelp size={20} /></button>
           <div className="profile-wrap">
             <button className="profile-button" onClick={() => setProfileOpen(!profileOpen)}>
               <span>NH</span><span className="profile-copy"><strong>{ACCOUNTS[0].display_name}</strong><small>{role === "admin" ? tx("Quản trị viên", "Administrator") : tx("Người dùng", "User")}</small></span><ChevronDown size={16} />
             </button>
             {profileOpen && (
               <div className="profile-menu">
-                <div className="profile-menu-head"><strong>{ACCOUNTS[0].username}</strong><small>{tx("Phiên demo · không lưu dữ liệu cá nhân", "Demo session · no personal data stored")}</small></div>
+                <div className="profile-menu-head"><strong>{ACCOUNTS[0].display_name}</strong></div>
                 <button onClick={() => { setRole(role === "admin" ? "user" : "admin"); setProfileOpen(false); setView("chat"); setToast(role === "admin" ? tx("Đã chuyển sang Người dùng", "Switched to User") : tx("Đã chuyển sang Quản trị viên", "Switched to Administrator")); }}><UserCog size={17} /> {role === "admin" ? tx("Chuyển sang Người dùng", "Switch to User") : tx("Chuyển sang Quản trị viên", "Switch to Administrator")}</button>
                 <button onClick={logout}><LogOut size={17} /> {tx("Đăng xuất", "Sign out")}</button>
               </div>
@@ -338,9 +335,8 @@ export default function FullApp() {
                 <p className="nav-label">{tx("QUẢN TRỊ", "ADMINISTRATION")}</p>
                 <NavButton active={view === "dashboard"} icon={LayoutDashboard} label="Dashboard" onClick={() => setView("dashboard")} />
                 <NavButton active={view === "logs"} icon={FileClock} label={tx("Nhật ký truy vấn", "Query logs")} onClick={() => setView("logs")} badge="4" />
-                <NavButton active={view === "accounts"} icon={Users} label={tx("Tài khoản demo", "Demo accounts")} onClick={() => setView("accounts")} />
+                <NavButton active={view === "accounts"} icon={Users} label={tx("Quản lý tài khoản", "Account management")} onClick={() => setView("accounts")} />
                 <NavButton active={view === "configuration"} icon={Settings} label={tx("Cấu hình", "Configuration")} onClick={() => setView("configuration")} />
-                <NavButton active={view === "compare"} icon={SlidersHorizontal} label={tx("So sánh cấu hình", "Compare configurations")} onClick={() => setView("compare")} />
               </>
             )}
           </nav>
@@ -354,7 +350,7 @@ export default function FullApp() {
           </div>
           <div className="sidebar-footer">
             <button onClick={() => setSettingsOpen(true)}><Settings size={18} /><span>{tx("Cài đặt", "Settings")}</span></button>
-            <button onClick={() => setSystemOpen(true)}><Activity size={18} /><span>{tx("Trạng thái hệ thống", "System status")}</span></button>
+            {role === "admin" && <button onClick={() => setSystemOpen(true)}><Activity size={18} /><span>{tx("Trạng thái hệ thống", "System status")}</span></button>}
           </div>
         </aside>
         {mobileNav && <button className="mobile-scrim" onClick={() => setMobileNav(false)} aria-label="Đóng menu" />}
@@ -410,7 +406,6 @@ export default function FullApp() {
           {view === "logs" && role === "admin" && <LogsView setToast={setToast} />}
           {view === "accounts" && role === "admin" && <AccountsView setToast={setToast} />}
           {view === "configuration" && role === "admin" && <ConfigurationView pipeline={pipeline} setPipeline={setPipeline} setToast={setToast} />}
-          {view === "compare" && role === "admin" && <CompareView />}
         </main>
       </div>
 
@@ -430,7 +425,7 @@ export default function FullApp() {
           role={role}
         />
       )}
-      {systemOpen && <SystemModal onClose={() => setSystemOpen(false)} />}
+      {systemOpen && role === "admin" && <SystemModal onClose={() => setSystemOpen(false)} />}
       {feedbackOpen && <FeedbackModal onClose={() => setFeedbackOpen(false)} onSave={() => { setFeedback("down"); setFeedbackOpen(false); setToast("Đã lưu lý do phản hồi"); }} />}
       {renameItem && <RenameModal item={renameItem} onClose={() => setRenameItem(null)} onSave={(name) => { setHistory((current) => current.map((item) => item.id === renameItem.id ? { ...item, title: name, title_is_custom: true, updated_at: new Date().toISOString() } : item)); setRenameItem(null); setToast("Đã cập nhật conversations.title và title_is_custom"); }} />}
       {deleteItem && <ConfirmModal item={deleteItem} onClose={() => setDeleteItem(null)} onConfirm={() => { setHistory((current) => deleteItem.all ? [] : current.filter((item) => item.id !== deleteItem.id)); setDeleteItem(null); setToast("Đã xóa lịch sử"); }} />}
@@ -636,12 +631,13 @@ function AccountsView({ setToast }) {
   const { tx } = useLanguage();
   const [accounts, setAccounts] = useState(ACCOUNTS);
   const [createOpen, setCreateOpen] = useState(false);
-  return <div className="standard-page"><div className="page-header"><div><h1>{tx("Tài khoản demo", "Demo accounts")}</h1></div><button className="primary-button" onClick={() => setCreateOpen(true)}><Plus size={17} /> {tx("Tạo tài khoản", "Create account")}</button></div><div className="data-table accounts-table card"><div className="data-row head"><span>{tx("Tài khoản", "Account")}</span><span>{tx("Vai trò", "Role")}</span><span>{tx("Trạng thái", "Status")}</span><span>{tx("Đăng nhập cuối", "Last sign-in")}</span><span>{tx("Thao tác", "Actions")}</span></div>{accounts.map((account) => <div className="data-row" key={account.id}><span className="account-name"><i>{account.username.slice(0, 2).toUpperCase()}</i><span><strong>{account.display_name || account.username}</strong><small>{account.username} · {account.email}</small></span></span><span>{account.role === "admin" ? tx("Quản trị viên", "Administrator") : tx("Người dùng", "User")}</span><span><b className={`status-tag ${account.is_active ? "" : "muted"}`}>{account.is_active ? tx("Hoạt động", "Active") : tx("Đã khóa", "Locked")}</b></span><span>{account.last_sign_in_at ? formatDateTime(account.last_sign_in_at) : tx("Chưa đăng nhập", "Never")}</span><span className="account-actions"><button onClick={() => { setAccounts((current) => current.map((x) => x.id === account.id ? { ...x, role: x.role === "user" ? "admin" : "user" } : x)); setToast(tx("Đã cập nhật vai trò", "Role updated")); }}>{tx("Đổi vai trò", "Change role")}</button><button onClick={() => { setAccounts((current) => current.map((x) => x.id === account.id ? { ...x, is_active: !x.is_active, banned_until: x.is_active ? "2026-12-20T09:31:05+07:00" : null } : x)); setToast(account.is_active ? tx("Đã khóa tài khoản", "Account locked") : tx("Đã mở khóa tài khoản", "Account unlocked")); }}>{account.is_active ? tx("Khóa", "Lock") : tx("Mở khóa", "Unlock")}</button><button onClick={() => setToast(tx("Đã tạo mật khẩu tạm thời", "Temporary password created"))}>{tx("Đặt lại mật khẩu", "Reset password")}</button></span></div>)}</div>{createOpen && <CreateAccount existingUsernames={accounts.map((account) => account.username)} existingEmails={accounts.map((account) => account.email)} onClose={() => setCreateOpen(false)} onSave={(account) => { setAccounts((current) => [...current, { ...account, id: crypto.randomUUID(), is_active: true, last_sign_in_at: null, banned_until: null }]); setCreateOpen(false); setToast(tx("Đã tạo tài khoản", "Account created")); }} />}</div>;
+  return <div className="standard-page"><div className="page-header"><div><h1>{tx("Quản lý tài khoản", "Account management")}</h1></div><button className="primary-button" onClick={() => setCreateOpen(true)}><Plus size={17} /> {tx("Tạo tài khoản", "Create account")}</button></div><div className="data-table accounts-table card"><div className="data-row head"><span>{tx("Tài khoản", "Account")}</span><span>{tx("Vai trò", "Role")}</span><span>{tx("Trạng thái", "Status")}</span><span>{tx("Đăng nhập cuối", "Last sign-in")}</span><span>{tx("Thao tác", "Actions")}</span></div>{accounts.map((account) => <div className="data-row" key={account.id}><span className="account-name"><i>{account.username.slice(0, 2).toUpperCase()}</i><span><strong>{account.display_name || account.username}</strong><small>{account.username} · {account.email}</small></span></span><span>{account.role === "admin" ? tx("Quản trị viên", "Administrator") : tx("Người dùng", "User")}</span><span><b className={`status-tag ${account.is_active ? "" : "muted"}`}>{account.is_active ? tx("Hoạt động", "Active") : tx("Đã khóa", "Locked")}</b></span><span>{account.last_sign_in_at ? formatDateTime(account.last_sign_in_at) : tx("Chưa đăng nhập", "Never")}</span><span className="account-actions"><button onClick={() => { setAccounts((current) => current.map((x) => x.id === account.id ? { ...x, role: x.role === "user" ? "admin" : "user" } : x)); setToast(tx("Đã cập nhật vai trò", "Role updated")); }}>{tx("Đổi vai trò", "Change role")}</button><button onClick={() => { setAccounts((current) => current.map((x) => x.id === account.id ? { ...x, is_active: !x.is_active, banned_until: x.is_active ? "2026-12-20T09:31:05+07:00" : null } : x)); setToast(account.is_active ? tx("Đã khóa tài khoản", "Account locked") : tx("Đã mở khóa tài khoản", "Account unlocked")); }}>{account.is_active ? tx("Khóa", "Lock") : tx("Mở khóa", "Unlock")}</button><button onClick={() => setToast(tx("Đã tạo mật khẩu tạm thời", "Temporary password created"))}>{tx("Đặt lại mật khẩu", "Reset password")}</button></span></div>)}</div>{createOpen && <CreateAccount existingUsernames={accounts.map((account) => account.username)} existingEmails={accounts.map((account) => account.email)} onClose={() => setCreateOpen(false)} onSave={(account) => { setAccounts((current) => [...current, { ...account, id: crypto.randomUUID(), is_active: true, last_sign_in_at: null, banned_until: null }]); setCreateOpen(false); setToast(tx("Đã tạo tài khoản", "Account created")); }} />}</div>;
 }
 
 function ConfigurationView({ pipeline, setPipeline, setToast }) {
   const { tx } = useLanguage();
   const [draft, setDraft] = useState(pipeline);
+  const [section, setSection] = useState("settings");
   const descriptions = {
     B0: tx("Không sử dụng kho tài liệu", "No document retrieval"),
     B1: tx("Tìm kiếm dense với đoạn cố định", "Dense retrieval with fixed chunks"),
@@ -650,8 +646,14 @@ function ConfigurationView({ pipeline, setPipeline, setToast }) {
     B4: tx("Pipeline đầy đủ với reranker và trích dẫn", "Full pipeline with reranking and citations"),
   };
   return <div className="standard-page configuration-page">
-    <div className="page-header"><div><h1>{tx("Cấu hình hệ thống", "System configuration")}</h1></div></div>
-    <div className="configuration-content">
+    <div className="page-header">
+      <div><h1>{tx("Cấu hình", "Configuration")}</h1></div>
+      <div className="config-section-tabs" role="tablist" aria-label={tx("Chức năng cấu hình", "Configuration tools")}>
+        <button role="tab" aria-selected={section === "settings"} className={section === "settings" ? "active" : ""} onClick={() => setSection("settings")}><Settings size={16} /> {tx("Cấu hình hệ thống", "System configuration")}</button>
+        <button role="tab" aria-selected={section === "compare"} className={section === "compare" ? "active" : ""} onClick={() => setSection("compare")}><SlidersHorizontal size={16} /> {tx("So sánh cấu hình", "Compare configurations")}</button>
+      </div>
+    </div>
+    {section === "settings" ? <div className="configuration-content">
       <div className="config-summary card">
         <span>{tx("Cấu hình đang sử dụng", "Active configuration")}</span>
         <strong>{pipeline}</strong>
@@ -665,18 +667,20 @@ function ConfigurationView({ pipeline, setPipeline, setToast }) {
         </button>)}
       </div>
       <div className="config-actions"><button className="primary-button" disabled={draft === pipeline} onClick={() => { setPipeline(draft); setToast(tx(`Đã chuyển cấu hình sang ${draft}`, `Active configuration changed to ${draft}`)); }}>{tx("Áp dụng cấu hình", "Apply configuration")}</button></div>
-    </div>
+    </div> : <CompareView embedded />}
   </div>;
 }
 
-function CompareView() {
+function CompareView({ embedded = false }) {
   const { tx } = useLanguage();
   const [left, setLeft] = useState("B0");
   const [right, setRight] = useState("B4");
   const [question, setQuestion] = useState("Thời hạn giải quyết quyền lợi bảo hiểm An Gia là bao lâu?");
   const [ran, setRan] = useState(false);
   const [compareSourceOpen, setCompareSourceOpen] = useState(null);
-  return <div className="standard-page"><div className="page-header"><div><h1>{tx("So sánh cấu hình", "Compare configurations")}</h1></div></div><div className="compare-query card"><label>{tx("Câu hỏi", "Question")}<input value={question} onChange={(e) => setQuestion(e.target.value)} /></label><button className="primary-button" onClick={() => setRan(true)}><Sparkles size={17} /> {tx("Chạy so sánh", "Run comparison")}</button></div><div className="compare-grid">{[[left, setLeft, false], [right, setRight, true]].map(([value, setter, rag], index) => { const config = PIPELINE_CONFIGS.find((item) => item.name === value); return <div className="compare-column card" key={index}><div className="compare-head"><label>{tx("Cấu hình", "Configuration")}<select value={value} onChange={(e) => setter(e.target.value)}>{PIPELINE_CONFIGS.map((item) => <option key={item.name} value={item.name}>{item.name}</option>)}</select></label><span>{config.description}</span></div>{ran ? <><div className="compare-answer"><Bot size={20} /><p>{rag ? "Bảo Việt giải quyết quyền lợi trong 15 ngày làm việc kể từ khi nhận đủ hồ sơ hợp lệ. [1]" : "Thông thường doanh nghiệp bảo hiểm sẽ xử lý hồ sơ trong một khoảng thời gian hợp lý theo quy định."}</p></div><div className="compare-stats"><span>{tx("Mã lần chạy", "Run ID")}<strong>{value}_demo_20261120-1100</strong></span><span>{tx("Độ trễ", "Latency")}<strong>{rag ? "3204 ms" : "1408 ms"}</strong></span><span>{tx("Nguồn", "Sources")}<strong>{rag ? "2" : "0"}</strong></span></div>{rag && <SourceStack sources={[SOURCES[0]]} sourceOpen={compareSourceOpen} setSourceOpen={setCompareSourceOpen} showExcerpts={false} />}</> : <div className="empty-compare"><Gauge size={27} /><p>{tx("Chạy so sánh để xem kết quả", "Run comparison to see results")}</p></div>}</div>; })}</div></div>;
+  const content = <><div className="compare-query card"><label>{tx("Câu hỏi", "Question")}<input value={question} onChange={(e) => setQuestion(e.target.value)} /></label><button className="primary-button" onClick={() => setRan(true)}><Sparkles size={17} /> {tx("Chạy so sánh", "Run comparison")}</button></div><div className="compare-grid">{[[left, setLeft, false], [right, setRight, true]].map(([value, setter, rag], index) => { const config = PIPELINE_CONFIGS.find((item) => item.name === value); return <div className="compare-column card" key={index}><div className="compare-head"><label>{tx("Cấu hình", "Configuration")}<select value={value} onChange={(e) => setter(e.target.value)}>{PIPELINE_CONFIGS.map((item) => <option key={item.name} value={item.name}>{item.name}</option>)}</select></label><span>{config.description}</span></div>{ran ? <><div className="compare-answer"><Bot size={20} /><p>{rag ? "Bảo Việt giải quyết quyền lợi trong 15 ngày làm việc kể từ khi nhận đủ hồ sơ hợp lệ. [1]" : "Thông thường doanh nghiệp bảo hiểm sẽ xử lý hồ sơ trong một khoảng thời gian hợp lý theo quy định."}</p></div><div className="compare-stats"><span>{tx("Mã lần chạy", "Run ID")}<strong>{value}_demo_20261120-1100</strong></span><span>{tx("Độ trễ", "Latency")}<strong>{rag ? "3204 ms" : "1408 ms"}</strong></span><span>{tx("Nguồn", "Sources")}<strong>{rag ? "2" : "0"}</strong></span></div>{rag && <SourceStack sources={[SOURCES[0]]} sourceOpen={compareSourceOpen} setSourceOpen={setCompareSourceOpen} showExcerpts={false} />}</> : <div className="empty-compare"><Gauge size={27} /><p>{tx("Chạy so sánh để xem kết quả", "Run comparison to see results")}</p></div>}</div>; })}</div></>;
+  if (embedded) return <div className="configuration-compare">{content}</div>;
+  return <div className="standard-page"><div className="page-header"><div><h1>{tx("So sánh cấu hình", "Compare configurations")}</h1></div></div>{content}</div>;
 }
 
 function SettingsPanel({ onClose, theme, setTheme, fontSize, setFontSize, citationMode, setCitationMode, showExcerpts, setShowExcerpts, showDetails, setShowDetails, role }) {

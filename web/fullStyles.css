@@ -142,6 +142,10 @@
 .config-radio { width: 24px; height: 24px; display: grid; place-items: center; border: 1px solid #aebdca; border-radius: 50%; color: white; }
 .config-option.selected .config-radio { border-color: #00469c; background: #00469c; }
 .config-actions { display: flex; justify-content: flex-end; padding-top: 16px; }
+.config-section-tabs { display: flex; align-items: center; gap: 5px; padding: 4px; border: 1px solid #d7e1e9; border-radius: 10px; background: #edf2f6; }
+.config-section-tabs button { min-height: 34px; display: flex; align-items: center; gap: 7px; padding: 0 11px; border: 0; border-radius: 7px; background: transparent; color: #526b80; font-size: 9px; font-weight: 700; cursor: pointer; }
+.config-section-tabs button.active { color: #00469c; background: #ffffff; box-shadow: 0 2px 7px rgba(20, 49, 75, .1); }
+.configuration-compare { padding-top: 1px; }
 
 /* Dark mode uses explicit high-contrast tokens across every surface. */
 .theme-dark { background: #091b2a; color: #f2f7fb; }
@@ -164,9 +168,20 @@
 .theme-dark .refusal-label { color: #ffd87a; }.theme-dark .answer-text.refused { color: #fff1c7; background: #493b18; border-color: #e7ae00; }
 .theme-dark .switch { background: #597084; }.theme-dark .switch.on { background: #1680d2; }
 .theme-dark .modal-scrim { background: rgba(2, 12, 21, .72); }
-.theme-dark .status-pill { color: #bff3d8; background: #123c31; border: 1px solid #2e8060; box-shadow: none; }
-.theme-dark .status-pill span { background: #4de29a; box-shadow: 0 0 0 4px rgba(77,226,154,.16); }
 .theme-dark .session-pill { color: #eaf4fb; background: #17384f; border-color: #4c6f88; }
 .theme-dark .session-pill svg { color: #82c5f4; }
+.theme-dark .profile-menu-head { border-color: #315067; }
+.theme-dark .profile-menu button { color: #edf6fc; background: transparent; }
+.theme-dark .profile-menu button:hover { background: #1b4059; }
+.theme-dark .system-summary { color: #c9f8df; background: #123d32; border: 1px solid #2f7f62; }
+.theme-dark .system-summary strong, .theme-dark .system-summary button { color: #c9f8df; }
+.theme-dark .system-list { border-color: #426078; }
+.theme-dark .system-list > div { border-color: #426078; }
+.theme-dark .system-list small, .theme-dark .system-list em { color: #bad0df; }
+.theme-dark .system-list b { color: #72e5aa; }
+.theme-dark .system-icon { color: #8bcbfa; background: #1a405a; }
+.theme-dark .config-section-tabs { background: #0f293c; border-color: #426078; }
+.theme-dark .config-section-tabs button { color: #bfd1de; }
+.theme-dark .config-section-tabs button.active { color: #ffffff; background: #1c5683; box-shadow: none; }
 @media (max-width: 1050px) { .catalog-layout, .dashboard-grid { grid-template-columns: 1fr; }.metric-grid { grid-template-columns: 1fr 1fr; }.processing-panel { grid-template-columns: 1fr 1fr; }.full-sidebar { position: fixed; top: 64px; bottom: 0; left: 0; transform: translateX(-102%); }.full-sidebar.mobile-open { transform: translateX(0); }.page-area { width: 100%; }.mobile-only { display: grid; } }
 @media (max-width: 700px) { .profile-copy, .session-pill, .status-pill { display: none; }.page-header { padding: 17px; }.page-header h1 { font-size: 18px; }.header-actions { display: none; }.metric-grid, .compare-grid { grid-template-columns: 1fr; }.catalog-layout { padding: 15px; }.product-table { overflow-x: auto; }.product-table .table-head, .product-table > button { min-width: 620px; }.dashboard-grid, .metric-grid, .history-page-list, .data-table, .compare-grid { margin-left: 0; margin-right: 0; padding-left: 15px; padding-right: 15px; }.data-table { overflow-x: auto; }.data-row { min-width: 760px; }.login-page { grid-template-columns: 1fr; }.login-brand { display: none; }.login-card { margin: 30px auto; }.compare-query { margin-left: 15px; margin-right: 15px; }.scope-row { align-items: center; }.privacy-note { display: none; } }
