@@ -181,8 +181,25 @@ thực JWT và ghi câu trả lời bằng service_role. `app/service.py` gắn 
 liệu, mục, trang, link trang sản phẩm từ catalog, đoạn văn bản) và đánh dấu đoạn được trích dẫn. Mỗi câu hỏi độc lập
 (không dùng lịch sử hội thoại).
 
-API: `POST /ask`, `GET /products`, `GET /demo-questions`, `GET /health`. Domain frontend khai trong `CORS_ORIGINS`
-(mặc định `http://localhost:5173`).
+API (`app/api.py`, chi tiết `docs/roadmap/7.DA1_MethodList_v2.xlsx`), header `Authorization: Bearer <access_token>`
+của Supabase:
+
+| Quyền | Endpoint | Việc |
+| --- | --- | --- |
+| công khai | `GET /health` | pipeline đã nạp chưa, cấu hình nào |
+| người dùng | `POST /chat/ask` | `{question, conversation_id?, product_filter?}` → câu trả lời + nguồn; lưu conversations, messages, message_citations, traces, retrieval_logs |
+| người dùng | `POST /chat/ask/stream` | như trên, Server-Sent Events `status` → `token` → `done` \| `error` |
+| admin | `GET /admin/health` | Ollama (100% GPU), Qdrant, encoder, reranker, Supabase |
+| admin | `PUT /admin/configs/active` | đổi cấu hình demo (B0–B4), mở run mới, ghi app_settings |
+| admin | `POST /admin/compare` | 1 câu hỏi trên 2 cấu hình, không lưu hội thoại |
+| admin | `GET/POST /admin/users`, `PATCH /admin/users/{id}`, `POST /admin/users/{id}/reset-password` | tài khoản demo, mật khẩu tạm trả một lần |
+| kiểm demo | `POST /ask`, `GET /products`, `GET /demo-questions` | `scripts/demo_check.py`; không lưu DB; khi có Supabase cần token hoặc `X-Demo-Key` |
+
+Câu hỏi được che CCCD/CMND/SĐT/email (`app/privacy.py`) trước khi vào pipeline, DB và log. Mỗi phiên demo là một run
+`{config}_demo_{yyyymmdd-hhmm}` (bảng `runs`, split = demo) và một thư mục `runs/{run_id}/` (log.jsonl + meta.json,
+`$RUNS_DIR` hoặc `$DRIVE_DIR/runs`). Lỗi ghi Supabase không làm mất câu trả lời (`saved: false`, `db_error`).
+Cấu hình chunk cố định (B1) không lưu trích dẫn vào DB vì bảng `chunks` chỉ có chunk cấu trúc. Domain frontend khai
+trong `CORS_ORIGINS` (mặc định `http://localhost:5173`).
 
 Colab L4: mở `scripts/colab_demo.ipynb`, Run all; cell 7 in link API `https://….trycloudflare.com` (gán vào
 `VITE_API_URL` của frontend), cell 8 chạy kịch bản `app/demo_script.yaml` (6 câu dev: tra cứu, bảng phí, tình huống,
@@ -190,7 +207,7 @@ so sánh, 2 câu ngoài phạm vi) và ghi bản chép lên Drive `runs/demo/`. 
 
 ```bash
 uv pip install -r requirements/demo.txt
-DEMO_CONFIG=configs/B4.yaml PYTHONPATH=. uvicorn app.api:app --port 8000
+DEMO_CONFIG=configs/B4.yaml PYTHONPATH=. uvicorn app.api:app --port 8000   # đọc .env nếu export trước; thiếu Supabase → chỉ /ask
 npm install && VITE_API_URL=http://localhost:8000 npm run dev
 python scripts/demo_check.py --api http://localhost:8000 --out runs/demo/demo_local
 ```

@@ -1,4 +1,4 @@
-"""Demo tuần 7: DemoService gắn nguồn cho trích dẫn, FastAPI /ask, kịch bản demo chỉ dùng câu dev.
+"""Demo tuần 7: ChatService (tên cũ DemoService) gắn nguồn cho trích dẫn, FastAPI /ask, kịch bản demo chỉ dùng câu dev.
 Không cần GPU (pipeline giả từ test_b4). Chạy: PYTHONPATH=. python -m pytest -q tests/test_demo.py"""
 import json
 
@@ -56,16 +56,25 @@ def test_ask_empty():
         service().ask("   ")
 
 
-def test_api_ask_and_log(tmp_path, monkeypatch):
-    log = tmp_path / "demo.jsonl"
-    monkeypatch.setenv("DEMO_LOG", str(log))
-    with TestClient(create_app(service())) as c:
+@pytest.fixture(autouse=True)
+def runs_dir(tmp_path, monkeypatch):
+    """RunLogger ghi runs/{run_id}/ vào thư mục tạm, không vào repo."""
+    monkeypatch.setenv("RUNS_DIR", str(tmp_path / "runs"))
+    for k in ("SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "SUPABASE_ANON_KEY", "DEMO_CONFIG"):
+        monkeypatch.delenv(k, raising=False)
+
+
+def test_api_ask_and_log(tmp_path):
+    svc = service()
+    with TestClient(create_app(svc)) as c:
         assert c.get("/health").json() == {"ok": True, "config": "B4"}
         r = c.post("/ask", json={"question": "thời gian chờ BVP"})
         assert r.status_code == 200 and r.json()["sources"][0]["chunk_id"] == "BVP_A"
         assert c.post("/ask", json={"question": "a"}).status_code == 422
         assert {p["product_code"] for p in c.get("/products").json()} == {"BVP", "BTB"}
-    assert json.loads(log.read_text(encoding="utf-8"))["question"] == "thời gian chờ BVP"
+    rec = json.loads((tmp_path / "runs" / svc.run_id / "log.jsonl").read_text(encoding="utf-8"))
+    assert rec["question"] == "thời gian chờ BVP" and rec["kind"] == "ask"
+    assert json.loads((tmp_path / "runs" / svc.run_id / "meta.json").read_text(encoding="utf-8"))["finished_at"]
 
 
 def test_demo_script_dev_only():
