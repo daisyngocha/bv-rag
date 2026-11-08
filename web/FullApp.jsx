@@ -47,65 +47,47 @@ import {
   Users,
   X,
 } from "lucide-react";
+import {
+  ACCOUNTS,
+  APP_SETTINGS,
+  CHUNKS,
+  CONVERSATIONS,
+  CONVERSATION_MESSAGES,
+  DATA_VERSIONS,
+  DOCUMENTS,
+  ENUM_LABELS,
+  EVAL_RESULTS,
+  MESSAGE_CITATIONS,
+  PIPELINE_CONFIGS,
+  PRODUCTS,
+  QUERY_LOGS,
+  RETRIEVAL_LOGS,
+  SAMPLE_QUESTIONS,
+  SYSTEMS,
+  TRACE,
+} from "./dataDictionaryMock";
 
-const PRODUCTS = [
-  { code: "BVP", name: "Bảo Việt An Gia", type: "Sức khỏe", docs: 6, chunks: 842, effective: "27/06/2025" },
-  { code: "BTB", name: "Bảo Việt Tâm Bình", type: "Sức khỏe", docs: 5, chunks: 614, effective: "27/06/2025" },
-  { code: "ITC", name: "Bảo Việt Intercare", type: "Sức khỏe cao cấp", docs: 7, chunks: 936, effective: "27/06/2025" },
-  { code: "C37", name: "37 bệnh hiểm nghèo", type: "Bệnh hiểm nghèo", docs: 4, chunks: 471, effective: "27/06/2025" },
-  { code: "FLX", name: "Du lịch Flexi", type: "Du lịch", docs: 8, chunks: 755, effective: "27/06/2025" },
-];
+const INITIAL_HISTORY = CONVERSATIONS.map((conversation) => ({
+  ...conversation,
+  preview: CONVERSATION_MESSAGES[conversation.id],
+  time: new Date(conversation.updated_at).toLocaleString("vi-VN", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }),
+}));
 
-const INITIAL_HISTORY = [
-  { id: 1, title: "Quyền lợi nội trú An Gia", preview: "Thời hạn giải quyết quyền lợi bảo hiểm...", time: "10:42 hôm nay" },
-  { id: 2, title: "So sánh CI37 và Intercare", preview: "So sánh độ tuổi tham gia...", time: "Hôm qua" },
-  { id: 3, title: "Phí bảo hiểm du lịch Flexi", preview: "Phí gia đình hạng Kim Cương...", time: "12/11" },
-  { id: 4, title: "Thời gian chờ Tâm Bình", preview: "Thời gian chờ quyền lợi thai sản...", time: "10/11" },
-];
-
-const SAMPLE_QUESTIONS = [
-  ["Tra cứu quy tắc", "Thời hạn giải quyết quyền lợi bảo hiểm An Gia là bao lâu?"],
-  ["Quyền lợi", "Trẻ 2 tuổi nằm viện nội trú được hưởng quyền lợi gì trong An Gia?"],
-  ["So sánh", "So sánh độ tuổi tham gia của CI37 và Intercare."],
-  ["Bảng phí", "Phí gia đình của Flexi hạng Kim Cương cho chuyến đi 204–210 ngày?"],
-];
-
-const SOURCES = [
-  {
-    id: 1,
-    title: "Chương IV › Điều 18 › Khoản 2",
-    doc: "Quy tắc bảo hiểm sức khỏe Bảo Việt An Gia",
-    page: 24,
-    text: "Trong thời hạn 15 ngày làm việc kể từ ngày nhận được đầy đủ hồ sơ yêu cầu trả tiền bảo hiểm hợp lệ, Bảo Việt có trách nhiệm xem xét và giải quyết quyền lợi bảo hiểm.",
-  },
-  {
-    id: 2,
-    title: "Chương IV › Điều 17 › Khoản 1",
-    doc: "Quy tắc bảo hiểm sức khỏe Bảo Việt An Gia",
-    page: 23,
-    text: "Người được bảo hiểm hoặc người thụ hưởng có trách nhiệm gửi hồ sơ yêu cầu trả tiền bảo hiểm theo danh mục chứng từ được quy định cho từng quyền lợi.",
-  },
-];
-
-const LOGS = [
-  { id: "run_8f20", query: "Thời hạn giải quyết quyền lợi An Gia?", status: "Đã trả lời", latency: "3,2 giây", rating: "Hữu ích", config: "B4", time: "10:42" },
-  { id: "run_8f19", query: "Bảo hiểm xe ô tô có quyền lợi gì?", status: "Từ chối", latency: "1,1 giây", rating: "—", config: "B4", time: "10:31" },
-  { id: "run_8f18", query: "So sánh CI37 và Intercare", status: "Đã trả lời", latency: "4,8 giây", rating: "Không hữu ích", config: "B4", time: "09:58" },
-  { id: "run_8f17", query: "Phí Flexi hạng Kim Cương 210 ngày", status: "Đã trả lời", latency: "2,9 giây", rating: "Hữu ích", config: "B3", time: "09:34" },
-];
-
-const ACCOUNTS = [
-  { id: 1, username: "nguyentha", role: "Quản trị viên", status: "Hoạt động", last: "Vừa xong" },
-  { id: 2, username: "demo_user", role: "Người dùng", status: "Hoạt động", last: "Hôm qua" },
-  { id: 3, username: "reviewer", role: "Người dùng", status: "Đã khóa", last: "05/11/2026" },
-];
-
-const SYSTEMS = [
-  { name: "FastAPI", detail: "Phiên bản 0.162.1 · /health", status: "Sẵn sàng", metric: "42 ms" },
-  { name: "Ollama", detail: "qwen2.5:7b-instruct-q4_K_M", status: "Đã nạp", metric: "GPU 100%" },
-  { name: "Qdrant", detail: "5 collections · data_version v1", status: "Sẵn sàng", metric: "3.618 chunks" },
-  { name: "Embedding & reranker", detail: "bge-m3 · bge-reranker-v2-m3", status: "Sẵn sàng", metric: "L4" },
-];
+const SOURCES = MESSAGE_CITATIONS.map((citation) => {
+  const chunk = CHUNKS.find((item) => item.data_version === citation.data_version && item.chunk_id === citation.chunk_id);
+  const document = DOCUMENTS.find((item) => item.id === chunk?.document_id);
+  return {
+    message_id: citation.message_id,
+    ord: citation.ord,
+    data_version: citation.data_version,
+    chunk_id: citation.chunk_id,
+    section_path: chunk?.section_path,
+    page: chunk?.page,
+    text: chunk?.text,
+    source_file: document?.source_file,
+    url: document?.url,
+  };
+});
 
 export default function FullApp() {
   const [authenticated, setAuthenticated] = useState(true);
@@ -117,12 +99,12 @@ export default function FullApp() {
   const [systemOpen, setSystemOpen] = useState(false);
   const [sessionSeconds, setSessionSeconds] = useState(29 * 60 + 58);
   const [sessionExpired, setSessionExpired] = useState(false);
-  const [theme, setTheme] = useState("light");
-  const [largeText, setLargeText] = useState(false);
+  const [theme, setTheme] = useState("system");
+  const [fontSize, setFontSize] = useState(14);
   const [citationMode, setCitationMode] = useState("inline");
   const [showExcerpts, setShowExcerpts] = useState(true);
   const [showDetails, setShowDetails] = useState(false);
-  const [pipeline, setPipeline] = useState("B4");
+  const [pipeline, setPipeline] = useState(APP_SETTINGS.value.config);
   const [history, setHistory] = useState(INITIAL_HISTORY);
   const [activeHistory, setActiveHistory] = useState(null);
   const [historySearch, setHistorySearch] = useState("");
@@ -181,16 +163,33 @@ export default function FullApp() {
   }
 
   function sendQuestion(question = query) {
-    const clean = maskSensitive(question.trim());
+    const raw = question.trim();
+    const clean = maskSensitive(raw);
     if (!clean || loading) return;
-    setMessages((current) => [...current, { role: "user", text: clean }]);
+    const userMessageId = crypto.randomUUID();
+    const conversationId = activeHistory || crypto.randomUUID();
+    setMessages((current) => [...current, {
+      id: userMessageId,
+      conversation_id: conversationId,
+      reply_to_id: null,
+      role: "user",
+      content: clean,
+      pii_masked: clean !== raw,
+      product_filter: selectedProducts.length ? selectedProducts : null,
+      refused: false,
+      refusal_reason: null,
+      run_id: null,
+      created_at: new Date().toISOString(),
+    }]);
     setQuery("");
     setLoading(true);
     setStreamText("");
     setFeedback(null);
     if (!messages.length) {
+      const now = new Date().toISOString();
+      setActiveHistory(conversationId);
       setHistory((current) => [
-        { id: Date.now(), title: clean.slice(0, 48), preview: clean, time: "Vừa xong" },
+        { id: conversationId, user_id: ACCOUNTS[0].id, title: clean.slice(0, 48), title_is_custom: false, created_at: now, updated_at: now, preview: clean, time: formatDateTime(now) },
         ...current,
       ]);
     }
@@ -209,7 +208,20 @@ export default function FullApp() {
           setStreamText("");
           setMessages((current) => [
             ...current,
-            { role: "assistant", text: response, refused: outOfScope, sources: outOfScope ? [] : SOURCES },
+            {
+              id: crypto.randomUUID(),
+              conversation_id: conversationId,
+              reply_to_id: userMessageId,
+              role: "assistant",
+              content: response,
+              pii_masked: false,
+              product_filter: null,
+              refused: outOfScope,
+              refusal_reason: outOfScope ? "ngoai_pham_vi" : null,
+              run_id: `${pipeline}_demo_20261120-1042`,
+              created_at: new Date().toISOString(),
+              sources: outOfScope ? [] : SOURCES,
+            },
           ]);
         }
       }, 18);
@@ -227,16 +239,16 @@ export default function FullApp() {
   function openHistory(item) {
     setActiveHistory(item.id);
     setMessages([
-      { role: "user", text: item.preview },
-      { role: "assistant", text: "Đây là snapshot câu trả lời đã lưu tại thời điểm truy vấn. Nội dung không được chạy lại để bảo toàn cấu hình và nguồn trích dẫn.", sources: SOURCES },
+      { id: crypto.randomUUID(), conversation_id: item.id, reply_to_id: null, role: "user", content: item.preview, pii_masked: false, product_filter: null, refused: false, refusal_reason: null, run_id: null, created_at: item.created_at },
+      { id: crypto.randomUUID(), conversation_id: item.id, reply_to_id: null, role: "assistant", content: "Đây là snapshot câu trả lời đã lưu tại thời điểm truy vấn. Nội dung không được chạy lại để bảo toàn cấu hình và nguồn trích dẫn.", pii_masked: false, product_filter: null, refused: false, refusal_reason: null, run_id: `${pipeline}_demo_20261120-1042`, created_at: item.updated_at, sources: SOURCES },
     ]);
     setView("chat");
     setHistoryMenu(null);
   }
 
   function downloadConversation() {
-    const body = messages.map((m) => `## ${m.role === "user" ? "Người dùng" : "Trợ lý"}\n\n${m.text}`).join("\n\n");
-    const sourceList = SOURCES.map((s) => `- [${s.id}] ${s.doc}, ${s.title}, trang ${s.page}`).join("\n");
+    const body = messages.map((m) => `## ${m.role === "user" ? "Người dùng" : "Trợ lý"}\n\n${m.content}`).join("\n\n");
+    const sourceList = SOURCES.map((s) => `- [${s.ord}] ${s.source_file}, ${s.section_path}, trang ${s.page} · ${s.data_version}/${s.chunk_id}`).join("\n");
     const blob = new Blob([`# Cuộc trò chuyện Bảo Việt\n\n${body}\n\n## Nguồn\n${sourceList}`], { type: "text/markdown" });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
@@ -271,7 +283,7 @@ export default function FullApp() {
   const ss = String(sessionSeconds % 60).padStart(2, "0");
 
   return (
-    <div className={`full-app theme-${theme} ${largeText ? "large-text" : ""}`}>
+    <div className={`full-app theme-${theme} ${fontSize >= 17 ? "large-text" : ""}`} style={{ "--app-font-size": `${fontSize}px` }}>
       <a className="skip-link" href="#page-content">Bỏ qua đến nội dung chính</a>
       <header className="topbar full-topbar">
         <button className="icon-button mobile-only" onClick={() => setMobileNav(true)} aria-label="Mở menu"><Menu size={22} /></button>
@@ -287,14 +299,12 @@ export default function FullApp() {
           <button className="icon-button" onClick={() => setSettingsOpen(true)} aria-label="Cài đặt"><Settings size={20} /></button>
           <div className="profile-wrap">
             <button className="profile-button" onClick={() => setProfileOpen(!profileOpen)}>
-              <span>NH</span><span className="profile-copy"><strong>Ngọc Hà</strong><small>{role === "admin" ? "Quản trị viên" : "Người dùng"}</small></span><ChevronDown size={16} />
+              <span>D1</span><span className="profile-copy"><strong>{ACCOUNTS[0].display_name}</strong><small>{ENUM_LABELS.user_role[role]}</small></span><ChevronDown size={16} />
             </button>
             {profileOpen && (
               <div className="profile-menu">
-                <div className="profile-menu-head"><strong>nguyentha</strong><small>Phiên demo · không lưu dữ liệu cá nhân</small></div>
-                <button onClick={() => { setRole(role === "admin" ? "user" : "admin"); setProfileOpen(false); setToast(`Đã chuyển sang vai trò ${role === "admin" ? "Người dùng" : "Quản trị viên"}`); }}>
-                  <UserCog size={17} /> Chuyển sang {role === "admin" ? "Người dùng" : "Quản trị viên"}
-                </button>
+                <div className="profile-menu-head"><strong>{ACCOUNTS[0].username}</strong><small>{ACCOUNTS[0].email} · không lưu dữ liệu cá nhân</small></div>
+                <div className="profile-role-note"><ShieldCheck size={16} /><span>role: <b>{role}</b><small>Vai trò chỉ được quản trị qua profiles.role.</small></span></div>
                 <button onClick={logout}><LogOut size={17} /> Đăng xuất</button>
               </div>
             )}
@@ -396,19 +406,20 @@ export default function FullApp() {
           onClose={() => setSettingsOpen(false)}
           theme={theme}
           setTheme={setTheme}
-          largeText={largeText}
-          setLargeText={setLargeText}
+          fontSize={fontSize}
+          setFontSize={setFontSize}
           citationMode={citationMode}
           setCitationMode={setCitationMode}
           showExcerpts={showExcerpts}
           setShowExcerpts={setShowExcerpts}
           showDetails={showDetails}
           setShowDetails={setShowDetails}
+          role={role}
         />
       )}
       {systemOpen && <SystemModal onClose={() => setSystemOpen(false)} />}
       {feedbackOpen && <FeedbackModal onClose={() => setFeedbackOpen(false)} onSave={() => { setFeedback("down"); setFeedbackOpen(false); setToast("Đã lưu lý do phản hồi"); }} />}
-      {renameItem && <RenameModal item={renameItem} onClose={() => setRenameItem(null)} onSave={(name) => { setHistory((current) => current.map((item) => item.id === renameItem.id ? { ...item, title: name } : item)); setRenameItem(null); setToast("Đã đổi tên cuộc trò chuyện"); }} />}
+      {renameItem && <RenameModal item={renameItem} onClose={() => setRenameItem(null)} onSave={(name) => { setHistory((current) => current.map((item) => item.id === renameItem.id ? { ...item, title: name, title_is_custom: true, updated_at: new Date().toISOString() } : item)); setRenameItem(null); setToast("Đã cập nhật conversations.title và title_is_custom"); }} />}
       {deleteItem && <ConfirmModal item={deleteItem} onClose={() => setDeleteItem(null)} onConfirm={() => { setHistory((current) => deleteItem.all ? [] : current.filter((item) => item.id !== deleteItem.id)); setDeleteItem(null); setToast("Đã xóa lịch sử"); }} />}
       {sessionExpired && <SessionExpired onLogin={() => { setSessionExpired(false); setSessionSeconds(29 * 60 + 59); }} onLogout={logout} />}
       {toast && <div className="toast"><Check size={17} /> {toast}</div>}
@@ -433,7 +444,7 @@ function LoginScreen({ onLogin }) {
         <p className="eyebrow-text">PHIÊN BẢN DEMO</p>
         <h2>Đăng nhập hệ thống</h2>
         <p>Sử dụng tài khoản demo được cung cấp để tiếp tục.</p>
-        <label>Tên đăng nhập<input defaultValue="nguyentha" autoComplete="username" /></label>
+        <label>email demo<input defaultValue="demo01@bv-rag.local" autoComplete="username" /></label>
         <label>Mật khẩu<input type="password" defaultValue="baoviet-demo" autoComplete="current-password" /></label>
         <div className="login-note"><LockKeyhole size={15} /> Phiên tự động hết hạn sau 30 phút không hoạt động.</div>
         <button type="submit">Đăng nhập <ArrowUp size={18} /></button>
@@ -455,7 +466,7 @@ function ChatView(props) {
       <div className="page-header compact">
         <div><div className="page-kicker"><span /> RAG · Kho dữ liệu v1</div><h1>{messages.length ? "Cuộc trò chuyện hiện tại" : "Trợ lý tra cứu sản phẩm bảo hiểm"}</h1></div>
         <div className="header-actions">
-          {role === "admin" && <label className="pipeline-select">Pipeline<select value={pipeline} onChange={(e) => setPipeline(e.target.value)}>{["B0", "B1", "B2", "B3", "B4"].map((x) => <option key={x}>{x}</option>)}</select></label>}
+          {role === "admin" && <label className="pipeline-select" title={`app_settings.${APP_SETTINGS.key} = ${APP_SETTINGS.value.config}`}>active_config<select value={pipeline} onChange={(e) => setPipeline(e.target.value)}>{PIPELINE_CONFIGS.map((config) => <option key={config.name} value={config.name}>{config.name} · {config.description}</option>)}</select></label>}
           {messages.length > 0 && <button className="secondary-button" onClick={downloadConversation}><Download size={16} /> Xuất Markdown</button>}
         </div>
       </div>
@@ -466,14 +477,14 @@ function ChatView(props) {
             <p className="welcome-kicker">TRỢ LÝ BẢO VIỆT</p>
             <h2>Bạn muốn tìm hiểu điều gì?</h2>
             <p className="welcome-copy">Tra cứu quy tắc, quyền lợi và biểu phí từ tài liệu sản phẩm chính thức. Mỗi câu trả lời đều có nguồn để bạn kiểm tra.</p>
-            <div className="sample-grid">{SAMPLE_QUESTIONS.map(([group, question]) => <button key={question} onClick={() => sendQuestion(question)}><span>{group}</span><strong>{question}</strong><ArrowUp size={18} /></button>)}</div>
+            <div className="sample-grid">{SAMPLE_QUESTIONS.filter((item) => item.is_active).map((item) => <button key={item.qid} onClick={() => sendQuestion(item.question)}><span>{ENUM_LABELS.question_group[item.question_group]}</span><strong>{item.question}</strong><small>{item.products?.join(", ")}</small><ArrowUp size={18} /></button>)}</div>
           </div>
         ) : (
           <div className="conversation">
             {privacyMasked && <div className="privacy-banner"><ShieldCheck size={17} /><span>Thông tin nhạy cảm đã được tự động che trước khi lưu lịch sử.</span><button onClick={() => setPrivacyMasked(false)}><X size={16} /></button></div>}
             {messages.map((message, index) => message.role === "user"
-              ? <div className="user-row" key={index}><div className="user-bubble">{message.text}</div><div className="avatar user-avatar"><UserRound size={17} /></div></div>
-              : <Answer key={index} message={message} sourceOpen={sourceOpen} setSourceOpen={setSourceOpen} feedback={feedback} setFeedback={setFeedback} setFeedbackOpen={setFeedbackOpen} citationMode={citationMode} showExcerpts={showExcerpts} showDetails={showDetails} setToast={setToast} pipeline={pipeline} />
+              ? <div className="user-row" key={message.id || index}><div className="user-bubble">{message.content}</div><div className="avatar user-avatar"><UserRound size={17} /></div></div>
+              : <Answer key={index} message={message} sourceOpen={sourceOpen} setSourceOpen={setSourceOpen} feedback={feedback} setFeedback={setFeedback} setFeedbackOpen={setFeedbackOpen} citationMode={citationMode} showExcerpts={showExcerpts} showDetails={showDetails && role === "admin"} setToast={setToast} pipeline={pipeline} />
             )}
             {(loading || streamText) && <StreamingAnswer text={streamText} loading={loading} />}
             <div ref={chatEnd} />
@@ -484,7 +495,7 @@ function ChatView(props) {
         <div className="scope-row">
           <div className="scope-wrap">
             <button className="scope-button" onClick={() => setScopeOpen(!scopeOpen)}><BookOpen size={16} />{selectedProducts.length ? `${selectedProducts.length} sản phẩm đã chọn` : "Tự động nhận diện sản phẩm"}<ChevronDown size={16} /></button>
-            {scopeOpen && <div className="scope-menu"><div><strong>Phạm vi sản phẩm</strong><small>Có thể chọn nhiều sản phẩm để so sánh</small></div>{PRODUCTS.map((p) => <button key={p.code} onClick={() => setSelectedProducts(selectedProducts.includes(p.code) ? selectedProducts.filter((x) => x !== p.code) : [...selectedProducts, p.code])}><span className={`checkbox ${selectedProducts.includes(p.code) ? "checked" : ""}`}>{selectedProducts.includes(p.code) && <Check size={13} />}</span><span><strong>{p.name}</strong><small>{p.code}</small></span></button>)}</div>}
+            {scopeOpen && <div className="scope-menu"><div><strong>Phạm vi sản phẩm</strong><small>messages.product_filter · text[]</small></div>{PRODUCTS.filter((p) => p.is_active).map((p) => <button key={p.product_code} onClick={() => setSelectedProducts(selectedProducts.includes(p.product_code) ? selectedProducts.filter((x) => x !== p.product_code) : [...selectedProducts, p.product_code])}><span className={`checkbox ${selectedProducts.includes(p.product_code) ? "checked" : ""}`}>{selectedProducts.includes(p.product_code) && <Check size={13} />}</span><span><strong>{p.product_name}</strong><small>{p.product_code} · {ENUM_LABELS.line[p.line]}</small></span></button>)}</div>}
           </div>
           <span className="privacy-note"><ShieldCheck size={15} /> Hệ thống tự che CCCD, SĐT và email trong câu hỏi</span>
         </div>
@@ -499,17 +510,17 @@ function ChatView(props) {
 }
 
 function Answer({ message, sourceOpen, setSourceOpen, feedback, setFeedback, setFeedbackOpen, citationMode, showExcerpts, showDetails, setToast, pipeline }) {
-  const copy = () => { navigator.clipboard?.writeText(message.text); setToast("Đã sao chép câu trả lời và nguồn"); };
+  const copy = () => { navigator.clipboard?.writeText(message.content); setToast("Đã sao chép câu trả lời và nguồn"); };
   return (
     <div className="assistant-row">
       <div className="avatar assistant-avatar"><Sparkles size={17} /></div>
       <div className="answer-wrap">
         <div className="answer-label">Trợ lý Bảo Việt</div>
-        {message.refused && <div className="refusal-label"><ShieldCheck size={16} /> Từ chối an toàn · Không đủ căn cứ</div>}
-        <div className={`answer-text ${message.refused ? "refused" : ""}`}>{message.text.split("\n").map((line, i) => <p key={i}>{formatLine(line, citationMode, setSourceOpen)}</p>)}</div>
-        {citationMode === "list" && message.sources?.length > 0 && <div className="citation-list-note">Nguồn được liệt kê theo thứ tự ở cuối câu trả lời.</div>}
+        {message.refused && <div className="refusal-label"><ShieldCheck size={16} /> Từ chối an toàn · {ENUM_LABELS.refusal_reason[message.refusal_reason]}</div>}
+        <div className={`answer-text ${message.refused ? "refused" : ""}`}>{message.content.split("\n").map((line, i) => <p key={i}>{formatLine(line, citationMode, setSourceOpen)}</p>)}</div>
+        {citationMode === "footnote" && message.sources?.length > 0 && <div className="citation-list-note">Nguồn được hiển thị theo kiểu footnote ở cuối câu trả lời.</div>}
         {message.sources?.length > 0 && <SourceStack sources={message.sources} sourceOpen={sourceOpen} setSourceOpen={setSourceOpen} showExcerpts={showExcerpts} />}
-        {showDetails && <ProcessingDetails pipeline={pipeline} />}
+        {showDetails && <ProcessingDetails pipeline={pipeline} runId={message.run_id} />}
         <div className="answer-actions">
           <button onClick={copy}><Copy size={16} /> Sao chép</button><span />
           <span>Câu trả lời này có hữu ích?</span>
@@ -526,24 +537,58 @@ function StreamingAnswer({ text, loading }) {
 }
 
 function SourceStack({ sources, sourceOpen, setSourceOpen, showExcerpts }) {
-  return <div className="source-stack"><div className="source-heading"><span><FileText size={17} /> Nguồn tham khảo</span><small>{sources.length} trích dẫn</small></div>{sources.map((s) => <div className={`source-card ${sourceOpen === s.id ? "open" : ""}`} key={s.id}><button onClick={() => setSourceOpen(sourceOpen === s.id ? null : s.id)}><span className="source-number">{s.id}</span><span className="source-main"><strong>{s.title}</strong><small>{s.doc} · Trang {s.page}</small></span><ChevronDown size={18} /></button>{sourceOpen === s.id && <div className="source-detail">{showExcerpts && <p>“{s.text}”</p>}<a href="https://baovietonline.com.vn/" target="_blank" rel="noreferrer">Mở tài liệu gốc <ExternalLink size={14} /></a></div>}</div>)}</div>;
+  return <div className="source-stack"><div className="source-heading"><span><FileText size={17} /> Nguồn tham khảo</span><small>{sources.length} trích dẫn</small></div>{sources.map((s) => <div className={`source-card ${sourceOpen === s.ord ? "open" : ""}`} key={`${s.message_id}-${s.ord}`}><button onClick={() => setSourceOpen(sourceOpen === s.ord ? null : s.ord)}><span className="source-number">{s.ord}</span><span className="source-main"><strong>{s.section_path}</strong><small>{s.source_file} · Trang {s.page}</small></span><ChevronDown size={18} /></button>{sourceOpen === s.ord && <div className="source-detail">{showExcerpts && <p>“{s.text}”</p>}<div className="source-metadata"><code>{s.data_version}</code><code>{s.chunk_id}</code></div><a href={s.url} target="_blank" rel="noreferrer">Mở tài liệu gốc <ExternalLink size={14} /></a></div>}</div>)}</div>;
 }
 
-function ProcessingDetails({ pipeline }) {
-  return <div className="processing-panel"><div><span>Query sau xử lý</span><strong>thời hạn giải quyết quyền lợi an gia</strong></div><div><span>Pipeline</span><strong>{pipeline} · Hybrid + Reranker</strong></div><div><span>Rerank max</span><strong>0,824</strong></div><div><span>Token</span><strong>1.284 vào · 126 ra</strong></div><div><span>Độ trễ</span><strong>3.204 ms</strong></div></div>;
+function ProcessingDetails({ pipeline, runId }) {
+  return <div className="processing-detail-wrap"><div className="processing-panel"><div><span>run_id</span><strong>{runId}</strong></div><div><span>query_processed</span><strong>{TRACE.query_processed}</strong></div><div><span>detected_products</span><strong>{TRACE.detected_products.join(", ")}</strong></div><div><span>retrieval_mode</span><strong>{TRACE.retrieval_mode}</strong></div><div><span>latency_ms</span><strong>{TRACE.latency_ms}</strong></div><div><span>tokens_in / tokens_out</span><strong>{TRACE.tokens_in} / {TRACE.tokens_out}</strong></div><div><span>cost_usd</span><strong>{TRACE.cost_usd.toFixed(6)}</strong></div><div><span>timings_ms</span><strong>{Object.entries(TRACE.timings_ms).map(([key, value]) => `${key}: ${value}`).join(" · ")}</strong></div><div><span>error</span><strong>{TRACE.error || "—"}</strong></div></div><div className="retrieval-mini-table"><div><b>rank</b><b>chunk_id</b><b>score</b><b>rerank</b><b>in_context</b></div>{RETRIEVAL_LOGS.map((row) => <div key={`${row.message_id}-${row.rank}`}><span>{row.rank}</span><code>{row.chunk_id}</code><span>{row.score}</span><span>{row.rerank ?? "—"}</span><span>{row.in_context ? "true" : "false"}</span></div>)}</div><small className="admin-only-note"><ShieldCheck size={13} /> Chỉ quản trị viên được đọc traces và retrieval_logs.</small></div>;
 }
 
 function HistoryView({ items, search, setSearch, openHistory, menu, setMenu, setRenameItem, setDeleteItem, exportItem, printItem, clearAll }) {
-  return <div className="standard-page"><div className="page-header"><div><p className="page-kicker">KHÔNG GIAN CÁ NHÂN</p><h1>Lịch sử trò chuyện</h1><p>Xem lại nguyên trạng câu trả lời và nguồn tại thời điểm truy vấn.</p></div><button className="danger-ghost" onClick={clearAll}><Trash2 size={16} /> Xóa tất cả</button></div><div className="toolbar"><label className="page-search"><Search size={17} /><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Tìm trong câu hỏi hoặc câu trả lời" /></label><span>{items.length} cuộc trò chuyện</span></div><div className="history-page-list">{items.map((item) => <div className="history-row" key={item.id}><button className="history-row-main" onClick={() => openHistory(item)}><span className="history-row-icon"><MessagesSquare size={19} /></span><span><strong>{item.title}</strong><small>{item.preview}</small></span></button><time>{item.time}</time><div className="row-menu-wrap"><button className="icon-button" onClick={() => setMenu(menu === item.id ? null : item.id)}><MoreHorizontal size={19} /></button>{menu === item.id && <div className="row-menu"><button onClick={() => { setRenameItem(item); setMenu(null); }}><Pencil size={15} /> Đổi tên</button><button onClick={() => { exportItem(); setMenu(null); }}><Download size={15} /> Xuất Markdown</button><button onClick={() => { printItem(); setMenu(null); }}><FileText size={15} /> In / Lưu PDF</button><button className="danger" onClick={() => { setDeleteItem(item); setMenu(null); }}><Trash2 size={15} /> Xóa</button></div>}</div></div>)}</div></div>;
+  return <div className="standard-page"><div className="page-header"><div><p className="page-kicker">CONVERSATIONS + MESSAGES · OWNER RLS</p><h1>Lịch sử trò chuyện</h1><p>Snapshot messages và message_citations; không chạy lại pipeline khi mở lịch sử.</p></div><button className="danger-ghost" onClick={clearAll}><Trash2 size={16} /> Xóa tất cả</button></div><div className="toolbar"><label className="page-search"><Search size={17} /><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Tìm trong messages.content" /></label><span>{items.length} conversations</span></div><div className="history-page-list">{items.map((item) => <div className="history-row" key={item.id}><button className="history-row-main" onClick={() => openHistory(item)}><span className="history-row-icon"><MessagesSquare size={19} /></span><span><strong>{item.title} {item.title_is_custom && <b className="custom-title-badge">Đã đổi tên</b>}</strong><small>{item.preview}</small></span></button><time><strong>{formatDateTime(item.updated_at)}</strong><small>updated_at</small></time><div className="row-menu-wrap"><button className="icon-button" onClick={() => setMenu(menu === item.id ? null : item.id)}><MoreHorizontal size={19} /></button>{menu === item.id && <div className="row-menu"><button onClick={() => { setRenameItem(item); setMenu(null); }}><Pencil size={15} /> Đổi tên</button><button onClick={() => { exportItem(); setMenu(null); }}><Download size={15} /> Xuất Markdown</button><button onClick={() => { printItem(); setMenu(null); }}><FileText size={15} /> In / Lưu PDF</button><button className="danger" onClick={() => { setDeleteItem(item); setMenu(null); }}><Trash2 size={15} /> Xóa cascade</button></div>}</div></div>)}</div></div>;
 }
 
 function CatalogView() {
   const [selected, setSelected] = useState(PRODUCTS[0]);
-  return <div className="standard-page"><div className="page-header"><div><p className="page-kicker">KHO TRI THỨC · DATA VERSION V1</p><h1>Sản phẩm và tài liệu</h1><p>Danh mục tài liệu công khai đang được sử dụng để trả lời.</p></div><div className="version-badge"><CheckCircle2 size={17} /> Cập nhật 08/11/2026</div></div><div className="catalog-layout"><div className="product-table card"><div className="table-head"><span>Sản phẩm</span><span>Loại</span><span>Tài liệu</span><span>Chunks</span></div>{PRODUCTS.map((p) => <button key={p.code} onClick={() => setSelected(p)} className={selected.code === p.code ? "selected" : ""}><span><b>{p.code}</b><strong>{p.name}</strong></span><span>{p.type}</span><span>{p.docs}</span><span>{p.chunks.toLocaleString("vi-VN")}</span></button>)}</div><aside className="product-detail card"><span className="product-code">{selected.code}</span><h2>{selected.name}</h2><p>{selected.type} · Hiệu lực {selected.effective}</p><hr /><h3>Tài liệu trong kho</h3>{["Quy tắc bảo hiểm", "Bảng quyền lợi", "Biểu phí", "Tài liệu giới thiệu"].map((x, i) => <a key={x} href="https://baovietonline.com.vn/" target="_blank" rel="noreferrer"><FileText size={16} /><span><strong>{x}</strong><small>PDF · {12 + i * 4} trang</small></span><ExternalLink size={14} /></a>)}</aside></div></div>;
+  const version = DATA_VERSIONS.find((item) => item.is_active);
+  const selectedDocuments = DOCUMENTS.filter((item) => item.product_code === selected.product_code);
+  return <div className="standard-page">
+    <div className="page-header">
+      <div><p className="page-kicker">KHO TRI THỨC · DATA VERSION {version.version.toUpperCase()}</p><h1>Sản phẩm và tài liệu</h1><p>Danh mục đồng bộ một chiều từ catalog.json, sources.csv và chunks.jsonl.</p></div>
+      <div className="version-badge"><CheckCircle2 size={17} /> {version.version} đang hoạt động · {version.n_chunks.toLocaleString("vi-VN")} chunks</div>
+    </div>
+    <div className="data-version-note"><strong>{version.note}</strong><span>created_at: {formatDateTime(version.created_at)}</span></div>
+    <div className="catalog-layout">
+      <div className="product-table card">
+        <div className="table-head"><span>Sản phẩm</span><span>line</span><span>documents</span><span>chunks</span></div>
+        {PRODUCTS.map((product) => {
+          const documentCount = DOCUMENTS.filter((item) => item.product_code === product.product_code).length;
+          const chunkCount = CHUNKS.filter((item) => item.product_code === product.product_code && item.data_version === version.version).length;
+          return <button key={product.product_code} onClick={() => setSelected(product)} className={selected.product_code === product.product_code ? "selected" : ""}>
+            <span><b>{product.product_code}</b><strong>{product.product_name}</strong></span>
+            <span>{ENUM_LABELS.line[product.line] || product.line}</span><span>{documentCount}</span><span>{chunkCount}</span>
+          </button>;
+        })}
+      </div>
+      <aside className="product-detail card">
+        <div className="product-detail-head"><span className="product-code">{selected.product_code}</span><b className={`status-tag ${selected.is_active ? "" : "muted"}`}>{selected.is_active ? "Đang hoạt động" : "Ngừng hoạt động"}</b></div>
+        <h2>{selected.product_name}</h2><p>company: {selected.company} · line: {selected.line}</p><hr />
+        <h3>Tài liệu trong kho</h3>
+        {selectedDocuments.length ? selectedDocuments.map((document) => <a key={document.id} href={document.url} target="_blank" rel="noreferrer">
+          <FileText size={16} /><span><strong>{ENUM_LABELS.doc_type[document.doc_type]}</strong><small>{document.source_file} · hiệu lực {formatDate(document.effective_date)}</small><small>Tải ngày {formatDate(document.downloaded_at)}</small></span><ExternalLink size={14} />
+        </a>) : <p className="empty-copy">Chưa có document được đồng bộ cho sản phẩm này.</p>}
+      </aside>
+    </div>
+  </div>;
 }
 
 function DashboardView({ setToast }) {
-  return <div className="standard-page"><div className="page-header"><div><p className="page-kicker">TỔNG QUAN VẬN HÀNH</p><h1>Dashboard chỉ số</h1><p>Dữ liệu phiên demo và kết quả thực nghiệm B0–B4.</p></div><button className="secondary-button" onClick={() => setToast("Đã cập nhật số liệu dashboard")}><RefreshCw size={16} /> Làm mới</button></div><div className="metric-grid"><Metric label="Câu hỏi hôm nay" value="128" delta="+12%" icon={MessagesSquare} /><Metric label="Độ trễ p95" value="4,8s" delta="-0,4s" icon={Gauge} /><Metric label="Tỷ lệ từ chối" value="18,7%" delta="Đúng phạm vi" icon={ShieldCheck} /><Metric label="Đánh giá tích cực" value="91,4%" delta="+3,2%" icon={ThumbsUp} /></div><div className="dashboard-grid"><div className="card chart-card"><div className="card-title"><div><h2>Chất lượng theo cấu hình</h2><p>Recall@5 và Faithfulness</p></div><BarChart3 size={20} /></div><div className="bar-chart">{[["B0", 24, 42], ["B1", 56, 61], ["B2", 72, 74], ["B3", 84, 82], ["B4", 91, 89]].map(([name, recall, faith]) => <div className="bar-group" key={name}><span>{name}</span><div><i style={{ height: `${recall}%` }} /><i style={{ height: `${faith}%` }} /></div><small>{recall}%</small></div>)}</div><div className="chart-legend"><span><i className="blue" /> Recall@5</span><span><i className="gold" /> Faithfulness</span></div></div><div className="card activity-card"><div className="card-title"><div><h2>Phân bố truy vấn</h2><p>7 ngày gần nhất</p></div></div>{[["Tra cứu", 42], ["Bảng phí", 21], ["So sánh", 17], ["Tình huống", 14], ["Ngoài phạm vi", 6]].map(([x, n]) => <div className="progress-row" key={x}><span>{x}</span><div><i style={{ width: `${n * 2}%` }} /></div><strong>{n}%</strong></div>)}</div></div></div>;
+  const chartData = PIPELINE_CONFIGS.map((config) => {
+    const recall = EVAL_RESULTS.find((item) => item.run_id.startsWith(config.name) && item.question_group === "all" && item.metric === "recall@5")?.value || 0;
+    const faithfulness = EVAL_RESULTS.find((item) => item.run_id.startsWith(config.name) && item.question_group === "all" && item.metric === "faithfulness")?.value || 0;
+    return { name: config.name, recall, faithfulness };
+  });
+  return <div className="standard-page"><div className="page-header"><div><p className="page-kicker">VIEW THỐNG KÊ + EVAL_RESULTS · ADMIN ONLY</p><h1>Dashboard chỉ số</h1><p>Metric được nhóm theo run_id, question_group, metric và value.</p></div><button className="secondary-button" onClick={() => setToast("Đã đọc lại view thống kê và eval_results")}><RefreshCw size={16} /> Làm mới</button></div><div className="metric-grid"><Metric label="Câu hỏi hôm nay" value="128" delta="View thống kê" icon={MessagesSquare} /><Metric label="Độ trễ p95" value="4,8s" delta="traces.latency_ms" icon={Gauge} /><Metric label="Tỷ lệ từ chối" value="18,7%" delta="messages.refused" icon={ShieldCheck} /><Metric label="Đánh giá tích cực" value="91,4%" delta="feedback.rating" icon={ThumbsUp} /></div><div className="dashboard-grid"><div className="card chart-card"><div className="card-title"><div><h2>eval_results theo cấu hình</h2><p>question_group = all</p></div><BarChart3 size={20} /></div><div className="bar-chart">{chartData.map((item) => <div className="bar-group" key={item.name}><span>{item.name}</span><div><i style={{ height: `${item.recall * 100}%` }} /><i style={{ height: `${item.faithfulness * 100}%` }} /></div><small>{Math.round(item.recall * 100)}%</small></div>)}</div><div className="chart-legend"><span><i className="blue" /> metric: recall@5</span><span><i className="gold" /> metric: faithfulness</span></div></div><div className="card activity-card"><div className="card-title"><div><h2>Phân bố truy vấn</h2><p>View thống kê · 7 ngày gần nhất</p></div></div>{[["lookup", 42], ["table", 21], ["compare", 17], ["scenario", 14], ["refused", 6]].map(([group, value]) => <div className="progress-row" key={group}><span>{ENUM_LABELS.question_group[group] || group}</span><div><i style={{ width: `${value * 2}%` }} /></div><strong>{value}%</strong></div>)}</div></div></div>;
 }
 
 function Metric({ label, value, delta, icon: Icon }) {
@@ -553,9 +598,9 @@ function Metric({ label, value, delta, icon: Icon }) {
 function LogsView({ setToast }) {
   const [filter, setFilter] = useState("Tất cả");
   const [search, setSearch] = useState("");
-  const visibleLogs = LOGS.filter((l) => (filter === "Tất cả" || (filter === "Từ chối" && l.status === "Từ chối") || (filter === "Không hữu ích" && l.rating === "Không hữu ích") || (filter === "Độ trễ cao" && parseFloat(l.latency) > 4)) && `${l.id} ${l.query}`.toLowerCase().includes(search.toLowerCase()));
+  const visibleLogs = QUERY_LOGS.filter((log) => (filter === "Tất cả" || (filter === "Từ chối" && log.refused) || (filter === "Không hữu ích" && log.rating === -1) || (filter === "Độ trễ cao" && log.latency_ms > 4000)) && `${log.run_id} ${log.content}`.toLowerCase().includes(search.toLowerCase()));
   const exportCsv = () => {
-    const csv = ["run_id,query,status,config,latency,rating", ...visibleLogs.map((l) => [l.id, `"${l.query}"`, l.status, l.config, l.latency, l.rating].join(","))].join("\n");
+    const csv = ["run_id,content,refused,refusal_reason,config_name,data_version,latency_ms,rating,feedback_reason", ...visibleLogs.map((log) => [log.run_id, `"${log.content}"`, log.refused, log.refusal_reason || "", log.config_name, log.data_version, log.latency_ms, log.rating ?? "", log.feedback_reason || ""].join(","))].join("\n");
     const url = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
     const anchor = document.createElement("a");
     anchor.href = url;
@@ -564,13 +609,13 @@ function LogsView({ setToast }) {
     URL.revokeObjectURL(url);
     setToast("Đã xuất nhật ký CSV");
   };
-  return <div className="standard-page"><div className="page-header"><div><p className="page-kicker">GIÁM SÁT TRUY VẤN</p><h1>Nhật ký truy vấn</h1><p>Lọc các câu bị từ chối, phản hồi xấu hoặc có độ trễ cao.</p></div><button className="secondary-button" onClick={exportCsv}><Download size={16} /> Xuất CSV</button></div><div className="toolbar log-toolbar"><label className="page-search"><Search size={17} /><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Tìm theo câu hỏi hoặc run ID" /></label><div className="filter-chips">{["Tất cả", "Từ chối", "Không hữu ích", "Độ trễ cao"].map((x) => <button key={x} className={filter === x ? "active" : ""} onClick={() => setFilter(x)}>{x}</button>)}</div></div><div className="data-table card"><div className="data-row head"><span>Thời gian</span><span>Câu hỏi</span><span>Trạng thái</span><span>Cấu hình</span><span>Độ trễ</span><span>Đánh giá</span></div>{visibleLogs.map((log) => <button className="data-row" key={log.id} onClick={() => setToast(`Đã mở chi tiết ${log.id}`)}><span><strong>{log.time}</strong><small>{log.id}</small></span><span>{log.query}</span><span><b className={`status-tag ${log.status === "Từ chối" ? "warning" : ""}`}>{log.status}</b></span><span>{log.config}</span><span>{log.latency}</span><span>{log.rating}</span></button>)}</div></div>;
+  return <div className="standard-page"><div className="page-header"><div><p className="page-kicker">GIÁM SÁT TRUY VẤN · ADMIN ONLY</p><h1>Nhật ký truy vấn</h1><p>Joined view từ messages, traces, feedback và runs; log.jsonl không bị xóa cùng hội thoại.</p></div><button className="secondary-button" onClick={exportCsv}><Download size={16} /> Xuất CSV</button></div><div className="toolbar log-toolbar"><label className="page-search"><Search size={17} /><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Tìm theo content hoặc run_id" /></label><div className="filter-chips">{["Tất cả", "Từ chối", "Không hữu ích", "Độ trễ cao"].map((x) => <button key={x} className={filter === x ? "active" : ""} onClick={() => setFilter(x)}>{x}</button>)}</div></div><div className="data-table card"><div className="data-row head"><span>created_at / run_id</span><span>messages.content</span><span>refused</span><span>config / version</span><span>latency_ms</span><span>feedback</span></div>{visibleLogs.map((log) => <button className="data-row" key={log.message_id} onClick={() => setToast(`Đã mở trace của ${log.run_id}`)}><span><strong>{formatDateTime(log.created_at)}</strong><small>{log.run_id}</small></span><span>{log.content}</span><span><b className={`status-tag ${log.refused ? "warning" : ""}`}>{log.refused ? ENUM_LABELS.refusal_reason[log.refusal_reason] : "false"}</b></span><span><strong>{log.config_name}</strong><small>{log.data_version} · {log.split} · {log.runtime}</small></span><span>{log.latency_ms}</span><span>{log.rating === 1 ? "1 · Hữu ích" : log.rating === -1 ? `-1 · ${ENUM_LABELS.feedback_reason[log.feedback_reason]}` : "—"}</span></button>)}</div></div>;
 }
 
 function AccountsView({ setToast }) {
   const [accounts, setAccounts] = useState(ACCOUNTS);
   const [createOpen, setCreateOpen] = useState(false);
-  return <div className="standard-page"><div className="page-header"><div><p className="page-kicker">QUẢN TRỊ TRUY CẬP</p><h1>Tài khoản demo</h1><p>Chỉ lưu tên đăng nhập và vai trò, không lưu thông tin cá nhân.</p></div><button className="primary-button" onClick={() => setCreateOpen(true)}><Plus size={17} /> Tạo tài khoản</button></div><div className="data-table accounts-table card"><div className="data-row head"><span>Tài khoản</span><span>Vai trò</span><span>Trạng thái</span><span>Hoạt động cuối</span><span>Thao tác</span></div>{accounts.map((a) => <div className="data-row" key={a.id}><span className="account-name"><i>{a.username.slice(0, 2).toUpperCase()}</i><strong>{a.username}</strong></span><span>{a.role}</span><span><b className={`status-tag ${a.status === "Đã khóa" ? "muted" : ""}`}>{a.status}</b></span><span>{a.last}</span><span className="account-actions"><button onClick={() => { setAccounts((current) => current.map((x) => x.id === a.id ? { ...x, role: x.role === "Người dùng" ? "Quản trị viên" : "Người dùng" } : x)); setToast("Đã cập nhật vai trò"); }}>Đổi vai trò</button><button onClick={() => { setAccounts((current) => current.map((x) => x.id === a.id ? { ...x, status: x.status === "Đã khóa" ? "Hoạt động" : "Đã khóa" } : x)); setToast(a.status === "Đã khóa" ? "Đã mở khóa tài khoản" : "Đã khóa tài khoản"); }}>{a.status === "Đã khóa" ? "Mở khóa" : "Khóa"}</button><button onClick={() => setToast("Đã tạo mật khẩu tạm thời")}>Đặt lại mật khẩu</button></span></div>)}</div>{createOpen && <CreateAccount onClose={() => setCreateOpen(false)} onSave={(account) => { setAccounts((current) => [...current, { ...account, id: Date.now(), status: "Hoạt động", last: "Chưa đăng nhập" }]); setCreateOpen(false); setToast("Đã tạo tài khoản demo"); }} />}</div>;
+  return <div className="standard-page"><div className="page-header"><div><p className="page-kicker">AUTH.USERS + PROFILES · ADMIN ONLY</p><h1>Tài khoản demo</h1><p>Supabase Auth quản lý mật khẩu; hồ sơ chỉ dùng email giả, username, display_name và role.</p></div><button className="primary-button" onClick={() => setCreateOpen(true)}><Plus size={17} /> Tạo tài khoản</button></div><div className="data-table accounts-table card"><div className="data-row head"><span>username / email</span><span>role</span><span>is_active</span><span>last_sign_in_at</span><span>Thao tác</span></div>{accounts.map((account) => <div className="data-row" key={account.id}><span className="account-name"><i>{account.username.slice(0, 2).toUpperCase()}</i><span><strong>{account.display_name || account.username}</strong><small>{account.username} · {account.email}</small></span></span><span><b className="enum-code">{account.role}</b><small>{ENUM_LABELS.user_role[account.role]}</small></span><span><b className={`status-tag ${account.is_active ? "" : "muted"}`}>{String(account.is_active)}</b>{account.banned_until && <small>banned_until: {formatDateTime(account.banned_until)}</small>}</span><span>{account.last_sign_in_at ? formatDateTime(account.last_sign_in_at) : "Chưa đăng nhập"}</span><span className="account-actions"><button onClick={() => { setAccounts((current) => current.map((x) => x.id === account.id ? { ...x, role: x.role === "user" ? "admin" : "user" } : x)); setToast("Đã cập nhật profiles.role"); }}>Đổi role</button><button onClick={() => { setAccounts((current) => current.map((x) => x.id === account.id ? { ...x, is_active: !x.is_active, banned_until: x.is_active ? "2026-12-20T09:31:05+07:00" : null } : x)); setToast(account.is_active ? "Đã khóa tài khoản" : "Đã mở khóa tài khoản"); }}>{account.is_active ? "Khóa" : "Mở khóa"}</button><button onClick={() => setToast("Supabase Auth đã tạo mật khẩu tạm thời")}>Đặt lại mật khẩu</button></span></div>)}</div>{createOpen && <CreateAccount existingUsernames={accounts.map((account) => account.username)} existingEmails={accounts.map((account) => account.email)} onClose={() => setCreateOpen(false)} onSave={(account) => { setAccounts((current) => [...current, { ...account, id: crypto.randomUUID(), is_active: true, last_sign_in_at: null, banned_until: null }]); setCreateOpen(false); setToast("Đã tạo auth.users và profiles"); }} />}</div>;
 }
 
 function CompareView() {
@@ -579,11 +624,11 @@ function CompareView() {
   const [question, setQuestion] = useState("Thời hạn giải quyết quyền lợi bảo hiểm An Gia là bao lâu?");
   const [ran, setRan] = useState(false);
   const [compareSourceOpen, setCompareSourceOpen] = useState(null);
-  return <div className="standard-page"><div className="page-header"><div><p className="page-kicker">MINH HỌA ABLATION</p><h1>So sánh hai cấu hình</h1><p>Chạy cùng một câu hỏi và đối chiếu câu trả lời, nguồn cùng độ trễ.</p></div></div><div className="compare-query card"><label>Câu hỏi<input value={question} onChange={(e) => setQuestion(e.target.value)} /></label><button className="primary-button" onClick={() => setRan(true)}><Sparkles size={17} /> Chạy so sánh</button></div><div className="compare-grid">{[[left, setLeft, false], [right, setRight, true]].map(([value, setter, rag], index) => <div className="compare-column card" key={index}><div className="compare-head"><label>Cấu hình<select value={value} onChange={(e) => setter(e.target.value)}>{["B0", "B1", "B2", "B3", "B4"].map((x) => <option key={x}>{x}</option>)}</select></label><span>{value === "B4" ? "Pipeline đầy đủ" : "Baseline"}</span></div>{ran ? <><div className="compare-answer"><Bot size={20} /><p>{rag ? "Bảo Việt giải quyết quyền lợi trong 15 ngày làm việc kể từ khi nhận đủ hồ sơ hợp lệ. [1]" : "Thông thường doanh nghiệp bảo hiểm sẽ xử lý hồ sơ trong một khoảng thời gian hợp lý theo quy định."}</p></div><div className="compare-stats"><span>Độ trễ <strong>{rag ? "3,2s" : "1,4s"}</strong></span><span>Nguồn <strong>{rag ? "2" : "0"}</strong></span><span>Faithfulness <strong>{rag ? "0,91" : "0,42"}</strong></span></div>{rag && <SourceStack sources={[SOURCES[0]]} sourceOpen={compareSourceOpen} setSourceOpen={setCompareSourceOpen} showExcerpts={false} />}</> : <div className="empty-compare"><Gauge size={27} /><p>Chạy so sánh để xem kết quả cấu hình {value}</p></div>}</div>)}</div></div>;
+  return <div className="standard-page"><div className="page-header"><div><p className="page-kicker">2 MESSAGES CÙNG REPLY_TO_ID · KHÁC RUN_ID</p><h1>So sánh hai cấu hình</h1><p>Chạy cùng một câu hỏi và đối chiếu câu trả lời, nguồn cùng độ trễ.</p></div></div><div className="compare-query card"><label>messages.content<input value={question} onChange={(e) => setQuestion(e.target.value)} /></label><button className="primary-button" onClick={() => setRan(true)}><Sparkles size={17} /> Chạy so sánh</button></div><div className="compare-grid">{[[left, setLeft, false], [right, setRight, true]].map(([value, setter, rag], index) => { const config = PIPELINE_CONFIGS.find((item) => item.name === value); return <div className="compare-column card" key={index}><div className="compare-head"><label>config_name<select value={value} onChange={(e) => setter(e.target.value)}>{PIPELINE_CONFIGS.map((item) => <option key={item.name} value={item.name}>{item.name}</option>)}</select></label><span>{config.description}</span></div>{ran ? <><div className="compare-answer"><Bot size={20} /><p>{rag ? "Bảo Việt giải quyết quyền lợi trong 15 ngày làm việc kể từ khi nhận đủ hồ sơ hợp lệ. [1]" : "Thông thường doanh nghiệp bảo hiểm sẽ xử lý hồ sơ trong một khoảng thời gian hợp lý theo quy định."}</p></div><div className="compare-stats"><span>run_id<strong>{value}_demo_20261120-1100</strong></span><span>latency_ms<strong>{rag ? "3204" : "1408"}</strong></span><span>Nguồn<strong>{rag ? "2" : "0"}</strong></span></div>{rag && <SourceStack sources={[SOURCES[0]]} sourceOpen={compareSourceOpen} setSourceOpen={setCompareSourceOpen} showExcerpts={false} />}</> : <div className="empty-compare"><Gauge size={27} /><p>Chạy so sánh để xem kết quả cấu hình {value}</p></div>}</div>; })}</div></div>;
 }
 
-function SettingsPanel({ onClose, theme, setTheme, largeText, setLargeText, citationMode, setCitationMode, showExcerpts, setShowExcerpts, showDetails, setShowDetails }) {
-  return <div className="modal-layer"><button className="modal-scrim" onClick={onClose} /><div className="settings-panel"><div className="settings-title"><div><span>Cài đặt cá nhân</span><h2>Tùy chỉnh trải nghiệm</h2></div><button className="icon-button" onClick={onClose}><X size={20} /></button></div><section><h3>Giao diện</h3><div className="theme-options"><button className={theme === "light" ? "active" : ""} onClick={() => setTheme("light")}><Sun size={20} /> Sáng</button><button className={theme === "dark" ? "active" : ""} onClick={() => setTheme("dark")}><Moon size={20} /> Tối</button></div><Toggle label="Cỡ chữ lớn" detail="Tăng kích thước nội dung hội thoại" value={largeText} setValue={setLargeText} /></section><section><h3>Trích dẫn và xử lý</h3><div className="radio-setting"><span><strong>Cách hiển thị nguồn</strong><small>Chỉ thay đổi giao diện, không đổi prompt</small></span><label><input type="radio" checked={citationMode === "inline"} onChange={() => setCitationMode("inline")} /> Trong câu</label><label><input type="radio" checked={citationMode === "list"} onChange={() => setCitationMode("list")} /> Cuối câu</label></div><Toggle label="Hiển thị đoạn văn gốc" detail="Cho phép mở nội dung chunk nguồn" value={showExcerpts} setValue={setShowExcerpts} /><Toggle label="Chi tiết xử lý" detail="Hiện điểm rerank, token và query sau xử lý" value={showDetails} setValue={setShowDetails} /></section></div></div>;
+function SettingsPanel({ onClose, theme, setTheme, fontSize, setFontSize, citationMode, setCitationMode, showExcerpts, setShowExcerpts, showDetails, setShowDetails, role }) {
+  return <div className="modal-layer"><button className="modal-scrim" onClick={onClose} /><div className="settings-panel"><div className="settings-title"><div><span>user_settings</span><h2>Tùy chỉnh trải nghiệm</h2></div><button className="icon-button" onClick={onClose}><X size={20} /></button></div><section><h3>theme · theme_mode</h3><div className="theme-options three"><button className={theme === "light" ? "active" : ""} onClick={() => setTheme("light")}><Sun size={20} /> light</button><button className={theme === "dark" ? "active" : ""} onClick={() => setTheme("dark")}><Moon size={20} /> dark</button><button className={theme === "system" ? "active" : ""} onClick={() => setTheme("system")}><Settings size={20} /> system</button></div><div className="range-setting"><span><strong>font_size</strong><small>smallint · CHECK 12–20 · mặc định 14</small></span><input type="range" min="12" max="20" step="1" value={fontSize} onChange={(event) => setFontSize(Number(event.target.value))} /><b>{fontSize}px</b></div></section><section><h3>Trích dẫn</h3><div className="radio-setting"><span><strong>citation_style</strong><small>enum: inline | footnote</small></span><label><input type="radio" checked={citationMode === "inline"} onChange={() => setCitationMode("inline")} /> inline</label><label><input type="radio" checked={citationMode === "footnote"} onChange={() => setCitationMode("footnote")} /> footnote</label></div><Toggle label="show_source_text" detail="boolean · mặc định true" value={showExcerpts} setValue={setShowExcerpts} />{role === "admin" && <Toggle label="Chi tiết xử lý" detail="Admin only · traces và retrieval_logs" value={showDetails} setValue={setShowDetails} />}</section><p className="settings-updated">updated_at được cập nhật tự động khi lưu.</p></div></div>;
 }
 
 function Toggle({ label, detail, value, setValue }) {
@@ -597,7 +642,8 @@ function SystemModal({ onClose }) {
 
 function FeedbackModal({ onClose, onSave }) {
   const [reason, setReason] = useState("");
-  return <Modal title="Điều gì cần cải thiện?" subtitle="Phản hồi được lưu cùng run ID để phân tích lỗi." onClose={onClose}><div className="reason-list">{["Câu trả lời sai", "Thiếu nguồn", "Trích dẫn không đúng", "Từ chối nhầm", "Nội dung khó hiểu"].map((x) => <label key={x}><input type="radio" name="reason" checked={reason === x} onChange={() => setReason(x)} /> {x}</label>)}</div><div className="modal-actions"><button className="secondary-button" onClick={onClose}>Hủy</button><button className="primary-button" disabled={!reason} onClick={onSave}>Gửi phản hồi</button></div></Modal>;
+  const [comment, setComment] = useState("");
+  return <Modal title="Điều gì cần cải thiện?" subtitle="feedback.rating = -1 nên reason là bắt buộc." onClose={onClose}><div className="reason-list">{Object.entries(ENUM_LABELS.feedback_reason).map(([value, label]) => <label key={value}><input type="radio" name="reason" checked={reason === value} onChange={() => setReason(value)} /><span><strong>{label}</strong><small>{value}</small></span></label>)}</div><label className="modal-field">comment<textarea value={comment} onChange={(event) => setComment(event.target.value)} placeholder="Ghi chú thêm (không bắt buộc)" /></label><div className="modal-actions"><button className="secondary-button" onClick={onClose}>Hủy</button><button className="primary-button" disabled={!reason} onClick={() => onSave({ rating: -1, reason, comment: comment || null })}>Gửi phản hồi</button></div></Modal>;
 }
 
 function RenameModal({ item, onClose, onSave }) {
@@ -609,10 +655,15 @@ function ConfirmModal({ item, onClose, onConfirm }) {
   return <Modal title="Xác nhận xóa" subtitle={`Bạn sắp xóa ${item.all ? "toàn bộ lịch sử" : `“${item.title}”`}. Hành động này không thể hoàn tác.`} onClose={onClose}><div className="delete-warning"><Trash2 size={21} /> Log thực nghiệm trong hệ thống quản trị sẽ không bị ảnh hưởng.</div><div className="modal-actions"><button className="secondary-button" onClick={onClose}>Hủy</button><button className="danger-button" onClick={onConfirm}>Xóa vĩnh viễn</button></div></Modal>;
 }
 
-function CreateAccount({ onClose, onSave }) {
+function CreateAccount({ existingUsernames, existingEmails, onClose, onSave }) {
   const [username, setUsername] = useState("");
-  const [role, setRole] = useState("Người dùng");
-  return <Modal title="Tạo tài khoản demo" subtitle="Không sử dụng email hoặc thông tin cá nhân." onClose={onClose}><label className="modal-field">Tên đăng nhập<input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Ví dụ: demo_user_02" /></label><label className="modal-field">Vai trò<select value={role} onChange={(e) => setRole(e.target.value)}><option>Người dùng</option><option>Quản trị viên</option></select></label><div className="modal-actions"><button className="secondary-button" onClick={onClose}>Hủy</button><button className="primary-button" disabled={!username} onClick={() => onSave({ username, role })}>Tạo tài khoản</button></div></Modal>;
+  const [displayName, setDisplayName] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("user");
+  const validEmail = /^demo\d+@bv-rag\.local$/.test(email);
+  const duplicateUsername = existingUsernames.includes(username);
+  const duplicateEmail = existingEmails.includes(email);
+  return <Modal title="Tạo tài khoản demo" subtitle="Email bắt buộc dùng miền giả @bv-rag.local; sign-up công khai bị tắt." onClose={onClose}><label className="modal-field">username * · UQ<input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="demo04" />{duplicateUsername && <small className="field-error">username đã tồn tại.</small>}</label><label className="modal-field">display_name<input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Người dùng demo 04" /></label><label className="modal-field">email giả * · UQ<input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="demo04@bv-rag.local" />{email && !validEmail && <small className="field-error">Định dạng yêu cầu: demoNN@bv-rag.local</small>}{duplicateEmail && <small className="field-error">email đã tồn tại.</small>}</label><label className="modal-field">role *<select value={role} onChange={(e) => setRole(e.target.value)}><option value="user">user</option><option value="admin">admin</option></select></label><div className="modal-actions"><button className="secondary-button" onClick={onClose}>Hủy</button><button className="primary-button" disabled={!username || !validEmail || duplicateUsername || duplicateEmail} onClick={() => onSave({ username, display_name: displayName || null, email, role })}>Tạo tài khoản</button></div></Modal>;
 }
 
 function SessionExpired({ onLogin, onLogout }) {
@@ -621,6 +672,16 @@ function SessionExpired({ onLogin, onLogout }) {
 
 function Modal({ title, subtitle, onClose, children, wide = false }) {
   return <div className="modal-layer"><button className="modal-scrim" onClick={onClose} /><div className={`modal-card ${wide ? "wide" : ""}`}><div className="modal-head"><div><h2>{title}</h2><p>{subtitle}</p></div><button className="icon-button" onClick={onClose}><X size={20} /></button></div>{children}</div></div>;
+}
+
+function formatDate(value) {
+  if (!value) return "—";
+  return new Intl.DateTimeFormat("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(value));
+}
+
+function formatDateTime(value) {
+  if (!value) return "—";
+  return new Intl.DateTimeFormat("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date(value));
 }
 
 function formatLine(line, mode, onCitation) {
