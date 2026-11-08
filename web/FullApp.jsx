@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
   Activity,
   ArrowLeft,
@@ -89,6 +89,14 @@ const SOURCES = MESSAGE_CITATIONS.map((citation) => {
   };
 });
 
+const LanguageContext = createContext({ language: "vi", setLanguage: () => {}, tx: (vi) => vi });
+const useLanguage = () => useContext(LanguageContext);
+const EN_LABELS = {
+  question_group: { lookup: "Rule lookup", table: "Premium table", compare: "Comparison", scenario: "Scenario" },
+  line: { suc_khoe: "Health", benh_hiem_ngheo: "Critical illness", du_lich: "Travel" },
+  doc_type: { quy_tac: "Policy rules", dieu_khoan: "Terms", bang_phi: "Premium table", bang_quyen_loi: "Benefits table", brochure: "Brochure", faq: "FAQ" },
+};
+
 export default function FullApp() {
   const [authenticated, setAuthenticated] = useState(true);
   const [role, setRole] = useState("admin");
@@ -100,6 +108,7 @@ export default function FullApp() {
   const [sessionSeconds, setSessionSeconds] = useState(29 * 60 + 58);
   const [sessionExpired, setSessionExpired] = useState(false);
   const [theme, setTheme] = useState("system");
+  const [language, setLanguage] = useState("vi");
   const [fontSize, setFontSize] = useState(14);
   const [citationMode, setCitationMode] = useState("inline");
   const [showExcerpts, setShowExcerpts] = useState(true);
@@ -277,12 +286,15 @@ export default function FullApp() {
     setMessages([]);
   }
 
-  if (!authenticated) return <LoginScreen onLogin={login} />;
+  const tx = (vi, en) => language === "vi" ? vi : en;
+
+  if (!authenticated) return <LanguageContext.Provider value={{ language, setLanguage, tx }}><LoginScreen onLogin={login} /></LanguageContext.Provider>;
 
   const mm = String(Math.floor(sessionSeconds / 60)).padStart(2, "0");
   const ss = String(sessionSeconds % 60).padStart(2, "0");
 
   return (
+    <LanguageContext.Provider value={{ language, setLanguage, tx }}>
     <div className={`full-app theme-${theme} ${fontSize >= 17 ? "large-text" : ""}`} style={{ "--app-font-size": `${fontSize}px` }}>
       <a className="skip-link" href="#page-content">Bỏ qua đến nội dung chính</a>
       <header className="topbar full-topbar">
@@ -290,22 +302,22 @@ export default function FullApp() {
         <button className="brand brand-button" onClick={() => setView("chat")}>
           <img src="/baoviet-logo.png" alt="Bảo hiểm Bảo Việt" />
           <span className="brand-divider" />
-          <span><strong>Trợ lý sản phẩm</strong><small>Hỏi đáp có trích dẫn</small></span>
+          <span><strong>{tx("Trợ lý sản phẩm", "Product assistant")}</strong><small>{tx("Hỏi đáp có trích dẫn", "Citation-grounded answers")}</small></span>
         </button>
         <div className="topbar-actions">
-          <button className="status-pill" onClick={() => setSystemOpen(true)}><span /> Hệ thống sẵn sàng</button>
+          <button className="status-pill" onClick={() => setSystemOpen(true)}><span /> {tx("Hệ thống sẵn sàng", "System ready")}</button>
           <button className="session-pill" onClick={() => setSessionSeconds(29 * 60 + 59)} title="Nhấn để gia hạn phiên"><Clock3 size={15} /> {mm}:{ss}</button>
           <button className="icon-button" onClick={() => setSystemOpen(true)} aria-label="Trợ giúp"><CircleHelp size={20} /></button>
           <button className="icon-button" onClick={() => setSettingsOpen(true)} aria-label="Cài đặt"><Settings size={20} /></button>
           <div className="profile-wrap">
             <button className="profile-button" onClick={() => setProfileOpen(!profileOpen)}>
-              <span>D1</span><span className="profile-copy"><strong>{ACCOUNTS[0].display_name}</strong><small>{ENUM_LABELS.user_role[role]}</small></span><ChevronDown size={16} />
+              <span>D1</span><span className="profile-copy"><strong>{language === "vi" ? ACCOUNTS[0].display_name : "Demo user 01"}</strong><small>{role === "admin" ? tx("Quản trị viên", "Administrator") : tx("Người dùng", "User")}</small></span><ChevronDown size={16} />
             </button>
             {profileOpen && (
               <div className="profile-menu">
-                <div className="profile-menu-head"><strong>{ACCOUNTS[0].username}</strong><small>{ACCOUNTS[0].email} · không lưu dữ liệu cá nhân</small></div>
-                <div className="profile-role-note"><ShieldCheck size={16} /><span>role: <b>{role}</b><small>Vai trò chỉ được quản trị qua profiles.role.</small></span></div>
-                <button onClick={logout}><LogOut size={17} /> Đăng xuất</button>
+                <div className="profile-menu-head"><strong>{ACCOUNTS[0].username}</strong><small>{tx("Phiên demo · không lưu dữ liệu cá nhân", "Demo session · no personal data stored")}</small></div>
+                <button onClick={() => { setRole(role === "admin" ? "user" : "admin"); setProfileOpen(false); setView("chat"); setToast(role === "admin" ? tx("Đã chuyển sang Người dùng", "Switched to User") : tx("Đã chuyển sang Quản trị viên", "Switched to Administrator")); }}><UserCog size={17} /> {role === "admin" ? tx("Chuyển sang Người dùng", "Switch to User") : tx("Chuyển sang Quản trị viên", "Switch to Administrator")}</button>
+                <button onClick={logout}><LogOut size={17} /> {tx("Đăng xuất", "Sign out")}</button>
               </div>
             )}
           </div>
@@ -315,25 +327,26 @@ export default function FullApp() {
       <div className="workspace">
         <aside className={`sidebar full-sidebar ${mobileNav ? "mobile-open" : ""}`}>
           <div className="sidebar-top">
-            <button className="new-chat" onClick={newChat}><MessageCirclePlus size={19} /><span>Cuộc trò chuyện mới</span></button>
+            <button className="new-chat" onClick={newChat}><MessageCirclePlus size={19} /><span>{tx("Cuộc trò chuyện mới", "New conversation")}</span></button>
             <button className="icon-button mobile-only" onClick={() => setMobileNav(false)} aria-label="Đóng menu"><X size={20} /></button>
           </div>
           <nav className="main-nav" aria-label="Điều hướng chính">
-            <NavButton active={view === "chat"} icon={MessagesSquare} label="Hỏi đáp" onClick={() => setView("chat")} />
-            <NavButton active={view === "history"} icon={History} label="Lịch sử chat" onClick={() => setView("history")} />
-            <NavButton active={view === "catalog"} icon={BookOpen} label="Sản phẩm & tài liệu" onClick={() => setView("catalog")} />
+            <NavButton active={view === "chat"} icon={MessagesSquare} label={tx("Hỏi đáp", "Chat")} onClick={() => setView("chat")} />
+            <NavButton active={view === "history"} icon={History} label={tx("Lịch sử chat", "Chat history")} onClick={() => setView("history")} />
+            <NavButton active={view === "catalog"} icon={BookOpen} label={tx("Sản phẩm & tài liệu", "Products & documents")} onClick={() => setView("catalog")} />
             {role === "admin" && (
               <>
-                <p className="nav-label">QUẢN TRỊ</p>
+                <p className="nav-label">{tx("QUẢN TRỊ", "ADMINISTRATION")}</p>
                 <NavButton active={view === "dashboard"} icon={LayoutDashboard} label="Dashboard" onClick={() => setView("dashboard")} />
-                <NavButton active={view === "logs"} icon={FileClock} label="Nhật ký truy vấn" onClick={() => setView("logs")} badge="4" />
-                <NavButton active={view === "accounts"} icon={Users} label="Tài khoản demo" onClick={() => setView("accounts")} />
-                <NavButton active={view === "compare"} icon={SlidersHorizontal} label="So sánh cấu hình" onClick={() => setView("compare")} />
+                <NavButton active={view === "logs"} icon={FileClock} label={tx("Nhật ký truy vấn", "Query logs")} onClick={() => setView("logs")} badge="4" />
+                <NavButton active={view === "accounts"} icon={Users} label={tx("Tài khoản demo", "Demo accounts")} onClick={() => setView("accounts")} />
+                <NavButton active={view === "configuration"} icon={Settings} label={tx("Cấu hình", "Configuration")} onClick={() => setView("configuration")} />
+                <NavButton active={view === "compare"} icon={SlidersHorizontal} label={tx("So sánh cấu hình", "Compare configurations")} onClick={() => setView("compare")} />
               </>
             )}
           </nav>
           <div className="sidebar-history-mini">
-            <div className="section-label"><span>GẦN ĐÂY</span><button onClick={() => setView("history")}>Xem tất cả</button></div>
+            <div className="section-label"><span>{tx("GẦN ĐÂY", "RECENT")}</span><button onClick={() => setView("history")}>{tx("Xem tất cả", "View all")}</button></div>
             {history.slice(0, 4).map((item) => (
               <button key={item.id} className={activeHistory === item.id ? "active" : ""} onClick={() => openHistory(item)}>
                 <span>{item.title}</span><small>{item.time}</small>
@@ -341,8 +354,8 @@ export default function FullApp() {
             ))}
           </div>
           <div className="sidebar-footer">
-            <button onClick={() => setSettingsOpen(true)}><Settings size={18} /><span>Cài đặt</span></button>
-            <button onClick={() => setSystemOpen(true)}><Activity size={18} /><span>Trạng thái hệ thống</span></button>
+            <button onClick={() => setSettingsOpen(true)}><Settings size={18} /><span>{tx("Cài đặt", "Settings")}</span></button>
+            <button onClick={() => setSystemOpen(true)}><Activity size={18} /><span>{tx("Trạng thái hệ thống", "System status")}</span></button>
           </div>
         </aside>
         {mobileNav && <button className="mobile-scrim" onClick={() => setMobileNav(false)} aria-label="Đóng menu" />}
@@ -397,6 +410,7 @@ export default function FullApp() {
           {view === "dashboard" && role === "admin" && <DashboardView setToast={setToast} />}
           {view === "logs" && role === "admin" && <LogsView setToast={setToast} />}
           {view === "accounts" && role === "admin" && <AccountsView setToast={setToast} />}
+          {view === "configuration" && role === "admin" && <ConfigurationView pipeline={pipeline} setPipeline={setPipeline} setToast={setToast} />}
           {view === "compare" && role === "admin" && <CompareView />}
         </main>
       </div>
@@ -424,6 +438,7 @@ export default function FullApp() {
       {sessionExpired && <SessionExpired onLogin={() => { setSessionExpired(false); setSessionSeconds(29 * 60 + 59); }} onLogout={logout} />}
       {toast && <div className="toast"><Check size={17} /> {toast}</div>}
     </div>
+    </LanguageContext.Provider>
   );
 }
 
@@ -432,29 +447,29 @@ function NavButton({ active, icon: Icon, label, onClick, badge }) {
 }
 
 function LoginScreen({ onLogin }) {
+  const { tx } = useLanguage();
   return (
     <div className="login-page">
       <div className="login-brand">
         <img src="/baoviet-logo.png" alt="Bảo hiểm Bảo Việt" />
-        <div><span>TRỢ LÝ SẢN PHẨM BẢO HIỂM</span><h1>Tra cứu nhanh.<br />Căn cứ rõ ràng.</h1><p>Hệ thống hỏi đáp sử dụng RAG, cung cấp câu trả lời từ tài liệu sản phẩm chính thức và luôn đính kèm trích dẫn để kiểm tra.</p></div>
-        <div className="login-trust"><ShieldCheck size={19} /><span>Chỉ sử dụng tài liệu công khai<br /><small>Không nhập thông tin cá nhân hoặc hợp đồng</small></span></div>
+        <div><span>{tx("TRỢ LÝ SẢN PHẨM BẢO HIỂM", "INSURANCE PRODUCT ASSISTANT")}</span><h1>{tx("Tra cứu nhanh. Căn cứ rõ ràng.", "Fast answers. Clear sources.")}</h1></div>
+        <div className="login-trust"><ShieldCheck size={19} /><span>{tx("Chỉ sử dụng tài liệu công khai", "Public documents only")}</span></div>
       </div>
       <form className="login-card" onSubmit={onLogin}>
         <div className="login-icon"><KeyRound size={23} /></div>
-        <p className="eyebrow-text">PHIÊN BẢN DEMO</p>
-        <h2>Đăng nhập hệ thống</h2>
-        <p>Sử dụng tài khoản demo được cung cấp để tiếp tục.</p>
-        <label>email demo<input defaultValue="demo01@bv-rag.local" autoComplete="username" /></label>
-        <label>Mật khẩu<input type="password" defaultValue="baoviet-demo" autoComplete="current-password" /></label>
-        <div className="login-note"><LockKeyhole size={15} /> Phiên tự động hết hạn sau 30 phút không hoạt động.</div>
-        <button type="submit">Đăng nhập <ArrowUp size={18} /></button>
-        <small>Không có chức năng đăng ký tài khoản.</small>
+        <p className="eyebrow-text">{tx("PHIÊN BẢN DEMO", "DEMO VERSION")}</p>
+        <h2>{tx("Đăng nhập hệ thống", "Sign in")}</h2>
+        <label>Email<input defaultValue="demo01@bv-rag.local" autoComplete="username" /></label>
+        <label>{tx("Mật khẩu", "Password")}<input type="password" defaultValue="baoviet-demo" autoComplete="current-password" /></label>
+        <div className="login-note"><LockKeyhole size={15} /> {tx("Phiên tự động hết hạn sau 30 phút.", "Session expires after 30 minutes.")}</div>
+        <button type="submit">{tx("Đăng nhập", "Sign in")} <ArrowUp size={18} /></button>
       </form>
     </div>
   );
 }
 
 function ChatView(props) {
+  const { tx, language } = useLanguage();
   const {
     messages, loading, streamText, query, setQuery, sendQuestion, selectedProducts, setSelectedProducts,
     scopeOpen, setScopeOpen, pipeline, setPipeline, role, sourceOpen, setSourceOpen, feedback,
@@ -464,10 +479,9 @@ function ChatView(props) {
   return (
     <div className="chat-page">
       <div className="page-header compact">
-        <div><div className="page-kicker"><span /> RAG · Kho dữ liệu v1</div><h1>{messages.length ? "Cuộc trò chuyện hiện tại" : "Trợ lý tra cứu sản phẩm bảo hiểm"}</h1></div>
+        <div><div className="page-kicker"><span /> RAG</div><h1>{messages.length ? tx("Cuộc trò chuyện hiện tại", "Current conversation") : tx("Trợ lý tra cứu sản phẩm bảo hiểm", "Insurance product assistant")}</h1></div>
         <div className="header-actions">
-          {role === "admin" && <label className="pipeline-select" title={`app_settings.${APP_SETTINGS.key} = ${APP_SETTINGS.value.config}`}>active_config<select value={pipeline} onChange={(e) => setPipeline(e.target.value)}>{PIPELINE_CONFIGS.map((config) => <option key={config.name} value={config.name}>{config.name} · {config.description}</option>)}</select></label>}
-          {messages.length > 0 && <button className="secondary-button" onClick={downloadConversation}><Download size={16} /> Xuất Markdown</button>}
+          {messages.length > 0 && <button className="secondary-button" onClick={downloadConversation}><Download size={16} /> {tx("Xuất Markdown", "Export Markdown")}</button>}
         </div>
       </div>
       <section className="chat-scroll full-chat-scroll" aria-live="polite">
@@ -475,13 +489,13 @@ function ChatView(props) {
           <div className="welcome">
             <div className="welcome-mark"><Sparkles size={26} /></div>
             <p className="welcome-kicker">TRỢ LÝ BẢO VIỆT</p>
-            <h2>Bạn muốn tìm hiểu điều gì?</h2>
-            <p className="welcome-copy">Tra cứu quy tắc, quyền lợi và biểu phí từ tài liệu sản phẩm chính thức. Mỗi câu trả lời đều có nguồn để bạn kiểm tra.</p>
-            <div className="sample-grid">{SAMPLE_QUESTIONS.filter((item) => item.is_active).map((item) => <button key={item.qid} onClick={() => sendQuestion(item.question)}><span>{ENUM_LABELS.question_group[item.question_group]}</span><strong>{item.question}</strong><small>{item.products?.join(", ")}</small><ArrowUp size={18} /></button>)}</div>
+            <h2>{tx("Bạn muốn tìm hiểu điều gì?", "What would you like to know?")}</h2>
+            <p className="welcome-copy">{tx("Tra cứu quy tắc, quyền lợi và biểu phí từ tài liệu sản phẩm chính thức.", "Search official product rules, benefits, and premium tables.")}</p>
+            <div className="sample-grid">{SAMPLE_QUESTIONS.filter((item) => item.is_active).map((item) => <button key={item.qid} onClick={() => sendQuestion(item.question)}><span>{language === "vi" ? ENUM_LABELS.question_group[item.question_group] : EN_LABELS.question_group[item.question_group]}</span><strong>{item.question}</strong><small>{item.products?.join(", ")}</small><ArrowUp size={18} /></button>)}</div>
           </div>
         ) : (
           <div className="conversation">
-            {privacyMasked && <div className="privacy-banner"><ShieldCheck size={17} /><span>Thông tin nhạy cảm đã được tự động che trước khi lưu lịch sử.</span><button onClick={() => setPrivacyMasked(false)}><X size={16} /></button></div>}
+            {privacyMasked && <div className="privacy-banner"><ShieldCheck size={17} /><span>{tx("Thông tin nhạy cảm đã được tự động che trước khi lưu lịch sử.", "Sensitive information was masked before saving.")}</span><button onClick={() => setPrivacyMasked(false)}><X size={16} /></button></div>}
             {messages.map((message, index) => message.role === "user"
               ? <div className="user-row" key={message.id || index}><div className="user-bubble">{message.content}</div><div className="avatar user-avatar"><UserRound size={17} /></div></div>
               : <Answer key={index} message={message} sourceOpen={sourceOpen} setSourceOpen={setSourceOpen} feedback={feedback} setFeedback={setFeedback} setFeedbackOpen={setFeedbackOpen} citationMode={citationMode} showExcerpts={showExcerpts} showDetails={showDetails && role === "admin"} setToast={setToast} pipeline={pipeline} />
@@ -494,36 +508,37 @@ function ChatView(props) {
       <div className="composer-zone">
         <div className="scope-row">
           <div className="scope-wrap">
-            <button className="scope-button" onClick={() => setScopeOpen(!scopeOpen)}><BookOpen size={16} />{selectedProducts.length ? `${selectedProducts.length} sản phẩm đã chọn` : "Tự động nhận diện sản phẩm"}<ChevronDown size={16} /></button>
-            {scopeOpen && <div className="scope-menu"><div><strong>Phạm vi sản phẩm</strong><small>messages.product_filter · text[]</small></div>{PRODUCTS.filter((p) => p.is_active).map((p) => <button key={p.product_code} onClick={() => setSelectedProducts(selectedProducts.includes(p.product_code) ? selectedProducts.filter((x) => x !== p.product_code) : [...selectedProducts, p.product_code])}><span className={`checkbox ${selectedProducts.includes(p.product_code) ? "checked" : ""}`}>{selectedProducts.includes(p.product_code) && <Check size={13} />}</span><span><strong>{p.product_name}</strong><small>{p.product_code} · {ENUM_LABELS.line[p.line]}</small></span></button>)}</div>}
+            <button className="scope-button" onClick={() => setScopeOpen(!scopeOpen)}><BookOpen size={16} />{selectedProducts.length ? tx(`Đã chọn ${selectedProducts.length} sản phẩm`, `${selectedProducts.length} products selected`) : tx("Tự động nhận diện sản phẩm", "Detect products automatically")}<ChevronDown size={16} /></button>
+            {scopeOpen && <div className="scope-menu"><div><strong>{tx("Phạm vi sản phẩm", "Product scope")}</strong></div>{PRODUCTS.filter((p) => p.is_active).map((p) => <button key={p.product_code} onClick={() => setSelectedProducts(selectedProducts.includes(p.product_code) ? selectedProducts.filter((x) => x !== p.product_code) : [...selectedProducts, p.product_code])}><span className={`checkbox ${selectedProducts.includes(p.product_code) ? "checked" : ""}`}>{selectedProducts.includes(p.product_code) && <Check size={13} />}</span><span><strong>{p.product_name}</strong><small>{p.product_code}</small></span></button>)}</div>}
           </div>
-          <span className="privacy-note"><ShieldCheck size={15} /> Hệ thống tự che CCCD, SĐT và email trong câu hỏi</span>
+          <span className="privacy-note"><ShieldCheck size={15} /> {tx("Tự động che thông tin cá nhân", "Personal information is masked automatically")}</span>
         </div>
         <div className="composer">
-          <textarea value={query} onChange={(e) => setQuery(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendQuestion(); } }} placeholder="Hỏi về quy tắc, quyền lợi, biểu phí…" rows={1} />
-          <div className="composer-footer"><span>Enter để gửi · Shift + Enter để xuống dòng</span><button onClick={() => sendQuestion()} disabled={!query.trim() || loading} aria-label="Gửi câu hỏi"><ArrowUp size={20} /></button></div>
+          <textarea value={query} onChange={(e) => setQuery(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendQuestion(); } }} placeholder={tx("Hỏi về quy tắc, quyền lợi, biểu phí…", "Ask about rules, benefits, or premiums…")} rows={1} />
+          <div className="composer-footer"><span>{tx("Enter để gửi · Shift + Enter để xuống dòng", "Enter to send · Shift + Enter for a new line")}</span><button onClick={() => sendQuestion()} disabled={!query.trim() || loading} aria-label={tx("Gửi câu hỏi", "Send question")}><ArrowUp size={20} /></button></div>
         </div>
-        <p className="disclaimer">Thông tin chỉ mang tính tham khảo. Căn cứ cuối cùng là quy tắc và hợp đồng do doanh nghiệp bảo hiểm phát hành.</p>
+        <p className="disclaimer">{tx("Thông tin chỉ mang tính tham khảo. Căn cứ cuối cùng là quy tắc và hợp đồng được phát hành.", "For reference only. Issued policy terms and contracts remain the final authority.")}</p>
       </div>
     </div>
   );
 }
 
 function Answer({ message, sourceOpen, setSourceOpen, feedback, setFeedback, setFeedbackOpen, citationMode, showExcerpts, showDetails, setToast, pipeline }) {
+  const { tx } = useLanguage();
   const copy = () => { navigator.clipboard?.writeText(message.content); setToast("Đã sao chép câu trả lời và nguồn"); };
   return (
     <div className="assistant-row">
       <div className="avatar assistant-avatar"><Sparkles size={17} /></div>
       <div className="answer-wrap">
-        <div className="answer-label">Trợ lý Bảo Việt</div>
-        {message.refused && <div className="refusal-label"><ShieldCheck size={16} /> Từ chối an toàn · {ENUM_LABELS.refusal_reason[message.refusal_reason]}</div>}
+        <div className="answer-label">{tx("Trợ lý Bảo Việt", "Bảo Việt Assistant")}</div>
+        {message.refused && <div className="refusal-label"><ShieldCheck size={16} /> {tx("Từ chối an toàn", "Safe refusal")}</div>}
         <div className={`answer-text ${message.refused ? "refused" : ""}`}>{message.content.split("\n").map((line, i) => <p key={i}>{formatLine(line, citationMode, setSourceOpen)}</p>)}</div>
         {citationMode === "footnote" && message.sources?.length > 0 && <div className="citation-list-note">Nguồn được hiển thị theo kiểu footnote ở cuối câu trả lời.</div>}
         {message.sources?.length > 0 && <SourceStack sources={message.sources} sourceOpen={sourceOpen} setSourceOpen={setSourceOpen} showExcerpts={showExcerpts} />}
         {showDetails && <ProcessingDetails pipeline={pipeline} runId={message.run_id} />}
         <div className="answer-actions">
-          <button onClick={copy}><Copy size={16} /> Sao chép</button><span />
-          <span>Câu trả lời này có hữu ích?</span>
+          <button onClick={copy}><Copy size={16} /> {tx("Sao chép", "Copy")}</button><span />
+          <span>{tx("Câu trả lời này có hữu ích?", "Was this answer helpful?")}</span>
           <button className={feedback === "up" ? "selected" : ""} onClick={() => { setFeedback("up"); setToast("Cảm ơn phản hồi của bạn"); }}><ThumbsUp size={16} /></button>
           <button className={feedback === "down" ? "selected" : ""} onClick={() => setFeedbackOpen(true)}><ThumbsDown size={16} /></button>
         </div>
@@ -533,11 +548,13 @@ function Answer({ message, sourceOpen, setSourceOpen, feedback, setFeedback, set
 }
 
 function StreamingAnswer({ text, loading }) {
-  return <div className="assistant-row"><div className="avatar assistant-avatar"><Sparkles size={17} /></div><div className="answer-wrap"><div className="answer-label">Trợ lý Bảo Việt</div>{loading ? <div className="thinking"><strong>Đang tìm trong tài liệu chính thức</strong><div><i /><i /><i /></div><span>Truy xuất và kiểm tra nguồn phù hợp…</span></div> : <div className="answer-text streaming"><p>{text}<span className="stream-caret" /></p></div>}</div></div>;
+  const { tx } = useLanguage();
+  return <div className="assistant-row"><div className="avatar assistant-avatar"><Sparkles size={17} /></div><div className="answer-wrap"><div className="answer-label">{tx("Trợ lý Bảo Việt", "Bảo Việt Assistant")}</div>{loading ? <div className="thinking"><strong>{tx("Đang tìm trong tài liệu chính thức", "Searching official documents")}</strong><div><i /><i /><i /></div></div> : <div className="answer-text streaming"><p>{text}<span className="stream-caret" /></p></div>}</div></div>;
 }
 
 function SourceStack({ sources, sourceOpen, setSourceOpen, showExcerpts }) {
-  return <div className="source-stack"><div className="source-heading"><span><FileText size={17} /> Nguồn tham khảo</span><small>{sources.length} trích dẫn</small></div>{sources.map((s) => <div className={`source-card ${sourceOpen === s.ord ? "open" : ""}`} key={`${s.message_id}-${s.ord}`}><button onClick={() => setSourceOpen(sourceOpen === s.ord ? null : s.ord)}><span className="source-number">{s.ord}</span><span className="source-main"><strong>{s.section_path}</strong><small>{s.source_file} · Trang {s.page}</small></span><ChevronDown size={18} /></button>{sourceOpen === s.ord && <div className="source-detail">{showExcerpts && <p>“{s.text}”</p>}<div className="source-metadata"><code>{s.data_version}</code><code>{s.chunk_id}</code></div><a href={s.url} target="_blank" rel="noreferrer">Mở tài liệu gốc <ExternalLink size={14} /></a></div>}</div>)}</div>;
+  const { tx } = useLanguage();
+  return <div className="source-stack"><div className="source-heading"><span><FileText size={17} /> {tx("Nguồn tham khảo", "Sources")}</span><small>{sources.length} {tx("trích dẫn", "citations")}</small></div>{sources.map((s) => <div className={`source-card ${sourceOpen === s.ord ? "open" : ""}`} key={`${s.message_id}-${s.ord}`}><button onClick={() => setSourceOpen(sourceOpen === s.ord ? null : s.ord)}><span className="source-number">{s.ord}</span><span className="source-main"><strong>{s.section_path}</strong><small>{s.source_file} · {tx("Trang", "Page")} {s.page}</small></span><ChevronDown size={18} /></button>{sourceOpen === s.ord && <div className="source-detail">{showExcerpts && <p>“{s.text}”</p>}<a href={s.url} target="_blank" rel="noreferrer">{tx("Mở tài liệu gốc", "Open original document")} <ExternalLink size={14} /></a></div>}</div>)}</div>;
 }
 
 function ProcessingDetails({ pipeline, runId }) {
@@ -545,57 +562,60 @@ function ProcessingDetails({ pipeline, runId }) {
 }
 
 function HistoryView({ items, search, setSearch, openHistory, menu, setMenu, setRenameItem, setDeleteItem, exportItem, printItem, clearAll }) {
-  return <div className="standard-page"><div className="page-header"><div><p className="page-kicker">CONVERSATIONS + MESSAGES · OWNER RLS</p><h1>Lịch sử trò chuyện</h1><p>Snapshot messages và message_citations; không chạy lại pipeline khi mở lịch sử.</p></div><button className="danger-ghost" onClick={clearAll}><Trash2 size={16} /> Xóa tất cả</button></div><div className="toolbar"><label className="page-search"><Search size={17} /><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Tìm trong messages.content" /></label><span>{items.length} conversations</span></div><div className="history-page-list">{items.map((item) => <div className="history-row" key={item.id}><button className="history-row-main" onClick={() => openHistory(item)}><span className="history-row-icon"><MessagesSquare size={19} /></span><span><strong>{item.title} {item.title_is_custom && <b className="custom-title-badge">Đã đổi tên</b>}</strong><small>{item.preview}</small></span></button><time><strong>{formatDateTime(item.updated_at)}</strong><small>updated_at</small></time><div className="row-menu-wrap"><button className="icon-button" onClick={() => setMenu(menu === item.id ? null : item.id)}><MoreHorizontal size={19} /></button>{menu === item.id && <div className="row-menu"><button onClick={() => { setRenameItem(item); setMenu(null); }}><Pencil size={15} /> Đổi tên</button><button onClick={() => { exportItem(); setMenu(null); }}><Download size={15} /> Xuất Markdown</button><button onClick={() => { printItem(); setMenu(null); }}><FileText size={15} /> In / Lưu PDF</button><button className="danger" onClick={() => { setDeleteItem(item); setMenu(null); }}><Trash2 size={15} /> Xóa cascade</button></div>}</div></div>)}</div></div>;
+  const { tx } = useLanguage();
+  return <div className="standard-page"><div className="page-header"><div><h1>{tx("Lịch sử trò chuyện", "Chat history")}</h1></div><button className="danger-ghost" onClick={clearAll}><Trash2 size={16} /> {tx("Xóa tất cả", "Delete all")}</button></div><div className="toolbar"><label className="page-search"><Search size={17} /><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={tx("Tìm trong lịch sử", "Search history")} /></label><span>{items.length} {tx("cuộc trò chuyện", "conversations")}</span></div><div className="history-page-list">{items.map((item) => <div className="history-row" key={item.id}><button className="history-row-main" onClick={() => openHistory(item)}><span className="history-row-icon"><MessagesSquare size={19} /></span><span><strong>{item.title} {item.title_is_custom && <b className="custom-title-badge">{tx("Đã đổi tên", "Renamed")}</b>}</strong><small>{item.preview}</small></span></button><time><strong>{formatDateTime(item.updated_at)}</strong></time><div className="row-menu-wrap"><button className="icon-button" onClick={() => setMenu(menu === item.id ? null : item.id)}><MoreHorizontal size={19} /></button>{menu === item.id && <div className="row-menu"><button onClick={() => { setRenameItem(item); setMenu(null); }}><Pencil size={15} /> {tx("Đổi tên", "Rename")}</button><button onClick={() => { exportItem(); setMenu(null); }}><Download size={15} /> {tx("Xuất Markdown", "Export Markdown")}</button><button onClick={() => { printItem(); setMenu(null); }}><FileText size={15} /> {tx("In / Lưu PDF", "Print / Save PDF")}</button><button className="danger" onClick={() => { setDeleteItem(item); setMenu(null); }}><Trash2 size={15} /> {tx("Xóa", "Delete")}</button></div>}</div></div>)}</div></div>;
 }
 
 function CatalogView() {
+  const { tx, language } = useLanguage();
   const [selected, setSelected] = useState(PRODUCTS[0]);
   const version = DATA_VERSIONS.find((item) => item.is_active);
   const selectedDocuments = DOCUMENTS.filter((item) => item.product_code === selected.product_code);
   return <div className="standard-page">
     <div className="page-header">
-      <div><p className="page-kicker">KHO TRI THỨC · DATA VERSION {version.version.toUpperCase()}</p><h1>Sản phẩm và tài liệu</h1><p>Danh mục đồng bộ một chiều từ catalog.json, sources.csv và chunks.jsonl.</p></div>
-      <div className="version-badge"><CheckCircle2 size={17} /> {version.version} đang hoạt động · {version.n_chunks.toLocaleString("vi-VN")} chunks</div>
+      <div><h1>{tx("Sản phẩm và tài liệu", "Products and documents")}</h1></div>
+      <div className="version-badge"><CheckCircle2 size={17} /> {version.version} · {version.n_chunks.toLocaleString("vi-VN")} chunks</div>
     </div>
-    <div className="data-version-note"><strong>{version.note}</strong><span>created_at: {formatDateTime(version.created_at)}</span></div>
     <div className="catalog-layout">
       <div className="product-table card">
-        <div className="table-head"><span>Sản phẩm</span><span>line</span><span>documents</span><span>chunks</span></div>
+        <div className="table-head"><span>{tx("Sản phẩm", "Product")}</span><span>{tx("Nhóm", "Line")}</span><span>{tx("Tài liệu", "Documents")}</span><span>{tx("Đoạn", "Chunks")}</span></div>
         {PRODUCTS.map((product) => {
           const documentCount = DOCUMENTS.filter((item) => item.product_code === product.product_code).length;
           const chunkCount = CHUNKS.filter((item) => item.product_code === product.product_code && item.data_version === version.version).length;
           return <button key={product.product_code} onClick={() => setSelected(product)} className={selected.product_code === product.product_code ? "selected" : ""}>
             <span><b>{product.product_code}</b><strong>{product.product_name}</strong></span>
-            <span>{ENUM_LABELS.line[product.line] || product.line}</span><span>{documentCount}</span><span>{chunkCount}</span>
+            <span>{language === "vi" ? ENUM_LABELS.line[product.line] : EN_LABELS.line[product.line]}</span><span>{documentCount}</span><span>{chunkCount}</span>
           </button>;
         })}
       </div>
       <aside className="product-detail card">
-        <div className="product-detail-head"><span className="product-code">{selected.product_code}</span><b className={`status-tag ${selected.is_active ? "" : "muted"}`}>{selected.is_active ? "Đang hoạt động" : "Ngừng hoạt động"}</b></div>
-        <h2>{selected.product_name}</h2><p>company: {selected.company} · line: {selected.line}</p><hr />
-        <h3>Tài liệu trong kho</h3>
+        <div className="product-detail-head"><span className="product-code">{selected.product_code}</span><b className={`status-tag ${selected.is_active ? "" : "muted"}`}>{selected.is_active ? tx("Đang hoạt động", "Active") : tx("Ngừng hoạt động", "Inactive")}</b></div>
+        <h2>{selected.product_name}</h2><hr />
+        <h3>{tx("Tài liệu", "Documents")}</h3>
         {selectedDocuments.length ? selectedDocuments.map((document) => <a key={document.id} href={document.url} target="_blank" rel="noreferrer">
-          <FileText size={16} /><span><strong>{ENUM_LABELS.doc_type[document.doc_type]}</strong><small>{document.source_file} · hiệu lực {formatDate(document.effective_date)}</small><small>Tải ngày {formatDate(document.downloaded_at)}</small></span><ExternalLink size={14} />
-        </a>) : <p className="empty-copy">Chưa có document được đồng bộ cho sản phẩm này.</p>}
+          <FileText size={16} /><span><strong>{language === "vi" ? ENUM_LABELS.doc_type[document.doc_type] : EN_LABELS.doc_type[document.doc_type]}</strong><small>{document.source_file} · {tx("hiệu lực", "effective")} {formatDate(document.effective_date)}</small></span><ExternalLink size={14} />
+        </a>) : <p className="empty-copy">{tx("Chưa có tài liệu.", "No documents available.")}</p>}
       </aside>
     </div>
   </div>;
 }
 
 function DashboardView({ setToast }) {
+  const { tx } = useLanguage();
   const chartData = PIPELINE_CONFIGS.map((config) => {
     const recall = EVAL_RESULTS.find((item) => item.run_id.startsWith(config.name) && item.question_group === "all" && item.metric === "recall@5")?.value || 0;
     const faithfulness = EVAL_RESULTS.find((item) => item.run_id.startsWith(config.name) && item.question_group === "all" && item.metric === "faithfulness")?.value || 0;
     return { name: config.name, recall, faithfulness };
   });
-  return <div className="standard-page"><div className="page-header"><div><p className="page-kicker">VIEW THỐNG KÊ + EVAL_RESULTS · ADMIN ONLY</p><h1>Dashboard chỉ số</h1><p>Metric được nhóm theo run_id, question_group, metric và value.</p></div><button className="secondary-button" onClick={() => setToast("Đã đọc lại view thống kê và eval_results")}><RefreshCw size={16} /> Làm mới</button></div><div className="metric-grid"><Metric label="Câu hỏi hôm nay" value="128" delta="View thống kê" icon={MessagesSquare} /><Metric label="Độ trễ p95" value="4,8s" delta="traces.latency_ms" icon={Gauge} /><Metric label="Tỷ lệ từ chối" value="18,7%" delta="messages.refused" icon={ShieldCheck} /><Metric label="Đánh giá tích cực" value="91,4%" delta="feedback.rating" icon={ThumbsUp} /></div><div className="dashboard-grid"><div className="card chart-card"><div className="card-title"><div><h2>eval_results theo cấu hình</h2><p>question_group = all</p></div><BarChart3 size={20} /></div><div className="bar-chart">{chartData.map((item) => <div className="bar-group" key={item.name}><span>{item.name}</span><div><i style={{ height: `${item.recall * 100}%` }} /><i style={{ height: `${item.faithfulness * 100}%` }} /></div><small>{Math.round(item.recall * 100)}%</small></div>)}</div><div className="chart-legend"><span><i className="blue" /> metric: recall@5</span><span><i className="gold" /> metric: faithfulness</span></div></div><div className="card activity-card"><div className="card-title"><div><h2>Phân bố truy vấn</h2><p>View thống kê · 7 ngày gần nhất</p></div></div>{[["lookup", 42], ["table", 21], ["compare", 17], ["scenario", 14], ["refused", 6]].map(([group, value]) => <div className="progress-row" key={group}><span>{ENUM_LABELS.question_group[group] || group}</span><div><i style={{ width: `${value * 2}%` }} /></div><strong>{value}%</strong></div>)}</div></div></div>;
+  return <div className="standard-page"><div className="page-header"><div><h1>{tx("Dashboard chỉ số", "Metrics dashboard")}</h1></div><button className="secondary-button" onClick={() => setToast(tx("Đã cập nhật số liệu", "Metrics refreshed"))}><RefreshCw size={16} /> {tx("Làm mới", "Refresh")}</button></div><div className="metric-grid"><Metric label={tx("Câu hỏi hôm nay", "Questions today")} value="128" icon={MessagesSquare} /><Metric label={tx("Độ trễ p95", "p95 latency")} value="4,8s" icon={Gauge} /><Metric label={tx("Tỷ lệ từ chối", "Refusal rate")} value="18,7%" icon={ShieldCheck} /><Metric label={tx("Đánh giá tích cực", "Positive feedback")} value="91,4%" icon={ThumbsUp} /></div><div className="dashboard-grid"><div className="card chart-card"><div className="card-title"><div><h2>{tx("Chất lượng theo cấu hình", "Quality by configuration")}</h2></div><BarChart3 size={20} /></div><div className="bar-chart">{chartData.map((item) => <div className="bar-group" key={item.name}><span>{item.name}</span><div><i style={{ height: `${item.recall * 100}%` }} /><i style={{ height: `${item.faithfulness * 100}%` }} /></div><small>{Math.round(item.recall * 100)}%</small></div>)}</div><div className="chart-legend"><span><i className="blue" /> Recall@5</span><span><i className="gold" /> Faithfulness</span></div></div><div className="card activity-card"><div className="card-title"><div><h2>{tx("Phân bố truy vấn", "Query distribution")}</h2></div></div>{[["lookup", 42], ["table", 21], ["compare", 17], ["scenario", 14], ["refused", 6]].map(([group, value]) => <div className="progress-row" key={group}><span>{group}</span><div><i style={{ width: `${value * 2}%` }} /></div><strong>{value}%</strong></div>)}</div></div></div>;
 }
 
 function Metric({ label, value, delta, icon: Icon }) {
-  return <div className="metric-card card"><span><Icon size={19} /></span><small>{label}</small><strong>{value}</strong><p>{delta}</p></div>;
+  return <div className="metric-card card"><span><Icon size={19} /></span><small>{label}</small><strong>{value}</strong>{delta && <p>{delta}</p>}</div>;
 }
 
 function LogsView({ setToast }) {
+  const { tx } = useLanguage();
   const [filter, setFilter] = useState("Tất cả");
   const [search, setSearch] = useState("");
   const visibleLogs = QUERY_LOGS.filter((log) => (filter === "Tất cả" || (filter === "Từ chối" && log.refused) || (filter === "Không hữu ích" && log.rating === -1) || (filter === "Độ trễ cao" && log.latency_ms > 4000)) && `${log.run_id} ${log.content}`.toLowerCase().includes(search.toLowerCase()));
@@ -609,53 +629,97 @@ function LogsView({ setToast }) {
     URL.revokeObjectURL(url);
     setToast("Đã xuất nhật ký CSV");
   };
-  return <div className="standard-page"><div className="page-header"><div><p className="page-kicker">GIÁM SÁT TRUY VẤN · ADMIN ONLY</p><h1>Nhật ký truy vấn</h1><p>Joined view từ messages, traces, feedback và runs; log.jsonl không bị xóa cùng hội thoại.</p></div><button className="secondary-button" onClick={exportCsv}><Download size={16} /> Xuất CSV</button></div><div className="toolbar log-toolbar"><label className="page-search"><Search size={17} /><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Tìm theo content hoặc run_id" /></label><div className="filter-chips">{["Tất cả", "Từ chối", "Không hữu ích", "Độ trễ cao"].map((x) => <button key={x} className={filter === x ? "active" : ""} onClick={() => setFilter(x)}>{x}</button>)}</div></div><div className="data-table card"><div className="data-row head"><span>created_at / run_id</span><span>messages.content</span><span>refused</span><span>config / version</span><span>latency_ms</span><span>feedback</span></div>{visibleLogs.map((log) => <button className="data-row" key={log.message_id} onClick={() => setToast(`Đã mở trace của ${log.run_id}`)}><span><strong>{formatDateTime(log.created_at)}</strong><small>{log.run_id}</small></span><span>{log.content}</span><span><b className={`status-tag ${log.refused ? "warning" : ""}`}>{log.refused ? ENUM_LABELS.refusal_reason[log.refusal_reason] : "false"}</b></span><span><strong>{log.config_name}</strong><small>{log.data_version} · {log.split} · {log.runtime}</small></span><span>{log.latency_ms}</span><span>{log.rating === 1 ? "1 · Hữu ích" : log.rating === -1 ? `-1 · ${ENUM_LABELS.feedback_reason[log.feedback_reason]}` : "—"}</span></button>)}</div></div>;
+  const filters = [{ value: "Tất cả", label: tx("Tất cả", "All") }, { value: "Từ chối", label: tx("Từ chối", "Refused") }, { value: "Không hữu ích", label: tx("Không hữu ích", "Not helpful") }, { value: "Độ trễ cao", label: tx("Độ trễ cao", "High latency") }];
+  return <div className="standard-page"><div className="page-header"><div><h1>{tx("Nhật ký truy vấn", "Query logs")}</h1></div><button className="secondary-button" onClick={exportCsv}><Download size={16} /> {tx("Xuất CSV", "Export CSV")}</button></div><div className="toolbar log-toolbar"><label className="page-search"><Search size={17} /><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={tx("Tìm câu hỏi hoặc mã lần chạy", "Search question or run ID")} /></label><div className="filter-chips">{filters.map((item) => <button key={item.value} className={filter === item.value ? "active" : ""} onClick={() => setFilter(item.value)}>{item.label}</button>)}</div></div><div className="data-table card"><div className="data-row head"><span>{tx("Thời gian / Mã lần chạy", "Time / Run ID")}</span><span>{tx("Câu hỏi", "Question")}</span><span>{tx("Trạng thái", "Status")}</span><span>{tx("Cấu hình", "Configuration")}</span><span>{tx("Độ trễ", "Latency")}</span><span>{tx("Đánh giá", "Feedback")}</span></div>{visibleLogs.map((log) => <button className="data-row" key={log.message_id} onClick={() => setToast(tx(`Đã mở chi tiết ${log.run_id}`, `Opened details for ${log.run_id}`))}><span><strong>{formatDateTime(log.created_at)}</strong><small>{log.run_id}</small></span><span>{log.content}</span><span><b className={`status-tag ${log.refused ? "warning" : ""}`}>{log.refused ? tx("Từ chối", "Refused") : tx("Đã trả lời", "Answered")}</b></span><span><strong>{log.config_name}</strong><small>{log.data_version}</small></span><span>{log.latency_ms} ms</span><span>{log.rating === 1 ? tx("Hữu ích", "Helpful") : log.rating === -1 ? tx("Không hữu ích", "Not helpful") : "—"}</span></button>)}</div></div>;
 }
 
 function AccountsView({ setToast }) {
+  const { tx } = useLanguage();
   const [accounts, setAccounts] = useState(ACCOUNTS);
   const [createOpen, setCreateOpen] = useState(false);
-  return <div className="standard-page"><div className="page-header"><div><p className="page-kicker">AUTH.USERS + PROFILES · ADMIN ONLY</p><h1>Tài khoản demo</h1><p>Supabase Auth quản lý mật khẩu; hồ sơ chỉ dùng email giả, username, display_name và role.</p></div><button className="primary-button" onClick={() => setCreateOpen(true)}><Plus size={17} /> Tạo tài khoản</button></div><div className="data-table accounts-table card"><div className="data-row head"><span>username / email</span><span>role</span><span>is_active</span><span>last_sign_in_at</span><span>Thao tác</span></div>{accounts.map((account) => <div className="data-row" key={account.id}><span className="account-name"><i>{account.username.slice(0, 2).toUpperCase()}</i><span><strong>{account.display_name || account.username}</strong><small>{account.username} · {account.email}</small></span></span><span><b className="enum-code">{account.role}</b><small>{ENUM_LABELS.user_role[account.role]}</small></span><span><b className={`status-tag ${account.is_active ? "" : "muted"}`}>{String(account.is_active)}</b>{account.banned_until && <small>banned_until: {formatDateTime(account.banned_until)}</small>}</span><span>{account.last_sign_in_at ? formatDateTime(account.last_sign_in_at) : "Chưa đăng nhập"}</span><span className="account-actions"><button onClick={() => { setAccounts((current) => current.map((x) => x.id === account.id ? { ...x, role: x.role === "user" ? "admin" : "user" } : x)); setToast("Đã cập nhật profiles.role"); }}>Đổi role</button><button onClick={() => { setAccounts((current) => current.map((x) => x.id === account.id ? { ...x, is_active: !x.is_active, banned_until: x.is_active ? "2026-12-20T09:31:05+07:00" : null } : x)); setToast(account.is_active ? "Đã khóa tài khoản" : "Đã mở khóa tài khoản"); }}>{account.is_active ? "Khóa" : "Mở khóa"}</button><button onClick={() => setToast("Supabase Auth đã tạo mật khẩu tạm thời")}>Đặt lại mật khẩu</button></span></div>)}</div>{createOpen && <CreateAccount existingUsernames={accounts.map((account) => account.username)} existingEmails={accounts.map((account) => account.email)} onClose={() => setCreateOpen(false)} onSave={(account) => { setAccounts((current) => [...current, { ...account, id: crypto.randomUUID(), is_active: true, last_sign_in_at: null, banned_until: null }]); setCreateOpen(false); setToast("Đã tạo auth.users và profiles"); }} />}</div>;
+  return <div className="standard-page"><div className="page-header"><div><h1>{tx("Tài khoản demo", "Demo accounts")}</h1></div><button className="primary-button" onClick={() => setCreateOpen(true)}><Plus size={17} /> {tx("Tạo tài khoản", "Create account")}</button></div><div className="data-table accounts-table card"><div className="data-row head"><span>{tx("Tài khoản", "Account")}</span><span>{tx("Vai trò", "Role")}</span><span>{tx("Trạng thái", "Status")}</span><span>{tx("Đăng nhập cuối", "Last sign-in")}</span><span>{tx("Thao tác", "Actions")}</span></div>{accounts.map((account) => <div className="data-row" key={account.id}><span className="account-name"><i>{account.username.slice(0, 2).toUpperCase()}</i><span><strong>{account.display_name || account.username}</strong><small>{account.username} · {account.email}</small></span></span><span>{account.role === "admin" ? tx("Quản trị viên", "Administrator") : tx("Người dùng", "User")}</span><span><b className={`status-tag ${account.is_active ? "" : "muted"}`}>{account.is_active ? tx("Hoạt động", "Active") : tx("Đã khóa", "Locked")}</b></span><span>{account.last_sign_in_at ? formatDateTime(account.last_sign_in_at) : tx("Chưa đăng nhập", "Never")}</span><span className="account-actions"><button onClick={() => { setAccounts((current) => current.map((x) => x.id === account.id ? { ...x, role: x.role === "user" ? "admin" : "user" } : x)); setToast(tx("Đã cập nhật vai trò", "Role updated")); }}>{tx("Đổi vai trò", "Change role")}</button><button onClick={() => { setAccounts((current) => current.map((x) => x.id === account.id ? { ...x, is_active: !x.is_active, banned_until: x.is_active ? "2026-12-20T09:31:05+07:00" : null } : x)); setToast(account.is_active ? tx("Đã khóa tài khoản", "Account locked") : tx("Đã mở khóa tài khoản", "Account unlocked")); }}>{account.is_active ? tx("Khóa", "Lock") : tx("Mở khóa", "Unlock")}</button><button onClick={() => setToast(tx("Đã tạo mật khẩu tạm thời", "Temporary password created"))}>{tx("Đặt lại mật khẩu", "Reset password")}</button></span></div>)}</div>{createOpen && <CreateAccount existingUsernames={accounts.map((account) => account.username)} existingEmails={accounts.map((account) => account.email)} onClose={() => setCreateOpen(false)} onSave={(account) => { setAccounts((current) => [...current, { ...account, id: crypto.randomUUID(), is_active: true, last_sign_in_at: null, banned_until: null }]); setCreateOpen(false); setToast(tx("Đã tạo tài khoản", "Account created")); }} />}</div>;
+}
+
+function ConfigurationView({ pipeline, setPipeline, setToast }) {
+  const { tx } = useLanguage();
+  const [draft, setDraft] = useState(pipeline);
+  const descriptions = {
+    B0: tx("Không sử dụng kho tài liệu", "No document retrieval"),
+    B1: tx("Tìm kiếm dense với đoạn cố định", "Dense retrieval with fixed chunks"),
+    B2: tx("Tìm kiếm dense với đoạn theo cấu trúc", "Dense retrieval with structured chunks"),
+    B3: tx("Tìm kiếm hybrid và xử lý câu hỏi", "Hybrid retrieval and query processing"),
+    B4: tx("Pipeline đầy đủ với reranker và trích dẫn", "Full pipeline with reranking and citations"),
+  };
+  return <div className="standard-page configuration-page">
+    <div className="page-header"><div><h1>{tx("Cấu hình hệ thống", "System configuration")}</h1></div></div>
+    <div className="configuration-content">
+      <div className="config-summary card">
+        <span>{tx("Cấu hình đang sử dụng", "Active configuration")}</span>
+        <strong>{pipeline}</strong>
+        <p>{descriptions[pipeline]}</p>
+      </div>
+      <div className="config-list">
+        {PIPELINE_CONFIGS.map((config) => <button key={config.name} className={`config-option card ${draft === config.name ? "selected" : ""}`} onClick={() => setDraft(config.name)}>
+          <span className="config-radio">{draft === config.name && <Check size={15} />}</span>
+          <span><strong>{config.name}</strong><small>{descriptions[config.name]}</small></span>
+          {pipeline === config.name && <b>{tx("Đang dùng", "Active")}</b>}
+        </button>)}
+      </div>
+      <div className="config-actions"><button className="primary-button" disabled={draft === pipeline} onClick={() => { setPipeline(draft); setToast(tx(`Đã chuyển cấu hình sang ${draft}`, `Active configuration changed to ${draft}`)); }}>{tx("Áp dụng cấu hình", "Apply configuration")}</button></div>
+    </div>
+  </div>;
 }
 
 function CompareView() {
+  const { tx } = useLanguage();
   const [left, setLeft] = useState("B0");
   const [right, setRight] = useState("B4");
   const [question, setQuestion] = useState("Thời hạn giải quyết quyền lợi bảo hiểm An Gia là bao lâu?");
   const [ran, setRan] = useState(false);
   const [compareSourceOpen, setCompareSourceOpen] = useState(null);
-  return <div className="standard-page"><div className="page-header"><div><p className="page-kicker">2 MESSAGES CÙNG REPLY_TO_ID · KHÁC RUN_ID</p><h1>So sánh hai cấu hình</h1><p>Chạy cùng một câu hỏi và đối chiếu câu trả lời, nguồn cùng độ trễ.</p></div></div><div className="compare-query card"><label>messages.content<input value={question} onChange={(e) => setQuestion(e.target.value)} /></label><button className="primary-button" onClick={() => setRan(true)}><Sparkles size={17} /> Chạy so sánh</button></div><div className="compare-grid">{[[left, setLeft, false], [right, setRight, true]].map(([value, setter, rag], index) => { const config = PIPELINE_CONFIGS.find((item) => item.name === value); return <div className="compare-column card" key={index}><div className="compare-head"><label>config_name<select value={value} onChange={(e) => setter(e.target.value)}>{PIPELINE_CONFIGS.map((item) => <option key={item.name} value={item.name}>{item.name}</option>)}</select></label><span>{config.description}</span></div>{ran ? <><div className="compare-answer"><Bot size={20} /><p>{rag ? "Bảo Việt giải quyết quyền lợi trong 15 ngày làm việc kể từ khi nhận đủ hồ sơ hợp lệ. [1]" : "Thông thường doanh nghiệp bảo hiểm sẽ xử lý hồ sơ trong một khoảng thời gian hợp lý theo quy định."}</p></div><div className="compare-stats"><span>run_id<strong>{value}_demo_20261120-1100</strong></span><span>latency_ms<strong>{rag ? "3204" : "1408"}</strong></span><span>Nguồn<strong>{rag ? "2" : "0"}</strong></span></div>{rag && <SourceStack sources={[SOURCES[0]]} sourceOpen={compareSourceOpen} setSourceOpen={setCompareSourceOpen} showExcerpts={false} />}</> : <div className="empty-compare"><Gauge size={27} /><p>Chạy so sánh để xem kết quả cấu hình {value}</p></div>}</div>; })}</div></div>;
+  return <div className="standard-page"><div className="page-header"><div><h1>{tx("So sánh cấu hình", "Compare configurations")}</h1></div></div><div className="compare-query card"><label>{tx("Câu hỏi", "Question")}<input value={question} onChange={(e) => setQuestion(e.target.value)} /></label><button className="primary-button" onClick={() => setRan(true)}><Sparkles size={17} /> {tx("Chạy so sánh", "Run comparison")}</button></div><div className="compare-grid">{[[left, setLeft, false], [right, setRight, true]].map(([value, setter, rag], index) => { const config = PIPELINE_CONFIGS.find((item) => item.name === value); return <div className="compare-column card" key={index}><div className="compare-head"><label>{tx("Cấu hình", "Configuration")}<select value={value} onChange={(e) => setter(e.target.value)}>{PIPELINE_CONFIGS.map((item) => <option key={item.name} value={item.name}>{item.name}</option>)}</select></label><span>{config.description}</span></div>{ran ? <><div className="compare-answer"><Bot size={20} /><p>{rag ? "Bảo Việt giải quyết quyền lợi trong 15 ngày làm việc kể từ khi nhận đủ hồ sơ hợp lệ. [1]" : "Thông thường doanh nghiệp bảo hiểm sẽ xử lý hồ sơ trong một khoảng thời gian hợp lý theo quy định."}</p></div><div className="compare-stats"><span>{tx("Mã lần chạy", "Run ID")}<strong>{value}_demo_20261120-1100</strong></span><span>{tx("Độ trễ", "Latency")}<strong>{rag ? "3204 ms" : "1408 ms"}</strong></span><span>{tx("Nguồn", "Sources")}<strong>{rag ? "2" : "0"}</strong></span></div>{rag && <SourceStack sources={[SOURCES[0]]} sourceOpen={compareSourceOpen} setSourceOpen={setCompareSourceOpen} showExcerpts={false} />}</> : <div className="empty-compare"><Gauge size={27} /><p>{tx("Chạy so sánh để xem kết quả", "Run comparison to see results")}</p></div>}</div>; })}</div></div>;
 }
 
 function SettingsPanel({ onClose, theme, setTheme, fontSize, setFontSize, citationMode, setCitationMode, showExcerpts, setShowExcerpts, showDetails, setShowDetails, role }) {
-  return <div className="modal-layer"><button className="modal-scrim" onClick={onClose} /><div className="settings-panel"><div className="settings-title"><div><span>user_settings</span><h2>Tùy chỉnh trải nghiệm</h2></div><button className="icon-button" onClick={onClose}><X size={20} /></button></div><section><h3>theme · theme_mode</h3><div className="theme-options three"><button className={theme === "light" ? "active" : ""} onClick={() => setTheme("light")}><Sun size={20} /> light</button><button className={theme === "dark" ? "active" : ""} onClick={() => setTheme("dark")}><Moon size={20} /> dark</button><button className={theme === "system" ? "active" : ""} onClick={() => setTheme("system")}><Settings size={20} /> system</button></div><div className="range-setting"><span><strong>font_size</strong><small>smallint · CHECK 12–20 · mặc định 14</small></span><input type="range" min="12" max="20" step="1" value={fontSize} onChange={(event) => setFontSize(Number(event.target.value))} /><b>{fontSize}px</b></div></section><section><h3>Trích dẫn</h3><div className="radio-setting"><span><strong>citation_style</strong><small>enum: inline | footnote</small></span><label><input type="radio" checked={citationMode === "inline"} onChange={() => setCitationMode("inline")} /> inline</label><label><input type="radio" checked={citationMode === "footnote"} onChange={() => setCitationMode("footnote")} /> footnote</label></div><Toggle label="show_source_text" detail="boolean · mặc định true" value={showExcerpts} setValue={setShowExcerpts} />{role === "admin" && <Toggle label="Chi tiết xử lý" detail="Admin only · traces và retrieval_logs" value={showDetails} setValue={setShowDetails} />}</section><p className="settings-updated">updated_at được cập nhật tự động khi lưu.</p></div></div>;
+  const { language, setLanguage, tx } = useLanguage();
+  return <div className="modal-layer"><button className="modal-scrim" onClick={onClose} /><div className="settings-panel"><div className="settings-title"><div><span>{tx("CÀI ĐẶT CÁ NHÂN", "PERSONAL SETTINGS")}</span><h2>{tx("Tùy chỉnh trải nghiệm", "Customize your experience")}</h2></div><button className="icon-button" onClick={onClose}><X size={20} /></button></div>
+    <section><h3>{tx("GIAO DIỆN", "APPEARANCE")}</h3><div className="theme-options three"><button className={theme === "light" ? "active" : ""} onClick={() => setTheme("light")}><Sun size={20} /> {tx("Sáng", "Light")}</button><button className={theme === "dark" ? "active" : ""} onClick={() => setTheme("dark")}><Moon size={20} /> {tx("Tối", "Dark")}</button><button className={theme === "system" ? "active" : ""} onClick={() => setTheme("system")}><Settings size={20} /> {tx("Hệ thống", "System")}</button></div><div className="range-setting"><span><strong>{tx("Cỡ chữ", "Font size")}</strong></span><input type="range" min="12" max="20" step="1" value={fontSize} onChange={(event) => setFontSize(Number(event.target.value))} /><b>{fontSize}px</b></div></section>
+    <section><h3>{tx("NGÔN NGỮ", "LANGUAGE")}</h3><div className="language-options"><button className={language === "vi" ? "active" : ""} onClick={() => setLanguage("vi")}>Tiếng Việt</button><button className={language === "en" ? "active" : ""} onClick={() => setLanguage("en")}>English</button></div></section>
+    <section><h3>{tx("TRÍCH DẪN VÀ XỬ LÝ", "CITATIONS AND PROCESSING")}</h3><div className="radio-setting"><span><strong>{tx("Cách hiển thị nguồn", "Citation display")}</strong></span><label><input type="radio" checked={citationMode === "inline"} onChange={() => setCitationMode("inline")} /> {tx("Trong câu", "Inline")}</label><label><input type="radio" checked={citationMode === "footnote"} onChange={() => setCitationMode("footnote")} /> {tx("Cuối câu", "Footnote")}</label></div><Toggle label={tx("Hiển thị đoạn văn gốc", "Show source excerpts")} value={showExcerpts} setValue={setShowExcerpts} />{role === "admin" && <Toggle label={tx("Chi tiết xử lý", "Processing details")} value={showDetails} setValue={setShowDetails} />}</section>
+  </div></div>;
 }
 
 function Toggle({ label, detail, value, setValue }) {
-  return <div className="setting-row"><div><strong>{label}</strong><small>{detail}</small></div><button className={`switch ${value ? "on" : ""}`} onClick={() => setValue(!value)} aria-pressed={value}><span /></button></div>;
+  return <div className="setting-row"><div><strong>{label}</strong>{detail && <small>{detail}</small>}</div><button className={`switch ${value ? "on" : ""}`} onClick={() => setValue(!value)} aria-pressed={value}><span /></button></div>;
 }
 
 function SystemModal({ onClose }) {
+  const { tx } = useLanguage();
   const [checking, setChecking] = useState(false);
-  return <Modal title="Trạng thái hệ thống" subtitle="Kiểm tra trước khi bắt đầu phiên demo" onClose={onClose} wide><div className="system-summary"><CheckCircle2 size={24} /><div><strong>{checking ? "Đang kiểm tra các thành phần…" : "Tất cả thành phần đang hoạt động"}</strong><small>Kiểm tra gần nhất: vừa xong</small></div><button onClick={() => { setChecking(true); setTimeout(() => setChecking(false), 900); }}><RefreshCw className={checking ? "spin" : ""} size={16} /> Kiểm tra lại</button></div><div className="system-list">{SYSTEMS.map((s) => <div key={s.name}><span className="system-icon"><Activity size={18} /></span><span><strong>{s.name}</strong><small>{s.detail}</small></span><b><i /> {s.status}</b><em>{s.metric}</em></div>)}</div></Modal>;
+  return <Modal title={tx("Trạng thái hệ thống", "System status")} onClose={onClose} wide><div className="system-summary"><CheckCircle2 size={24} /><div><strong>{checking ? tx("Đang kiểm tra…", "Checking…") : tx("Tất cả thành phần đang hoạt động", "All services are operational")}</strong></div><button onClick={() => { setChecking(true); setTimeout(() => setChecking(false), 900); }}><RefreshCw className={checking ? "spin" : ""} size={16} /> {tx("Kiểm tra lại", "Check again")}</button></div><div className="system-list">{SYSTEMS.map((s) => <div key={s.name}><span className="system-icon"><Activity size={18} /></span><span><strong>{s.name}</strong><small>{s.detail}</small></span><b><i /> {tx("Sẵn sàng", "Ready")}</b><em>{s.metric}</em></div>)}</div></Modal>;
 }
 
 function FeedbackModal({ onClose, onSave }) {
+  const { tx } = useLanguage();
   const [reason, setReason] = useState("");
   const [comment, setComment] = useState("");
-  return <Modal title="Điều gì cần cải thiện?" subtitle="feedback.rating = -1 nên reason là bắt buộc." onClose={onClose}><div className="reason-list">{Object.entries(ENUM_LABELS.feedback_reason).map(([value, label]) => <label key={value}><input type="radio" name="reason" checked={reason === value} onChange={() => setReason(value)} /><span><strong>{label}</strong><small>{value}</small></span></label>)}</div><label className="modal-field">comment<textarea value={comment} onChange={(event) => setComment(event.target.value)} placeholder="Ghi chú thêm (không bắt buộc)" /></label><div className="modal-actions"><button className="secondary-button" onClick={onClose}>Hủy</button><button className="primary-button" disabled={!reason} onClick={() => onSave({ rating: -1, reason, comment: comment || null })}>Gửi phản hồi</button></div></Modal>;
+  const reasons = { sai_noi_dung: tx("Sai nội dung", "Incorrect content"), thieu_nguon: tx("Thiếu nguồn", "Missing sources"), trich_dan_sai: tx("Trích dẫn sai", "Incorrect citation"), tu_choi_nham: tx("Từ chối nhầm", "Incorrect refusal"), khac: tx("Khác", "Other") };
+  return <Modal title={tx("Điều gì cần cải thiện?", "What should be improved?")} onClose={onClose}><div className="reason-list">{Object.entries(reasons).map(([value, label]) => <label key={value}><input type="radio" name="reason" checked={reason === value} onChange={() => setReason(value)} /><span><strong>{label}</strong></span></label>)}</div><label className="modal-field">{tx("Ghi chú", "Comment")}<textarea value={comment} onChange={(event) => setComment(event.target.value)} placeholder={tx("Không bắt buộc", "Optional")} /></label><div className="modal-actions"><button className="secondary-button" onClick={onClose}>{tx("Hủy", "Cancel")}</button><button className="primary-button" disabled={!reason} onClick={() => onSave({ rating: -1, reason, comment: comment || null })}>{tx("Gửi phản hồi", "Submit feedback")}</button></div></Modal>;
 }
 
 function RenameModal({ item, onClose, onSave }) {
+  const { tx } = useLanguage();
   const [name, setName] = useState(item.title);
-  return <Modal title="Đổi tên cuộc trò chuyện" subtitle="Tên mới giúp bạn tìm lại nội dung nhanh hơn." onClose={onClose}><label className="modal-field">Tên cuộc trò chuyện<input value={name} onChange={(e) => setName(e.target.value)} autoFocus /></label><div className="modal-actions"><button className="secondary-button" onClick={onClose}>Hủy</button><button className="primary-button" onClick={() => onSave(name)} disabled={!name.trim()}>Lưu thay đổi</button></div></Modal>;
+  return <Modal title={tx("Đổi tên cuộc trò chuyện", "Rename conversation")} onClose={onClose}><label className="modal-field">{tx("Tên cuộc trò chuyện", "Conversation title")}<input value={name} onChange={(e) => setName(e.target.value)} autoFocus /></label><div className="modal-actions"><button className="secondary-button" onClick={onClose}>{tx("Hủy", "Cancel")}</button><button className="primary-button" onClick={() => onSave(name)} disabled={!name.trim()}>{tx("Lưu", "Save")}</button></div></Modal>;
 }
 
 function ConfirmModal({ item, onClose, onConfirm }) {
-  return <Modal title="Xác nhận xóa" subtitle={`Bạn sắp xóa ${item.all ? "toàn bộ lịch sử" : `“${item.title}”`}. Hành động này không thể hoàn tác.`} onClose={onClose}><div className="delete-warning"><Trash2 size={21} /> Log thực nghiệm trong hệ thống quản trị sẽ không bị ảnh hưởng.</div><div className="modal-actions"><button className="secondary-button" onClick={onClose}>Hủy</button><button className="danger-button" onClick={onConfirm}>Xóa vĩnh viễn</button></div></Modal>;
+  const { tx } = useLanguage();
+  return <Modal title={tx("Xác nhận xóa", "Confirm deletion")} onClose={onClose}><div className="delete-warning"><Trash2 size={21} /> {tx("Hành động này không thể hoàn tác.", "This action cannot be undone.")}</div><div className="modal-actions"><button className="secondary-button" onClick={onClose}>{tx("Hủy", "Cancel")}</button><button className="danger-button" onClick={onConfirm}>{tx("Xóa vĩnh viễn", "Delete permanently")}</button></div></Modal>;
 }
 
 function CreateAccount({ existingUsernames, existingEmails, onClose, onSave }) {
+  const { tx } = useLanguage();
   const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
@@ -663,11 +727,12 @@ function CreateAccount({ existingUsernames, existingEmails, onClose, onSave }) {
   const validEmail = /^demo\d+@bv-rag\.local$/.test(email);
   const duplicateUsername = existingUsernames.includes(username);
   const duplicateEmail = existingEmails.includes(email);
-  return <Modal title="Tạo tài khoản demo" subtitle="Email bắt buộc dùng miền giả @bv-rag.local; sign-up công khai bị tắt." onClose={onClose}><label className="modal-field">username * · UQ<input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="demo04" />{duplicateUsername && <small className="field-error">username đã tồn tại.</small>}</label><label className="modal-field">display_name<input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Người dùng demo 04" /></label><label className="modal-field">email giả * · UQ<input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="demo04@bv-rag.local" />{email && !validEmail && <small className="field-error">Định dạng yêu cầu: demoNN@bv-rag.local</small>}{duplicateEmail && <small className="field-error">email đã tồn tại.</small>}</label><label className="modal-field">role *<select value={role} onChange={(e) => setRole(e.target.value)}><option value="user">user</option><option value="admin">admin</option></select></label><div className="modal-actions"><button className="secondary-button" onClick={onClose}>Hủy</button><button className="primary-button" disabled={!username || !validEmail || duplicateUsername || duplicateEmail} onClick={() => onSave({ username, display_name: displayName || null, email, role })}>Tạo tài khoản</button></div></Modal>;
+  return <Modal title={tx("Tạo tài khoản demo", "Create demo account")} onClose={onClose}><label className="modal-field">Username *<input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="demo04" />{duplicateUsername && <small className="field-error">{tx("Tên đăng nhập đã tồn tại.", "Username already exists.")}</small>}</label><label className="modal-field">{tx("Tên hiển thị", "Display name")}<input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder={tx("Người dùng demo 04", "Demo user 04")} /></label><label className="modal-field">Email *<input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="demo04@bv-rag.local" />{email && !validEmail && <small className="field-error">{tx("Email phải có dạng demoNN@bv-rag.local", "Use the format demoNN@bv-rag.local")}</small>}{duplicateEmail && <small className="field-error">{tx("Email đã tồn tại.", "Email already exists.")}</small>}</label><label className="modal-field">{tx("Vai trò", "Role")} *<select value={role} onChange={(e) => setRole(e.target.value)}><option value="user">User</option><option value="admin">Administrator</option></select></label><div className="modal-actions"><button className="secondary-button" onClick={onClose}>{tx("Hủy", "Cancel")}</button><button className="primary-button" disabled={!username || !validEmail || duplicateUsername || duplicateEmail} onClick={() => onSave({ username, display_name: displayName || null, email, role })}>{tx("Tạo tài khoản", "Create account")}</button></div></Modal>;
 }
 
 function SessionExpired({ onLogin, onLogout }) {
-  return <div className="modal-layer session-layer"><div className="modal-card session-card"><span className="session-lock"><LockKeyhole size={24} /></span><h2>Phiên làm việc đã hết hạn</h2><p>Để bảo vệ phiên demo, hệ thống tự động đăng xuất sau 30 phút không hoạt động.</p><button className="primary-button" onClick={onLogin}>Tiếp tục phiên làm việc</button><button className="text-button" onClick={onLogout}>Quay về đăng nhập</button></div></div>;
+  const { tx } = useLanguage();
+  return <div className="modal-layer session-layer"><div className="modal-card session-card"><span className="session-lock"><LockKeyhole size={24} /></span><h2>{tx("Phiên làm việc đã hết hạn", "Session expired")}</h2><button className="primary-button" onClick={onLogin}>{tx("Tiếp tục phiên làm việc", "Continue session")}</button><button className="text-button" onClick={onLogout}>{tx("Quay về đăng nhập", "Return to sign in")}</button></div></div>;
 }
 
 function Modal({ title, subtitle, onClose, children, wide = false }) {
