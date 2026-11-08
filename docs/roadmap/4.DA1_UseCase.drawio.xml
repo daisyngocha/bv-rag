@@ -23,7 +23,7 @@
         <mxCell id="ov_auth" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="&lt;b&gt;Quản lý phiên đăng nhập&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#555555&quot;&gt;UC-AUTH-01 → 04&lt;/span&gt;" vertex="1">
           <mxGeometry height="76" width="260" x="380" y="90" as="geometry" />
         </mxCell>
-        <mxCell id="ov_chat" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="&lt;b&gt;Hỏi đáp có trích dẫn&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#555555&quot;&gt;UC-CHAT-01 → 12&lt;/span&gt;" vertex="1">
+        <mxCell id="ov_chat" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="&lt;b&gt;Hỏi đáp có trích dẫn&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#555555&quot;&gt;UC-CHAT-01 → 13&lt;/span&gt;" vertex="1">
           <mxGeometry height="76" width="260" x="380" y="210" as="geometry" />
         </mxCell>
         <mxCell id="ov_his" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="&lt;b&gt;Quản lý lịch sử chat&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#555555&quot;&gt;UC-HIS-01 → 06&lt;/span&gt;" vertex="1">
@@ -35,7 +35,7 @@
         <mxCell id="ov_cfg" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="&lt;b&gt;Cấu hình phiên demo&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#555555&quot;&gt;UC-SET-03 → 05&lt;/span&gt;" vertex="1">
           <mxGeometry height="76" width="260" x="380" y="570" as="geometry" />
         </mxCell>
-        <mxCell id="ov_adm" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="&lt;b&gt;Quản trị hệ thống&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#555555&quot;&gt;UC-ADM-01 → 05&lt;/span&gt;" vertex="1">
+        <mxCell id="ov_adm" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="&lt;b&gt;Quản trị hệ thống&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#555555&quot;&gt;UC-ADM-01, 03 → 05&lt;/span&gt;" vertex="1">
           <mxGeometry height="76" width="260" x="380" y="690" as="geometry" />
         </mxCell>
         <mxCell id="e11" edge="1" parent="1" source="user" style="html=1;endArrow=none;endFill=0;strokeColor=#333333;" target="ov_auth" value="">
@@ -230,6 +230,12 @@
         </mxCell>
         <mxCell id="e28" edge="1" parent="1" source="UC-CHAT-05" style="html=1;endArrow=none;endFill=0;strokeColor=#333333;" target="web" value="">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell><mxCell id="UC-CHAT-13" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#FFF2CC;strokeColor=#D6B656;" value="&lt;b&gt;Xem danh mục sản phẩm và tài liệu&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#555555&quot;&gt;UC-CHAT-13&lt;/span&gt;" vertex="1">
+          <mxGeometry height="66" width="210" x="880" y="760" as="geometry" />
+        </mxCell><mxCell id="e40" edge="1" parent="1" source="user" style="html=1;endArrow=none;endFill=0;strokeColor=#333333;" target="UC-CHAT-13" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell><mxCell id="e41" edge="1" parent="1" source="UC-CHAT-13" style="html=1;endArrow=none;endFill=0;strokeColor=#333333;" target="web" value="">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="v29" parent="1" style="text;html=1;align=left;fontSize=11;" value="&lt;b&gt;Chú thích&lt;/b&gt;" vertex="1">
           <mxGeometry height="24" width="200" x="1180" y="60" as="geometry" />
@@ -396,32 +402,28 @@
           <mxGeometry height="28" width="330" x="200" as="geometry" />
         </mxCell>
         <mxCell id="v1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=center;fontStyle=1;fontSize=14;fillColor=none;strokeColor=#333333;spacingTop=6;fontFamily=Helvetica;" value="Quản trị hệ thống" vertex="1">
-          <mxGeometry height="550" width="380" x="310" y="40" as="geometry" />
+          <mxGeometry height="460" width="380" x="310" y="40" as="geometry" />
         </mxCell>
         <mxCell id="admin" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontStyle=1;fontFamily=Helvetica;" value="Quản trị viên" vertex="1">
-          <mxGeometry height="70" width="36" x="200" y="296" as="geometry" />
+          <mxGeometry height="70" width="36" x="200" y="246" as="geometry" />
         </mxCell>
         <mxCell id="UC-ADM-01" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#FFF2CC;strokeColor=#D6B656;" value="&lt;b&gt;Quản lý tài khoản demo&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#555555&quot;&gt;UC-ADM-01&lt;/span&gt;" vertex="1">
           <mxGeometry height="66" width="250" x="380" y="80" as="geometry" />
         </mxCell>
-        <mxCell id="UC-ADM-02" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#FFF2CC;strokeColor=#D6B656;" value="&lt;b&gt;Xem danh mục sản phẩm và tài liệu&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#555555&quot;&gt;UC-ADM-02&lt;/span&gt;" vertex="1">
+        
+        <mxCell id="UC-ADM-03" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#FFF2CC;strokeColor=#D6B656;" value="&lt;b&gt;Xem nhật ký truy vấn&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#555555&quot;&gt;UC-ADM-03&lt;/span&gt;" vertex="1">
           <mxGeometry height="66" width="250" x="380" y="200" as="geometry" />
         </mxCell>
-        <mxCell id="UC-ADM-03" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#FFF2CC;strokeColor=#D6B656;" value="&lt;b&gt;Xem nhật ký truy vấn&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#555555&quot;&gt;UC-ADM-03&lt;/span&gt;" vertex="1">
+        <mxCell id="UC-ADM-04" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#FFFFFF;strokeColor=#999999;dashed=1;" value="&lt;b&gt;Xem dashboard chỉ số&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#555555&quot;&gt;UC-ADM-04&lt;/span&gt;" vertex="1">
           <mxGeometry height="66" width="250" x="380" y="300" as="geometry" />
         </mxCell>
-        <mxCell id="UC-ADM-04" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#FFFFFF;strokeColor=#999999;dashed=1;" value="&lt;b&gt;Xem dashboard chỉ số&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#555555&quot;&gt;UC-ADM-04&lt;/span&gt;" vertex="1">
-          <mxGeometry height="66" width="250" x="380" y="390" as="geometry" />
-        </mxCell>
         <mxCell id="UC-ADM-05" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fillColor=#DAE8FC;strokeColor=#6C8EBF;" value="&lt;b&gt;Kiểm tra trạng thái hệ thống&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#555555&quot;&gt;UC-ADM-05&lt;/span&gt;" vertex="1">
-          <mxGeometry height="66" width="250" x="375" y="500" as="geometry" />
+          <mxGeometry height="66" width="250" x="380" y="400" as="geometry" />
         </mxCell>
         <mxCell id="e8" edge="1" parent="1" source="admin" style="html=1;endArrow=none;endFill=0;strokeColor=#333333;" target="UC-ADM-01" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e9" edge="1" parent="1" source="admin" style="html=1;endArrow=none;endFill=0;strokeColor=#333333;" target="UC-ADM-02" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
+        
         <mxCell id="e10" edge="1" parent="1" source="admin" style="html=1;endArrow=none;endFill=0;strokeColor=#333333;" target="UC-ADM-03" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
