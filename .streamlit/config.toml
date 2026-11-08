@@ -1,0 +1,34 @@
+# Theme theo chuẩn Bảo Việt Design (token: primary #00469C, navy #0A2540, Inter, radius 8/12).
+# Streamlit đọc file này khi chạy `streamlit run` từ gốc repo (Colab: /content/bv-rag).
+[client]
+toolbarMode = "viewer"          # ẩn nút Deploy, menu nhà phát triển
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+base = "light"
+primaryColor = "#00469C"
+backgroundColor = "#F1F5F9"            # page-bg
+secondaryBackgroundColor = "#F0F3F5"   # surface-container
+textColor = "#0A2540"                  # navy / on-surface
+linkColor = "#00469C"
+borderColor = "#BFC8D0"                # outline-variant
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+headingFont = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+headingFontWeights = [600, 600, 500, 500, 500, 500]
+baseFontSize = 14
+baseRadius = "8px"
+buttonRadius = "8px"
+showWidgetBorder = true
+redColor = "#BA1A1A"
+greenColor = "#0D8A4E"
+blueColor = "#00469C"
+
+[theme.sidebar]
+backgroundColor = "#0A2540"            # sidebar-bg
+secondaryBackgroundColor = "#1A3A5C"   # sidebar-hover
+textColor = "#FFFFFF"
+borderColor = "#1A3A5C"
+primaryColor = "#3B8FF4"
+linkColor = "#A3CDFB"

@@ -179,6 +179,7 @@ config B4 của run test; `app/service.py` gắn nguồn cho mỗi đoạn ngữ
 trang sản phẩm từ catalog, đoạn văn bản) và đánh dấu đoạn được trích dẫn. Giao diện `app/streamlit_app.py`: câu trả lời
 với `[n]`, danh sách nguồn mở rộng được, cảnh báo khi từ chối do ngưỡng, số không có trong nguồn hoặc trích dẫn sai.
 Mỗi câu hỏi độc lập (không dùng lịch sử hội thoại).
+Giao diện theo chuẩn Bảo Việt Design: theme ở `.streamlit/config.toml` (primary #00469C, sidebar navy #0A2540, Inter, radius 8), CSS và thành phần (top bar, thẻ hỏi đáp, badge trạng thái có icon + chữ, pill trích dẫn, trạng thái trống/lỗi) ở đầu `app/streamlit_app.py`. Chạy `streamlit run` từ gốc repo để nạp theme.
 
 Colab L4: mở `scripts/colab_demo.ipynb`, Run all; cell 7 in link `https://….trycloudflare.com`, cell 8 chạy kịch bản
 `app/demo_script.yaml` (6 câu dev: tra cứu, bảng phí, tình huống, so sánh, 2 câu ngoài phạm vi) và ghi bản chép lên
