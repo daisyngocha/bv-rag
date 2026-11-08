@@ -22,3 +22,7 @@ logs/*
 web/.env.local
 supabase/.temp/
 supabase/.branches/
+
+# Cài/build lại được: Figma Make chạy npm install (.figma/make/install) và npm run build (.figma/make/deploy)
+node_modules/
+dist/
