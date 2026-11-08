@@ -68,7 +68,9 @@ class RunRepo:
         return bool(self.db.select("pipeline_configs", name=f"eq.{name}", select="name"))
 
     def set_setting(self, key: str, value: dict, updated_by: str | None = None) -> None:
-        self.db.upsert("app_settings", [{"key": key, "value": value, "updated_by": updated_by}], on_conflict="key")
+        """updated_by = None (hệ thống ghi khi khởi động): giữ nguyên người sửa trước, chỉ đổi value."""
+        row = {"key": key, "value": value} | ({"updated_by": updated_by} if updated_by else {})
+        self.db.upsert("app_settings", [row], on_conflict="key")
 
     def get_setting(self, key: str) -> dict | None:
         rows = self.db.select("app_settings", key=f"eq.{key}", select="value")

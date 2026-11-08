@@ -200,7 +200,14 @@ class ChatService:
                 log.warning("finish_run %s: %s", rid, e)
 
     def start_session(self) -> str:
+        """Mở run demo khi API khởi động và ghi app_settings.active_config = cấu hình + run đang chạy
+        (trước đây chỉ ghi khi admin đổi cấu hình nên /admin/health hiện run của phiên cũ)."""
         self.run_id = self._start_run(self.config_name)
+        if self.runs is not None:
+            try:
+                self.runs.set_setting("active_config", {"config": self.config_name, "run_id": self.run_id})
+            except Exception as e:   # không chặn khởi động
+                log.warning("ghi app_settings.active_config: %s", e)
         return self.run_id
 
     def close_session(self) -> None:

@@ -314,6 +314,19 @@ def test_switch_config_and_compare(tmp_path):
         assert c.post("/admin/compare", headers=H, json={"question": "abc", "configs": ["B4", "B3"]}).status_code == 403
 
 
+def test_startup_writes_active_config(tmp_path):
+    db = FakeDB()
+    db.t["app_settings"] = [{"key": "active_config", "value": {"config": "B4", "run_id": "B4_demo_cu"},
+                             "updated_by": ADMIN.id}]
+    svc, _, app = make(tmp_path, db=db)
+    with TestClient(app) as c:
+        h = c.get("/admin/health", headers=HA).json()
+        row = db.t["app_settings"][0]
+        assert row["value"] == {"config": "B4", "run_id": svc.run_id} and svc.run_id != "B4_demo_cu"
+        assert row["updated_by"] == ADMIN.id                      # giữ người sửa trước
+        assert h["supabase"]["active_config"]["run_id"] == h["run_id"] == svc.run_id
+
+
 def test_admin_health(tmp_path):
     _, _, app = make(tmp_path)
     with TestClient(app) as c:
