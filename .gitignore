@@ -1,7 +1,7 @@
 .venv/
 __pycache__/
 *.pyc
-.env
+gemini_key.env
 
 # Dữ liệu lớn, tái tạo được từ sources.csv và code
 data/raw/products/*
