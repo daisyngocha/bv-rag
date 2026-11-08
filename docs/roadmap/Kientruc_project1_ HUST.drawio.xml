@@ -480,7 +480,7 @@
         <mxCell id="d52" parent="1" style="ellipse;fillColor=#FFA726;strokeColor=#E65100;fontColor=#FFFFFF;fontStyle=1;fontSize=13;whiteSpace=wrap;html=1;fontFamily=Helvetica;" value="3" vertex="1">
           <mxGeometry x="1045" y="583.0" width="34" height="34" as="geometry" />
         </mxCell>
-        <mxCell id="d53" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontFamily=Helvetica;" value="&lt;b style=&quot;font-size:13px&quot;&gt;Job 3 · Demo&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#424242&quot;&gt;FastAPI + Streamlit, tunnel cloudflared; video quay sẵn dự phòng&lt;/span&gt;" vertex="1">
+        <mxCell id="d53" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontFamily=Helvetica;" value="&lt;b style=&quot;font-size:13px&quot;&gt;Job 3 · Demo&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#424242&quot;&gt;React + FastAPI + Supabase, tunnel cloudflared; video quay sẵn dự phòng&lt;/span&gt;" vertex="1">
           <mxGeometry x="1087" y="562" width="182" height="76" as="geometry" />
         </mxCell>
         <mxCell id="d54" parent="1" style="rounded=1;arcSize=4;dashed=1;dashPattern=2 2;fillColor=none;strokeColor=#1565C0;strokeWidth=1;" value="" vertex="1">
