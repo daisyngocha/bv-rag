@@ -239,8 +239,17 @@ def test_refusal_reasons(tmp_path):
     _, db, app = make(tmp_path, min_score=0.5)
     with TestClient(app) as c:
         r = c.post("/chat/ask", headers=H, json={"question": "câu ngoài phạm vi BVP"}).json()
-    assert r["refused"] and r["gated"] and r["refusal_reason"] == "khong_du_can_cu" and r["sources"] == []
-    assert db.t["messages"][1]["refusal_reason"] == "khong_du_can_cu" and db.t["message_citations"] == []
+        # chặn ngưỡng, có sản phẩm → không đủ căn cứ
+        assert r["refused"] and r["gated"] and r["refusal_reason"] == "khong_du_can_cu" and r["sources"] == []
+        assert db.t["messages"][1]["refusal_reason"] == "khong_du_can_cu" and db.t["message_citations"] == []
+        # chặn ngưỡng, không nhận diện sản phẩm, không chọn sản phẩm → ngoài phạm vi
+        r = c.post("/chat/ask", headers=H, json={"question": "câu ngoài phạm vi xe ô tô"}).json()
+        assert r["gated"] and r["refusal_reason"] == "ngoai_pham_vi"
+        # chặn ngưỡng nhưng người dùng đã chọn sản phẩm → không đủ căn cứ
+        r = c.post("/chat/ask", headers=H, json={"question": "câu ngoài phạm vi", "product_filter": ["BTB"]}).json()
+        assert r["gated"] and r["refusal_reason"] == "khong_du_can_cu"
+    assert classify_refusal({"refused": True, "gated": True, "qp": {"products": []}}) == "ngoai_pham_vi"
+    assert classify_refusal({"refused": False, "qp": {"products": []}}) is None
     from src.generate.prompts import REFUSAL
     assert classify_refusal({"refused": True, "qp": {"products": []}}) == "ngoai_pham_vi"
     assert classify_refusal({"refused": True, "qp": {"products": [], "user_filter": ["BVP"]}}) == "khong_du_can_cu"

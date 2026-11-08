@@ -90,12 +90,12 @@ def make_title(question: str, max_len: int = 48) -> str:
 
 
 def classify_refusal(res: dict) -> str | None:
-    """messages.refusal_reason (SV-11). Chặn ngưỡng → khong_du_can_cu; LLM tự từ chối → ngoai_pham_vi khi query
-    processor không nhận diện sản phẩm nào và người dùng không chọn sản phẩm, còn lại khong_du_can_cu."""
+    """messages.refusal_reason (SV-11, sửa 08/11). Câu bị từ chối (chặn ngưỡng hoặc LLM tự từ chối):
+    ngoai_pham_vi khi query processor không nhận diện sản phẩm nào và người dùng không chọn sản phẩm
+    (vd hỏi bảo hiểm xe ô tô); còn lại khong_du_can_cu (hỏi đúng sản phẩm nhưng tài liệu không có căn cứ).
+    Cấu hình không có query processor (B0–B2) không biết sản phẩm → khong_du_can_cu."""
     if not res.get("refused"):
         return None
-    if res.get("gated"):
-        return "khong_du_can_cu"
     qp = res.get("qp")
     if qp is not None and not qp.get("products") and not qp.get("user_filter"):
         return "ngoai_pham_vi"
