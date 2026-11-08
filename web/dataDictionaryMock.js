@@ -92,7 +92,7 @@ export const QUERY_LOGS = [
 ];
 
 export const ACCOUNTS = [
-  { id: "3f2a9c1e-7b4d-4e2a-9c1f-2d8e5a6b7c90", email: "demo01@bv-rag.local", username: "demo01", display_name: "Người dùng demo 01", role: "admin", is_active: true, last_sign_in_at: "2026-11-20T09:31:05+07:00", banned_until: null },
+  { id: "3f2a9c1e-7b4d-4e2a-9c1f-2d8e5a6b7c90", email: "demo01@bv-rag.local", username: "demo01", display_name: "Ngọc Hà", role: "admin", is_active: true, last_sign_in_at: "2026-11-20T09:31:05+07:00", banned_until: null },
   { id: "6a2a9c1e-7b4d-4e2a-9c1f-2d8e5a6b7c11", email: "demo02@bv-rag.local", username: "demo02", display_name: "Người dùng demo 02", role: "user", is_active: true, last_sign_in_at: "2026-11-19T14:10:00+07:00", banned_until: null },
   { id: "8b2a9c1e-7b4d-4e2a-9c1f-2d8e5a6b7c42", email: "demo03@bv-rag.local", username: "demo03", display_name: "Người dùng demo 03", role: "user", is_active: false, last_sign_in_at: "2026-11-05T08:20:00+07:00", banned_until: "2026-12-05T08:20:00+07:00" },
 ];

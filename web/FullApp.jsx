@@ -302,16 +302,15 @@ export default function FullApp() {
         <button className="brand brand-button" onClick={() => setView("chat")}>
           <img src="/baoviet-logo.png" alt="Bảo hiểm Bảo Việt" />
           <span className="brand-divider" />
-          <span><strong>{tx("Trợ lý sản phẩm", "Product assistant")}</strong><small>{tx("Hỏi đáp có trích dẫn", "Citation-grounded answers")}</small></span>
+          <span><strong>{tx("Trợ lý tư vấn sản phẩm bảo hiểm", "Insurance product advisory assistant")}</strong><small>{tx("Hỏi đáp có trích dẫn", "Citation-grounded answers")}</small></span>
         </button>
         <div className="topbar-actions">
-          <button className="status-pill" onClick={() => setSystemOpen(true)}><span /> {tx("Hệ thống sẵn sàng", "System ready")}</button>
+          {role === "admin" && <button className="status-pill" onClick={() => setSystemOpen(true)}><span /> {tx("Hệ thống sẵn sàng", "System ready")}</button>}
           <button className="session-pill" onClick={() => setSessionSeconds(29 * 60 + 59)} title="Nhấn để gia hạn phiên"><Clock3 size={15} /> {mm}:{ss}</button>
           <button className="icon-button" onClick={() => setSystemOpen(true)} aria-label="Trợ giúp"><CircleHelp size={20} /></button>
-          <button className="icon-button" onClick={() => setSettingsOpen(true)} aria-label="Cài đặt"><Settings size={20} /></button>
           <div className="profile-wrap">
             <button className="profile-button" onClick={() => setProfileOpen(!profileOpen)}>
-              <span>D1</span><span className="profile-copy"><strong>{language === "vi" ? ACCOUNTS[0].display_name : "Demo user 01"}</strong><small>{role === "admin" ? tx("Quản trị viên", "Administrator") : tx("Người dùng", "User")}</small></span><ChevronDown size={16} />
+              <span>NH</span><span className="profile-copy"><strong>{ACCOUNTS[0].display_name}</strong><small>{role === "admin" ? tx("Quản trị viên", "Administrator") : tx("Người dùng", "User")}</small></span><ChevronDown size={16} />
             </button>
             {profileOpen && (
               <div className="profile-menu">
