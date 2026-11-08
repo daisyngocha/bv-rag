@@ -456,3 +456,18 @@ def test_supabase_rest_requests():
     with pytest.raises(ValueError):
         db.update("runs", {"x": 1})                         # không bộ lọc → từ chối
     assert db.find_user_by_email("a@bv-rag.local")["id"] == "1"
+
+
+def test_cors_vercel_and_ngrok_header(tmp_path, monkeypatch):
+    monkeypatch.delenv("CORS_ORIGIN_REGEX", raising=False)
+    _, _, app = make(tmp_path)
+    with TestClient(app) as c:
+        def pre(origin):
+            r = c.options("/chat/ask", headers={"Origin": origin, "Access-Control-Request-Method": "POST",
+                                                "Access-Control-Request-Headers": "authorization,content-type,ngrok-skip-browser-warning"})
+            return r.status_code, r.headers.get("access-control-allow-origin")
+        for ok in ("https://bv-rag.vercel.app", "https://bv-rag-git-main-daisy-ngoc-ha.vercel.app",
+                   "https://bv-rag-abc123-daisy-ngoc-ha.vercel.app", "http://localhost:5173", "http://127.0.0.1:5173"):
+            assert pre(ok) == (200, ok), ok
+        for bad in ("https://evil.vercel.app", "https://bv-rag.vercel.app.evil.com", "http://bv-rag.vercel.app"):
+            assert pre(bad)[1] is None, bad

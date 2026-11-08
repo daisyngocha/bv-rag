@@ -35,6 +35,7 @@ from pydantic import BaseModel, Field
 from app.deps import CurrentUser, bearer_token, get_current_user, get_supabase_admin, require_admin
 
 DEMO_SCRIPT = Path(__file__).with_name("demo_script.yaml")
+DEFAULT_ORIGIN_REGEX = r"https://bv-rag(-[a-z0-9-]+)?(-daisy-ngoc-ha)?\.vercel\.app"
 ENV = object()   # create_app(db=ENV): đọc cấu hình Supabase từ biến môi trường
 log = logging.getLogger("bv-rag")
 
@@ -146,10 +147,14 @@ def create_app(service=None, db=ENV, verifier=ENV) -> FastAPI:
 
     app = FastAPI(title="bv-rag demo", lifespan=lifespan)
     app.state.svc, app.state.db, app.state.verifier = service, db, verifier
-    # Frontend React gọi API từ domain khác (tunnel cloudflared); CORS_ORIGINS cách nhau bởi dấu phẩy.
+    # Frontend React gọi API từ domain khác (Vercel, localhost) qua tunnel ngrok/cloudflared.
+    # CORS_ORIGINS: danh sách chính xác, cách nhau bởi dấu phẩy. CORS_ORIGIN_REGEX: domain Vercel của project
+    # (Production bv-rag.vercel.app, Preview bv-rag-<...>-daisy-ngoc-ha.vercel.app); đặt rỗng để tắt.
     origins = [o.strip() for o in os.environ.get("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",") if o.strip()]
-    app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
-                       allow_headers=["Authorization", "Content-Type", "X-Demo-Key"])
+    origin_regex = os.environ.get("CORS_ORIGIN_REGEX", DEFAULT_ORIGIN_REGEX) or None
+    app.add_middleware(CORSMiddleware, allow_origins=origins, allow_origin_regex=origin_regex,
+                       allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
+                       allow_headers=["Authorization", "Content-Type", "X-Demo-Key", "ngrok-skip-browser-warning"])
 
     def svc(request: Request):
         s = request.app.state.svc

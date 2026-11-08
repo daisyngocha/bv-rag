@@ -20,7 +20,8 @@ function connectMessage() {
 async function authHeaders() {
   const { data } = await supabase.auth.getSession();
   const token = data.session?.access_token;
-  return token ? { Authorization: `Bearer ${token}` } : {};
+  // ngrok bản miễn phí chèn trang cảnh báo HTML cho request từ trình duyệt; header này bỏ qua trang đó.
+  return { "ngrok-skip-browser-warning": "1", ...(token ? { Authorization: `Bearer ${token}` } : {}) };
 }
 
 async function errorFrom(res) {

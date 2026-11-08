@@ -271,6 +271,20 @@ npm install && npm run dev
 Mở http://localhost:5173, đăng nhập bằng tài khoản demo. `CORS_ORIGINS` của API phải có `http://localhost:5173`
 (mặc định đã có). Câu hỏi được che CCCD/CMND/SĐT/email ngay trong trình duyệt trước khi gửi.
 
+### Link API cố định và deploy Vercel
+
+1. ngrok (miễn phí): tạo tài khoản, lấy **Authtoken** và **1 static domain** (Dashboard → Domains, dạng
+   `ten-cua-ban.ngrok-free.app`). Thêm Colab Secrets `NGROK_AUTHTOKEN`, `NGROK_DOMAIN`. Cell 7 của
+   `scripts/colab_demo.ipynb` dùng domain này mỗi lần chạy (không có secret → cloudflared, link tạm).
+2. `.env.local` và Vercel (Settings → Environment Variables, Production + Preview) đặt một lần:
+   `VITE_API_URL=https://ten-cua-ban.ngrok-free.app`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`.
+3. Vercel tự build mỗi lần push/merge vào `main` (Framework Vite, build `npm run build`, output `dist`).
+   API cho phép CORS từ `bv-rag.vercel.app` và link Preview `bv-rag-…-daisy-ngoc-ha.vercel.app`
+   (`CORS_ORIGIN_REGEX` trong `app/api.py`); domain khác thêm vào `CORS_ORIGINS` ở cell 2.
+4. Supabase → Authentication → URL Configuration: Site URL = domain Vercel.
+
+Người test chỉ dùng được hỏi đáp khi notebook Colab đang chạy; đăng nhập, lịch sử, danh mục luôn dùng được.
+
 Kiểm luồng giao diện không cần Colab (Playwright giả lập Supabase + FastAPI ở tầng mạng):
 
 ```bash
