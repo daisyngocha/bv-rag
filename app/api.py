@@ -13,6 +13,7 @@ from pathlib import Path
 
 import yaml
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 DEMO_SCRIPT = Path(__file__).with_name("demo_script.yaml")
@@ -53,6 +54,10 @@ def create_app(service=None) -> FastAPI:
         yield
 
     app = FastAPI(title="bv-rag demo", lifespan=lifespan)
+    # Frontend React gọi API từ domain khác (tunnel cloudflared); CORS_ORIGINS cách nhau bởi dấu phẩy.
+    origins = [o.strip() for o in os.environ.get("CORS_ORIGINS", "http://localhost:5173").split(",") if o.strip()]
+    app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST", "DELETE"],
+                       allow_headers=["Authorization", "Content-Type"])
 
     @app.get("/health")
     def health():
