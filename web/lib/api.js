@@ -11,6 +11,12 @@ export class ApiError extends Error {
   }
 }
 
+// Trình duyệt không phân biệt được API tắt với bị chặn CORS: nêu cả hai khả năng.
+function connectMessage() {
+  return `Không kết nối được API (${API_URL}). Kiểm tra: (1) mở ${API_URL}/health thấy {"ok":true}; `
+    + `(2) CORS_ORIGINS trên Colab có ${window.location.origin}; (3) VITE_API_URL đúng link tunnel hiện tại.`;
+}
+
 async function authHeaders() {
   const { data } = await supabase.auth.getSession();
   const token = data.session?.access_token;
@@ -37,7 +43,7 @@ export async function apiFetch(path, { method = "GET", body, signal } = {}) {
     });
   } catch (e) {
     if (e.name === "AbortError") throw e;
-    throw new ApiError(0, `Không kết nối được API (${API_URL}). Kiểm tra Colab đang chạy và VITE_API_URL.`);
+    throw new ApiError(0, connectMessage());
   }
   if (!res.ok) throw await errorFrom(res);
   return res.status === 204 ? null : res.json();
@@ -56,7 +62,7 @@ export async function askStream(body, onEvent, signal) {
     });
   } catch (e) {
     if (e.name === "AbortError") throw e;
-    throw new ApiError(0, `Không kết nối được API (${API_URL}). Kiểm tra Colab đang chạy và VITE_API_URL.`);
+    throw new ApiError(0, connectMessage());
   }
   if (!res.ok) throw await errorFrom(res);
   const reader = res.body.getReader();

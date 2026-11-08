@@ -147,7 +147,7 @@ def create_app(service=None, db=ENV, verifier=ENV) -> FastAPI:
     app = FastAPI(title="bv-rag demo", lifespan=lifespan)
     app.state.svc, app.state.db, app.state.verifier = service, db, verifier
     # Frontend React gọi API từ domain khác (tunnel cloudflared); CORS_ORIGINS cách nhau bởi dấu phẩy.
-    origins = [o.strip() for o in os.environ.get("CORS_ORIGINS", "http://localhost:5173").split(",") if o.strip()]
+    origins = [o.strip() for o in os.environ.get("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",") if o.strip()]
     app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
                        allow_headers=["Authorization", "Content-Type", "X-Demo-Key"])
 

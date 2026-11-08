@@ -199,7 +199,7 @@ Câu hỏi được che CCCD/CMND/SĐT/email (`app/privacy.py`) trước khi và
 `{config}_demo_{yyyymmdd-hhmm}` (bảng `runs`, split = demo) và một thư mục `runs/{run_id}/` (log.jsonl + meta.json,
 `$RUNS_DIR` hoặc `$DRIVE_DIR/runs`). Lỗi ghi Supabase không làm mất câu trả lời (`saved: false`, `db_error`).
 Cấu hình chunk cố định (B1) không lưu trích dẫn vào DB vì bảng `chunks` chỉ có chunk cấu trúc. Domain frontend khai
-trong `CORS_ORIGINS` (mặc định `http://localhost:5173`).
+trong `CORS_ORIGINS` (mặc định `http://localhost:5173` và `http://127.0.0.1:5173`).
 
 Colab L4: mở `scripts/colab_demo.ipynb`, Run all; cell 7 in link API `https://….trycloudflare.com` (gán vào
 `VITE_API_URL` của frontend), cell 8 chạy kịch bản `app/demo_script.yaml` (6 câu dev: tra cứu, bảng phí, tình huống,
