@@ -22,3 +22,4 @@ logs/*
 web/.env.local
 supabase/.temp/
 supabase/.branches/
+tests/e2e/last_smoke.png
