@@ -136,8 +136,31 @@ Mục tiêu B4 là bản đề xuất 07/11, chờ GVHD (decision-log).
 | Ngưỡng 0,90 | B4ng → B4 | 0 | 0 | 0 | +0,031 | +0,011 | −0,008 | −0,31 |
 | Tổng | B2 → B4 | +0,167 | +0,042 | +0,126 | −0,073 | +0,409 | −0,015 | +1,09 |
 
-Chưa kiểm định thống kê: các bước có chênh lệch Recall@5 1–2 câu (hybrid, query processor, rerank) phải kiểm McNemar
-theo cặp câu ở tuần 8 trước khi kết luận.
+## Bảng 2'. Kiểm định McNemar theo cặp câu (test; exact binomial, Holm trong từng metric qua 6 bước liền kề)
+
+`eval/mcnemar.py`, CSV `results/mcnemar_v1_test_20261109.csv`. "Chỉ A / chỉ B": số câu chỉ cấu hình A / chỉ B đạt.
+Hit@k và từ chối nhầm trên 96 câu answerable; khớp đủ số trên 63 câu answerable có số trong đáp án chuẩn.
+
+| Bước | Metric | A → B | Chỉ A / chỉ B | p | p Holm |
+| --- | --- | --- | --- | --- | --- |
+| Chunk cấu trúc B1 → B2 | Hit@1 | 0,406 → 0,604 | 9 / 28 | 0,003 | **0,016** |
+| | Hit@5 | 0,740 → 0,865 | 4 / 16 | 0,012 | 0,071 |
+| | Từ chối nhầm | 0,323 → 0,208 | 16 / 5 | 0,027 | 0,160 |
+| | Khớp đủ số | 0,381 → 0,587 | 3 / 16 | 0,004 | **0,026** |
+| Hybrid B2 → B3hyb | Hit@1 / Hit@5 | +0,010 / +0,021 | 4/5, 2/4 | 1,000 / 0,688 | 1,0 |
+| Query processor B3hyb → B3 | Hit@5 / từ chối nhầm | +0,010 / −0,042 | 0/1, 4/0 | 1,000 / 0,125 | 1,0 / 0,547 |
+| Rerank B3 → B4rr | Hit@1 | 0,635 → 0,771 | 3 / 16 | 0,004 | **0,022** |
+| | Hit@5 | 0,896 → 0,906 | 4 / 5 | 1,000 | 1,0 |
+| Prompt rag_v3 B4rr → B4ng | Từ chối nhầm | 0,167 → 0,104 | 8 / 2 | 0,109 | 0,547 |
+| | Khớp đủ số | 0,635 → 0,508 | 9 / 1 | 0,022 | 0,108 |
+| Ngưỡng 0,90 B4ng → B4 | Từ chối nhầm | 0,104 → 0,135 | 1 / 4 | 0,375 | 1,0 |
+| Tổng B2 → B4 (ngoài họ Holm) | Hit@1 | 0,604 → 0,771 | 3 / 19 | **< 0,001** | |
+| | Hit@5 / từ chối nhầm / khớp đủ số | | 2/6, 13/6, 8/3 | 0,289 / 0,167 / 0,227 | |
+
+Có ý nghĩa ở mức 0,05 sau hiệu chỉnh: chunk cấu trúc (Hit@1, khớp đủ số) và rerank (Hit@1); B2 → B4 về Hit@1.
+Không phân biệt được với n = 96: hybrid, query processor, rerank với Hit@5, prompt rag_v3 và ngưỡng 0,90 với từ chối nhầm;
+từ chối đúng không khác nhau (1,000 từ B1, chỉ B0 0,917). Prompt rag_v3 làm giảm khớp đủ số (9 / 1, p = 0,022) nhưng
+không còn ý nghĩa sau Holm (0,108). Hit@5 B1 → B2 có ý nghĩa nếu kiểm riêng (p = 0,012) nhưng không sau Holm.
 
 ## Đọc nhanh
 
