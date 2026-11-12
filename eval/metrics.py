@@ -319,6 +319,7 @@ def main(argv=None):
                     help="in từng câu out_of_scope và câu answerable có rerank_max < T")
     ap.add_argument("--out", type=Path, default=Path("results"))
     ap.add_argument("--no-write", action="store_true")
+    ap.add_argument("--bench", type=Path)
     a = ap.parse_args(argv)
 
     results, bench_cache = {}, {}
@@ -338,6 +339,9 @@ def main(argv=None):
         return rows
     for run_dir in a.runs:
         meta, log = load_run(run_dir)
+        if a.bench:  # log chạy với v1, metric tính theo bench mới (cùng qid, câu hỏi); bỏ so sha256 vì cố ý khác
+            meta = {**meta, "benchmark": str(a.bench), "benchmark_sha256": None,
+                    "benchmark_version": a.bench.stem.removeprefix("benchmark_")}
         bpath = meta["benchmark"]
         if bpath not in bench_cache:
             bench_cache[bpath] = {r["qid"]: r for r in read_jsonl(bpath)}
