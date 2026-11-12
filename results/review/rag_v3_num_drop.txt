@@ -1,0 +1,10 @@
+    qid    group  num_B4rr  num_B4ng  num_B4
+v1-0032    table       1.0      0.67    0.67
+v1-0040 scenario       1.0      0.00    1.00
+v1-0045 scenario       1.0      0.50    0.50
+v1-0107 scenario       1.0      0.50    1.00
+v1-0115 scenario       1.0      0.00    0.00
+v1-0120  compare       1.0      0.00    0.00
+v1-0133  compare       1.0      0.33    0.33
+v1-0149  compare       1.0      0.67    0.67
+v1-0032 v1-0040 v1-0045 v1-0107 v1-0115 v1-0120 v1-0133 v1-0149
