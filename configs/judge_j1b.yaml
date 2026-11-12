@@ -1,0 +1,10 @@
+# Judge Ragas (eval/ragas_eval.py). Đổi model, prompt hay phiên bản Ragas → tăng judge_id và chấm lại mọi run.
+judge_id: j1b
+model: "gemini-3.8-flash"     # chọn bằng: python -m eval.bench_draft models
+temperature: 0
+seed: 42
+max_workers: 4                # giảm nếu gặp 429
+timeout_s: 180
+max_retries: 5
+ragas: "0.4.3"
+provider: gemini
