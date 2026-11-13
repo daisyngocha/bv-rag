@@ -84,8 +84,15 @@ Kết luận:
   câu). Hybrid và query processor không phân biệt được với n = 96.
 - RQ3: chưa phân biệt được. Câu out_of_scope đã được từ chối đúng 100% khi chưa có ngưỡng; ngưỡng 0,90 thêm 3 câu từ chối
   nhầm (không có ý nghĩa). Đầu vào ĐA2: bổ sung câu out_of_scope khó hơn (hỏi chi tiết tài liệu không nêu).
-- Đánh đổi của prompt rag_v3: giảm từ chối nhầm nhưng làm rơi số liệu; cả chặng B2→B4 Hit@1 tăng (p 0,0002) còn khớp đủ số
-  giảm 0,587 → 0,508 (p 0,23). Các câu rơi số: `results/review/rag_v3_num_drop.txt`, đưa vào phân tích lỗi.
+- Đánh đổi của prompt rag_v3 (HA duyệt 13/11): B4rr → B4ng giảm từ chối nhầm 0,167 → 0,104 (p 0,11), khớp đủ số giảm
+  0,635 → 0,508 (9 vs 1 câu, p 0,022, Holm 0,11); cả chặng B2→B4 Hit@1 tăng (p 0,0002), khớp đủ số giảm 0,587 → 0,508 (p 0,23).
+  Rà tay 8 câu B4rr đủ số mà B4ng rơi số (`results/review/rag_v3_num_drop.md`): chỉ 3 câu rơi số thật do rag_v3. Hai câu
+  compare từ chối nhầm một phần: nói một sản phẩm "không có thông tin" dù đoạn chứa số ở hạng 1 (v1-0133) hoặc hạng 4
+  (v1-0149). Câu còn lại (v1-0032) lấy số từ bảng cá nhân thay vì bảng gia đình. Thêm 1 câu đúng nội dung nhưng trích dẫn
+  sai (v1-0045). Câu v1-0107 sai kết luận ở cả B4rr nên không do rag_v3. 3 câu còn lại không lỗi: đáp án chuẩn chứa số lấy từ
+  câu hỏi hoặc tên sản phẩm, còn câu trả lời ngắn của rag_v3 không nhắc lại. Mức giảm khớp số vì vậy phóng đại phần mất mát
+  thật. Giả thuyết ngữ cảnh `<doc so="n">` làm mất mã phân biệt bảng S1/S2 không đủ căn cứ: text chunk luôn có tiêu đề "dành
+  cho cá nhân / gia đình", còn mã S1/S2 tự nó không mang nghĩa. Kiểm chắc cần chạy lại trên dev (ĐA2).
 
 ## 5. Ragas theo cấu hình
 
