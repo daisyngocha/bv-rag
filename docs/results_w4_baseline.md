@@ -9,7 +9,7 @@ Mọi run dưới đây được `eval.metrics` đánh dấu "chính thức". Đ
 | `B0_v1_test_20261107-0904`, `B1_v1_test_20261107-0904`, `B2_v1_test_20261107-0904` | test | 120 (96 answerable, 24 out_of_scope) |
 | `B{0,1,2}_v1_dev_20261107-0832_r{0,1,2}` | dev | 30 (24 answerable), 3 lần, seed 42/43/44 |
 
-CSV: `results/B{0,1,2}_v1_test_20261107.csv`, `results/B{0,1,2}_v1_dev_20261107_r{0,1,2}.csv`,
+CSV: `results/archive_v1/B{0,1,2}_v1_test_20261107-0904.csv`, `results/B{0,1,2}_v1_dev_20261107_r{0,1,2}.csv`,
 độ nhạy ngưỡng căn chỉnh B1: `results/sens_0.5/B1_v1_test_20261107.csv`.
 Các run `*_20261107-0814_*` bị loại (num_ctx 4096, tràn ngữ cảnh; decision-log 07/11).
 

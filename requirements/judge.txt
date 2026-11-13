@@ -1,0 +1,11 @@
+# Judge Ragas (WSL, venv riêng .venv-judge). Đã kiểm import + chấm thử.
+ragas==0.4.3
+langchain==0.3.30
+langchain-core==0.3.86
+langchain-community==0.3.31
+langchain-openai==0.3.35
+langchain-google-genai==2.1.12
+pandas
+scipy
+pyyaml
+anthropic==2.8.0

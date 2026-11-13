@@ -17,7 +17,7 @@ Dev rag_v2 (`B4_v1_dev_20261107-1131_r*`, không chặn) chỉ dùng để chọ
 `B4_v1_dev_20261107-1325_r*` chạy lại đúng cấu hình 1259 trong phiên test: mọi metric trùng khớp 1259 trừ p95
 (cùng seed cho cùng câu trả lời trên L4), không dùng thêm.
 
-CSV: `results/B4*_v1_test_20261107-1335.csv`, `results/B4*_v1_dev_20261107-{1131,1259,1325}_r*.csv`;
+CSV: `results/archive_v1/B4*_v1_test_20261107-1335.csv`, `results/B4*_v1_dev_20261107-{1131,1259,1325}_r*.csv`;
 theo câu: `results/review/per_question_v1_test_b4.csv`.
 
 ## Bảng 1. Test, dòng all (120 câu: 96 answerable, 24 out_of_scope)

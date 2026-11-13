@@ -30,6 +30,7 @@ import yaml
 DOC_TYPES = {"quy_tac", "dieu_khoan", "bang_phi", "bang_quyen_loi", "brochure", "faq"}
 SAMPLE_GROUPS = {"lookup", "table", "compare", "scenario"}
 RESULT_ID_COLS = {"run_id", "config", "split", "group", "official"}
+CSV_NAME_RE = re.compile(r"^(?P<config>[^_]+)_(?P<ver>v\d+(?:\.\d+)?)_(?P<split>dev|test|demo)_")
 RUN_ID_RE = re.compile(r"^(?P<config>.+?)_(?P<ver>v\d+)_(?P<split>dev|test|demo)_(?P<stamp>\d{8}(?:-\d{4})?)(?:_r\d+)?$")
 VN = ZoneInfo("Asia/Ho_Chi_Minh")
 
@@ -217,9 +218,13 @@ def build_run_row(run_id: str, csv_row: dict, meta: dict | None, configs: set[st
 def build_eval_rows(results_dir="results", runs_dir="runs", configs: set[str] | None = None,
                     benchmark: str | None = None) -> tuple[list[dict], list[dict]]:
     by_run: dict[str, list[dict]] = defaultdict(list)
+    bench_ver: dict[str, set[str]] = defaultdict(set)      # phiên bản benchmark dùng tính metric, lấy từ tên CSV
     for p in sorted(Path(results_dir).glob("*.csv")):        # bỏ thư mục con (review/, sens_*/)
+        m = CSV_NAME_RE.match(p.stem)
         for r in csv.DictReader(open(p, encoding="utf-8")):
             by_run[r["run_id"]].append(r)
+            if m:
+                bench_ver[r["run_id"]].add(m["ver"])
     runs, evals = [], []
     for run_id, rows in sorted(by_run.items()):
         mp = Path(runs_dir) / run_id / "meta.json"
@@ -227,6 +232,18 @@ def build_eval_rows(results_dir="results", runs_dir="runs", configs: set[str] | 
         run = build_run_row(run_id, rows[0], meta, configs or set())
         if run["benchmark"] is None and run["split"] != "demo":
             run["benchmark"] = benchmark
+        # Metric tính lại theo benchmark mới từ log cũ (vd CSV B4_v1.1_test_… của run B4_v1_test_…): runs.benchmark là
+        # benchmark của metric, không phải benchmark ghi trong meta.json lúc chạy.
+        vers = bench_ver.get(run_id, set())
+        if len(vers) > 1:
+            raise ValueError(f"{run_id}: CSV kết quả theo nhiều phiên bản benchmark {sorted(vers)}")
+        if vers and run["split"] != "demo":
+            ver = vers.pop()
+            if ver != RUN_ID_RE.match(run_id)["ver"]:
+                path = Path(f"benchmark/benchmark_{ver}.jsonl")
+                if not path.exists():
+                    raise ValueError(f"{run_id}: không thấy {path} cho CSV phiên bản {ver}")
+                run["benchmark"] = str(path)
         if run["n"] is None:
             alls = [r for r in rows if r.get("group") == "all"]
             run["n"] = int(float(alls[0]["n"])) if alls and alls[0].get("n") else None

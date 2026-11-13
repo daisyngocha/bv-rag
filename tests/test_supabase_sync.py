@@ -113,8 +113,13 @@ def test_eval_rows_from_results_csv():
     assert len(keys) == len(set(keys))
     r5 = next(e for e in evals if e["run_id"] == "B4_v1_test_20261107-1335" and e["question_group"] == "all"
               and e["metric"] == "recall@5")
-    assert r5["value"] == pytest.approx(0.9062)
+    assert r5["value"] == pytest.approx(0.8958)            # metric theo benchmark v1.1 (results/B4_v1.1_test_…)
     assert not any(e["metric"] == "official" for e in evals)
+    # run test: benchmark của metric (v1.1, theo tên CSV), không phải benchmark_v1 trong meta.json; run dev giữ v1
+    assert b4["benchmark"] == "benchmark/benchmark_v1.1.jsonl"
+    dev = next(r for r in runs if r["split"] == "dev")
+    assert dev["benchmark"].endswith("benchmark_v1.jsonl")
+    assert any(e["run_id"] == "B4_v1_test_20261107-1335" and e["metric"] == "faithfulness_j1" for e in evals)
 
 
 def test_eval_rows_require_known_config():

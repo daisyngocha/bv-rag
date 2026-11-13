@@ -10,7 +10,8 @@ B2 lấy từ `docs/results_w4_baseline.md` (run `B2_v1_test_20261107-0904`, cù
 | B3hyb | + hybrid dense + sparse (RRF), không lọc | `B3hyb_v1_test_20261107-1020` | `B3hyb_v1_dev_20261107-1012_r{0,1,2}` |
 | B3 | + query processor: lọc product_code, tách câu ≥ 2 sản phẩm | `B3_v1_test_20261107-1020` | `B3_v1_dev_20261107-1012_r{0,1,2}` |
 
-CSV: `results/B3_v1_{test,dev}_20261107*.csv`, `results/B3hyb_v1_{test,dev}_20261107*.csv` (ghi trên WSL).
+CSV: test `results/archive_v1/B3_v1_test_20261107-1020.csv`, `results/archive_v1/B3hyb_v1_test_20261107-1020.csv`;
+dev `results/B3_v1_dev_20261107_r*.csv`, `results/B3hyb_v1_dev_20261107_r*.csv` (ghi trên WSL).
 
 ## Bảng 1. Test, dòng all (120 câu: 96 answerable, 24 out_of_scope)
 

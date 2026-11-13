@@ -124,7 +124,7 @@ export async function getDemoMetrics(dateFrom, dateTo, config = null) {
 }
 
 // Chất lượng B0–B4 trên tập test: lần chạy test mới nhất của mỗi cấu hình.
-export async function getEvalQuality(metrics = ["recall@5", "cite_rate"]) {
+export async function getEvalQuality(metrics = ["recall@5", "faithfulness_j1"]) {
   const rows = check(await supabase.from("eval_results")
     .select("run_id,question_group,metric,value,runs!inner(config_name,split,started_at)")
     .eq("question_group", "all").in("metric", metrics).eq("runs.split", "test"));

@@ -27,3 +27,7 @@ tests/e2e/last_smoke.png
 # Cài/build lại được: Figma Make chạy npm install (.figma/make/install) và npm run build (.figma/make/deploy)
 node_modules/
 dist/
+.venv-judge/
+.vscode/
+*.tmp
+results/ragas/_unofficial/

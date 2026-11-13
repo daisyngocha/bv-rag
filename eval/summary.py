@@ -10,14 +10,14 @@ import csv
 from pathlib import Path
 
 RUNS = [  # (cấu hình, bước so với dòng trên, CSV, giờ L4/1.000 câu từ eval.metrics)
-    ("B0", "không RAG", "results/B0_v1_test_20261107.csv", 0.14),
-    ("B1", "dense, chunk cố định 512", "results/B1_v1_test_20261107.csv", 0.76),
-    ("B2", "chunk cấu trúc + bảng Markdown", "results/B2_v1_test_20261107.csv", 0.66),
-    ("B3hyb", "+ hybrid RRF (ablation)", "results/B3hyb_v1_test_20261107.csv", 0.65),
-    ("B3", "+ query processor", "results/B3_v1_test_20261107.csv", 0.67),
-    ("B4rr", "+ rerank (ablation, rag_v1)", "results/B4rr_v1_test_20261107-1335.csv", 0.96),
-    ("B4ng", "+ prompt rag_v3 (ablation, không chặn)", "results/B4ng_v1_test_20261107-1335.csv", 0.89),
-    ("B4", "+ ngưỡng từ chối 0,90", "results/B4_v1_test_20261107-1335.csv", 0.80),
+    ("B0", "không RAG", "results/B0_v1.1_test_20261107-0904.csv", 0.14),
+    ("B1", "dense, chunk cố định 512", "results/B1_v1.1_test_20261107-0904.csv", 0.76),
+    ("B2", "chunk cấu trúc + bảng Markdown", "results/B2_v1.1_test_20261107-0904.csv", 0.66),
+    ("B3hyb", "+ hybrid RRF (ablation)", "results/B3hyb_v1.1_test_20261107-1020.csv", 0.65),
+    ("B3", "+ query processor", "results/B3_v1.1_test_20261107-1020.csv", 0.67),
+    ("B4rr", "+ rerank (ablation, rag_v1)", "results/B4rr_v1.1_test_20261107-1335.csv", 0.96),
+    ("B4ng", "+ prompt rag_v3 (ablation, không chặn)", "results/B4ng_v1.1_test_20261107-1335.csv", 0.89),
+    ("B4", "+ ngưỡng từ chối 0,90", "results/B4_v1.1_test_20261107-1335.csv", 0.80),
 ]
 ALL_COLS = [("recall@1", "R@1"), ("recall@5", "R@5"), ("full_recall@5", "full_R@5"), ("mrr", "MRR"),
             ("refusal_ok", "Từ chối đúng"), ("false_refusal", "Từ chối nhầm"), ("hedge_rate", "Hedge"),
@@ -46,14 +46,14 @@ def main():
     for _, _, d, _, p in data:
         assert d["all"].get("official") == "True", f"{p} không phải run chính thức"
     print("## Bảng A. Test, dòng all (120 câu: 96 answerable, 24 out_of_scope)\n")
-    rows = [[n, step] + [vn(d["all"][c], 2 if c == "p95_s" else 3) for c, _ in ALL_COLS] + [vn(gpu, 2)]
+    rows = [[n, step] + [vn(d["all"].get(c), 2 if c == "p95_s" else 3) for c, _ in ALL_COLS] + [vn(gpu, 2)]
             for n, step, d, gpu, _ in data]
     rows.append(["Mục tiêu B4", ""] + [TARGET.get(c, "") for c, _ in ALL_COLS] + [""])
     print(table(["Cấu hình", "Bước"] + [h for _, h in ALL_COLS] + ["Giờ L4/1.000 câu"], rows))
     for metric, title in (("recall@5", "Recall@5"), ("full_recall@5", "full_recall@5"), ("mrr", "MRR"),
                           ("false_refusal", "Từ chối nhầm"), ("cite_rate", "Có trích dẫn"), ("num_recall", "Khớp số")):
         print(f"\n## Bảng {title} theo nhóm (24 câu/nhóm)\n")
-        rows = [[n] + [vn(d[g][metric]) if g in d else "–" for g in GROUPS] for n, _, d, _, _ in data]
+        rows = [[n] + [vn(d[g].get(metric)) if g in d else "–" for g in GROUPS] for n, _, d, _, _ in data]
         print(table(["Cấu hình", *GROUPS], rows))
     print("\n## Từ chối đúng (out_of_scope, 24 câu)\n")
     print(table(["Cấu hình", "Từ chối đúng"], [[n, vn(d["out_of_scope"]["refusal_ok"])] for n, _, d, _, _ in data]))

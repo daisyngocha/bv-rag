@@ -118,9 +118,10 @@ def main(argv=None):
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--dump-md", type=Path, help="xuất câu nghi lỗi kèm evidence + câu trả lời để rà tay")
     ap.add_argument("--dump-qids", nargs="*", help="qid cần xuất (mặc định: mọi câu bị gắn cờ)")
+    ap.add_argument("--bench", type=Path)
     a = ap.parse_args(argv)
     runs = [load_run(d) for d in a.runs]
-    benches = {m["benchmark"] for m, _ in runs}
+    benches = {str(a.bench)} if a.bench else {m["benchmark"] for m, _ in runs}
     if len(benches) > 1 or len({m["split"] for m, _ in runs}) > 1:
         raise SystemExit("các run phải cùng benchmark và split")
     bench = {r["qid"]: r for r in read_jsonl(benches.pop())}

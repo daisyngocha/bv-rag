@@ -1,0 +1,8 @@
+B0_v1_test_20261107-0822 [j1]: chấm 12 câu, bỏ qua {'out_of_scope': 9, 'refused': 44}, còn 0 → results/ragas/B0_v1_test_20261107-0822__j1.csv
+B0_v1_test_20261107-0845 [j1]: chấm 16 câu, bỏ qua {'out_of_scope': 24, 'refused': 80}, còn 0 → results/ragas/B0_v1_test_20261107-0845__j1.csv
+B0_v1_test_20261107-0904 [j1]: chấm 17 câu, bỏ qua {'out_of_scope': 24, 'refused': 79}, còn 0 → results/ragas/B0_v1_test_20261107-0904__j1.csv
+B1_v1_test_20261107-0845 [j1]: chấm 58 câu, bỏ qua {'out_of_scope': 24, 'refused': 38}, còn 0 → results/ragas/B1_v1_test_20261107-0845__j1.csv
+B1_v1_test_20261107-0904 [j1]: chấm 65 câu, bỏ qua {'out_of_scope': 24, 'refused': 31}, còn 0 → results/ragas/B1_v1_test_20261107-0904__j1.csv
+Retrying langchain_google_genai.chat_models._achat_with_retry.<locals>._achat_with_retry in 2 seconds as it raised DeadlineExceeded: 504 Deadline Exceeded.
+Retrying langchain_google_genai.chat_models._achat_with_retry.<locals>._achat_with_retry in 2 seconds as it raised DeadlineExceeded: 504 Deadline Exceeded.
+Retrying langchain_google_genai.chat_models._achat_with_retry.<locals>._achat_with_retry in 2 seconds as it raised DeadlineExceeded: 504 Deadline Exceeded.

@@ -1,0 +1,5 @@
+qid,group,faithfulness,answer_correctness,judge_id,error
+v1-0054,compare,0.75,1.0,c1,
+v1-0120,compare,1.0,0.6666666666666666,c1,
+v1-0125,compare,1.0,0.7272727272727273,c1,
+v1-0119,compare,1.0,0.9,c1,

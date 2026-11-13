@@ -158,8 +158,8 @@ export function DashboardView() {
       </div>
       <div className="dashboard-grid">
         <div className="card chart-card"><div className="card-title"><div><h2>{tx("Chất lượng theo cấu hình (tập test)", "Quality by configuration (test set)")}</h2></div><BarChart3 size={20} /></div>
-          {data.quality.length ? <><div className="bar-chart">{data.quality.map((q) => <div className="bar-group" key={q.name} title={q.run_id}><span>{q.name}</span><div><i style={{ height: `${(q["recall@5"] || 0) * 100}%` }} /><i style={{ height: `${(q.cite_rate || 0) * 100}%` }} /></div><small>{pct(q["recall@5"])}</small></div>)}</div>
-            <div className="chart-legend"><span><i className="blue" /> Recall@5</span><span><i className="gold" /> {tx("Tỷ lệ có trích dẫn", "Citation rate")}</span></div></>
+          {data.quality.length ? <><div className="bar-chart">{data.quality.map((q) => <div className="bar-group" key={q.name} title={q.run_id}><span>{q.name}</span><div><i style={{ height: `${(q["recall@5"] || 0) * 100}%` }} />{q.faithfulness_j1 === undefined ? <i style={{ visibility: "hidden" }} /> : <i style={{ height: `${q.faithfulness_j1 * 100}%` }} title={`Faithfulness ${pct(q.faithfulness_j1)}`} />}</div><small>{pct(q["recall@5"])}</small></div>)}</div>
+            <div className="chart-legend"><span><i className="blue" /> Recall@5</span><span><i className="gold" /> Faithfulness (Ragas, j1)</span></div></>
             : <p className="empty-copy">{tx("Chưa có kết quả test (chạy scripts/sync_supabase.py evals).", "No test results yet.")}</p>}
         </div>
         <div className="card activity-card"><div className="card-title"><div><h2>{tx("Phân bố truy vấn theo sản phẩm", "Queries by product")}</h2></div></div>

@@ -1,0 +1,30 @@
+B0_v1_test_20261107-0904 [j1]: chấm 17 câu, bỏ qua {'out_of_scope': 24, 'refused': 79}, còn 0 → results/ragas/B0_v1_test_20261107-0904__j1.csv
+B1_v1_test_20261107-0904 [j1]: chấm 65 câu, bỏ qua {'out_of_scope': 24, 'refused': 31}, còn 0 → results/ragas/B1_v1_test_20261107-0904__j1.csv
+B2_v1_test_20261107-0904 [j1]: chấm 76 câu, bỏ qua {'out_of_scope': 24, 'refused': 20}, còn 39 → results/ragas/B2_v1_test_20261107-0904__j1.csv
+usage j1: {'calls': None, 'input_tokens': 236517, 'output_tokens': 195918}
+B3hyb_v1_test_20261107-1020 [j1]: chấm 77 câu, bỏ qua {'out_of_scope': 24, 'refused': 19}, còn 77 → results/ragas/B3hyb_v1_test_20261107-1020__j1.csv
+usage j1: {'calls': None, 'input_tokens': 443565, 'output_tokens': 347783}
+B3_v1_test_20261107-1020 [j1]: chấm 81 câu, bỏ qua {'out_of_scope': 24, 'refused': 15}, còn 81 → results/ragas/B3_v1_test_20261107-1020__j1.csv
+usage j1: {'calls': None, 'input_tokens': 468329, 'output_tokens': 348704}
+B4rr_v1_test_20261107-1335 [j1]: chấm 80 câu, bỏ qua {'out_of_scope': 24, 'refused': 16}, còn 80 → results/ragas/B4rr_v1_test_20261107-1335__j1.csv
+usage j1: {'calls': None, 'input_tokens': 459787, 'output_tokens': 346857}
+B4ng_v1_test_20261107-1335 [j1]: chấm 86 câu, bỏ qua {'out_of_scope': 24, 'refused': 10}, còn 82 → results/ragas/B4ng_v1_test_20261107-1335__j1.csv
+usage j1: {'calls': None, 'input_tokens': 463669, 'output_tokens': 352265}
+B4_v1_test_20261107-1335 [j1]: chấm 83 câu, bỏ qua {'out_of_scope': 24, 'refused': 13}, còn 53 → results/ragas/B4_v1_test_20261107-1335__j1.csv
+usage j1: {'calls': None, 'input_tokens': 303305, 'output_tokens': 220880}
+B0_v1_test_20261107-0904 [c2]: chấm 17 câu, bỏ qua {'out_of_scope': 24, 'refused': 79}, còn 17 → results/ragas/B0_v1_test_20261107-0904__c2.csv
+usage c2: {'calls': 51, 'input_tokens': 60701, 'output_tokens': 14200}
+B1_v1_test_20261107-0904 [c2]: chấm 65 câu, bỏ qua {'out_of_scope': 24, 'refused': 31}, còn 65 → results/ragas/B1_v1_test_20261107-0904__c2.csv
+usage c2: {'calls': 326, 'input_tokens': 770412, 'output_tokens': 157315}
+B2_v1_test_20261107-0904 [c2]: chấm 76 câu, bỏ qua {'out_of_scope': 24, 'refused': 20}, còn 76 → results/ragas/B2_v1_test_20261107-0904__c2.csv
+usage c2: {'calls': 380, 'input_tokens': 718738, 'output_tokens': 174372}
+B3hyb_v1_test_20261107-1020 [c2]: chấm 77 câu, bỏ qua {'out_of_scope': 24, 'refused': 19}, còn 77 → results/ragas/B3hyb_v1_test_20261107-1020__c2.csv
+usage c2: {'calls': 385, 'input_tokens': 731149, 'output_tokens': 180954}
+B3_v1_test_20261107-1020 [c2]: chấm 81 câu, bỏ qua {'out_of_scope': 24, 'refused': 15}, còn 81 → results/ragas/B3_v1_test_20261107-1020__c2.csv
+usage c2: {'calls': 406, 'input_tokens': 770174, 'output_tokens': 183136}
+B4rr_v1_test_20261107-1335 [c2]: chấm 80 câu, bỏ qua {'out_of_scope': 24, 'refused': 16}, còn 80 → results/ragas/B4rr_v1_test_20261107-1335__c2.csv
+usage c2: {'calls': 400, 'input_tokens': 763343, 'output_tokens': 186664}
+B4ng_v1_test_20261107-1335 [c2]: chấm 86 câu, bỏ qua {'out_of_scope': 24, 'refused': 10}, còn 82 → results/ragas/B4ng_v1_test_20261107-1335__c2.csv
+usage c2: {'calls': 410, 'input_tokens': 768167, 'output_tokens': 169575}
+B4_v1_test_20261107-1335 [c2]: chấm 83 câu, bỏ qua {'out_of_scope': 24, 'refused': 13}, còn 53 → results/ragas/B4_v1_test_20261107-1335__c2.csv
+usage c2: {'calls': 265, 'input_tokens': 501706, 'output_tokens': 105400}

@@ -1,0 +1,12 @@
+# Judge Claude Haiku 5.5. Không gửi temperature (API trả 400); giảm dao động bằng effort low + không suy nghĩ trước.
+judge_id: c2
+provider: anthropic
+model: claude-haiku-5-5        # ID không ngày là snapshot cố định
+effort: low
+thinking: {type: disabled}
+max_tokens: 4096
+max_workers: 4                  # giảm nếu gặp 429 (rate limit theo tier)
+timeout_s: 180
+max_retries: 5
+seed: 42                        # chỉ dùng cho RunConfig của Ragas, không gửi lên API
+ragas: "0.4.3"
