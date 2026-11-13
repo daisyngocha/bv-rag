@@ -183,7 +183,7 @@ Bảng 2' cho biết bước nào có ý nghĩa thống kê; chênh lệch 1–2
 | refusal_ok | B2 → B4 | 24 | 1,000 | 1,000 | 0 | 0 | 1,0000 |  |  |
 | num_all | B2 → B4 | 63 | 0,587 | 0,508 | 8 | 3 | 0,2266 |  |  |
 
-Nguồn: `eval/mcnemar.py --benchmark benchmark/benchmark_v1.1.jsonl` (`results/review/mcnemar_v1.1_test.csv`); bản v1: `results/mcnemar_v1_test_20261109.csv`. "Chỉ A / chỉ B": số câu chỉ cấu hình A / chỉ B đạt; num_all: câu có số trong đáp án chuẩn (n = 63) và nêu đủ số.
+Nguồn: `eval/mcnemar.py --benchmark benchmark/benchmark_v1.1.jsonl` (`results/review/mcnemar_v1.1_test.csv`); bản v1: `results/archive_v1/mcnemar_v1_test_20261109.csv`. "Chỉ A / chỉ B": số câu chỉ cấu hình A / chỉ B đạt; num_all: câu có số trong đáp án chuẩn (n = 63) và nêu đủ số.
 MRR, Wilcoxon theo cặp câu (`eval/paired_tests.py`): B1 → B2 p 0,0024; B3 → B4rr p 0,0017.
 
 ## Đọc nhanh

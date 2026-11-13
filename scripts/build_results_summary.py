@@ -145,7 +145,7 @@ def build() -> str:
           "| metric | A → B | n | A | B | chỉ A | chỉ B | p | p Holm | ý nghĩa |",
           "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |", *mrows, "",
           f"Nguồn: `eval/mcnemar.py --benchmark benchmark/benchmark_v1.1.jsonl` (`{MCN.with_suffix('.csv')}`); "
-          "bản v1: `results/mcnemar_v1_test_20261109.csv`. \"Chỉ A / chỉ B\": số câu chỉ cấu hình A / chỉ B đạt; "
+          "bản v1: `results/archive_v1/mcnemar_v1_test_20261109.csv`. \"Chỉ A / chỉ B\": số câu chỉ cấu hình A / chỉ B đạt; "
           "num_all: câu có số trong đáp án chuẩn (n = 63) và nêu đủ số."]
     if wil:
         L += [f"MRR, Wilcoxon theo cặp câu (`eval/paired_tests.py`): B1 → B2 p {f(wil.get('B1:B2'), 4)}; "
