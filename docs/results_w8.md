@@ -87,13 +87,73 @@ Kết luận:
 - Đánh đổi của prompt rag_v3: giảm từ chối nhầm nhưng làm rơi số liệu; cả chặng B2→B4 Hit@1 tăng (p 0,0002) còn khớp đủ số
   giảm 0,587 → 0,508 (p 0,23). Các câu rơi số: `results/review/rag_v3_num_drop.txt`, đưa vào phân tích lỗi.
 
-## 5. Ragas theo cấu hình **[CHỜ]**
+## 5. Ragas theo cấu hình
 
-- Chấm toàn bộ 8 run bằng j1 và c2: `results/ragas/*__{j1,c2}.csv`, token ở `*.usage.jsonl`.
-- Bảng faithfulness / answer correctness (j1) theo cấu hình và nhóm: `docs/results_summary.md` (bảng 1, bảng 2, ý 8).
-- Độ vững theo judge: Kendall tau giữa thứ hạng B0–B4 theo j1 và theo c2: **[CHỜ]**.
-- Wilcoxon theo cặp cho Ragas (`eval/paired_tests.py --ragas-judge j1`): **[CHỜ]**.
-- Chi phí judge (báo riêng, không tính vào chi phí hệ thống): **[CHỜ]**.
+HA duyệt 13/11. Chấm toàn bộ 8 run bằng j1 và c2: điểm từng câu `results/ragas/{run_id}__{j1,c2}.csv`, gộp vào
+`results/*_v1.1_test_*.csv` bằng `eval/ragas_summary.py` (cột `faithfulness_{j}`, `answer_correctness_{j}`, `n_ragas_{j}`;
+bỏ NaN và câu lỗi; qid chấm lại giữ bản sau). Chỉ chấm câu answerable không bị từ chối, nên n khác nhau giữa các cấu hình.
+Đóng góp từng bước theo j1: bảng 2 và ý 8 của `docs/results_summary.md`.
+
+Theo nhóm (j1 / c2; n = số câu chấm, giống nhau ở hai judge):
+
+| Cấu hình | n | Faith. all | lookup | table | compare | scenario | Ans. corr. all | lookup | table | compare | scenario |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| B0 | 17 | – | – | – | – | – | 0,113 / 0,088 | 0,225 / 0,292 | 0,052 / 0,000 | 0,444 / 0,333 | 0,000 / 0,000 |
+| B1 | 65 | 0,596 / 0,507 | 0,867 / 0,740 | 0,450 / 0,354 | 0,691 / 0,492 | 0,356 / 0,423 | 0,550 / 0,481 | 0,820 / 0,703 | 0,398 / 0,362 | 0,495 / 0,394 | 0,448 / 0,427 |
+| B2 | 76 | 0,722 / 0,642 | 0,897 / 0,754 | 0,729 / 0,547 | 0,750 / 0,746 | 0,359 / 0,473 | 0,705 / 0,615 | 0,876 / 0,770 | 0,715 / 0,616 | 0,641 / 0,545 | 0,485 / 0,449 |
+| B3hyb | 77 | 0,710 / 0,648 | 0,947 / 0,787 | 0,717 / 0,568 | 0,661 / 0,689 | 0,386 / 0,509 | 0,665 / 0,565 | 0,877 / 0,739 | 0,667 / 0,567 | 0,527 / 0,453 | 0,505 / 0,431 |
+| B3 | 81 | 0,738 / 0,680 | 0,970 / 0,759 | 0,757 / 0,643 | 0,740 / 0,768 | 0,335 / 0,485 | 0,649 / 0,580 | 0,848 / 0,769 | 0,669 / 0,575 | 0,530 / 0,523 | 0,482 / 0,376 |
+| B4rr | 80 | 0,711 / 0,632 | 0,921 / 0,732 | 0,667 / 0,530 | 0,700 / 0,755 | 0,389 / 0,397 | 0,678 / 0,575 | 0,849 / 0,676 | 0,604 / 0,555 | 0,589 / 0,517 | 0,661 / 0,525 |
+| B4ng | 86 | 0,738 / 0,736 | 0,983 / 0,927 | 0,694 / 0,688 | 0,794 / 0,802 | 0,372 / 0,438 | 0,702 / 0,684 | 0,891 / 0,828 | 0,628 / 0,663 | 0,658 / 0,639 | 0,606 / 0,571 |
+| B4 | 83 | 0,741 / 0,749 | 0,948 / 0,971 | 0,708 / 0,677 | 0,850 / 0,793 | 0,385 / 0,500 | 0,688 / 0,654 | 0,889 / 0,858 | 0,647 / 0,625 | 0,599 / 0,576 | 0,572 / 0,504 |
+
+n theo nhóm (lookup/table/compare/scenario): B0 4/11/1/1, B1 19/20/12/14, B2 21/24/19/12, B3hyb 22/23/18/14,
+B3 22/24/21/14, B4rr 23/24/22/11, B4ng 23/24/23/16, B4 23/24/19/17. Ô của B0 và nhóm có n nhỏ chỉ để tham khảo.
+
+- Scenario có faithfulness thấp nhất ở mọi cấu hình (j1 0,34–0,39), khớp lệch đã thấy khi hiệu chỉnh (mục 2, ý 1):
+  judge không nhận mệnh đề áp điều khoản vào tình huống. Không đọc con số này là tỉ lệ bịa.
+- B0 trả lời 17 câu, answer correctness 0,11 (j1): không có RAG thì model gần như không trả lời đúng sản phẩm Bảo Việt.
+
+**Độ vững theo judge.** Kendall tau-b giữa thứ hạng cấu hình theo j1 và theo c2 (dòng all): faithfulness 0,810
+(7 cấu hình, không có B0; p 0,011), answer correctness 0,714 (8 cấu hình; p 0,014). Faithfulness: hai judge cùng xếp
+B4 > B4ng > B3 ở đầu và B1 cuối, chỉ đổi chỗ B2/B3hyb/B4rr. Answer correctness: j1 xếp B2 đầu (0,705), c2 xếp B4ng >
+B4 > B2. c2 chấm thấp hơn j1 ở hầu hết ô (B1–B4rr thấp hơn 0,06–0,10), trừ B4ng/B4 gần bằng. Từ B2 trở đi các cấu hình
+chỉ cách nhau 0,01–0,06 nên thứ hạng ở khúc này không ổn định.
+
+**Wilcoxon theo cặp câu** (`eval/paired_tests.py --ragas-judge`, chỉ câu cả hai cấu hình cùng có điểm; j1:
+`results/review/paired_tests_v1.1_test.txt`, c2: `results/review/paired_tests_v1.1_test_c2.txt`). Holm tính tay trong từng
+metric qua 6 cặp dưới đây (bổ sung, script chưa có).
+
+| Cặp | n | Faith. j1 (A → B; p; Holm) | Ans. corr. j1 | Faith. c2 | Ans. corr. c2 |
+| --- | --- | --- | --- | --- | --- |
+| B1 → B2 | 60 | 0,610 → 0,718; 0,080; 0,46 | 0,561 → 0,695; 0,032; 0,19 | 0,528 → 0,616; 0,058; 0,23 | 0,488 → 0,605; 0,064; 0,26 |
+| B2 → B3 | 74 | 0,722 → 0,754; 0,36; 0,84 | 0,701 → 0,654; 0,098; 0,49 | 0,643 → 0,695; 0,062; 0,23 | 0,614 → 0,582; 0,43; 0,86 |
+| B3 → B4rr | 77 | 0,752 → 0,712; 0,28; 0,84 | 0,671 → 0,685; 0,58; 0,75 | 0,692 → 0,630; 0,11; 0,23 | 0,600 → 0,582; 0,51; 0,86 |
+| B4rr → B4ng | 78 | 0,717 → 0,766; 0,076; 0,46 | 0,673 → 0,702; 0,19; 0,75 | 0,637 → 0,765; **0,0001; 0,0006** | 0,574 → 0,685; **0,0001; 0,0006** |
+| B4ng → B4 | 82 | 0,728 → 0,746; 0,16; 0,64 | 0,700 → 0,688; 0,24; 0,75 | 0,726 → 0,752; 0,16; 0,23 | 0,679 → 0,655; 0,20; 0,59 |
+| B3 → B4 | 73 | 0,746 → 0,766; 0,54; 0,84 | 0,671 → 0,699; 0,37; 0,75 | 0,683 → 0,766; 0,044; 0,22 | 0,598 → 0,670; 0,036; 0,18 |
+
+- Theo j1 (judge chính) không bước nào có ý nghĩa sau Holm; B1 → B2 answer correctness p 0,032 cùng chiều với RQ1 nhưng
+  không qua Holm (0,19).
+- Hai judge bất đồng ở bước prompt rag_v3 (B4rr → B4ng): c2 thấy tăng mạnh ở cả hai metric (16 vs 44 câu, 17 vs 49 câu,
+  Holm 0,0006), j1 chỉ tăng nhẹ (p 0,076 / 0,19). Kết luận về rag_v3 vì vậy phụ thuộc judge; theo quy ước j1 là chính,
+  ghi "không phân biệt được". Nghi c2 nhạy với văn phong rag_v3 (câu ngắn, bám ngữ cảnh), cần xem ở mục 6 trước khi viết
+  vào báo cáo.
+- Rerank cải thiện MRR có ý nghĩa (mục 4) nhưng Ragas không tăng ở cả hai judge: đưa chunk đúng lên đầu không làm câu trả
+  lời tốt hơn khi chunk đó đã nằm trong top-5.
+
+**Chi phí judge** (báo riêng, không tính vào chi phí hệ thống; chưa có đơn giá trong repo nên chỉ báo token, từ
+`results/ragas/{run_id}__{j1,c2}.usage.jsonl` của 8 run chính thức):
+
+| Judge | Câu có điểm | Câu có log token | Token vào | Token ra | Trung bình/câu (vào / ra) |
+| --- | --- | --- | --- | --- | --- |
+| j1 (`gemini-3.8-flash`) | 565 | 494 | 2.877.143 | 2.139.465 | 5.824 / 4.331 |
+| c2 (`claude-haiku-5-5`) | 566 lượt (565 câu + 1 chấm lại) | 566 | 5.408.188 | 1.248.635 | 9.555 / 2.206 |
+
+- j1 thiếu log token 71 câu: 34 câu hiệu chỉnh (B4 30, B4ng 4) đã báo ở mục 2 (190,7K vào, 162,7K ra); 37 câu của B2
+  (CSV 76 câu, log 39) không có log, nghi do lần chấm đầu bị ngắt (`eval/ragas_eval.py` ghi điểm từng câu nhưng chỉ ghi
+  token khi chạy xong). Cộng mục 2: j1 ≈ 3,07M vào, 2,30M ra cho 528/565 câu.
+- Token ra của j1 cao hơn c2 vì đã gồm thought tokens của Gemini; c2 tốn token vào nhiều hơn (5 lượt gọi/câu).
 
 ## 6. Phân tích lỗi B4 **[CHỜ]**
 
