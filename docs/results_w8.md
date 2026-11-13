@@ -162,13 +162,64 @@ metric qua 6 cặp dưới đây (bổ sung, script chưa có).
   token khi chạy xong). Cộng mục 2: j1 ≈ 3,07M vào, 2,30M ra cho 528/565 câu.
 - Token ra của j1 cao hơn c2 vì đã gồm thought tokens của Gemini; c2 tốn token vào nhiều hơn (5 lượt gọi/câu).
 
-## 6. Phân tích lỗi B4 **[CHỜ]**
+## 6. Phân tích lỗi B4
 
-`eval/error_sheet.py` → `results/review/error_analysis_B4_v1.1_test.xlsx` (tối đa 40 câu, 1 mã chính mỗi câu: R1, R2, P1,
-G1, G2, F1, F2, D1). Đưa thêm: 9 câu nghi lỗi tuần 6, 3 câu scenario tụt do rerank (0050, 0108, 0112), 4 câu compare bị
-ngưỡng chặn, các câu rơi số ở rag_v3.
+HA duyệt 13/11. `eval/error_sheet.py` → `results/review/error_analysis_B4_v1.1_test.xlsx`: 40 câu answerable của
+`B4_v1_test_20261107-1335`, một mã chính mỗi câu (R1 truy xuất trượt, R2 lọc nhầm sản phẩm, P1 bảng parse sai, G1 sinh sai
+số/kết luận, G2 trích dẫn sai, F1 từ chối nhầm, D1 lỗi benchmark, OK không lỗi). Cách chọn câu: 25 câu định sẵn
+(`error_include_qids.txt`, các nhóm có trùng nhau: 9 câu nghi lỗi tuần 6, 3 câu scenario tụt do rerank, 4 câu compare bị
+ngưỡng chặn, 8 câu rơi số ở rag_v3, thêm 0034, 0047, 0103), 9 câu manual30 có mã lỗi, rồi 6 câu bổ sung tự động theo cờ (từ chối nhầm, evidence
+ngoài top-5, khớp số < 1, answer correctness j1 < 0,5). Mã: 16 câu từ manual30 (HA đã chốt, giữ nguyên), 24 câu Claude soạn
+HA duyệt 13/11 (`results/review/error_draft_B4_v1.1_test.csv`, cột `note`); 9 câu tuần 6 lấy theo `d1_review_v1_test_b4.md`.
+4 câu bị ngưỡng chặn (0054, 0119, 0120, 0125) mang mã manual30 của câu trả lời B4ng; ở B4 cả 4 câu là F1 do ngưỡng.
 
-- Phân bố mã lỗi theo nhóm: **[CHỜ]**
-- Ví dụ điển hình 3–5 câu mỗi loại lớn: **[CHỜ]**
-- Ca từ demo (không tính vào phân bố test): v1-0053 G1, v1-0022 G2, v1-0075 vượt ngưỡng, ca BTB "635 ngày", phản hồi 👎.
-- Đề xuất cho ĐA2: **[CHỜ]**
+Đây là mẫu chọn có chủ đích (dồn vào câu nghi lỗi), không phải tỉ lệ lỗi của B4. Theo bảng 1, B4 trả lời 83/96 câu answerable.
+
+| Nhóm | n | R1 | G1 | G2 | F1 | D1 | OK |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| lookup | 2 | – | 1 | – | 1 | – | – |
+| table | 11 | – | 9 | 2 | – | – | – |
+| compare | 13 | 1 | 4 | 1 | 3 (+3 ngưỡng) | 1 | 3 |
+| scenario | 14 | 7 | 1 | 2 | 1 | – | 3 |
+| Tổng | 40 | 8 | 15 | 5 | 5 (+3) | 1 | 6 |
+
+(+3 ngưỡng): 0054, 0120, 0125 manual30 chấm OK cho B4ng nhưng B4 từ chối do ngưỡng; 0119 tính ở G2 (B4ng). Không có R2,
+P1 làm mã chính (P1 góp phần ở v1-0092). D1 v1-0126 đã sửa ở benchmark v1.1.
+
+Ví dụ điển hình:
+
+- **G1, đọc sai ô/bảng (table, 9 câu).** v1-0098: 487.000 lấy dòng 22-28 ngày, cột Bạc của bảng *cá nhân* (`FLX_BP_S1_TB1`,
+  [3]), đúng là bảng gia đình [1], cột Kim Cương 3.248.000. v1-0032: 2.464.000 lấy ở bảng cá nhân thay vì gia đình.
+  v1-0095: 30% theo dòng 53 ("mất ba ngón chân") thay vì dòng 55 (16%) ở evidence hạng 1. v1-0034: 30.000.000 lấy ở bảng
+  quyền lợi BTB khác thay vì 12.000.000. v1-0101: chọn dòng đầu bảng (281–287 ngày) thay vì dòng chứa 300 ngày. Evidence đều
+  ở hạng 1–3: lỗi ở bước sinh. Cờ `nums_unsupported` không bắt được vì số sai vẫn có trong ngữ cảnh.
+- **G1, sai kết luận/thuộc tính (compare, scenario).** v1-0122: nói Intercare "không áp dụng thời gian chờ" dù [4] ghi 30
+  ngày; v1-0107: kết luận được chi trả dù evidence loại trừ nguyên nhân tâm thần; manual30: 0121, 0127, 0131.
+- **R1 (scenario, 7/14).** v1-0046, 0047, 0049, 0106, 0108, 0112 (cùng 0050 của manual30): câu tình huống hỏi một điểm
+  loại trừ hay nghĩa vụ nằm trong chunk danh sách dài nhiều khoản; chunk đó ở hạng 7–18 (0049 ngoài top-30), top-5 là
+  chương quyền lợi. Model từ chối
+  (đúng hành vi khi thiếu căn cứ).
+- **F1 (5 câu, cộng 4 câu do ngưỡng).** Evidence đã trong top-5: v1-0089 (ngoại lệ), v1-0109 (cần suy luận min(55, 50)),
+  v1-0129 (so sánh "không có"). Từ chối nhầm một phần ở compare: v1-0133, 0149 (nói một sản phẩm "không có thông tin";
+  B4rr trả lời đúng, xem mục 4).
+- **G2 (5 câu).** v1-0045: trích [3]/[4] như số điều khoản trong chunk; manual30: 0025, 0097, 0110, 0119. Câu trả lời đôi khi
+  mở đầu bằng "[n]" đứng riêng (0045, 0095, 0111, 0133).
+- **OK (6 câu).** 0040, 0115, 0111 vào danh sách vì cờ khớp số hoặc Ragas: khớp số đếm cả số trong câu hỏi hay tên sản phẩm;
+  0111 bị j1 chấm thấp (ac 0,31) dù đúng, khớp lệch scenario ở mục 2.
+
+Ca từ demo (không tính vào phân bố test): v1-0053 G1, v1-0022 G2, v1-0075 vượt ngưỡng, ca BTB "635 ngày" (không lỗi), phản hồi 👎.
+v1-0022 (trích bảng `FLX_BP_S2_TB1` thay vì TB3) cùng mẫu lẫn các bảng biểu phí Flexi với v1-0032, 0098.
+
+Đề xuất cho ĐA2:
+
+1. **Bảng (G1 bảng):** mỗi dòng bảng mang theo tiêu đề bảng và tên cột (ví dụ "Biểu phí gia đình | 22-28 ngày | Kim Cương:
+   3.248.000"), hoặc tool tra bảng có cấu trúc (`lookup_table(sản phẩm, bảng, dòng, cột)`) thay vì để LLM đọc Markdown. Thêm
+   kiểm tra sau sinh: số trả lời phải nằm đúng ô khớp các thực thể trong câu hỏi, không chỉ "có trong ngữ cảnh".
+2. **R1 ở scenario:** tách chunk chương loại trừ/nghĩa vụ theo từng khoản; viết lại truy vấn tình huống thành truy vấn
+   điều khoản (planner ĐA2); truy xuất riêng nhánh "điểm loại trừ" cho câu hỏi "có được chi trả không".
+3. **F1:** grounding check tách riêng "không có thông tin" theo từng sản phẩm/ý; nếu đoạn trong top-5 chứa thực thể được hỏi
+   thì đọc lại thay vì từ chối. Xem lại ngưỡng cho compare: cả 4 câu bị chặn đều có câu trả lời B4ng được manual30 chấm
+   đúng hoặc chỉ sai trích dẫn (0054, 0120 evidence hạng 2; 0119, 0125 hạng 12 theo evidence v1.1).
+4. **G2:** structured output (mỗi ý kèm id đoạn) và kiểm tra ý–đoạn tự động; đưa mã chunk vào thẻ `<doc so="n" id="…">`
+   (thử trên dev).
+5. **Đo lường:** `num_recall` bỏ [n] và số đã có trong câu hỏi/tên sản phẩm; báo riêng "trả lời một phần" cho compare.

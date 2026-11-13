@@ -1,0 +1,31 @@
+qid,code,note
+v1-0006,G1,"Theo d1_review 09/11: trả lời đúng ý chính, thiếu ý ""tổng không vượt quá 100% số tiền bảo hiểm"" (thiếu ý); evidence hạng 1."
+v1-0032,G1,"Trả lời 2.464.000 = dòng 120-126 ngày, cột Vàng của bảng CÁ NHÂN FLX_BP_S1_TB2 ([2]); đúng là bảng gia đình [1] 4.928.000. Trích [3] FLX_BP_S2_TB1 (bảng khác): phụ G2. Xem rag_v3_num_drop.md."
+v1-0034,G1,"Evidence hạng 1 ghi Nâng cao 12.000.000/năm; trả lời 30.000.000, số có trong BTB_BQL_S2_TB1 ([2], dòng khác). Trích [2][3], không trích [1]. Lẫn giữa các bảng quyền lợi BTB cùng cấu trúc."
+v1-0040,OK,"B4 đúng và đủ (đồng chi trả cho trẻ 15 ngày – 3 tuổi, trích [1] = evidence). Vào danh sách vì B4ng rơi số (rag_v3_num_drop.md)."
+v1-0045,G2,"Nội dung đúng (70%), thiếu 30 ngày (đã có trong câu hỏi). Mở đầu ""[4][3]"", ""theo quy định tại [3]a"": [3] BVP_QT_C4_M2_K1, [4] BVP_QT_C1_M6 đều sai đoạn, evidence ở [1]. Nghi nhầm [n] với số điều khoản."
+v1-0046,R1,"Theo d1_review 09/11: đáp án ở khoản 10 của chunk loại trừ C37_QT_C3_K9, không vào top-5; từ chối."
+v1-0047,R1,"Evidence FLX_QT_C3_K2-9 (loại trừ khám tổng quát, thẩm mỹ) hạng 10; top-5 là quyền lợi chương II; từ chối. Cùng mẫu R1 với chunk loại trừ nhiều khoản."
+v1-0049,R1,"Theo d1_review 09/11: đáp án là gạch đầu dòng cuối của chunk nghĩa vụ dài BTB_QT_C4_M14_K2_P1, không vào top-5; từ chối."
+v1-0050,,Scenario tụt do rerank (tuần 6).
+v1-0054,,"B4 bị ngưỡng 0,90 chặn (từ chối, F1 do ngưỡng); mã manual30 là của câu trả lời B4ng."
+v1-0089,F1,Theo d1_review 09/11: evidence hạng 1 nêu nguyên văn cả xử lý lẫn ngoại lệ; model từ chối.
+v1-0092,G1,"Theo d1_review 09/11: bảng quyền lợi BTB gộp 2 mục trong một ô (P1 góp phần); trả lời 30.000.000 (cột Mở rộng), đúng là 50.000.000 (Nâng cao)."
+v1-0094,G1,"Thiếu ý: có 30.000.000 tổng, thiếu 2.000.000/mỗi 8 tiếng (cùng ô trong evidence [1]). Trích [3] FLX_BQL_S2_TB2 và [2] FLX_QT_C2_M8, không trích [1]: phụ G2."
+v1-0095,G1,"Evidence hạng 1 có dòng 55 ""mất một ngón cái và một ngón khác (trừ ngón 2)"" = 16%; trả lời 30% theo dòng 53 ""mất ba ngón chân"" ở ITC_QT_PL1_TB4 ([2]). Sai dòng; mở đầu ""[2][3]""."
+v1-0098,G1,"Trả lời 487.000 = dòng 22-28 ngày, cột BẠC của bảng CÁ NHÂN FLX_BP_S1_TB1 ([3]); đúng là bảng gia đình [1], cột Kim Cương 3.248.000. Sai cả bảng lẫn cột; cùng mẫu lẫn bảng cá nhân/gia đình với v1-0032 (ở B4 rag_v3)."
+v1-0101,G1,Theo d1_review 09/11: 300 ngày thuộc dòng 295–301 (8.900.000); model lấy dòng đầu bảng 281–287 (8.500.000). Lỗi suy luận khoảng.
+v1-0106,R1,"Theo d1_review 09/11: 2 điểm loại trừ nằm trong BTB_QT_C3_K1_P2 (OCR nhiễu), không vào top-5; từ chối."
+v1-0108,R1,Theo d1_review 09/11: FLX_QT_C3_K13 (khủng bố) không vào top-5; từ chối.
+v1-0109,F1,"Evidence BTB_QT_C2 hạng 3 (""tối đa không vượt quá Số tiền bảo hiểm""; ""giới hạn theo chi phí thực tế, thông lệ và hợp lý""); câu cần suy luận min(55, 50) = 50 triệu; model từ chối."
+v1-0111,OK,"Trả lời đúng (không chi trả vì viêm màng não trên người nhiễm HIV bị loại trừ), trích [1] = evidence. Ragas j1 thấp (ac 0,31, faith 0,33) là judge chấm thấp câu scenario dài (lệch đã ghi ở results_w8 mục 2); num 0,5 vì không nhắc mốc 6 tuần. Mở đầu ""[1]"" đứng riêng."
+v1-0112,R1,Evidence FLX_QT_C2_M3_A_K4 (khoản 4 loại trừ của vận chuyển cấp cứu) hạng 7; top-5 có K1-3 cùng mục nhưng không có khoản loại trừ; từ chối. Scenario tụt do rerank (tuần 6).
+v1-0115,OK,"Trả lời đúng (Parkinson do dùng thuốc bị loại trừ), trích [1] = evidence. Rơi số vì không nhắc tên CI37."
+v1-0119,,"B4 bị ngưỡng 0,90 chặn; mã manual30 là của câu trả lời B4ng."
+v1-0120,,"B4 bị ngưỡng 0,90 chặn (F1 do ngưỡng); B4ng đúng (liệt kê đủ tên chương trình)."
+v1-0122,G1,"Intercare: trả lời ""không áp dụng thời gian chờ"" trong khi [4] ITC_QT_C4_M10_K1 mục c. Điều trị nội trú ghi 30 ngày đối với bệnh thông thường. Sai kết luận cho một sản phẩm."
+v1-0125,,"B4 bị ngưỡng 0,90 chặn (F1 do ngưỡng); manual30 chấm B4ng không lỗi."
+v1-0126,,D1 đã sửa đáp án chuẩn ở benchmark v1.1.
+v1-0129,F1,"Theo d1_review 09/11: đủ evidence 2 sản phẩm (hạng 1, 2); model từ chối câu so sánh cần suy luận từ chỗ không có."
+v1-0133,F1,"Từ chối nhầm một phần: nói BTB ""không có thông tin"" dù [1] BTB_QT_C1_M35 ghi dưới 66 (đến 70 nếu tái tục); ITC 75 đúng. Chunk BTB có lỗi OCR (""nều""). B4rr đúng."
+v1-0149,F1,"Từ chối nhầm một phần: CI37 ""không nêu rõ thời gian chờ cho bệnh thông thường"", bỏ qua 90 ngày ở [4] C37_QT_C2; [2] C37_QT_C1_M22 là định nghĩa. B4rr đúng."
