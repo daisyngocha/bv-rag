@@ -15,7 +15,23 @@ Tập test, benchmark v1.1 (`benchmark/CHANGELOG.md`), 8 run chính thức trong
   Faithful dồn về 4–5 (83%) nên tương quan faithfulness kém tin cậy hơn correctness.
 - Quy trình: bảng chấm có cột đề xuất điểm (`dx_*`) do Claude soạn; điểm chốt trùng 100% với đề xuất. Judge Claude không
   tương quan với điểm tay cao hơn Gemini (mục 2), nên không thấy dấu hiệu thiên lệch cùng họ model.
-  **[Tùy chọn]** chấm mù lại 10 câu, báo weighted kappa.
+- Chấm mù lại 10 câu (13/11; `scripts/make_blind10.py`, seed 42; lookup 2, table 2, compare 3, scenario 3; 4 câu điểm
+  thấp): file chấm không có qid, điểm cũ hay `dx_*`. Kết quả `results/review/kappa_blind10.md` (`eval/kappa.py`, CI95
+  bootstrap 2.000 lần); n = 10 nên chỉ là số tham khảo. So với `dx_*` ra cùng bảng vì `dx_*` trùng điểm chốt.
+
+  | Cột | kappa | CI95 | Trùng chính xác | Lệch ≤ 1 |
+  | --- | --- | --- | --- | --- |
+  | correct (weighted, bậc hai) | 0,961 | [0,81; 1,00] | 8/10 | 10/10 |
+  | faithful (weighted, bậc hai) | 0,630 | [0,30; 0,94] | 7/10 | 9/10 |
+  | cite_ok (Cohen) | 0,286 | [0,00; 0,78] | 7/10 | – |
+  | error_code (Cohen) | 0,324 | [−0,05; 0,70] | 5/10 | – |
+
+  Nhận định (nháp, chờ HA duyệt): correct ổn định (lệch tối đa 1 điểm). Faithful lệch lớn duy nhất ở v1-0050 (mù 2,
+  manual30 4). cite_ok lệch một chiều: 3/3 câu lệch lần mù cho 1, manual30 cho 0 (v1-0025, 0124, 0110); hai câu G2 của
+  manual30 (0025, 0110) lần mù ghi OK, tức tiêu chí trích dẫn đúng chưa vững. error_code kém nhất: ngoài 2 câu G2, lần mù
+  dùng F2 cho v1-0050 (manual30 R1) và v1-0107 (G1), G1 cho v1-0057 (manual30 OK). Mã F2 chưa được định nghĩa trong quy
+  tắc chấm và ghi chú hai câu ("answer sai so với ref_answer") gần G1 hơn; cần bổ sung định nghĩa mã và quy tắc chọn lỗi
+  chính trước khi chấm tay ở ĐA2. Không sửa điểm chốt manual30.
 - Trích dẫn đúng kiểm tay: 24/30 = 0,800 (cả 34 câu: 0,794). Mục tiêu 0,85 chưa đạt.
 
 ## 2. Hiệu chỉnh judge Ragas
