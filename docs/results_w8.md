@@ -2,7 +2,6 @@
 
 Tập test, benchmark v1.1 (`benchmark/CHANGELOG.md`), 8 run chính thức trong `configs/test_runs_official.txt`
 (B0–B2 `-0904`, B3/B3hyb `-1020`, B4rr/B4ng/B4 `-1335`, ngày 07/11, Colab L4). Bảng tổng: `docs/results_summary.md`.
-Mục đánh dấu **[CHỜ]** điền sau khi chấm Ragas toàn bộ test xong.
 
 ## 1. Bộ chấm tay manual30
 
