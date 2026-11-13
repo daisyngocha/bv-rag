@@ -79,6 +79,14 @@ Bảo hiểm Bảo Việt sẽ thanh toán cho Người được bảo hiểm th
 > 
 > Tài liệu sản phẩm hiện có không có thông tin để xác định tỷ lệ đồng chi trả cụ thể, nhưng theo quy định, các chi phí này sẽ được chi trả theo tỷ lệ đồng chi trả được quy định trong bảng quyền lợi bảo hiểm.
 
+**Nhận xét:** 
+> Đáp án chuẩn đúng. Truy xuất trúng (rank 1).
+> B4rr đúng số. B4ng = B4 = 2.464.000, bằng giá biểu phí cá nhân (FLX_BP_S1_TB2, đoạn [2]) → nhầm bảng cá nhân/gia đình.
+> Trích [3] = FLX_BP_S2_TB1, không phải evidence.
+> Mã: G1 (nhầm bảng), phụ G2.
+> Lặp lại được (B4 = B4ng) → do prompt/định dạng ngữ cảnh.
+
+
 ## v1-0045 · scenario · easy · cờ: -
 
 **Câu hỏi:** Anh Nam (32 tuổi) tham gia bảo hiểm Bảo Việt An Gia có thời hạn 1 năm. Sau 6 tháng hiệu lực và chưa từng có yêu cầu bồi thường nào được chấp thuận chi trả, anh gửi thông báo bằng văn bản trước 30 ngày yêu cầu đơn phương chấm dứt hợp đồng. Trường hợp này anh Nam có được hoàn phí bảo hiểm không và mức hoàn trả như thế nào?

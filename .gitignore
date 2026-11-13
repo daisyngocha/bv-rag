@@ -30,3 +30,4 @@ dist/
 .venv-judge/
 .vscode/
 *.tmp
+results/ragas/_unofficial/
