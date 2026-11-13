@@ -29,9 +29,10 @@ Tập test, benchmark v1.1 (`benchmark/CHANGELOG.md`), 8 run chính thức trong
   Nhận định (nháp, chờ HA duyệt): correct ổn định (lệch tối đa 1 điểm). Faithful lệch lớn duy nhất ở v1-0050 (mù 2,
   manual30 4). cite_ok lệch một chiều: 3/3 câu lệch lần mù cho 1, manual30 cho 0 (v1-0025, 0124, 0110); hai câu G2 của
   manual30 (0025, 0110) lần mù ghi OK, tức tiêu chí trích dẫn đúng chưa vững. error_code kém nhất: ngoài 2 câu G2, lần mù
-  dùng F2 cho v1-0050 (manual30 R1) và v1-0107 (G1), G1 cho v1-0057 (manual30 OK). Mã F2 chưa được định nghĩa trong quy
-  tắc chấm và ghi chú hai câu ("answer sai so với ref_answer") gần G1 hơn; cần bổ sung định nghĩa mã và quy tắc chọn lỗi
-  chính trước khi chấm tay ở ĐA2. Không sửa điểm chốt manual30.
+  dùng F2 (không từ chối khi phải từ chối) cho v1-0050 (manual30 R1) và v1-0107 (G1), G1 cho v1-0057 (manual30 OK).
+  Với 0050 và 0107, lần mù ghi hậu quả (trả lời thay vì từ chối) còn manual30 ghi nguyên nhân đứng trước trong thứ tự
+  D1 → R2 → R1 → P1 → G1 → G2 → F1/F2. Cần ghi rõ định nghĩa F1 (từ chối nhầm), F2 (không từ chối khi phải từ chối) vào
+  sheet quy tắc và nhấn mạnh quy tắc dừng ở lỗi đầu tiên trước khi chấm tay ở ĐA2. Không sửa điểm chốt manual30.
 - Trích dẫn đúng kiểm tay: 24/30 = 0,800 (cả 34 câu: 0,794). Mục tiêu 0,85 chưa đạt.
 
 ## 2. Hiệu chỉnh judge Ragas

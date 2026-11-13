@@ -13,7 +13,7 @@ Chọn câu (tối đa --max, mặc định 40, chỉ câu answerable):
      Nhiều cờ xếp trước; câu manual30 đã chấm "không lỗi" không bổ sung tự động.
 Câu bị ngưỡng chặn ở run chính (gated) thì kèm câu trả lời của --ng-run (cùng truy xuất, không ngưỡng).
 Mã lỗi: R1 truy xuất trượt, R2 lọc nhầm sản phẩm, P1 bảng parse sai, G1 sinh sai/bịa số hay kết luận, G2 trích dẫn sai,
-F1 từ chối nhầm, D1 lỗi benchmark, OK không lỗi. `code` từ manual30 giữ nguyên (code_src = manual30, kể cả "không lỗi");
+F1 từ chối nhầm, F2 không từ chối khi phải từ chối, D1 lỗi benchmark, OK không lỗi. `code` từ manual30 giữ nguyên (code_src = manual30, kể cả "không lỗi");
 --draft (qid, code, note) điền cho câu chưa có, code_src = draft (Claude soạn; trạng thái duyệt ghi trong docs).
 """
 from __future__ import annotations
@@ -28,7 +28,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 
 CODES = {"R1": "truy xuất trượt", "R2": "lọc nhầm sản phẩm", "P1": "bảng parse sai", "G1": "sinh sai/bịa số, sai kết luận",
-         "G2": "trích dẫn sai", "F1": "từ chối nhầm", "D1": "lỗi benchmark", "OK": "không lỗi"}
+         "G2": "trích dẫn sai", "F1": "từ chối nhầm", "F2": "không từ chối khi phải từ chối", "D1": "lỗi benchmark", "OK": "không lỗi"}
 
 
 def jsonl(path):
