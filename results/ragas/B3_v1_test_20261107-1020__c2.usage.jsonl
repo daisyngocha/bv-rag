@@ -1,1 +1,2 @@
 {"judge_id": "c2", "model": "claude-haiku-5-5", "n": 81, "calls": 406, "input_tokens": 770174, "output_tokens": 183136}
+{"judge_id": "c2", "model": "claude-haiku-5-5", "n": 1, "calls": 5, "input_tokens": 8859, "output_tokens": 2008}
