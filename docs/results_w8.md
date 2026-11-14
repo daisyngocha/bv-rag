@@ -26,7 +26,7 @@ Tập test, benchmark v1.1 (`benchmark/CHANGELOG.md`), 8 run chính thức trong
   | cite_ok (Cohen) | 0,286 | [0,00; 0,78] | 7/10 | – |
   | error_code (Cohen) | 0,324 | [−0,05; 0,70] | 5/10 | – |
 
-  Nhận định (nháp, chờ HA duyệt): correct ổn định (lệch tối đa 1 điểm). Faithful lệch lớn duy nhất ở v1-0050 (mù 2,
+  Nhận định (HA duyệt 14/11): correct ổn định (lệch tối đa 1 điểm). Faithful lệch lớn duy nhất ở v1-0050 (mù 2,
   manual30 4). cite_ok lệch một chiều: 3/3 câu lệch lần mù cho 1, manual30 cho 0 (v1-0025, 0124, 0110); hai câu G2 của
   manual30 (0025, 0110) lần mù ghi OK, tức tiêu chí trích dẫn đúng chưa vững. error_code kém nhất: ngoài 2 câu G2, lần mù
   dùng F2 (không từ chối khi phải từ chối) cho v1-0050 (manual30 R1) và v1-0107 (G1), G1 cho v1-0057 (manual30 OK).
