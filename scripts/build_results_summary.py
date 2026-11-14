@@ -132,7 +132,7 @@ def build() -> str:
     L += [t1.rstrip(), "",
           f"\\* Cận dưới tự động: chỉ tính trích dẫn trỏ đúng `evidence_ids`. \\*\\* Kiểm tay 30 câu B4 (manual30): "
           f"trích dẫn đúng {MANUAL_CITE[0]}/{MANUAL_CITE[1]} = {f(MANUAL_CITE[0] / MANUAL_CITE[1])}.",
-          "Mục tiêu B4 là bản đề xuất 07/11, chờ GVHD (decision-log)."]
+          "Mục tiêu B4 đề xuất 07/11, GVHD xác nhận 14/11 (decision-log)."]
     if has_ragas:
         L += ["Ragas (judge j1, `results/ragas/`): chỉ chấm câu answerable không bị từ chối (số câu: cột `n_ragas_j1` trong CSV);",
               "B0 không có ngữ cảnh nên không có faithfulness. Hiệu chỉnh judge với 30 câu chấm tay: `docs/results_w8.md`."]
