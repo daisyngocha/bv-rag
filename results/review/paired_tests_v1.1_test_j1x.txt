@@ -1,0 +1,19 @@
+     pair                metric  n     A     B  chi_A  chi_B  p_exact  p_holm
+    B1:B2  answer_relevancy_j1x 60 0.841 0.860     27     25   0.7021  1.0000
+    B1:B2 context_precision_j1x 96 0.556 0.777     17     53   0.0000  0.0000
+    B1:B2    context_recall_j1x 96 0.684 0.882      3     26   0.0001  0.0006
+    B2:B3  answer_relevancy_j1x 74 0.844 0.853     37     29   0.3460  1.0000
+    B2:B3 context_precision_j1x 96 0.777 0.797     17     25   0.4492  1.0000
+    B2:B3    context_recall_j1x 96 0.882 0.931      3      7   0.0717  0.3585
+  B3:B4rr  answer_relevancy_j1x 77 0.857 0.925     26     45   0.0180  0.1080
+  B3:B4rr context_precision_j1x 96 0.797 0.861     18     24   0.0555  0.2775
+  B3:B4rr    context_recall_j1x 96 0.931 0.929      5      5   0.9167  1.0000
+B4rr:B4ng  answer_relevancy_j1x 78 0.913 0.897     38     32   0.1516  0.7580
+B4rr:B4ng context_precision_j1x 96 0.861 0.861      0      0   1.0000  1.0000
+B4rr:B4ng    context_recall_j1x 96 0.929 0.929      0      0   1.0000  1.0000
+  B4ng:B4  answer_relevancy_j1x 82 0.896 0.931     31     39   0.5447  1.0000
+  B4ng:B4 context_precision_j1x 96 0.861 0.861      0      0   1.0000  1.0000
+  B4ng:B4    context_recall_j1x 96 0.929 0.929      0      0   1.0000  1.0000
+    B3:B4  answer_relevancy_j1x 73 0.865 0.944     36     32   0.7116  1.0000
+    B3:B4 context_precision_j1x 96 0.797 0.861     18     24   0.0555  0.2775
+    B3:B4    context_recall_j1x 96 0.931 0.929      5      5   0.9167  1.0000
