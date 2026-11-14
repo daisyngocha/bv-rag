@@ -239,3 +239,105 @@ v1-0022 (trích bảng `FLX_BP_S2_TB1` thay vì TB3) cùng mẫu lẫn các bả
 4. **G2:** structured output (mỗi ý kèm id đoạn) và kiểm tra ý–đoạn tự động; đưa mã chunk vào thẻ `<doc so="n" id="…">`
    (thử trên dev).
 5. **Đo lường:** `num_recall` bỏ [n] và số đã có trong câu hỏi/tên sản phẩm; báo riêng "trả lời một phần" cho compare.
+
+## 7. Ragas bổ sung: answer relevancy, context precision/recall
+
+HA duyệt 14/11. Chấm ngày 14/11 bằng judge j1x (`configs/judge_j1x.yaml`): như j1 (`gemini-3.8-flash`, Ragas
+0.4.3) cộng embedding `models/gemini-embedding-001` (task_type semantic_similarity). Script `eval/ragas_extra.py`, điểm từng
+câu `results/ragas/{run_id}__j1x.csv` (một dòng mỗi qid × part), gộp vào `results/*_v1.1_test_*.csv` bằng
+`eval/ragas_summary.py --judge j1x`. Cả 8 run chấm xong, không còn câu lỗi hay NaN.
+
+- **answer_relevancy** (`ResponseRelevancy`): câu answerable không bị từ chối (n như j1: 17/65/76/77/81/80/86/83), bỏ [n].
+  Judge sinh 3 câu hỏi từ câu trả lời, điểm = cosine trung bình với câu hỏi gốc; bằng 0 nếu cả 3 bị đánh noncommittal.
+  Prompt `rr_vi_v1` (prompt gốc Ragas + yêu cầu câu hỏi cùng ngôn ngữ + 2 ví dụ tiếng Việt): 100% câu hỏi sinh ra là
+  tiếng Việt (cột `gen_vi`), lưu ở cột `gen_questions` để rà.
+- **context_precision** (`LLMContextPrecisionWithReference`) và **context_recall** (`LLMContextRecall`): mọi câu answerable
+  (96, kể cả bị từ chối), retrieved_contexts = 5 contexts trong log, reference = đáp án v1.1. B0 không có contexts.
+  B4rr/B4ng/B4 có contexts trùng từng câu ở cả 120 câu (kể cả 27 câu bị ngưỡng chặn ở B4, đều có 5 contexts), nên chỉ chấm
+  B4rr rồi chép điểm (`--context-from`, cột `ctx_source`).
+
+Theo nhóm (all / lookup / table / compare / scenario):
+
+| Cấu hình | Ans. rel. | Noncommittal | Ctx prec. | Ctx recall | Recall@5 |
+| --- | --- | --- | --- | --- | --- |
+| B0 | 0,982 / 0,983 / 0,986 / 0,998 / 0,914 | 0 | – | – | – |
+| B1 | 0,834 / 0,925 / 0,932 / 0,571 / 0,797 | 0,139 / 0,053 / 0,050 / 0,417 / 0,143 | 0,556 / 0,588 / 0,502 / 0,581 / 0,552 | 0,684 / 0,750 / 0,833 / 0,465 / 0,688 | 0,771 / 0,833 / 0,833 / 0,833 / 0,583 |
+| B2 | 0,846 / 0,981 / 0,983 / 0,568 / 0,776 | 0,132 / 0 / 0 / 0,421 / 0,167 | 0,777 / 0,776 / 0,789 / 0,861 / 0,684 | 0,882 / 0,958 / 1,000 / 0,792 / 0,778 | 0,875 / 0,833 / 1,000 / 0,958 / 0,708 |
+| B3hyb | 0,854 / 0,968 / 0,939 / 0,647 / 0,798 | 0,117 / 0 / 0,043 / 0,333 / 0,143 | 0,785 / 0,806 / 0,754 / 0,851 / 0,730 | 0,899 / 0,958 / 0,917 / 0,840 / 0,882 | 0,896 / 0,875 / 0,917 / 0,958 / 0,833 |
+| B3 | 0,850 / 0,973 / 0,940 / 0,604 / 0,870 | 0,123 / 0 / 0,042 / 0,381 / 0,071 | 0,797 / 0,830 / 0,767 / 0,887 / 0,704 | 0,931 / 0,958 / 0,958 / 0,903 / 0,903 | 0,906 / 0,875 / 0,958 / 0,958 / 0,833 |
+| B4rr | 0,913 / 0,973 / 0,983 / 0,805 / 0,849 | 0,062 / 0 / 0 / 0,182 / 0,091 | 0,861 / 0,993 / 0,883 / 0,858 / 0,711 | 0,929 / 1,000 / 1,000 / 0,944 / 0,771 | 0,896 / 1,000 / 1,000 / 0,875 / 0,708 |
+| B4ng | 0,899 / 0,975 / 0,973 / 0,766 / 0,873 | 0,070 / 0 / 0 / 0,217 / 0,062 | như B4rr | như B4rr | như B4rr |
+| B4 | 0,930 / 0,976 / 0,974 / 0,875 / 0,868 | 0,036 / 0 / 0 / 0,105 / 0,059 | như B4rr | như B4rr | như B4rr |
+
+Noncommittal = tỷ lệ câu cả 3 câu hỏi sinh ra bị đánh noncommittal (điểm relevancy = 0), trên n relevancy. Ô của B0 và
+nhóm n nhỏ chỉ tham khảo (n theo nhóm như mục 5).
+
+**Wilcoxon theo cặp câu** (`eval/paired_tests.py --ragas-judge j1x --ragas-only`, `results/review/paired_tests_v1.1_test_j1x.txt`;
+Holm trong từng metric qua 6 cặp, nay script tính cột `p_holm`):
+
+| Cặp | Ans. rel. (n; A → B; p; Holm) | Ctx prec. (n = 96) | Ctx recall (n = 96) |
+| --- | --- | --- | --- |
+| B1 → B2 | 60; 0,841 → 0,860; 0,70; 1,0 | 0,556 → 0,777; **<0,0001; <0,0001** | 0,684 → 0,882; **0,0001; 0,0006** |
+| B2 → B3 | 74; 0,844 → 0,853; 0,35; 1,0 | 0,777 → 0,797; 0,45; 1,0 | 0,882 → 0,931; 0,072; 0,36 |
+| B3 → B4rr | 77; 0,857 → 0,925; 0,018; 0,11 | 0,797 → 0,861; 0,056; 0,28 | 0,931 → 0,929; 0,92; 1,0 |
+| B4rr → B4ng | 78; 0,913 → 0,897; 0,15; 0,76 | trùng contexts | trùng contexts |
+| B4ng → B4 | 82; 0,896 → 0,931; 0,54; 1,0 | trùng contexts | trùng contexts |
+| B3 → B4 | 73; 0,865 → 0,944; 0,71; 1,0 | 0,797 → 0,861; 0,056; 0,28 | 0,931 → 0,929; 0,92; 1,0 |
+
+- **RQ1 được củng cố bằng thước đo thứ hai:** chunk cấu trúc tăng context precision (+0,22) và context recall (+0,20), có
+  ý nghĩa sau Holm, cùng chiều với Hit@1/MRR ở mục 4. Các bước sau không có ý nghĩa.
+- **Rerank:** context recall không đổi (0,931 → 0,929, đúng như Recall@5 không đổi) còn context precision tăng 0,064
+  (p 0,056, Holm 0,28): khớp nhận định "rerank đẩy chunk đúng lên đầu, không tìm thêm evidence". Answer relevancy tăng
+  0,068 (p 0,018) nhưng không qua Holm.
+- **Answer relevancy gần như không phân biệt cấu hình:** khác biệt chủ yếu đến từ câu noncommittal (điểm 0), nên trung bình
+  lệch nhiều mà Wilcoxon không thấy (B3 → B4: +0,079 nhưng p 0,71). B0 có relevancy cao nhất (0,982) dù answer correctness
+  j1 chỉ 0,113 (13/17 câu relevancy > 0,9 và ac < 0,3): metric đo "câu trả lời có đúng chủ đề câu hỏi", không đo đúng sai.
+  Tương quan Spearman với answer correctness j1 theo câu: 0,28 (n = 565). Không dùng relevancy làm thước đo chất lượng chính.
+- **Noncommittal tập trung ở compare** (B1–B3: 0,33–0,42; B4: 0,105), là câu trả lời một phần kiểu "tài liệu không có
+  thông tin về sản phẩm X" (B4: v1-0124, 0130; scenario v1-0050 câu trả lời rào đón). Đây là cùng hiện tượng F1 từ chối
+  nhầm một phần ở mục 6, nay có số đo tự động; tỷ lệ (all) 0,12–0,14 ở B1–B3, 0,04–0,07 ở B4rr/B4ng/B4. Chưa kiểm định riêng.
+
+**Đối chiếu context_recall với Recall@5** (theo câu; hit@5 = có evidence trong top-5, từ `per_question_v1.1_test.csv`):
+
+| Cấu hình | ctx recall khi hit@5 (n) | khi trượt (n) | hit nhưng recall < 0,5 | trượt nhưng recall = 1 | Spearman với RR |
+| --- | --- | --- | --- | --- | --- |
+| B1 | 0,827 (74) | 0,205 (22) | 10 | 3 | 0,43 |
+| B2 | 0,937 (84) | 0,500 (12) | 4 | 5 | 0,39 |
+| B3 | 0,969 (87) | 0,556 (9) | 1 | 4 | 0,39 |
+| B4 | 1,000 (86) | 0,317 (10) | 0 | 1 | 0,68 |
+
+- Hai thước đo cùng chiều ở cấp cấu hình (thứ hạng B1 < B2 < B3hyb < B3 ≈ B4 giống nhau) và ở cấp câu: câu trượt
+  evidence có context recall thấp hơn hẳn.
+- Lệch hai chiều, nên đọc như kiểm tra chéo nhãn evidence:
+  - *Trượt nhưng recall = 1* (B2: 0008, 0049, 0081, 0085, 0124): thông tin trong đáp án có ở chunk khác không phải evidence
+    (nội dung lặp giữa chương/bảng) hoặc judge chấm dễ. v1-0049 có evidence ngoài top-30 (R1 ở mục 6) mà recall = 1 ở
+    B2/B3/B4: nghi judge chấm dễ, cần đọc tay trước khi kết luận nhãn evidence thiếu.
+  - *Hit nhưng recall < 0,5* (B1 nhiều nhất, 10 câu): chunk cố định 512 cắt đôi đoạn evidence, có chunk đúng nhưng không
+    đủ ý; ở B2 còn 0120, 0126, 0128, 0149 (compare, cần evidence của hai sản phẩm, top-5 chỉ đủ một bên).
+- Context recall không thay Recall@5 (Recall@5 dựa trên nhãn, không phụ thuộc judge) mà bổ sung: không cần nhãn evidence,
+  dùng được cho ĐA2 khi benchmark mới chưa gán evidence.
+
+**Token judge j1x** (`results/ragas/{run_id}__j1x.usage.jsonl`, 8 run chính thức; đủ log cho mọi câu):
+
+| Phần | Câu | Token vào | Token ra | Trung bình/câu (vào / ra) | Ghi chú |
+| --- | --- | --- | --- | --- | --- |
+| relevancy | 565 | 835.134 | 521.120 | 1.478 / 922 | 3 lượt gọi/câu; embedding 1.130 lượt, 311.945 ký tự |
+| context | 480 (5 run × 96) | 5.036.681 | 1.079.751 | 10.493 / 2.249 | 6 lượt/câu (5 precision + 1 recall); B4ng/B4 chép từ B4rr |
+| Tổng | | 5.871.815 | 1.600.871 | | token vào ≈ 2 lần j1 (2,88M), chủ yếu do context precision |
+
+Chạy thử 5 câu dev (`results/ragas/_unofficial/`) không tính. Ước tính trước khi chạy 5,1M / 1,3M; thực tế cao hơn
+khoảng 15% (câu test dài hơn câu lookup dev). `gemini-3.8-flash` không nhận `candidate_count=3` nên dùng `bypass_n: true`
+(3 lượt gọi riêng, token vào gấp 3 phần relevancy).
+
+**Hạn chế.**
+
+1. Không có nhãn tay cho ba metric này: chưa hiệu chỉnh như faithfulness/answer correctness ở mục 2, không có judge thứ
+   hai (c2) để đo độ vững. Số chỉ dùng để so cấu hình cùng judge, không đọc như giá trị tuyệt đối.
+2. Context precision/recall phụ thuộc đáp án chuẩn: câu đáp án ngắn (lookup) dễ đạt 1,0; câu compare/scenario nhiều ý bị
+   điểm phụ thuộc cách judge tách ý; chưa đo độ lặp lại (mỗi câu chấm 1 lần).
+3. Answer relevancy: Ragas đặt temperature 0,3 khi sinh nhiều câu hỏi, nhưng 3 câu sinh ra thường gần như trùng nhau nên
+   thực chất chỉ ~1 mẫu; cosine của embedding thiên về độ trùng từ với câu hỏi gốc (câu hỏi bảo hiểm dài, lặp tên sản
+   phẩm) nên điểm dồn sát 1. Noncommittal do LLM phán, chưa đối chiếu với cờ hedge/từ chối một phần.
+4. B4rr/B4ng/B4 chung một điểm context (chép), nên cặp B4rr → B4ng và B4ng → B4 không kiểm định context được (p = 1 là
+   do thiết kế, không phải kết quả).
+5. Prompt `rr_vi_v1` là bản sửa nhỏ của prompt Ragas; đổi prompt hay embedding phải tăng judge_id và chấm lại.
