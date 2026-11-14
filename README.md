@@ -4,17 +4,18 @@ Hệ thống hỏi đáp có trích dẫn về sản phẩm bảo hiểm cá nh�
 Đồ án 1/3 (ĐA1 → ĐA2 → ĐATN): retriever, benchmark, harness và log dùng lại cho ĐA2/ĐATN.
 Quy ước repo, schema và config theo skill `hust-da1-bh-genai-conventions`.
 
-## Trạng thái (13/11/2026)
+## Trạng thái (14/11/2026)
 
 | Phần | Trạng thái |
 | --- | --- |
 | Kho tri thức v1 (đóng băng, `data/manifests/v1.json`) | 5 sản phẩm BHBV (BVP, BTB, C37, ITC, FLX): 634 chunk cấu trúc, 286 chunk cố định; `data/catalog.json`, `data/glossary.json` (241 mục) |
 | Benchmark | `benchmark/benchmark_v1.1.jsonl` (150 câu, 5 nhóm × 30; dev 30, test 120), thay đổi so với v1 ở `benchmark/CHANGELOG.md` |
-| Thực nghiệm | B0–B4 + ablation trên test Colab L4 (8 run chính thức, `configs/test_runs_official.txt`); Ragas, kiểm định theo cặp, phân tích lỗi xong tuần 8 |
+| Thực nghiệm | B0–B4 + ablation trên test Colab L4 (8 run chính thức, `configs/test_runs_official.txt`); Ragas (j1, c2, j1x), kiểm định theo cặp, phân tích lỗi xong 14/11 |
 | Demo | React (Vercel) + Supabase + FastAPI trên Colab L4, chạy đầu–cuối |
 | Còn lại | Báo cáo, slide (tuần 9–10) |
 
-Kết quả: `docs/results_summary.md` (bảng tổng, sinh tự động), `docs/results_w8.md` (Ragas, kiểm định, phân tích lỗi).
+Kết quả: `docs/results_summary.md` (bảng tổng, sinh tự động), `docs/results_w8.md` (Ragas, kiểm định, phân tích lỗi;
+mục 7: Ragas bổ sung j1x).
 Tiến độ: `docs/progress.md`. Quyết định: `docs/decision-log.md`. Thiết kế (use case, ERD, data dictionary, method list,
 kiến trúc): `docs/roadmap/`, `docs/architecture/`.
 
@@ -243,17 +244,31 @@ PYTHONPATH=. python scripts/build_results_summary.py       # docs/results_summar
 
 ## Ragas, kiểm định, phân tích lỗi (tuần 8, WSL)
 
-Judge chỉ chấm câu answerable không bị từ chối; dùng Faithfulness và AnswerCorrectness (`weights=[1, 0]`).
-j1 = Gemini (`configs/judge_j1.yaml`, judge chính), c2 = Claude Haiku (`configs/judge_c2.yaml`, kiểm độ vững).
-Không sửa `eval/ragas_eval.py`, `configs/judge_*.yaml` sau khi đã chấm chính thức.
+| Judge | Config | Script | Chỉ số | Câu chấm |
+| --- | --- | --- | --- | --- |
+| j1 (chính) | `judge_j1.yaml` (Gemini) | `eval/ragas_eval.py` | Faithfulness, AnswerCorrectness (`weights=[1, 0]`) | answerable không bị từ chối |
+| c2 (kiểm độ vững) | `judge_c2.yaml` (Claude Haiku) | `eval/ragas_eval.py` | như j1 | như j1 |
+| j1x (bổ sung) | `judge_j1x.yaml` (LLM j1 + `gemini-embedding-001`) | `eval/ragas_extra.py` | ResponseRelevancy (prompt `rr_vi_v1`), LLMContextPrecisionWithReference, LLMContextRecall | relevancy: như j1; context: mọi câu answerable |
+
+Không sửa `eval/ragas_eval.py`, `eval/ragas_extra.py`, `configs/judge_*.yaml` sau khi đã chấm chính thức; đổi model,
+embedding hay prompt thì tăng judge_id và chấm lại mọi run. Answer relevancy chỉ báo tham khảo (results_w8 mục 7).
 
 ```bash
 set -a; source .env; set +a
 # Chấm một run (ghi dần từng câu, chạy lại chỉ chấm câu thiếu/lỗi) → results/ragas/{run_id}__{judge}.csv + .usage.jsonl
 PYTHONPATH=. .venv-judge/bin/python -m eval.ragas_eval runs/B4_v1_test_20261107-1335 \
     --judge configs/judge_j1.yaml --bench benchmark/benchmark_v1.1.jsonl
-# Gộp điểm vào CSV metric (chạy lại sau mỗi lần eval.metrics)
-PYTHONPATH=. python -m eval.ragas_summary --judge j1 --bench benchmark/benchmark_v1.1.jsonl $(ls results/*_v1.1_test_*.csv)
+# Ragas bổ sung: relevancy + context; B4ng/B4 chép điểm context từ B4rr (script kiểm contexts trùng từng câu)
+PYTHONPATH=. .venv-judge/bin/python -m eval.ragas_extra runs/B4rr_v1_test_20261107-1335 \
+    --judge configs/judge_j1x.yaml --bench benchmark/benchmark_v1.1.jsonl --metrics all
+PYTHONPATH=. .venv-judge/bin/python -m eval.ragas_extra runs/B4_v1_test_20261107-1335 --judge configs/judge_j1x.yaml \
+    --metrics relevancy
+PYTHONPATH=. .venv-judge/bin/python -m eval.ragas_extra runs/B4_v1_test_20261107-1335 --judge configs/judge_j1x.yaml \
+    --metrics context --context-from runs/B4rr_v1_test_20261107-1335
+# Gộp điểm vào CSV metric (chạy lại sau mỗi lần eval.metrics, cho cả j1, c2, j1x)
+for j in j1 c2 j1x; do
+  PYTHONPATH=. python -m eval.ragas_summary --judge $j --bench benchmark/benchmark_v1.1.jsonl $(ls results/*_v1.1_test_*.csv)
+done
 # Hiệu chỉnh judge với 30 câu chấm tay
 PYTHONPATH=. .venv-judge/bin/python -m eval.calibrate_judge results/review/manual30_B4_v1_test_20261107-1335.csv \
     results/ragas/B4_v1_test_20261107-1335__j1.csv results/ragas/B4ng_v1_test_20261107-1335__j1.csv
@@ -262,7 +277,7 @@ PYTHONPATH=. .venv-judge/bin/python -m eval.calibrate_judge results/review/manua
 | Việc | Lệnh / file |
 | --- | --- |
 | McNemar theo cặp câu (hit@1, hit@5, từ chối nhầm, khớp số), Holm | `eval/mcnemar.py` → `results/review/mcnemar_v1.1_test.{csv,txt}` |
-| Wilcoxon theo cặp (MRR, Ragas) | `eval/paired_tests.py ... --ragas-judge j1` → `results/review/paired_tests_v1.1_test.txt` |
+| Wilcoxon theo cặp (MRR, Ragas), Holm trong script (`p_holm`) | `eval/paired_tests.py ... --ragas-judge j1` → `results/review/paired_tests_v1.1_test.txt`; `--ragas-judge j1x --ragas-only` → `paired_tests_v1.1_test_j1x.txt` |
 | Chọn mẫu chấm tay 30 câu | `scripts/make_manual30.py` → `results/review/manual30_*` |
 | Chấm mù 10 câu, kappa | `scripts/make_blind10.py`, `eval/kappa.py` → `results/review/kappa_blind10.md` |
 | Bảng phân tích lỗi (mã R1/R2/P1/G1/G2/F1/F2/D1) | `eval/error_sheet.py` → `results/review/error_analysis_B4_v1.1_test.xlsx` |

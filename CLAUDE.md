@@ -18,6 +18,9 @@ Người làm: Lê Thị Ngọc Hà (Data/Business Analyst bảo hiểm). Trả 
 - Run test chính thức: `configs/test_runs_official.txt` (8 run). Không dùng glob `runs/*_v1_test_*` (khớp cả run thử).
 - Judge Ragas: j1 = Gemini (chính), c2 = Claude Haiku 5.5 (phụ); điểm từng câu `results/ragas/{run_id}__{judge}.csv`.
   `results/ragas/_unofficial/` là điểm của run không chính thức, bỏ qua.
+- Ragas bổ sung (results_w8 mục 7): j1x = LLM của j1 + embedding Gemini (`configs/judge_j1x.yaml`, `eval/ragas_extra.py`):
+  answer relevancy (prompt `rr_vi_v1`, chỉ tham khảo), context precision/recall (B4ng/B4 chép từ B4rr);
+  điểm `results/ragas/{run_id}__j1x.csv`, gộp bằng `eval/ragas_summary.py --judge j1x`.
 - Bảng tổng `docs/results_summary.md` sinh bằng `scripts/build_results_summary.py`; không sửa số bằng tay.
 - Kết quả tuần 8: `docs/results_w8.md`. Tiến độ: `docs/progress.md`. Quyết định: `docs/decision-log.md`.
 - Chỉ tinh chỉnh trên split dev, không bao giờ trên test. Kết luận "cải thiện" chỉ khi kiểm định theo cặp có ý nghĩa
@@ -30,7 +33,8 @@ Người làm: Lê Thị Ngọc Hà (Data/Business Analyst bảo hiểm). Trả 
 
 ## Không được
 
-- Sửa `benchmark/benchmark_v1.1.jsonl`, `eval/ragas_eval.py`, `configs/judge_*.yaml`, prompt đã dùng cho run chính thức
+- Sửa `benchmark/benchmark_v1.1.jsonl`, `eval/ragas_eval.py`, `eval/ragas_extra.py` (gồm prompt `rr_vi_v1`),
+  `configs/judge_*.yaml`, prompt đã dùng cho run chính thức
   (`src/generate/prompts.py`: thêm tên mới thay vì sửa).
 - `git add -A` hoặc `git add .`; luôn add đúng file. Không push nếu chưa được bảo.
 - Ghi đè nhận xét/mã lỗi người dùng đã chốt. Nhận định của Claude ghi rõ "nháp, chờ HA duyệt".
