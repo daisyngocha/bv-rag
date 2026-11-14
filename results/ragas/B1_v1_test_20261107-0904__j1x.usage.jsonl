@@ -1,0 +1,2 @@
+{"judge_id": "j1x", "model": "gemini-3.8-flash", "part": "relevancy", "n": 65, "prompt": "rr_vi_v1", "calls": null, "input_tokens": 96495, "output_tokens": 55597, "embed_model": "models/gemini-embedding-001", "embed_calls": 130, "embed_chars": 36937}
+{"judge_id": "j1x", "model": "gemini-3.8-flash", "part": "context", "n": 96, "calls": null, "input_tokens": 1213037, "output_tokens": 231169}
