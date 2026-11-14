@@ -1,0 +1,21 @@
+# Judge Ragas bổ sung (eval/ragas_extra.py): answer_relevancy, context_precision, context_recall.
+# Như j1 + embedding. Đổi model, embedding, prompt hay phiên bản Ragas → tăng judge_id và chấm lại mọi run.
+judge_id: j1x
+model: "gemini-3.8-flash"     # chọn bằng: python -m eval.bench_draft models (giống j1)
+temperature: 0                # lưu ý: Ragas tự đặt 0.3 khi sinh n>1 câu (ResponseRelevancy), 0.01 khi n=1
+seed: 42
+max_workers: 4                # giảm nếu gặp 429
+timeout_s: 180
+max_retries: 5
+ragas: "0.4.3"
+provider: gemini
+embedding:
+  provider: gemini
+  # liệt kê model có embedContent (bench_draft models chỉ in model generateContent): gemini-embedding-001, gemini-embedding-2.
+  # Chọn 001: chỉ văn bản, đa ngữ (có tiếng Việt), bản GA; 2 là bản đa phương thức, không cần ở đây.
+  model: "models/gemini-embedding-001"
+  task_type: "semantic_similarity"   # so câu hỏi với câu hỏi: dùng cùng task_type cho query và document
+relevancy:
+  strictness: 3               # số câu hỏi sinh ra mỗi câu trả lời (mặc định Ragas)
+  prompt: "rr_vi_v1"          # prompt sinh câu hỏi tiếng Việt, xem eval/ragas_extra.py
+  bypass_n: true              # gemini-3.8-flash báo 400 "Multiple candidates is not enabled": gọi 3 lần riêng
