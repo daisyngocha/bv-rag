@@ -128,18 +128,21 @@ Chi tiết từng bước: `docs/results_w4_baseline.md` (B0–B2), `docs/result
 Mục tiêu B4 đề xuất 07/11, GVHD xác nhận 14/11 (decision-log).
 Ragas (judge j1, `results/ragas/`): chỉ chấm câu answerable không bị từ chối (số câu: cột `n_ragas_j1` trong CSV);
 B0 không có ngữ cảnh nên không có faithfulness. Hiệu chỉnh judge với 30 câu chấm tay: `docs/results_w8.md`.
+Ragas bổ sung (judge j1x = j1 + embedding `gemini-embedding-001`, `eval/ragas_extra.py`): answer relevancy trên câu
+answerable không bị từ chối (cột `n_rel_j1x`); context precision/recall trên mọi câu answerable (96, kể cả bị từ
+chối). B4rr/B4ng/B4 cùng contexts từng câu nên chung một điểm context. Chưa hiệu chỉnh bằng nhãn tay.
 
 ## Bảng 2. Đóng góp từng bước (test, dòng all; trên 96 câu answerable: 0,010 ≈ 1 câu)
 
-| Bước | So sánh | R@1 | R@5 | MRR | Từ chối nhầm | Có trích dẫn | Khớp số | Faithfulness (j1) | Ans. corr. (j1) | p95 (s) |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Chunk cấu trúc (RQ1) | B1 → B2 | +0,177 | +0,104 | +0,129 | −0,115 | +0,179 | +0,204 | +0,126 | +0,155 | +0,01 |
-| Hybrid | B2 → B3hyb | +0,010 | +0,021 | +0,020 | −0,010 | −0,150 | +0,007 | −0,013 | −0,040 | −0,24 |
-| Query processor | B3hyb → B3 | +0,010 | +0,010 | +0,007 | −0,042 | −0,021 | +0,028 | +0,028 | −0,016 | −0,06 |
-| Rerank | B3 → B4rr | +0,156 | −0,010 | +0,097 | +0,010 | −0,007 | +0,028 | −0,027 | +0,029 | +1,80 |
-| Prompt rag_v3 | B4rr → B4ng | 0 | 0 | 0 | −0,062 | +0,577 | −0,070 | +0,027 | +0,024 | −0,10 |
-| Ngưỡng 0,90 | B4ng → B4 | 0 | 0 | 0 | +0,031 | +0,011 | −0,008 | +0,003 | −0,015 | −0,31 |
-| Tổng | B2 → B4 | +0,177 | +0,021 | +0,124 | −0,073 | +0,409 | −0,015 | +0,019 | −0,017 | +1,09 |
+| Bước | So sánh | R@1 | R@5 | MRR | Từ chối nhầm | Có trích dẫn | Khớp số | Faithfulness (j1) | Ans. corr. (j1) | Ans. rel. (j1x) | Ctx prec. (j1x) | Ctx recall (j1x) | p95 (s) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Chunk cấu trúc (RQ1) | B1 → B2 | +0,177 | +0,104 | +0,129 | −0,115 | +0,179 | +0,204 | +0,126 | +0,155 | +0,012 | +0,222 | +0,198 | +0,01 |
+| Hybrid | B2 → B3hyb | +0,010 | +0,021 | +0,020 | −0,010 | −0,150 | +0,007 | −0,013 | −0,040 | +0,008 | +0,008 | +0,017 | −0,24 |
+| Query processor | B3hyb → B3 | +0,010 | +0,010 | +0,007 | −0,042 | −0,021 | +0,028 | +0,028 | −0,016 | −0,004 | +0,011 | +0,031 | −0,06 |
+| Rerank | B3 → B4rr | +0,156 | −0,010 | +0,097 | +0,010 | −0,007 | +0,028 | −0,027 | +0,029 | +0,063 | +0,065 | −0,002 | +1,80 |
+| Prompt rag_v3 | B4rr → B4ng | 0 | 0 | 0 | −0,062 | +0,577 | −0,070 | +0,027 | +0,024 | −0,013 | 0 | 0 | −0,10 |
+| Ngưỡng 0,90 | B4ng → B4 | 0 | 0 | 0 | +0,031 | +0,011 | −0,008 | +0,003 | −0,015 | +0,030 | 0 | 0 | −0,31 |
+| Tổng | B2 → B4 | +0,177 | +0,021 | +0,124 | −0,073 | +0,409 | −0,015 | +0,019 | −0,017 | +0,084 | +0,084 | +0,047 | +1,09 |
 
 Bảng 2' cho biết bước nào có ý nghĩa thống kê; chênh lệch 1–2 câu không đủ để kết luận.
 
@@ -196,3 +199,4 @@ MRR, Wilcoxon theo cặp câu (`eval/paired_tests.py`): B1 → B2 p 0,0024; B3 �
 6. Nhóm khó nhất xuyên suốt là scenario: Recall@5 tối đa 0,833, từ chối nhầm B4 0,292, khớp số B4 0,538.
 7. B4 đạt 5/8 mục tiêu (MRR 0,838; Từ chối đúng 1,000; Hedge 0,012; Có trích dẫn 0,988; p95 (s) 5,74); chưa đạt: R@5 0,896; Từ chối nhầm 0,135; trích dẫn đúng (kiểm tay) 0,800.
 8. Ragas (j1): B4 faithfulness 0,741, answer correctness 0,688; B0 answer correctness 0,113.
+9. Ragas bổ sung (j1x): context recall B1 0,684 → B2 0,882 → B4 0,929 (cùng chiều Recall@5); answer relevancy B4 0,930, tỷ lệ noncommittal 0,036. Kiểm định: `docs/results_w8.md` mục 7.

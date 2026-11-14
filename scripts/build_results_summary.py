@@ -26,7 +26,8 @@ STEPS = [("Chunk cấu trúc (RQ1)", "B1", "B2"), ("Hybrid", "B2", "B3hyb"), ("Q
          ("Rerank", "B3", "B4rr"), ("Prompt rag_v3", "B4rr", "B4ng"), ("Ngưỡng 0,90", "B4ng", "B4"), ("Tổng", "B2", "B4")]
 STEP_COLS = [("recall@1", "R@1"), ("recall@5", "R@5"), ("mrr", "MRR"), ("false_refusal", "Từ chối nhầm"),
              ("cite_rate", "Có trích dẫn"), ("num_recall", "Khớp số"), ("faithfulness_j1", "Faithfulness (j1)"),
-             ("answer_correctness_j1", "Ans. corr. (j1)"), ("p95_s", "p95 (s)")]
+             ("answer_correctness_j1", "Ans. corr. (j1)"), ("answer_relevancy_j1x", "Ans. rel. (j1x)"),
+             ("context_precision_j1x", "Ctx prec. (j1x)"), ("context_recall_j1x", "Ctx recall (j1x)"), ("p95_s", "p95 (s)")]
 
 
 def f(x, d=3):
@@ -99,7 +100,9 @@ def build() -> str:
     wil = paired_mrr()
     H = lambda m, a, b: tuple(x.replace(".", ",") for x in holm.get((m, f"{a} → {b}"), ("–",) * 4))
     has_ragas = num(d, "B4", "answer_correctness_j1") is not None
-    cols = [(c, h) for c, h in STEP_COLS if has_ragas or not c.endswith("_j1")]
+    has_j1x = num(d, "B4", "answer_relevancy_j1x") is not None
+    cols = [(c, h) for c, h in STEP_COLS
+            if (has_ragas or not c.endswith("_j1")) and (has_j1x or not c.endswith("_j1x"))]
 
     step_rows = []
     for name, a, b in STEPS:
@@ -136,6 +139,10 @@ def build() -> str:
     if has_ragas:
         L += ["Ragas (judge j1, `results/ragas/`): chỉ chấm câu answerable không bị từ chối (số câu: cột `n_ragas_j1` trong CSV);",
               "B0 không có ngữ cảnh nên không có faithfulness. Hiệu chỉnh judge với 30 câu chấm tay: `docs/results_w8.md`."]
+    if has_j1x:
+        L += ["Ragas bổ sung (judge j1x = j1 + embedding `gemini-embedding-001`, `eval/ragas_extra.py`): answer relevancy trên câu",
+              "answerable không bị từ chối (cột `n_rel_j1x`); context precision/recall trên mọi câu answerable (96, kể cả bị từ",
+              "chối). B4rr/B4ng/B4 cùng contexts từng câu nên chung một điểm context. Chưa hiệu chỉnh bằng nhãn tay."]
     L += ["", "## Bảng 2. Đóng góp từng bước (test, dòng all; trên 96 câu answerable: 0,010 ≈ 1 câu)", "",
           "| Bước | So sánh | " + " | ".join(h for _, h in cols) + " |",
           "| --- | --- |" + " --- |" * len(cols), *step_rows, "",
@@ -175,6 +182,11 @@ def build() -> str:
     if has_ragas:
         L += [f"8. Ragas (j1): B4 faithfulness {f(num(d, 'B4', 'faithfulness_j1'))}, answer correctness "
               f"{f(num(d, 'B4', 'answer_correctness_j1'))}; B0 answer correctness {f(num(d, 'B0', 'answer_correctness_j1'))}."]
+    if has_j1x:
+        L += [f"9. Ragas bổ sung (j1x): context recall B1 {f(num(d, 'B1', 'context_recall_j1x'))} → B2 "
+              f"{f(num(d, 'B2', 'context_recall_j1x'))} → B4 {f(num(d, 'B4', 'context_recall_j1x'))} (cùng chiều Recall@5); "
+              f"answer relevancy B4 {f(num(d, 'B4', 'answer_relevancy_j1x'))}, tỷ lệ noncommittal "
+              f"{f(num(d, 'B4', 'noncommittal_j1x'))}. Kiểm định: `docs/results_w8.md` mục 7."]
     return "\n".join(L) + "\n"
 
 
